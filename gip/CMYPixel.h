@@ -117,6 +117,26 @@ namespace gip {
     return result;
   }
 
+  inline CMYKPixel<COMPONENT> makeCMYKPixel(COMPONENT cyan, COMPONENT magenta, COMPONENT yellow, COMPONENT black) throw() {
+    CMYKPixel<COMPONENT> result;
+    result.cyan = cyan;
+    result.magenta = magenta;
+    result.yellow = yellow;
+    result.black = black;
+    return result;
+  }
+
+  // TAG: replace this with conversion function/class
+  template<class COMPONENT>
+  inline CMYKPixel<COMPONENT> makeCMYKPixel(COMPONENT cyan, COMPONENT magenta, COMPONENT yellow) throw() {
+    CMYKPixel<COMPONENT> result;
+    result.black = minimum(cyan, magenta, yellow);
+    result.cyan = (cyan - result.black)/(1 - result.black);
+    result.magenta = (magenta - result.black)/(1 - result.black);
+    result.yellow = (yellow - result.black)/(1 - result.black);
+    return result;
+  }
+
 
 
   /**
