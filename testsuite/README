@@ -1,2 +1,10 @@
-Test Suite for the GIP framework
-Copyright (C) 2001 by René Møller Fonseca <fonseca at mip dot sdu dot dk>
+Generic Image Processing (GIP) Framework (Test Suite)
+A framework for developing image processing applications
+
+Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+
+This framework is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+For the licensing terms refer to the file 'LICENSE'.
