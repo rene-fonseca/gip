@@ -680,16 +680,16 @@ namespace gip {
     }
     
     // get supported formats
-    adapter.read(node, commandRegisters + Camera1394Impl::V_FORMAT_INQ, getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(node, commandRegisters + Camera1394Impl::V_FORMAT_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
     formats = Math::getBitReversal(quadlet);
-
+    
     // get supported modes
     {
       IEEE1394::Quadlet buffer[8];
       for (unsigned int i = 0; i < 8; ++i) {
         buffer[i] = 0;
         if (isFormatSupported(static_cast<Format>(i))) {
-          adapter.read(node, commandRegisters + Camera1394Impl::V_MODE_INQ_0 + i, getCharAddress(buffer[i]), sizeof(buffer[i]));
+          adapter.read(node, commandRegisters + Camera1394Impl::V_MODE_INQ_0 + i * sizeof(IEEE1394::Quadlet), Cast::getCharAddress(buffer[i]), sizeof(buffer[i]));
         }
       }
       for (unsigned int i = 0; i < getArraySize(supportedModes); ++i) {
@@ -720,11 +720,11 @@ namespace gip {
       fill<unsigned int>(partialImageModeOffset, getArraySize(partialImageModeOffset), 0);
       for (unsigned int i = 0; i < getArraySize(partialImageModeOffset); ++i) {
         Mode mode = static_cast<Mode>(Camera1394::PARTIAL_IMAGE_MODE_0 + i);
-        if (!supportedModes[mode]) {
+        if (!isModeSupported(mode)) {
           continue;
         }
         adapter.read(node, commandRegisters + Camera1394Impl::V_CSR_INQ_7_0 + i * sizeof(IEEE1394::Quadlet), getCharAddress(quadlet), sizeof(quadlet));
-        partialImageModeOffset[i] = quadlet * sizeof(IEEE1394::Quadlet); // check for overflow
+        partialImageModeOffset[i] = quadlet * sizeof(IEEE1394::Quadlet); // TAG: check for overflow
         
         if (supportedModes[PARTIAL_IMAGE_MODE_0 + i]) { // partial image modes  are guaranteed to be consecutive
           IEEE1394::Quadlet maximumImageSize;
@@ -834,43 +834,34 @@ namespace gip {
       } else {
         // currentMode = Camera1394::UNSPECIFIED; // mode is unspecified/unsupported
       }
-fout << "currentMode: " << currentMode << ENDL;
     }
 
-Trace::message("23");
     // TAG: not for revision for format 6 and partial image format
     adapter.read(camera, commandRegisters + Camera1394Impl::CURRENT_V_RATE, getCharAddress(quadlet), sizeof(quadlet));
     frameRate = static_cast<FrameRate>(quadlet >> 29);
-Trace::message("24");
     
     const Camera1394Impl::ModeInformation& info = Camera1394Impl::MODE_INFORMATION[currentMode];
     if (info.format == Camera1394::PARTIAL_IMAGE) {
-Trace::message("24b");
+      this->mode = partialImageMode[info.mode];
+      
       IEEE1394::Quadlet imageOffset;
       adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::IMAGE_POSITION, getCharAddress(imageOffset), sizeof(imageOffset));
-Trace::message("24b1");
       IEEE1394::Quadlet imageDimension;
       adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::IMAGE_SIZE, getCharAddress(imageDimension), sizeof(imageDimension));
       IEEE1394::Quadlet colorCoding;
       adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::COLOR_CODING_ID, getCharAddress(colorCoding), sizeof(colorCoding));
-Trace::message("24b2");
       IEEE1394::Quadlet pixelsPerFrameInquery;
       adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::PIXEL_NUMBER_INQ, getCharAddress(pixelsPerFrameInquery), sizeof(pixelsPerFrameInquery));
-Trace::message("24b3");
       BigEndian<uint64> totalBytesPerFrameInquery;
       adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::TOTAL_BYTES_HI_INQ, getCharAddress(totalBytesPerFrameInquery), sizeof(totalBytesPerFrameInquery));
-Trace::message("24b4");
       IEEE1394::Quadlet packetParaInquery;
       adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::PACKET_PARA_INQ, getCharAddress(packetParaInquery), sizeof(packetParaInquery));
-Trace::message("24b5");
       IEEE1394::Quadlet bytesPerPacket;
       adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::BYTE_PER_PACKET, getCharAddress(bytesPerPacket), sizeof(bytesPerPacket));
-Trace::message("24b6");
       
       region.setOffset(Point2D(imageOffset & 0xffff, imageOffset >> 16));
       region.setDimension(Dimension(imageDimension >> 16, imageDimension & 0xffff));
-Trace::message("25");
-
+      
       transmission.subchannel = 0;
       transmission.speed = 2;
       transmission.pixelsPerFrame = pixelsPerFrameInquery;
@@ -888,7 +879,6 @@ Trace::message("25");
         transmission.bytesPerPacket = transmission.maximumBytesPerPacket;
       }
       transmission.bytesPerPacket = (transmission.bytesPerPacket/transmission.unitBytesPerPacket) * transmission.unitBytesPerPacket;
-Trace::message("26");
 
       // TAG: temporary fix
       bytesPerPacket = transmission.bytesPerPacket << 16;
@@ -901,22 +891,30 @@ Trace::message("26");
       
       // TAG: what about value settings
       
-Trace::message("27");
-      
       static const PixelFormat PIXEL_FORMATS[] = {
-        Y_8BIT, YUV_411_8BIT, YUV_422_8BIT, YUV_444_8BIT, RGB_8BIT, Y_16BIT, RGB_16BIT
+        Camera1394::Y_8BIT,
+        Camera1394::YUV_411_8BIT,
+        Camera1394::YUV_422_8BIT,
+        Camera1394::YUV_444_8BIT,
+        Camera1394::RGB_8BIT,
+        Camera1394::Y_16BIT,
+        Camera1394::RGB_16BIT
       };
       
-      if (colorCoding < getArraySize(PIXEL_FORMATS)) {
-        pixelFormat = PIXEL_FORMATS[colorCoding];
+      if ((colorCoding >> 24) < getArraySize(PIXEL_FORMATS)) {
+        pixelFormat = PIXEL_FORMATS[colorCoding >> 24];
       } else {
-        // TAG: now what
+        // TAG: unsupported color coding => invalidate state
       }
       
     } else {
-      Trace::message("24c");
-      
       ASSERT((info.pixelFormat >= 0) && info.width && info.height);
+
+      this->mode.maximumDimension = Dimension(info.width, info.height);
+      this->mode.unitDimension = this->mode.maximumDimension;
+      this->mode.unitOffset = Point2D(info.height, info.width);
+      this->mode.pixelFormats = 1 << info.pixelFormat;
+      
       pixelFormat = static_cast<PixelFormat>(info.pixelFormat);
       region.setOffset(Point2D(0, 0));
       region.setDimension(Dimension(info.width, info.height));
@@ -965,7 +963,6 @@ Trace::message("27");
       transmission.recommendedBytesPerPacket = transmission.bytesPerPacket;
       transmission.packetsPerFrame = transmission.totalBytesPerFrame/transmission.bytesPerPacket;
     }
-Trace::message("28");
     
     // get supported features
     {
@@ -1210,17 +1207,26 @@ Trace::message("28");
     
     if (info.format == Camera1394::PARTIAL_IMAGE) {
       region.setDimension(partialImageMode[info.mode].maximumDimension);
+      // TAG: also set register if partial image mode (or should we get)
     } else {
       ASSERT(info.width && info.height);
       region.setDimension(Dimension(info.width, info.height));
     }
-    // TAG: also set register if partial image mode (or should we get)
 
     IEEE1394::Quadlet quadlet;
     quadlet = 0 << 31; // disable continuous
     adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
     quadlet = (0 << 31) | (0 << 30) | 0; // disable finite shots
     adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+
+    if ((frameRates[mode] & (1 << frameRate)) == 0) { // is current frame rate supported for new mode
+      for (unsigned int i = 0; i < 32; ++i) { // find new frame rate
+        if (frameRates[mode] & (1 << i)) {
+          frameRate = static_cast<FrameRate>(i);
+          break;
+        }
+      }
+    }
 
     // set mode
     quadlet = frameRate << 29;
@@ -1235,7 +1241,7 @@ Trace::message("28");
     readModeSpecificState();
     
     readChannel = adapter.getReadChannel(transmission.packetsPerFrame, Camera1394::ISOCHRONOUS_SUBCHANNELS);
-    fout << MESSAGE("Isochronous channels: ") << HEX << setWidth(10) << ZEROPAD << readChannel.getSubchannels() << ENDL;
+fout << MESSAGE("Isochronous channels: ") << HEX << setWidth(10) << ZEROPAD << readChannel.getSubchannels() << ENDL;
   }
   
   unsigned int Camera1394::getFrameRates(Mode mode) throw(NotSupported) {
@@ -1270,6 +1276,10 @@ Trace::message("28");
   }
     
   bool Camera1394::getFeatureStatus(Feature feature) throw(IEEE1394Exception) {
+    if ((capabilities & Camera1394::FEATURE_ERROR_STATUS) == 0) {
+      return true; // assume ok
+    }
+    
     static const unsigned int BIT[] = {
       63-0, 63-1, 63-2, 63-3, 63-4, 63-5, 63-6, 63-7, 63-8, 63-9, 63-10, 63-11, 63-12, 63-32, 63-33, 63-34, 63-35, 63-48, 63-49
     };
@@ -1400,9 +1410,14 @@ Trace::message("28");
       ((operatingMode != Camera1394::MANUAL) || manualMode && (operatingMode == Camera1394::MANUAL)),
       bindCause(NotSupported(this), Camera1394::FEATURE_OPERATING_MODE_NOT_SUPPORTED)
     );
-
+    
     IEEE1394::Quadlet original;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_CONTROL_REGISTER[feature], getCharAddress(original), sizeof(original));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_CONTROL_REGISTER[feature],
+      getCharAddress(original),
+      sizeof(original)
+    );
     
     IEEE1394::Quadlet quadlet;
     switch (feature) {
@@ -1452,10 +1467,20 @@ Trace::message("28");
       }
     }
     
-    adapter.write(camera, commandRegisters + Camera1394Impl::FEATURE_CONTROL_REGISTER[feature], getCharAddress(quadlet), sizeof(quadlet));
+    adapter.write(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_CONTROL_REGISTER[feature],
+      getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     
     if (!getFeatureStatus(feature)) { // check if error or warning
-      adapter.write(camera, commandRegisters + Camera1394Impl::FEATURE_CONTROL_REGISTER[feature], getCharAddress(original), sizeof(original)); // try to restore original value
+      adapter.write( // try to restore original value
+        camera,
+        commandRegisters + Camera1394Impl::FEATURE_CONTROL_REGISTER[feature],
+        getCharAddress(original),
+        sizeof(original)
+      );
     }
   }
   
@@ -1853,8 +1878,20 @@ Trace::message("28");
       (region.getDimension().getHeight() <= mode.maximumDimension.getHeight()),
       bindCause(OutOfDomain(this), Camera1394::REGION_NOT_SUPPORTED)
     );
-    // write new region to camera
-    this->region = region;
+    
+    // if we end up here we are in partial mode
+
+    Point2D offset = region.getOffset();
+    Dimension dimension = region.getDimension();
+
+    const Camera1394Impl::ModeInformation& info = Camera1394Impl::MODE_INFORMATION[currentMode];
+
+    IEEE1394::Quadlet imageOffset = (offset.getColumn() << 16) | offset.getRow();
+    adapter.write(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::IMAGE_POSITION, getCharAddress(imageOffset), sizeof(imageOffset));
+    IEEE1394::Quadlet imageDimension = (dimension.getWidth() << 16) | dimension.getHeight();
+    adapter.write(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::IMAGE_SIZE, getCharAddress(imageDimension), sizeof(imageDimension));
+    
+    readModeSpecificState(); // reloads new region
   }
 
   void Camera1394::setPixelFormat(PixelFormat pixelFormat) throw(NotSupported, IEEE1394Exception) {
@@ -1868,16 +1905,36 @@ Trace::message("28");
 
   bool Camera1394::acquire(char* buffer, unsigned int size) throw(ImageException, IEEE1394Exception) {
     assert(size == transmission.totalBytesPerFrame, bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH));
-    Allocator<char> headerBuffer(transmission.packetsPerFrame * sizeof(IEEE1394::Quadlet)); // packets * headerSize
+    IEEE1394::Quadlet headers[transmission.packetsPerFrame];
 
+    const unsigned int bytesInLastPacket =
+      transmission.totalBytesPerFrame - transmission.bytesPerPacket * (transmission.packetsPerFrame - 1);
+    
     IEEE1394::IsochronousReadFixedDataRequest request = readChannel.getReadFixedDataRequest();
     request.setSubchannel(transmission.subchannel);
-    request.setNumberOfPackets(transmission.packetsPerFrame);
+    request.setNumberOfPackets(transmission.packetsPerFrame - 1);
     request.setHeaderSize(sizeof(IEEE1394::Quadlet));
     request.setPayload(transmission.bytesPerPacket);
-    request.setBuffer(buffer, size, headerBuffer.getElements());
-    
+    request.setBuffer(
+      buffer,
+      transmission.bytesPerPacket * (transmission.packetsPerFrame - 1),
+      Cast::getCharAddress(headers)
+    );
+
+    char lastPacket[transmission.bytesPerPacket];
+    IEEE1394::IsochronousReadFixedDataRequest lastRequest = readChannel.getReadFixedDataRequest();
+    lastRequest.setSubchannel(transmission.subchannel);
+    lastRequest.setNumberOfPackets(1);
+    lastRequest.setHeaderSize(sizeof(IEEE1394::Quadlet));
+    lastRequest.setPayload(transmission.bytesPerPacket);
+    lastRequest.setBuffer(
+      Cast::getCharAddress(lastPacket),
+      bytesInLastPacket,
+      Cast::getCharAddress(headers[transmission.packetsPerFrame - 1])
+    );
+
     readChannel.queue(request);
+    readChannel.queue(lastRequest);
     
     // enable transmission
     IEEE1394::Quadlet quadlet;
@@ -1891,47 +1948,98 @@ Trace::message("28");
       quadlet = 1 << 31; // use continuous
       adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
     }
-    
-    unsigned int period = getFramePeriod(getFrameRate());
-    readChannel.wait(minimum<unsigned int>(2 * period/15, 999999999));
 
-    IEEE1394::IsochronousReadRequest completedGenericRequest = readChannel.dequeue();
-    if (!completedGenericRequest.isValid()) {
+    unsigned int period = getFramePeriod(getFrameRate());
+    unsigned int requests = readChannel.dequeue(2, minimum<unsigned int>(2 * period/15, 999999999));
+    if (requests < 2) {
       readChannel.cancel();
+      readChannel.dequeue(2 - requests, 999999999); // TAG: must wait forever
     }
     
-    IEEE1394::IsochronousReadFixedDataRequest completedRequest = completedGenericRequest.getIsochronousReadFixedDataRequest();
-
+    bool success = (request.getStatus() == IEEE1394::COMPLETED) && (lastRequest.getStatus() == IEEE1394::COMPLETED);
+    
     // disable transmission
     if (capabilities & SINGLE_ACQUISITION) {
-      quadlet = 0 << 31; // single shot
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      if (!success) { // only required on failure
+        quadlet = 0 << 31; // single shot
+        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      }
     } else if (capabilities & MULTI_ACQUISITION) {
-      quadlet = 0 << 30 + 0; // multi shot
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      if (!success) { // only required on failure
+        quadlet = 0 << 30 + 0; // multi shot
+        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      }
     } else {
-      // use continuous
+      // always required to be stopped - continuous
       quadlet = 0;
       adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
     }
     
-    return completedRequest.getStatus() == IEEE1394::COMPLETED;
+    if (success) {
+      copy<char>(buffer + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1), lastPacket, bytesInLastPacket);
+    }
+    
+    return success;
   }
 
   bool Camera1394::acquire(ArrayImage<uint8>& frame) throw(NotSupported, ImageException, IEEE1394Exception) {
     if (pixelFormat != Camera1394::Y_8BIT) {
       setPixelFormat(Camera1394::Y_8BIT);
     }
-
+    
     assert(frame.getDimension() == region.getDimension(), bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH));
-    Allocator<char> headerBuffer(transmission.packetsPerFrame * sizeof(IEEE1394::Quadlet)); // packets * headerSize
-
+    IEEE1394::Quadlet headers[transmission.packetsPerFrame];
+    
+    const unsigned int bytesInLastPacket =
+      transmission.totalBytesPerFrame - transmission.bytesPerPacket * (transmission.packetsPerFrame - 1);
+    
     IEEE1394::IsochronousReadFixedDataRequest request = readChannel.getReadFixedDataRequest();
     request.setSubchannel(transmission.subchannel);
-    request.setNumberOfPackets(transmission.packetsPerFrame);
+    request.setNumberOfPackets(transmission.packetsPerFrame - 1);
     request.setHeaderSize(sizeof(IEEE1394::Quadlet));
     request.setPayload(transmission.bytesPerPacket);
-    request.setBuffer(pointer_cast<char*>(frame.getElements()), frame.getDimension().getSize(), headerBuffer.getElements());
+    request.setBuffer(
+      pointer_cast<char*>(frame.getElements()),
+      transmission.bytesPerPacket * (transmission.packetsPerFrame - 1),
+      Cast::getCharAddress(headers)
+    );
+
+    uint8 lastPacket[transmission.bytesPerPacket];
+    IEEE1394::IsochronousReadFixedDataRequest lastRequest = readChannel.getReadFixedDataRequest();
+    lastRequest.setSubchannel(transmission.subchannel);
+    lastRequest.setNumberOfPackets(1);
+    lastRequest.setHeaderSize(sizeof(IEEE1394::Quadlet));
+    lastRequest.setPayload(transmission.bytesPerPacket /*bytesInLastPacket*/);
+    lastRequest.setBuffer(
+      Cast::getCharAddress(lastPacket), // pointer_cast<char*>(frame.getElements() + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1))
+      bytesInLastPacket,
+      Cast::getCharAddress(headers[transmission.packetsPerFrame - 1])
+    );
+
+    readChannel.queue(request);
+    readChannel.queue(lastRequest);
+    
+    // enable transmission
+    IEEE1394::Quadlet quadlet;
+    if (capabilities & SINGLE_ACQUISITION) {
+      quadlet = 1 << 31; // single shot
+      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+    } else if (capabilities & MULTI_ACQUISITION) {
+      quadlet = (1 << 30) + 1; // multi shot (ask for one frame)
+      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+    } else {
+      quadlet = 1 << 31; // use continuous
+      adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
+    }
+
+    unsigned int period = getFramePeriod(getFrameRate());
+    unsigned int requests = readChannel.dequeue(2, minimum<unsigned int>(2 * period/15, 999999999));
+    if (requests < 2) {
+      readChannel.cancel();
+      readChannel.dequeue(2 - requests, 999999999); // TAG: must wait forever
+    }
+    
+    bool success = (request.getStatus() == IEEE1394::COMPLETED) && (lastRequest.getStatus() == IEEE1394::COMPLETED);
     
 //     fout << MESSAGE("Sub channel: ") << request.getSubchannel() << EOL
 //          << MESSAGE("Valid: ") << request.isValid() << EOL
@@ -1946,45 +2054,41 @@ Trace::message("28");
 //          << MESSAGE("Received packets: ") << request.getReceivedPackets() << EOL
 //          << ENDL;
     
-    readChannel.queue(request);
-    
-    // enable transmission
-    IEEE1394::Quadlet quadlet;
-    if (capabilities & SINGLE_ACQUISITION) {
-      quadlet = 1 << 31; // single shot
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
-    } else if (capabilities & MULTI_ACQUISITION) {
-      quadlet = (1 << 30) + 1; // multi shot (ask for one frame)
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
-    } else {
-      quadlet = 1 << 31; // use continuous
-      adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
-    }
-
-    unsigned int period = getFramePeriod(getFrameRate());
-    readChannel.wait(minimum<unsigned int>(2 * period/15, 999999999));
-
-    IEEE1394::IsochronousReadRequest completedGenericRequest = readChannel.dequeue();
-    if (!completedGenericRequest.isValid()) {
-      readChannel.cancel();
-    }
-
-    IEEE1394::IsochronousReadFixedDataRequest completedRequest = completedGenericRequest.getIsochronousReadFixedDataRequest();
+//     fout << MESSAGE("Sub channel: ") << lastRequest.getSubchannel() << EOL
+//          << MESSAGE("Valid: ") << lastRequest.isValid() << EOL
+//          << MESSAGE("Status: ") << lastRequest.getStatus() << EOL
+//          << MESSAGE("Pending: ") << lastRequest.isPending() << EOL
+//          << MESSAGE("Packets: ") << lastRequest.getNumberOfPackets() << EOL
+//          << MESSAGE("Header size: ") << lastRequest.getHeaderSize() << EOL
+//          << MESSAGE("Payload: ") << lastRequest.getPayload() << EOL
+//          << MESSAGE("Buffer size: ") << lastRequest.getBufferSize() << EOL
+//          << MESSAGE("Buffer: ") << static_cast<void*>(lastRequest.getBuffer()) << EOL
+//          << MESSAGE("Secondary buffer: ") << static_cast<void*>(lastRequest.getSecondaryBuffer()) << EOL
+//          << MESSAGE("Received packets: ") << lastRequest.getReceivedPackets() << EOL
+//          << ENDL;
     
     // disable transmission
     if (capabilities & SINGLE_ACQUISITION) {
-      quadlet = 0 << 31; // single shot
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      if (!success) { // only required on failure
+        quadlet = 0 << 31; // single shot
+        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      }
     } else if (capabilities & MULTI_ACQUISITION) {
-      quadlet = 0 << 30 + 0; // multi shot
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      if (!success) { // only required on failure
+        quadlet = 0 << 30 + 0; // multi shot
+        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      }
     } else {
-      // use continuous
+      // always required to be stopped - continuous
       quadlet = 0;
       adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
     }
     
-    return completedRequest.getStatus() == IEEE1394::COMPLETED;
+    if (success) {
+      copy<uint8>(frame.getElements() + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1), lastPacket, bytesInLastPacket);
+    }
+    
+    return success;
   }
 
   bool Camera1394::acquire(ArrayImage<uint16>& frame) throw(NotSupported, ImageException, IEEE1394Exception) {
@@ -1993,16 +2097,36 @@ Trace::message("28");
     }
     
     assert(frame.getDimension() == region.getDimension(), bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH));
-    Allocator<char> headerBuffer(transmission.packetsPerFrame * sizeof(IEEE1394::Quadlet)); // packets * headerSize
-
+    IEEE1394::Quadlet headers[transmission.packetsPerFrame];
+    
+    const unsigned int bytesInLastPacket =
+      transmission.totalBytesPerFrame - transmission.bytesPerPacket * (transmission.packetsPerFrame - 1);
+    
     IEEE1394::IsochronousReadFixedDataRequest request = readChannel.getReadFixedDataRequest();
     request.setSubchannel(transmission.subchannel);
-    request.setNumberOfPackets(transmission.packetsPerFrame);
+    request.setNumberOfPackets(transmission.packetsPerFrame - 1);
     request.setHeaderSize(sizeof(IEEE1394::Quadlet));
     request.setPayload(transmission.bytesPerPacket);
-    request.setBuffer(pointer_cast<char*>(frame.getElements()), frame.getDimension().getSize(), headerBuffer.getElements());
+    request.setBuffer(
+      pointer_cast<char*>(frame.getElements()),
+      transmission.bytesPerPacket * (transmission.packetsPerFrame - 1),
+      Cast::getCharAddress(headers)
+    );
+    
+    uint8 lastPacket[transmission.bytesPerPacket];
+    IEEE1394::IsochronousReadFixedDataRequest lastRequest = readChannel.getReadFixedDataRequest();
+    lastRequest.setSubchannel(transmission.subchannel);
+    lastRequest.setNumberOfPackets(1);
+    lastRequest.setHeaderSize(sizeof(IEEE1394::Quadlet));
+    lastRequest.setPayload(transmission.bytesPerPacket /*bytesInLastPacket*/);
+    lastRequest.setBuffer(
+      Cast::getCharAddress(lastPacket), // pointer_cast<char*>(frame.getElements() + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1))
+      bytesInLastPacket,
+      Cast::getCharAddress(headers[transmission.packetsPerFrame - 1])
+    );
     
     readChannel.queue(request);
+    readChannel.queue(lastRequest);
     
     // enable transmission
     IEEE1394::Quadlet quadlet;
@@ -2016,31 +2140,42 @@ Trace::message("28");
       quadlet = 1 << 31; // use continuous
       adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
     }
-    
+
     unsigned int period = getFramePeriod(getFrameRate());
-    readChannel.wait(minimum<unsigned int>(2 * period/15, 999999999));
-
-    IEEE1394::IsochronousReadRequest completedGenericRequest = readChannel.dequeue();
-    if (!completedGenericRequest.isValid()) {
+    unsigned int requests = readChannel.dequeue(2, minimum<unsigned int>(2 * period/15, 999999999));
+    if (requests < 2) {
       readChannel.cancel();
+      readChannel.dequeue(2 - requests, 999999999); // TAG: must wait forever
     }
-
-    IEEE1394::IsochronousReadFixedDataRequest completedRequest = completedGenericRequest.getIsochronousReadFixedDataRequest();
-
+    
+    bool success = (request.getStatus() == IEEE1394::COMPLETED) && (lastRequest.getStatus() == IEEE1394::COMPLETED);
+    
     // disable transmission
     if (capabilities & SINGLE_ACQUISITION) {
-      quadlet = 0 << 31; // single shot
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      if (!success) { // only required on failure
+        quadlet = 0 << 31; // single shot
+        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      }
     } else if (capabilities & MULTI_ACQUISITION) {
-      quadlet = 0 << 30 + 0; // multi shot
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      if (!success) { // only required on failure
+        quadlet = 0 << 30 + 0; // multi shot
+        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      }
     } else {
-      // use continuous
+      // always required to be stopped - continuous
       quadlet = 0;
       adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
     }
     
-    return completedRequest.getStatus() == IEEE1394::COMPLETED;
+    if (success) {
+      copy<uint8>(
+        Cast::pointer<uint8*>(frame.getElements()) + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1),
+        lastPacket,
+        bytesInLastPacket
+      );
+    }
+    
+    return success;
   }
 
   bool Camera1394::acquire(ArrayImage<RGB24Pixel>& frame) throw(NotSupported, ImageException, IEEE1394Exception) {
@@ -2048,69 +2183,86 @@ Trace::message("28");
       setPixelFormat(Camera1394::RGB_8BIT);
     }
 
-    Trace::message("1");
     assert(frame.getDimension() == region.getDimension(), bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH));
-    Allocator<char> headerBuffer(transmission.packetsPerFrame * sizeof(IEEE1394::Quadlet)); // packets * headerSize
+    IEEE1394::Quadlet headers[transmission.packetsPerFrame];
     
-    Trace::message("2");
+    const unsigned int bytesInLastPacket =
+      transmission.totalBytesPerFrame - transmission.bytesPerPacket * (transmission.packetsPerFrame - 1);
+    
     IEEE1394::IsochronousReadFixedDataRequest request = readChannel.getReadFixedDataRequest();
     request.setSubchannel(transmission.subchannel);
-    request.setNumberOfPackets(transmission.packetsPerFrame);
+    request.setNumberOfPackets(transmission.packetsPerFrame - 1);
     request.setHeaderSize(sizeof(IEEE1394::Quadlet));
     request.setPayload(transmission.bytesPerPacket);
-    request.setBuffer(pointer_cast<char*>(frame.getElements()), frame.getDimension().getSize(), headerBuffer.getElements());
+    request.setBuffer(
+      pointer_cast<char*>(frame.getElements()),
+      transmission.bytesPerPacket * (transmission.packetsPerFrame - 1),
+      Cast::getCharAddress(headers)
+    );
+
+    uint8 lastPacket[transmission.bytesPerPacket];
+    IEEE1394::IsochronousReadFixedDataRequest lastRequest = readChannel.getReadFixedDataRequest();
+    lastRequest.setSubchannel(transmission.subchannel);
+    lastRequest.setNumberOfPackets(1);
+    lastRequest.setHeaderSize(sizeof(IEEE1394::Quadlet));
+    lastRequest.setPayload(transmission.bytesPerPacket /*bytesInLastPacket*/);
+    lastRequest.setBuffer(
+      Cast::getCharAddress(lastPacket), // pointer_cast<char*>(frame.getElements() + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1))
+      bytesInLastPacket,
+      Cast::getCharAddress(headers[transmission.packetsPerFrame - 1])
+    );
     
-    Trace::message("3");
     readChannel.queue(request);
+    readChannel.queue(lastRequest);
     
-    Trace::message("4");
     // enable transmission
     IEEE1394::Quadlet quadlet;
     if (capabilities & SINGLE_ACQUISITION) {
-    Trace::message("4a");
       quadlet = 1 << 31; // single shot
       adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
     } else if (capabilities & MULTI_ACQUISITION) {
-    Trace::message("4b");
       quadlet = (1 << 30) + 1; // multi shot (ask for one frame)
       adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
     } else {
-    Trace::message("4c");
       quadlet = 1 << 31; // use continuous
       adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
     }
-    
-    Trace::message("5");
+
     unsigned int period = getFramePeriod(getFrameRate());
-    fout << period << ENDL;
-    Trace::message("6");
-    readChannel.wait(minimum<unsigned int>(2 * period/15, 999999999));
-    Trace::message("7");
-    
-    IEEE1394::IsochronousReadRequest completedGenericRequest = readChannel.dequeue();
-    if (!completedGenericRequest.isValid()) {
+    unsigned int requests = readChannel.dequeue(2, minimum<unsigned int>(2 * period/15, 999999999));
+    if (requests < 2) {
       readChannel.cancel();
+      readChannel.dequeue(2 - requests, 999999999); // TAG: must wait forever
     }
-    Trace::message("8");
     
-    IEEE1394::IsochronousReadFixedDataRequest completedRequest = completedGenericRequest.getIsochronousReadFixedDataRequest();
-    Trace::message("9");
+    bool success = (request.getStatus() == IEEE1394::COMPLETED) && (lastRequest.getStatus() == IEEE1394::COMPLETED);
     
     // disable transmission
     if (capabilities & SINGLE_ACQUISITION) {
-      quadlet = 0 << 31; // single shot
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      if (!success) { // only required on failure
+        quadlet = 0 << 31; // single shot
+        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      }
     } else if (capabilities & MULTI_ACQUISITION) {
-      quadlet = 0 << 30 + 0; // multi shot
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      if (!success) { // only required on failure
+        quadlet = 0 << 30 + 0; // multi shot
+        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, getCharAddress(quadlet), sizeof(quadlet));
+      }
     } else {
-      // use continuous
+      // always required to be stopped - continuous
       quadlet = 0;
-      //adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
     }
-    Trace::message("10");
     
-    return completedRequest.getStatus() == IEEE1394::COMPLETED;
+    if (success) {
+      copy<uint8>(
+        Cast::pointer<uint8*>(frame.getElements()) + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1),
+        lastPacket,
+        bytesInLastPacket
+      );
+    }
+    
+    return success;
   }
   
 }; // end of gip namespace
