@@ -15,7 +15,7 @@
 #include <base/mem/Allocator.h>
 #include <base/io/File.h>
 #include <base/concurrency/Thread.h>
-#include <base/Type.h>
+#include <base/Primitives.h>
 #include <base/ByteOrder.h>
 
 using namespace base;
