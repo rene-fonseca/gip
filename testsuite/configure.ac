@@ -18,19 +18,26 @@ AC_CONFIG_SRCDIR(testsuite)
 AC_CONFIG_AUX_DIR(..)
 
 AC_PREREQ(2.52)
+AC_COPYRIGHT([Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>])
 AC_REVISION($Revision$)
-dnl AC_CHECK_COMPILERS()
-AC_PROG_CXX()
-dnl AC_ENABLE_SHARED(yes)
-dnl AC_ENABLE_STATIC(yes)
-AC_LIBTOOL_WIN32_DLL()
-AC_PROG_LIBTOOL()
 
 AC_CANONICAL_SYSTEM()
+
 dnl perform program name transformation
 AC_ARG_PROGRAM()
 
 AM_INIT_AUTOMAKE(gip-framework-testsuite, 0.1)
+
+dnl AC_CHECK_COMPILERS()
+dnl AC_EXEEXT() dnl TAG: required before 2.50
+dnl AC_PROG_MAKE_SET()
+AC_PROG_CXX()
+AC_PROG_CPP()
+AC_CHECK_TOOL(WINDRES, windres)
+dnl AC_ENABLE_SHARED(yes)
+dnl AC_ENABLE_STATIC(yes)
+AC_LIBTOOL_WIN32_DLL()
+AC_PROG_LIBTOOL()
 
 
 
@@ -76,6 +83,9 @@ AC_ARG_WITH(gip-lib,
 
 
 
+CPPFLAGS_TESTSUITE=
+LDFLAGS_TESTSUITE=
+
 if test "x$ac_base_include" != "x"; then
   if ! test -a "$ac_base_include/base/features.h"; then
     AC_MSG_ERROR(Specified location of Base Framework headers is invalid.)
@@ -86,7 +96,7 @@ if test "x$ac_base_include" != "x"; then
   elif test $ac_temp != $ac_base_include; then
     AC_MSG_WARN(Using $ac_temp as location for Base Framework headers.)
   fi
-  INCLUDES="-I${ac_temp}${INCLUDES:+ }${INCLUDES}"
+  CPPFLAGS_TESTSUITE="-I${ac_temp}${CPPFLAGS_TESTSUITE:+ }${CPPFLAGS_TESTSUITE}"
 fi
 if test "x$ac_gip_include" != "x"; then
   if ! test -a "$ac_gip_include/gip/features.h"; then
@@ -98,11 +108,11 @@ if test "x$ac_gip_include" != "x"; then
   elif test $ac_temp != $ac_gip_include; then
     AC_MSG_WARN(Using $ac_temp as location for GIP Framework headers.)
   fi
-  INCLUDES="-I${ac_temp}${INCLUDES:+ }${INCLUDES}"
+  CPPFLAGS_TESTSUITE="-I${ac_temp}${CPPFLAGS_TESTSUITE:+ }${CPPFLAGS_TESTSUITE}"
 fi
 
 if test "x$ac_gip_lib" != "x"; then
-  if ! test -a "$ac_gip_lib/libgip.la"; then
+  if ! test -d "$ac_gip_lib"; then
     AC_MSG_ERROR(Specified location of GIP Framework libraries is invalid.)
   fi
   ac_temp=`cd $ac_gip_lib >&AC_FD_CC 2>&AC_FD_CC && pwd`
@@ -111,10 +121,11 @@ if test "x$ac_gip_lib" != "x"; then
   elif test $ac_temp != $ac_gip_lib; then
     AC_MSG_WARN(Using $ac_temp as location for GIP Framework libraries.)
   fi
-  LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-L${ac_temp}"
+  LDFLAGS_TESTSUITE="${LDFLAGS_TESTSUITE}${LDFLAGS_TESTSUITE:+ }-L${ac_temp}"
 fi
+
 if test "x$ac_base_lib" != "x"; then
-  if ! test -a "$ac_base_lib/libbase.la"; then
+  if ! test -d "$ac_base_lib"; then
     AC_MSG_ERROR(Specified location of Base Framework libraries is invalid.)
   fi
   ac_temp=`cd $ac_base_lib >&AC_FD_CC 2>&AC_FD_CC && pwd`
@@ -123,13 +134,13 @@ if test "x$ac_base_lib" != "x"; then
   elif test $ac_temp != $ac_base_lib; then
     AC_MSG_WARN(Using $ac_temp as location for Base Framework libraries.)
   fi
-  LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-L${ac_temp}"
+  LDFLAGS_TESTSUITE="${LDFLAGS_TESTSUITE}${LDFLAGS_TESTSUITE:+ }-L${ac_temp}"
 fi
 
 
 
-INCLUDES='-I${top_srcdir}'"${INCLUDES:+ }${INCLUDES}"
-AC_SUBST(INCLUDES)
+AC_SUBST(CPPFLAGS_TESTSUITE)
+AC_SUBST(LDFLAGS_TESTSUITE)
 
 
 

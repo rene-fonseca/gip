@@ -14,8 +14,6 @@
 DEFS =
 AUTOMAKE_OPTIONS = 1.4 foreign nostdinc dist-bzip2 dist-zip
 
-LIBS=-lgip -lbase
-
 SUBDIRS = tests
 
 EXTRA_DIST = AUTHORS ChangeLog COPYING INSTALL README TODO
