@@ -110,7 +110,7 @@ public:
 
     inline ColumnIterator getEnd() const throw() {
       ColumnIterator result(first);
-      result += rows;
+      result += columns;
       return result;
     }
 
