@@ -40,6 +40,13 @@ namespace gip {
   
   class ImageEncoder : public Object {
   public:
+
+    /** Exception cause. */
+    enum ExceptionCause {
+      DIMENSION_NOT_SUPPORTED = 1,
+      INVALID_COLOR_TABLE,
+      INVALID_COLOR
+    };
     
     /**
       Returns a description of the encoder.

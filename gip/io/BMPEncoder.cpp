@@ -19,8 +19,7 @@
 #include <base/Primitives.h>
 #include <base/ByteOrder.h>
 #include <base/string/String.h>
-
-using namespace base;
+#include <base/Cast.h>
 
 namespace gip {
 
@@ -28,7 +27,7 @@ namespace gip {
   private:
     ColorPixel* palette;
   public:
-    inline FullPalette(ColorPixel* p) : palette(p) {}
+    inline FullPalette(ColorPixel* _palette) : palette(_palette) {}
     inline Result operator()(Argument value) const throw() {return palette[value];}
   };
 
@@ -40,7 +39,10 @@ namespace gip {
     inline PartialPalette(ColorPixel* _palette, unsigned int _maxIndex)
       : palette(_palette), maxIndex(_maxIndex) {}
     inline Result operator()(Argument value) const throw() {
-      assert(value < maxIndex, InvalidFormat("Color table index out of range", this));
+      assert(
+        value < maxIndex,
+        bindCause(InvalidFormat("Color table index out of range", this), ImageEncoder::INVALID_COLOR)
+      );
       return palette[value];
     }
   };
@@ -81,10 +83,10 @@ namespace gip {
   } _DK_SDU_MIP__BASE__PACKED;
 
   struct BMPPaletteEntry {
-    byte blue;
-    byte green;
-    byte red;
-    byte reserved; // must be zero
+    uint8 blue;
+    uint8 green;
+    uint8 red;
+    uint8 reserved; // must be zero
   } _DK_SDU_MIP__BASE__PACKED;
 
   BMPEncoder::BMPEncoder() throw() {
@@ -104,7 +106,7 @@ namespace gip {
 
     {
       File file(filename, File::READ, 0);
-      file.read(getCharAddress(header), sizeof(header));
+      file.read(Cast::getCharAddress(header), sizeof(header));
       size = file.getSize();
     }
 
@@ -192,17 +194,18 @@ namespace gip {
       unsigned int numberOfColors = header.colorsUsed;
       ColorPixel palette[256];
       if ((numberOfColors > 0) || (header.bitsPerPixel <= 8)) { // is palette present
-        file.setPosition(header.bitmapHeaderSize, File::BEGIN); // move to beginning of palette
+        file.setPosition(sizeof(BMPHeader), File::BEGIN); // move to beginning of palette
         if (header.bitsPerPixel <= 8) { // should palette be used
           unsigned int maximumNumberOfColors = 1 << header.bitsPerPixel;
-          assert(numberOfColors < maximumNumberOfColors, InvalidFormat(this));
+          assert(
+            numberOfColors <= maximumNumberOfColors,
+            bindCause(InvalidFormat(this), ImageEncoder::INVALID_COLOR_TABLE)
+          );
           if (numberOfColors == 0) { // use maximum number of colors
             numberOfColors = maximumNumberOfColors;
           }
-          // MappingSequence<BMPPaletteEntry> map(file, header.bitmapHeaderSize, numberOfColors);
-          // BMPPaletteEntry* srcPalette = map.getElements();
-          BMPPaletteEntry srcPalette[numberOfColors];
-          file.read((char*)&srcPalette, sizeof(srcPalette)); // get palette // TAG: fix cast
+          BMPPaletteEntry srcPalette[256];
+          file.read(Cast::getCharAddress(srcPalette), sizeof(BMPPaletteEntry) * numberOfColors); // get palette
           for (unsigned int i = 0; i < numberOfColors; ++i) {
             palette[i].blue = srcPalette[i].blue;
             palette[i].green = srcPalette[i].green;
@@ -347,7 +350,10 @@ namespace gip {
                 ColorPixel* dest = elements + dimension.getWidth() * row + column;
                 for (unsigned int count = second; count > 0; --count) {
                   unsigned int index = *src++;
-                  assert(index < numberOfColors, InvalidFormat("Color table index out of range", this));
+                  assert(
+                    index < numberOfColors,
+                    bindCause(InvalidFormat("Color table index out of range", this), ImageEncoder::INVALID_COLOR)
+                  );
                   *dest++ = palette[index];
                 }
                 if (second & 0x01) { // skip to word boundary
@@ -356,7 +362,10 @@ namespace gip {
                 column += second;
               }
             } else {
-              assert(second < numberOfColors, InvalidFormat("Color table index out of range", this));
+              assert(
+                second < numberOfColors,
+                bindCause(InvalidFormat("Color table index out of range", this), ImageEncoder::INVALID_COLOR)
+              );
               fill<ColorPixel>(elements + dimension.getWidth() * row + column, first, palette[second]);
               column += first;
             }
@@ -397,14 +406,17 @@ namespace gip {
                   unsigned int value = *src++;
                   assert(
                     ((value >> 4) < numberOfColors) && ((value & 0x0f) < numberOfColors),
-                    InvalidFormat("Color table index out of range", this)
+                    bindCause(InvalidFormat("Color table index out of range", this), ImageEncoder::INVALID_COLOR)
                   );
                   *dest++ = palette[value >> 4];
                   *dest++ = palette[value & 0x0f];
                 }
                 if (second & 0x01) { // set last pixel and skip to word boundary
                   unsigned int index = *src++ >> 4;
-                  assert(index < numberOfColors, InvalidFormat("Color table index out of range", this));
+                  assert(
+                    index < numberOfColors,
+                    bindCause(InvalidFormat("Color table index out of range", this), ImageEncoder::INVALID_COLOR)
+                  );
                   *dest++ = palette[index];
                   ++src;
                 }
@@ -414,7 +426,7 @@ namespace gip {
               ColorPixel* dest = elements + dimension.getWidth() * row + column;
               assert(
                 ((second >> 4) < numberOfColors) && ((second & 0x0f) < numberOfColors),
-                InvalidFormat("Color table index out of range", this)
+                bindCause(InvalidFormat("Color table index out of range", this), ImageEncoder::INVALID_COLOR)
               );
               ColorPixel color = palette[second >> 4];
               ColorPixel previousColor = palette[second & 0x0f];
@@ -434,7 +446,7 @@ namespace gip {
     return 0;
   }
 
-  void BMPEncoder::write(const String& filename, const ColorImage* image) throw(IOException) {
+  void BMPEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException) {
     BMPHeader header;
 
     File file(filename, File::WRITE, File::CREATE);
@@ -444,13 +456,16 @@ namespace gip {
     unsigned long long sizeOfFile = sizeof(header) + bytesPerPaddedRow * image->getDimension().getHeight();
     unsigned int zeroPad = bytesPerPaddedRow - bytesPerRow;
 
-    assert(sizeOfFile <= 0xffffffff, IOException("Dimension of image exceeds limit supported by encoder", this));
+    assert(
+      sizeOfFile <= 0xffffffff,
+      bindCause(ImageException("Dimension of image exceeds limit supported by encoder", this), ImageEncoder::DIMENSION_NOT_SUPPORTED)
+    );
 
     header.identifier[0] = 'B';
     header.identifier[1] = 'M';
     header.fileSize = sizeOfFile;
     header.reserved = 0;
-    header.bitmapDataOffset = 0x36; // only without palette
+    header.bitmapDataOffset = sizeof(header); // only without palette
     header.bitmapHeaderSize = 0x28;
     header.width = image->getDimension().getWidth();
     header.height = image->getDimension().getHeight();
@@ -463,7 +478,7 @@ namespace gip {
     header.colorsUsed = 0;
     header.importantColors = 0;
 
-    file.write((const char*)&header, sizeof(header));
+    file.write(Cast::getCharAddress(header), sizeof(header));
 
     const ColorPixel* sourceElement = image->getElements();
     Allocator<char>* buffer = Thread::getLocalStorage();
@@ -510,23 +525,26 @@ namespace gip {
     file.truncate(sizeOfFile);
   }
 
-  void BMPEncoder::writeGray(const String& filename, const GrayImage* image) throw(IOException) {
+  void BMPEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
     BMPHeader header;
 
     File file(filename, File::WRITE, File::CREATE);
 
     unsigned int bytesPerRow = image->getDimension().getWidth();
     unsigned int bytesPerPaddedRow = (bytesPerRow + 3)/4*4;
-    unsigned long long sizeOfFile = sizeof(header) + 256*4 + bytesPerPaddedRow * image->getDimension().getHeight();
+    unsigned long long sizeOfFile = sizeof(header) + 256 * sizeof(BMPPaletteEntry) + bytesPerPaddedRow * image->getDimension().getHeight();
     unsigned int zeroPad = bytesPerPaddedRow - bytesPerRow;
 
-    assert(sizeOfFile <= 0xffffffff, IOException("Dimension of image exceeds limit supported by encoder", this));
+    assert(
+      sizeOfFile <= 0xffffffff,
+      bindCause(ImageException("Dimension of image exceeds limit supported by encoder", this), ImageEncoder::DIMENSION_NOT_SUPPORTED)
+    );
 
     header.identifier[0] = 'B';
     header.identifier[1] = 'M';
     header.fileSize = sizeOfFile;
     header.reserved = 0;
-    header.bitmapDataOffset = 0x36 + 256 * 4;
+    header.bitmapDataOffset = sizeof(header) + 256 * sizeof(BMPPaletteEntry);
     header.bitmapHeaderSize = 0x28;
     header.width = image->getDimension().getWidth();
     header.height = image->getDimension().getHeight();
@@ -539,21 +557,19 @@ namespace gip {
     header.colorsUsed = 256;
     header.importantColors = 256;
 
-    file.write(getCharAddress(header), sizeof(header));
-
-    Allocator<unsigned char> buffer(maximum(image->getDimension().getWidth() * 16, 256U * 4));
-
+    file.write(Cast::getCharAddress(header), sizeof(header));
+    
+    Allocator<unsigned char> buffer(image->getDimension().getWidth() * 16);
+    
     // make gray palette
-    {
-      unsigned char* p = buffer.getElements();
-      for (unsigned int i = 0; i < 256; ++i) {
-        *p++ = i; // blue
-        *p++ = i; // green
-        *p++ = i; // red
-        *p++ = 0; // reserved
-      }
-      file.write(pointer_cast<const char*>(buffer.getElements()), 256 * 4);
+    BMPPaletteEntry palette[256];
+    for (unsigned int i = 0; i < 256; ++i) {
+      palette[i].blue = i;
+      palette[i].green = i;
+      palette[i].red = i;
+      palette[i].reserved = 0;
     }
+    file.write(Cast::getCharAddress(palette), sizeof(palette)); // store palette
 
     const GrayPixel* sourceElement = image->getElements();
     unsigned char* beginOfBuffer = buffer.getElements();
@@ -602,7 +618,7 @@ namespace gip {
 
     {
       File file(filename, File::READ, 0);
-      file.read(getCharAddress(header), sizeof(header));
+      file.read(Cast::getCharAddress(header), sizeof(header));
     }
 
     stream << MESSAGE("BMPEncoder (Windows Bitmap File Format):") << EOL
