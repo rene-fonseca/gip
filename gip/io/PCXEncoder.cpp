@@ -22,26 +22,26 @@ using namespace base;
 
 namespace gip {
 
-  typedef struct {
-    unsigned char manufacturer; // 10 = ZSoft .pcx
-    unsigned char version; // version information
-    unsigned char encoding; // 1 = run length encoding
-    unsigned char bitsPerPixel; // number of bits to represent a pixel (per plane) - 1, 2, 4, or 8
-    LittleEndian::SignedShort minX; // minimum x
-    LittleEndian::SignedShort minY; // minimum y
-    LittleEndian::SignedShort maxX; // maximum x
-    LittleEndian::SignedShort maxY; // maximum y
-    LittleEndian::SignedShort horizontalResolution; // horizontal resolution in DPI
-    LittleEndian::SignedShort verticalResolution; // vertical resolution in DPI
-    unsigned char palette[48]; // palette
-    unsigned char reserved; // reserved - set to 0
-    unsigned char planes; // number of color planes
-    LittleEndian::SignedShort bytesPerLine; // number of bytes per scanline (even)
-    LittleEndian::SignedShort paletteType; // palette: 1 - color, 2 - gray
-    LittleEndian::SignedShort horizontalScreenSize; // horizontal screen size in pixels
-    LittleEndian::SignedShort verticalScreenSize; // vertical screen size in pixels
-    unsigned char zeros[54]; // make header 128 bytes - set to 0
-  } __attribute__ ((packed)) PCXHeader;
+  struct PCXHeader {
+    uint8 manufacturer; // 10 = ZSoft .pcx
+    uint8 version; // version information
+    uint8 encoding; // 1 = run length encoding
+    uint8 bitsPerPixel; // number of bits to represent a pixel (per plane) - 1, 2, 4, or 8
+    LittleEndian<int16> minX; // minimum x
+    LittleEndian<int16> minY; // minimum y
+    LittleEndian<int16> maxX; // maximum x
+    LittleEndian<int16> maxY; // maximum y
+    LittleEndian<int16> horizontalResolution; // horizontal resolution in DPI
+    LittleEndian<int16> verticalResolution; // vertical resolution in DPI
+    uint8 palette[48]; // palette
+    uint8 reserved; // reserved - set to 0
+    uint8 planes; // number of color planes
+    LittleEndian<int16> bytesPerLine; // number of bytes per scanline (even)
+    LittleEndian<int16> paletteType; // palette: 1 - color, 2 - gray
+    LittleEndian<int16> horizontalScreenSize; // horizontal screen size in pixels
+    LittleEndian<int16> verticalScreenSize; // vertical screen size in pixels
+    uint8 zeros[54]; // make header 128 bytes - set to 0
+  } _DK_SDU_MIP__BASE__PACKED;
 
   PCXEncoder::PCXEncoder() throw() {
   }

@@ -39,34 +39,34 @@ namespace gip {
       TYPE_RUN_LENGTH_BLACK_WHITE = 11
     };
     
-    typedef struct {
+    struct Header {
       unsigned char sizeOfIdentification;
       unsigned char colorMapType; // 0 ~ no color map - 1 ~ color map present
       unsigned char type;
       struct ColorMap {
-        LittleEndian::UnsignedShort origin;
-        LittleEndian::UnsignedShort length;
-        unsigned char bitsPerEntry; // 16, 24, or 32
-      } __attribute__ ((packed)) colorMap; // ignored for type 0
+        LittleEndian<uint16> origin;
+        LittleEndian<uint16> length;
+        uint8 bitsPerEntry; // 16, 24, or 32
+      } _DK_SDU_MIP__BASE__PACKED colorMap; // ignored for type 0
       struct Image {
-        LittleEndian::UnsignedShort x;
-        LittleEndian::UnsignedShort y;
-        LittleEndian::UnsignedShort width;
-        LittleEndian::UnsignedShort height;
-        unsigned char pixelDepth; // e.g. 8, 16, 24, or 32
-        unsigned char attributeBits : 4;
-        unsigned char origin : 2;
-        unsigned char reserved : 2; // must be 0
-      } __attribute__ ((packed)) image;
-    } __attribute__ ((packed)) Header;
+        LittleEndian<uint16> x;
+        LittleEndian<uint16> y;
+        LittleEndian<uint16> width;
+        LittleEndian<uint16> height;
+        uint8 pixelDepth; // e.g. 8, 16, 24, or 32
+        uint8 attributeBits : 4;
+        uint8 origin : 2;
+        uint8 reserved : 2; // must be 0
+      } _DK_SDU_MIP__BASE__PACKED image;
+    } _DK_SDU_MIP__BASE__PACKED;
     
-    typedef struct {
-      LittleEndian::UnsignedInt extensionOffset;
-      LittleEndian::UnsignedInt directoryOffset;
+    struct Footer {
+      LittleEndian<uint32> extensionOffset;
+      LittleEndian<uint32> directoryOffset;
       char signature[16];
       char dot; // '.'
       char zero; // '\0'
-    } __attribute__ ((packed)) Footer;
+    } _DK_SDU_MIP__BASE__PACKED;
   };
   
   TGAEncoder::TGAEncoder() throw() {

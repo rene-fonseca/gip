@@ -27,46 +27,46 @@ namespace gip {
     struct Header {
       char signature[3]; // 'GIF'
       char version[3]; // '87a' or '89a'
-    } __attribute__ ((packed));
+    } _DK_SDU_MIP__BASE__PACKED;
 
     struct DataSubBlock {
       byte size; // size of the block in bytes
       byte data[255]; // the data
-    } __attribute__ ((packed));
+    } _DK_SDU_MIP__BASE__PACKED;
 
     const byte TERMINATOR = 0x00; // terminates stream of data blocks
     const byte TRAILER = 0x3b; // indicates end of data stream
     const byte IMAGESEPARATOR = 0x2c; // indicates beginning of image
 
     struct LogicalScreenDescriptor {
-      LittleEndian::UnsignedShort width; // logical screen width
-      LittleEndian::UnsignedShort height; // logical screen height
+      LittleEndian<uint16> width; // logical screen width
+      LittleEndian<uint16> height; // logical screen height
       unsigned int entriesOfColorTable : 3; // number of entries is 2^(value + 1)
       bool sortedColorTable: 1; // true if the colors are sorted
       unsigned int colorResolution : 3; //
       bool colorTable : 1; // true if table is present
       byte backGroundColorIndex; // index to global color table
       byte aspectRatio; // actual ratio = (aspectRatio + 15) / 64
-    } __attribute__ ((packed));
+    } _DK_SDU_MIP__BASE__PACKED;
 
     struct ImageDescriptor {
       byte separator; // fixed value of ImageSeperator
-      LittleEndian::UnsignedShort left; // column in pixels in respect to left edge of logical screen
-      LittleEndian::UnsignedShort top; // row in pixels in respect to top of logical screen
-      LittleEndian::UnsignedShort width; // width of image in pixels
-      LittleEndian::UnsignedShort height; // height of image in pixels
+      LittleEndian<uint16> left; // column in pixels in respect to left edge of logical screen
+      LittleEndian<uint16> top; // row in pixels in respect to top of logical screen
+      LittleEndian<uint16> width; // width of image in pixels
+      LittleEndian<uint16> height; // height of image in pixels
       unsigned int entriesOfColorTable : 3; // number of entries is 2^(value + 1)
       unsigned int reserved : 2; // guess what
       bool sortedColorTable : 1; // true if the colors are sorted after importance
       bool interlaced : 1; // true if image is interlaced
       bool colorTable : 1; // true if color table is present
-    } __attribute__ ((packed));
+    } _DK_SDU_MIP__BASE__PACKED;
 
     struct ColorEntry {
       byte red;
       byte green;
       byte blue;
-    } __attribute__ ((packed));
+    } _DK_SDU_MIP__BASE__PACKED;
 
 
 

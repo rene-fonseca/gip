@@ -62,32 +62,30 @@ namespace gip {
 
   enum {BMP_RGB = 0, BMP_RLE8 = 1, BMP_RLE4 = 2, BMP_BITFIELDS = 3};
 
-  typedef struct {
+  struct BMPHeader {
     char identifier[2]; // the characters identifying the bitmap
-    LittleEndian::UnsignedInt fileSize; // complete file size in bytes
-    LittleEndian::UnsignedInt reserved; // reserved for later use
-    LittleEndian::UnsignedInt bitmapDataOffset; // offset from beginning of file to the beginning of the bitmap data
-    LittleEndian::UnsignedInt bitmapHeaderSize; // size of the header used to describe the bitmap colors and compression
-    LittleEndian::UnsignedInt width; // width of bitmap in pixels
-    LittleEndian::UnsignedInt height; // height of bitmap in pixels
-    LittleEndian::UnsignedShort planes; // number of planes in this bitmap
-    LittleEndian::UnsignedShort bitsPerPixel; // bits per pixel used to store palette entry information
-    LittleEndian::UnsignedInt compression; // specifies the compression
-    LittleEndian::UnsignedInt bitmapDataSize; // size of the bitmap data in bytes
-    LittleEndian::UnsignedInt horizontalResolution; // horizontal resolution expressed in pixels per meter
-    LittleEndian::UnsignedInt verticalResolution; // vertical resolution expressed in pixels per meter
-    LittleEndian::UnsignedInt colorsUsed; // number of colors used by this bitmap
-    LittleEndian::UnsignedInt importantColors; // number of important colors
-  } __attribute__ ((packed)) BMPHeader;
+    LittleEndian<uint32> fileSize; // complete file size in bytes
+    LittleEndian<uint32> reserved; // reserved for later use
+    LittleEndian<uint32> bitmapDataOffset; // offset from beginning of file to the beginning of the bitmap data
+    LittleEndian<uint32> bitmapHeaderSize; // size of the header used to describe the bitmap colors and compression
+    LittleEndian<uint32> width; // width of bitmap in pixels
+    LittleEndian<uint32> height; // height of bitmap in pixels
+    LittleEndian<uint16> planes; // number of planes in this bitmap
+    LittleEndian<uint16> bitsPerPixel; // bits per pixel used to store palette entry information
+    LittleEndian<uint32> compression; // specifies the compression
+    LittleEndian<uint32> bitmapDataSize; // size of the bitmap data in bytes
+    LittleEndian<uint32> horizontalResolution; // horizontal resolution expressed in pixels per meter
+    LittleEndian<uint32> verticalResolution; // vertical resolution expressed in pixels per meter
+    LittleEndian<uint32> colorsUsed; // number of colors used by this bitmap
+    LittleEndian<uint32> importantColors; // number of important colors
+  } _DK_SDU_MIP__BASE__PACKED;
 
-  typedef unsigned char byte;
-
-  typedef struct {
+  struct BMPPaletteEntry {
     byte blue;
     byte green;
     byte red;
     byte reserved; // must be zero
-  } __attribute__ ((packed)) BMPPaletteEntry;
+  } _DK_SDU_MIP__BASE__PACKED;
 
   BMPEncoder::BMPEncoder() throw() {
   }

@@ -45,15 +45,15 @@ namespace gip {
     };
 
     struct Header {
-      BigEndian::UnsignedInt magic;
-      BigEndian::SignedInt width;
-      BigEndian::SignedInt height;
-      BigEndian::SignedInt depth;
-      BigEndian::SignedInt length;
-      BigEndian::SignedInt type;
-      BigEndian::SignedInt mapType;
-      BigEndian::SignedInt mapLength;
-    }  __attribute__ ((packed));
+      BigEndian<uint32> magic;
+      BigEndian<int32> width;
+      BigEndian<int32> height;
+      BigEndian<int32> depth;
+      BigEndian<int32> length;
+      BigEndian<int32> type;
+      BigEndian<int32> mapType;
+      BigEndian<int32> mapLength;
+    } _DK_SDU_MIP__BASE__PACKED;
   };
   
   RASEncoder::RASEncoder() throw() {

@@ -21,30 +21,37 @@ namespace gip {
 /**
   Character code identifying a chunk of data with an Audio/Video Interleaved (AVI) file.
 */
-typedef union {
-  LittleEndian::UnsignedInt id;
-  char chars[4];
-} __attribute__ ((packed)) ChunkId;
+struct ChunkId { // TAG: fixme
+  LittleEndian<uint32> id;
+} _DK_SDU_MIP__BASE__PACKED;
+  
+// union ChunkId {
+//   LittleEndian<uint32> id;
+//   char chars[4];
+// } _DK_SDU_MIP__BASE__PACKED;
 
 /**
   Chunk of data (ie. ChunkId and size).
 */
-typedef struct {
+struct Chunk {
   ChunkId id;
-  LittleEndian::UnsignedInt size;
-} __attribute__ ((packed)) Chunk;
+  LittleEndian<uint32> size;
+} _DK_SDU_MIP__BASE__PACKED;
 
 inline ChunkId makeChunkId(char a, char b, char c, char d) throw() {
   ChunkId result;
-  result.chars[0] = a;
-  result.chars[1] = b;
-  result.chars[2] = c;
-  result.chars[3] = d;
+  result.id = d << 24 | c << 16 | b << 8 | a; // TAG: fixme
+//   result.chars[0] = a;
+//   result.chars[1] = b;
+//   result.chars[2] = c;
+//   result.chars[3] = d;
   return result;
 }
 
 FormatOutputStream& operator<<(FormatOutputStream& stream, const ChunkId& value) {
-  stream << value.chars[0] << value.chars[1] << value.chars[2] << value.chars[3];
+  unsigned int temp = value.id;
+  stream << static_cast<char>(temp) << static_cast<char>(temp >> 8) << static_cast<char>(temp >> 16) << static_cast<char>(temp >> 24);
+//  stream << value.chars[0] << value.chars[1] << value.chars[2] << value.chars[3];
   return stream;
 }
 
@@ -57,8 +64,10 @@ inline bool operator!=(const ChunkId& left, const ChunkId& right) throw() {
 }
 
 int getStreamId(const ChunkId& value) throw() {
-  int high = static_cast<int>(value.chars[0] - '0');
-  int low = static_cast<int>(value.chars[1] - '0');
+  int high = static_cast<int>(value.id & 0xff - '0');
+  int low = static_cast<int>((value.id >> 8) & 0xff - '0');
+//   int high = static_cast<int>(value.chars[0] - '0');
+//   int low = static_cast<int>(value.chars[1] - '0');
   if ((high < 0) || (low < 0)) {
     return -1; // invalid
   }
@@ -66,13 +75,14 @@ int getStreamId(const ChunkId& value) throw() {
 }
 
 unsigned int getStreamType(const ChunkId& value) throw() {
-  return static_cast<unsigned int>(value.chars[2]) << 8 + static_cast<unsigned int>(value.chars[3]);
+  return static_cast<unsigned int>((value.id >> 16) & 0xff) << 8 + static_cast<unsigned int>((value.id >> 24) & 0xff);
+//  return static_cast<unsigned int>(value.chars[2]) << 8 + static_cast<unsigned int>(value.chars[3]);
 }
 
-typedef struct {
-  LittleEndian::UnsignedInt microSecPerFrame; // period between frames
-  LittleEndian::UnsignedInt maxBytesPerSec; // approx. maximum data rate
-  LittleEndian::UnsignedInt paddingGranularity;
+struct AVIHeader {
+  LittleEndian<uint32> microSecPerFrame; // period between frames
+  LittleEndian<uint32> maxBytesPerSec; // approx. maximum data rate
+  LittleEndian<uint32> paddingGranularity;
 
   unsigned int reserved1 : 4;
   bool hasIndex : 1; // AVI file has index at end
@@ -86,85 +96,85 @@ typedef struct {
   bool copyrighted : 1;
   unsigned int reserved5 : 14;
 
-  LittleEndian::UnsignedInt totalFrames; // the total number of frames
-  LittleEndian::UnsignedInt initialFrames;  // number of frames prior to the initial frame
-  LittleEndian::UnsignedInt streams; // the number of streams within the object
-  LittleEndian::UnsignedInt suggestedBufferSize;
-  LittleEndian::UnsignedInt width;
-  LittleEndian::UnsignedInt height;
-  LittleEndian::UnsignedInt scale;
-  LittleEndian::UnsignedInt rate;
-  LittleEndian::UnsignedInt start; // the starting time of the AVI file
-  LittleEndian::UnsignedInt length; // the length of the AVI file
-} __attribute__ ((packed)) AVIHeader;
+  LittleEndian<uint32> totalFrames; // the total number of frames
+  LittleEndian<uint32> initialFrames;  // number of frames prior to the initial frame
+  LittleEndian<uint32> streams; // the number of streams within the object
+  LittleEndian<uint32> suggestedBufferSize;
+  LittleEndian<uint32> width;
+  LittleEndian<uint32> height;
+  LittleEndian<uint32> scale;
+  LittleEndian<uint32> rate;
+  LittleEndian<uint32> start; // the starting time of the AVI file
+  LittleEndian<uint32> length; // the length of the AVI file
+} _DK_SDU_MIP__BASE__PACKED;
 
-typedef struct {
-  LittleEndian::UnsignedInt ckid;
-  LittleEndian::UnsignedInt flags;
-  LittleEndian::UnsignedInt chunkOffset;
-  LittleEndian::UnsignedInt chunkLength;
-} __attribute__ ((packed)) AVIIndexEntry;
+struct AVIIndexEntry {
+  LittleEndian<uint32> ckid;
+  LittleEndian<uint32> flags;
+  LittleEndian<uint32> chunkOffset;
+  LittleEndian<uint32> chunkLength;
+} _DK_SDU_MIP__BASE__PACKED;
 
-typedef struct {
+struct AVIStreamHeader {
   ChunkId type;
   ChunkId handler;
-  LittleEndian::UnsignedInt flags;
-  LittleEndian::UnsignedInt priority;
-  LittleEndian::UnsignedInt initialFrames;
-  LittleEndian::UnsignedInt scale;
-  LittleEndian::UnsignedInt rate;
-  LittleEndian::UnsignedInt start;
-  LittleEndian::UnsignedInt length;
-  LittleEndian::UnsignedInt suggestedBufferSize;
-  LittleEndian::UnsignedInt quality;
-  LittleEndian::UnsignedInt sampleSize;
-  LittleEndian::UnsignedInt left;
-  LittleEndian::UnsignedInt top;
-  LittleEndian::UnsignedInt right;
-  LittleEndian::UnsignedInt bottom;
-} __attribute__ ((packed)) AVIStreamHeader;
+  LittleEndian<uint32> flags;
+  LittleEndian<uint32> priority;
+  LittleEndian<uint32> initialFrames;
+  LittleEndian<uint32> scale;
+  LittleEndian<uint32> rate;
+  LittleEndian<uint32> start;
+  LittleEndian<uint32> length;
+  LittleEndian<uint32> suggestedBufferSize;
+  LittleEndian<uint32> quality;
+  LittleEndian<uint32> sampleSize;
+  LittleEndian<uint32> left;
+  LittleEndian<uint32> top;
+  LittleEndian<uint32> right;
+  LittleEndian<uint32> bottom;
+} _DK_SDU_MIP__BASE__PACKED;
 
-typedef struct {
-  LittleEndian::UnsignedInt size;
-  LittleEndian::SignedInt width;
-  LittleEndian::SignedInt height;
-  LittleEndian::UnsignedShort planes;
-  LittleEndian::UnsignedShort bitsPerPixel;
-  LittleEndian::UnsignedInt compression;
-  LittleEndian::UnsignedInt sizeImage;
-  LittleEndian::SignedInt xPelsPerMeter;
-  LittleEndian::SignedInt yPelsPerMeter;
-  LittleEndian::UnsignedInt colorUsed;
-  LittleEndian::UnsignedInt colorImportant;
-} __attribute__ ((packed)) BitmapInfoHeader;
+struct BitmapInfoHeader {
+  LittleEndian<uint32> size;
+  LittleEndian<int32> width;
+  LittleEndian<int32> height;
+  LittleEndian<uint16> planes;
+  LittleEndian<uint16> bitsPerPixel;
+  LittleEndian<uint32> compression;
+  LittleEndian<uint32> sizeImage;
+  LittleEndian<int32> xPelsPerMeter;
+  LittleEndian<int32> yPelsPerMeter;
+  LittleEndian<uint32> colorUsed;
+  LittleEndian<uint32> colorImportant;
+} _DK_SDU_MIP__BASE__PACKED;
 
-typedef struct {
-  LittleEndian::UnsignedShort formatTag;
-  LittleEndian::UnsignedShort channels;
-  LittleEndian::UnsignedInt samplesPerSec;
-  LittleEndian::UnsignedInt averageBytesPerSec;
-  LittleEndian::UnsignedShort blockAlign;
-  LittleEndian::UnsignedShort bitsPerSample;
-  LittleEndian::UnsignedShort size;
-} __attribute__ ((packed)) WaveFormatExtended;
+struct WaveFormatExtended {
+  LittleEndian<uint16> formatTag;
+  LittleEndian<uint16> channels;
+  LittleEndian<uint32> samplesPerSec;
+  LittleEndian<uint32> averageBytesPerSec;
+  LittleEndian<uint16> blockAlign;
+  LittleEndian<uint16> bitsPerSample;
+  LittleEndian<uint16> size;
+} _DK_SDU_MIP__BASE__PACKED;
 
-typedef struct {
+struct AVIPaletteEntry {
   byte blue;
   byte green;
   byte red;
   byte reserved;
-} __attribute__ ((packed)) AVIPaletteEntry;
+} _DK_SDU_MIP__BASE__PACKED;
 
-typedef struct {
+struct AVIPaletteChange {
   byte firstEntry;
   byte numberOfEntries;
-  LittleEndian::UnsignedShort flags;
+  LittleEndian<uint16> flags;
   AVIPaletteEntry entry[0];
-} __attribute__ ((packed)) AVIPaletteChange;
+} _DK_SDU_MIP__BASE__PACKED;
 
 enum {BMP_RGB = 0, BMP_RLE8 = 1, BMP_RLE4 = 2, BMP_BITFIELDS = 3};
 
-AVIEncoder::AVIEncoder(const String& f) throw(IOException) : filename(f) {
+AVIEncoder::AVIEncoder(const String& _filename) throw(IOException) : filename(_filename) {
 }
 
 String AVIEncoder::getDescription() const throw() {
@@ -219,7 +229,7 @@ FormatOutputStream& AVIEncoder::getInfo(FormatOutputStream& stream) throw(IOExce
 
     ChunkId avih;
     file.read(getCharAddress(avih), sizeof(avih));
-    LittleEndian::UnsignedInt size;
+    LittleEndian<uint32> size;
     file.read(getCharAddress(size), sizeof(size));
     Allocator<char> buffer(maximum<unsigned int>(size, sizeof(AVIHeader)));
     fill<char>(buffer.getElements(), buffer.getSize(), 0);
@@ -259,7 +269,7 @@ FormatOutputStream& AVIEncoder::getInfo(FormatOutputStream& stream) throw(IOExce
       }
 
       ChunkId str_;
-      LittleEndian::UnsignedInt size;
+      LittleEndian<uint32> size;
       unsigned int totalRead = sizeof(name);
 
       // read strh
