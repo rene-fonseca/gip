@@ -158,10 +158,10 @@ namespace gip {
     for (unsigned int row = dimension.getHeight(); row > 0; --row) {
       FileReader::ReadIterator src = reader.peek(dimension.getWidth() * 3);
       for (unsigned int column = dimension.getWidth(); column > 0; --column) {
-        Intensity blue = *src++;
-        Intensity green = *src++;
-        Intensity red = *src++;
-        *dest++ = makeRGBPixel(red, green, blue); // order of args is red, green, and blue
+        unsigned char blue = *src++;
+        unsigned char green = *src++;
+        unsigned char red = *src++;
+        *dest++ = makeColorPixel(red, green, blue); // order of args is red, green, and blue
       }
       reader.skip(dimension.getWidth() * 3);
     }
@@ -212,7 +212,7 @@ namespace gip {
     file.truncate(sizeof(header) + static_cast<unsigned long long>(dimension.getSize()) * 3 + sizeof(footer));
   }
 
-  void TGAEncoder::write(const String& filename, const ArrayImage<RGBAPixel>* image) throw(ImageException, IOException) {
+  void TGAEncoder::write(const String& filename, const ColorAlphaImage* image) throw(ImageException, IOException) {
     assert(image, NullPointer(this));
     Dimension dimension = image->getDimension();
     assert((dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff), ImageException(this));
@@ -238,11 +238,11 @@ namespace gip {
     file.write(getCharAddress(header), sizeof(header));
     
     unsigned int count = dimension.getSize(); // max is 0xffff * 0xffff
-    const RGBAPixel* src = image->getElements();
+    const ColorAlphaPixel* src = image->getElements();
     while (count > 0) {
       unsigned int elementsToCopy = minimum(BUFFER_SIZE/4, count);
       char* dest = buffer.getElements();
-      const RGBAPixel* end = src + elementsToCopy;
+      const ColorAlphaPixel* end = src + elementsToCopy;
       while (src < end) {
         *dest++ = src->blue;
         *dest++ = src->green;

@@ -289,10 +289,10 @@ namespace gip {
               for (unsigned int row = dimension.getHeight(); row > 0; --row) {
                 FileReader::ReadIterator src = reader.peek(bytesPerLine);
                 for (unsigned int column = dimension.getWidth(); column > 0; --column) {
-                  Intensity blue = *src++;
-                  Intensity green = *src++;
-                  Intensity red = *src++;
-                  *dest++ = makeRGBPixel(blue, green, red); // order of args is blue, green, and red
+                  unsigned char blue = *src++;
+                  unsigned char green = *src++;
+                  unsigned char red = *src++;
+                  *dest++ = makeColorPixel(red, green, blue);
                 }
                 reader.skip(bytesPerLine);
               }
@@ -304,11 +304,11 @@ namespace gip {
               for (unsigned int row = dimension.getHeight(); row > 0; --row) {
                 FileReader::ReadIterator src = reader.peek(bytesPerLine);
                 for (unsigned int column = dimension.getWidth(); column > 0; --column) {
-                  Intensity blue = *src++;
-                  Intensity green = *src++;
-                  Intensity red = *src++;
+                  unsigned char blue = *src++;
+                  unsigned char green = *src++;
+                  unsigned char red = *src++;
                   ++src;
-                  *dest++ = makeRGBPixel(blue, green, red); // order of args is blue, green, and red
+                  *dest++ = makeColorPixel(red, green, blue);
                 }
                 reader.skip(bytesPerLine);
               }
