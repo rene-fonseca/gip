@@ -12,7 +12,7 @@
  ***************************************************************************/
 
 #include <gip/transformation/Test.h>
-#include <gip/draw/DrawLine.h>
+#include <gip/canvas/Canvas.h>
 
 namespace gip {
 
