@@ -38,15 +38,21 @@ namespace gip {
     return 0;
   }
   
-  void PGMEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException) {
+  void PGMEncoder::write(
+    const String& filename,
+    const ColorImage* image) throw(ImageException, IOException) {
     throw NotSupported(this);
   }
   
-  void PGMEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
+  void PGMEncoder::writeGray(
+    const String& filename,
+    const GrayImage* image) throw(ImageException, IOException) {
     assert(image, NullPointer(this));
     Dimension dimension = image->getDimension();
     
-    FileOutputStream file(filename, FileOutputStream::CREATE | FileOutputStream::TRUNCATE);
+    FileOutputStream file(
+      filename, FileOutputStream::CREATE | FileOutputStream::TRUNCATE
+    );
     FormatOutputStream out(file);
     
     out << MESSAGE("P2") << EOL
@@ -62,7 +68,7 @@ namespace gip {
       const GrayPixel* endOfRow = src;
       src -= dimension.getWidth();
       while (src < endOfRow) {
-        int c = minimum(endOfRow - src, 17); // do not exceed 70 chars per line
+        int c = minimum<MemorySize>(endOfRow - src, 17); // do not exceed 70 chars per line
         while (c--) {
           out << setWidth(4) << *src++;
         }

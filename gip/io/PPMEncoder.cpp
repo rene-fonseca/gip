@@ -34,15 +34,19 @@ namespace gip {
     return true;
   }
   
-  ColorImage* PPMEncoder::read(const String& filename) throw(InvalidFormat, IOException) {
+  ColorImage* PPMEncoder::read(
+    const String& filename) throw(InvalidFormat, IOException) {
     return 0;
   }
   
-  void PPMEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException) {
+  void PPMEncoder::write(
+    const String& filename,
+    const ColorImage* image) throw(ImageException, IOException) {
     assert(image, NullPointer(this));
     Dimension dimension = image->getDimension();
     
-    FileOutputStream file(filename, FileOutputStream::CREATE | FileOutputStream::TRUNCATE);
+    FileOutputStream file(
+      filename, FileOutputStream::CREATE | FileOutputStream::TRUNCATE);
     FormatOutputStream out(file);
     
     out << MESSAGE("P3") << EOL
@@ -58,10 +62,12 @@ namespace gip {
       const ColorPixel* endOfRow = src;
       src -= dimension.getWidth();
       while (src < endOfRow) {
-        int c = minimum(endOfRow - src, 5); // do not exceed 70 chars per line
+        int c = minimum<MemorySize>(endOfRow - src, 5); // do not exceed 70 chars per line
         while (c--) {
           ColorPixel pixel = *src++;
-          out << setWidth(4) << pixel.red << setWidth(4) << pixel.green << setWidth(4) << pixel.blue;
+          out << setWidth(4) << pixel.red
+              << setWidth(4) << pixel.green
+              << setWidth(4) << pixel.blue;
           if (c > 0) {
             out << MESSAGE("  ");
           }
@@ -72,7 +78,9 @@ namespace gip {
     }
   }
   
-  void PPMEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
+  void PPMEncoder::writeGray(
+    const String& filename,
+    const GrayImage* image) throw(ImageException, IOException) {
     throw NotSupported(this);
   }
   

@@ -283,7 +283,9 @@ FormatOutputStream& AVIEncoder::getInfo(FormatOutputStream& stream) throw(IOExce
       }
       file.read(Cast::getCharAddress(size), sizeof(size));
       totalRead += sizeof(str_) + sizeof(size) + (size+1)/2*2;
-      Allocator<char> headerBuffer(maximum((size+1)/2*2, sizeof(AVIStreamHeader)));
+      Allocator<char> headerBuffer(
+        maximum<MemorySize>((size+1)/2*2, sizeof(AVIStreamHeader))
+      );
       fill<char>(headerBuffer.getElements(), headerBuffer.getSize(), 0);
       AVIStreamHeader* header = (AVIStreamHeader*)headerBuffer.getElements();
 
@@ -309,7 +311,15 @@ FormatOutputStream& AVIEncoder::getInfo(FormatOutputStream& stream) throw(IOExce
       file.read(Cast::getCharAddress(size), sizeof(size));
       totalRead += sizeof(str_) + sizeof(size) + (size+1)/2*2;
 
-      Allocator<char> streamFormatBuffer(maximum((size+1)/2*2, maximum(sizeof(BitmapInfoHeader), sizeof(WaveFormatExtended))));
+      Allocator<char> streamFormatBuffer(
+        maximum<MemorySize>(
+          (size+1)/2*2,
+          maximum<MemorySize>(
+            sizeof(BitmapInfoHeader),
+            sizeof(WaveFormatExtended)
+          )
+        )
+      );
       fill<char>(streamFormatBuffer.getElements(), streamFormatBuffer.getSize(), 0);
       file.read(streamFormatBuffer.getElements(), (size+1)/2*2);
 
@@ -505,7 +515,9 @@ void AVIReader::analyse() throw(IOException) {
       assert(chunk.id == makeChunkId('s', 't', 'r', 'h'), InvalidFormat(this));
       unsigned int size = (chunk.size+1)/2*2;
       assert(totalRead + size < totalSize, InvalidFormat(this));
-      Allocator<char> buffer(maximum(size, sizeof(AVIStreamHeader)));
+      Allocator<char> buffer(
+        maximum<MemorySize>(size, sizeof(AVIStreamHeader))
+      );
       fill<char>(buffer.getElements(), buffer.getSize(), 0);
       file.read(buffer.getElements(), size);
       totalRead += sizeof(chunk) + size;
@@ -545,8 +557,10 @@ void AVIReader::analyse() throw(IOException) {
     assert(chunk.id == makeChunkId('s', 't', 'r', 'f'), InvalidFormat(this));
     unsigned int size = (chunk.size+1)/2*2;
     totalRead += sizeof(chunk) + size;
-
-    Allocator<char> buffer(maximum(size, sizeof(BitmapInfoHeader)));
+    
+    Allocator<char> buffer(
+      maximum<MemorySize>(size, sizeof(BitmapInfoHeader))
+    );
     fill<char>(buffer.getElements(), buffer.getSize(), 0);
     file.read(buffer.getElements(), size);
 
