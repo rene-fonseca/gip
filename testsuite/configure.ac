@@ -77,10 +77,10 @@ AC_ARG_WITH(gip-lib,
 
 
 if test "x$ac_base_include" != "x"; then
-  CPPFLAGS="-I${ac_base_include}${CPPFLAGS:+ }${CPPFLAGS}"
+  INCLUDES="-I${ac_base_include}${INCLUDES:+ }${INCLUDES}"
 fi
 if test "x$ac_gip_include" != "x"; then
-  CPPFLAGS="-I${ac_gip_include}${CPPFLAGS:+ }${CPPFLAGS}"
+  INCLUDES="-I${ac_gip_include}${INCLUDES:+ }${INCLUDES}"
 fi
 
 if test "x$ac_gip_lib" != "x"; then
@@ -92,8 +92,10 @@ fi
 
 
 
-dnl is this required
-CPPFLAGS='-I${top_srcdir}'"${CPPFLAGS:+ }${CPPFLAGS}"
+INCLUDES='-I${top_srcdir}'"${INCLUDES:+ }${INCLUDES}"
+AC_SUBST(INCLUDES)
+
+
 
 dnl Generate make files
 AC_CONFIG_FILES(Makefile)
