@@ -1054,7 +1054,7 @@ namespace gip {
     }
   }
 
-  void Canvas::line(const Point& p1, const Point& p2, ColorAlphaPixel color, unsigned int options = 0) throw() {
+  void Canvas::line(const Point& p1, const Point& p2, ColorAlphaPixel color, unsigned int options) throw() {
     Point clipped1 = p1;
     Point clipped2 = p2;
     if (!clip(clipped1, clipped2)) {
