@@ -36,7 +36,7 @@ public:
   inline WalshToGray(const Dimension& dimension) throw() : scale(1.0/dimension.getSize()) {}
 
   inline GrayPixel operator()(const float& value) const throw() {
-    long double temp = 0xff * log(1 + value * scale);
+    long double temp = 0xff * Math::log(1 + value * scale);
     if (temp < 0x00) {
       return 0x00;
     } else if (temp > 0xff) {

@@ -15,20 +15,6 @@
 
 namespace gip {
 
-  inline bool isPowerOfTwo(unsigned int value) throw() {
-    if (value == 0) {
-      return true;
-    }
-    unsigned int current = 1;
-    while (current) { // until bit has been shifted out
-      if (value == current) {
-        return true;
-      }
-      current <<= 1; // times two
-    }
-    return false;
-  }
-
   WalshTransformation::WalshTransformation(DestinationImage* destination, const SourceImage* source) throw(ImageException)
     : Transformation<DestinationImage, SourceImage>(destination, source) {
 
@@ -41,7 +27,7 @@ namespace gip {
       ImageException("Source and destination images must have equal dimension", this)
     );
     assert(
-      isPowerOfTwo(source->getDimension().getWidth()) && isPowerOfTwo(source->getDimension().getHeight()),
+      Math::isPowerOf2(source->getDimension().getWidth()) && Math::isPowerOf2(source->getDimension().getHeight()),
       ImageException("Width and height of images must be power of two", this)
     );
 
