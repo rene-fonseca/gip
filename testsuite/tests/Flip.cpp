@@ -19,8 +19,7 @@
 #include <base/Timer.h>
 #include <base/TypeInfo.h>
 
-using namespace gip;
-using namespace base;
+using namespace dk::sdu::mip::gip;
 
 class FlipApplication : public Application {
 private:

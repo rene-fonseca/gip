@@ -49,7 +49,7 @@
 namespace gip {
   
   // this framework depends on the base framework
-  using namespace base;
+  using namespace dk::sdu::mip::base;
 };
 
 namespace dk {

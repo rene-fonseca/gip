@@ -18,8 +18,6 @@
 #include <base/Primitives.h>
 #include <base/ByteOrder.h>
 
-using namespace base;
-
 namespace gip {
 
   struct PCXHeader {

@@ -16,8 +16,7 @@
 #include <gip/Pixel.h>
 #include <gip/io/GIFEncoder.h>
 
-using namespace base;
-using namespace gip;
+using namespace dk::sdu::mip::gip;
 
 class GIFEncoderApplication : public Application {
 private:

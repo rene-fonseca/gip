@@ -20,8 +20,6 @@
 #include <base/string/String.h>
 #include <base/NotImplemented.h>
 
-using namespace base;
-
 namespace gip {
 
   namespace RASEncoderImpl {

@@ -24,8 +24,7 @@
 #include <base/Timer.h>
 #include <base/TypeInfo.h>
 
-using namespace gip;
-using namespace base;
+using namespace dk::sdu::mip::gip;
 
 class WalshToGray : public UnaryOperation<float, GrayPixel> {
 private:

@@ -37,8 +37,7 @@
 #include <gip/io/BMPEncoder.h>
 #include <gip/transformation/Convert.h>
 
-using namespace base;
-using namespace gip;
+using namespace dk::sdu::mip::gip;
 
 class RGB24ToRGB : public UnaryOperation<Camera1394::RGB24Pixel, ColorPixel> {
 public:

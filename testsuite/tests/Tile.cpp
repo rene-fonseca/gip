@@ -21,8 +21,7 @@
 #include <base/string/InvalidFormat.h>
 #include <base/Integer.h>
 
-using namespace gip;
-using namespace base;
+using namespace dk::sdu::mip::gip;
 
 class TileApplication : public Application {
 private:

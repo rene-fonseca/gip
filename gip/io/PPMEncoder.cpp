@@ -17,8 +17,6 @@
 #include <base/string/FormatOutputStream.h>
 #include <base/NotSupported.h>
 
-using namespace base;
-
 namespace gip {
 
   PPMEncoder::PPMEncoder() throw() {

@@ -13,8 +13,6 @@
 
 #include <gip/Version.h>
 
-using namespace base;
-
 namespace gip {
 
 const char Version::banner[] =

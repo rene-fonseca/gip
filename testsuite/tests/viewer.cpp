@@ -34,8 +34,7 @@
 // TAG: need IdleListener class for use with dispatch?
 // TAG: need TimerListener?
 
-using namespace base;
-using namespace gip;
+using namespace dk::sdu::mip::gip;
 
 /** Verbosity levels. */
 class Verbosity {
