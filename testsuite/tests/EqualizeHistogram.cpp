@@ -38,17 +38,9 @@ public:
     ColorImage originalImage(*image);
     delete image;
 
-    GrayImage grayOriginalImage(originalImage.getDimension());
+    ColorImage finalImage(originalImage.getDimension());
     {
-      Convert<GrayImage, ColorImage, RGBToGray> transform(&grayOriginalImage, &originalImage, RGBToGray());
-      fout << MESSAGE("Converting image: ColorImage->GrayImage") << ' '
-           << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
-      transform();
-    }
-
-    GrayImage finalImage(grayOriginalImage.getDimension());
-    {
-      EqualizeHistogram transform(&finalImage, &grayOriginalImage);
+      EqualizeHistogram<ColorImage, ColorImage> transform(&finalImage, &originalImage);
       fout << MESSAGE("Transforming image: ") << ' ' << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
       Timer timer;
       transform();
@@ -56,7 +48,27 @@ public:
     }
 
     fout << MESSAGE("Exporting image with encoder: ") << encoder.getDescription() << ENDL;
-    encoder.writeGray(outputFile, &finalImage);
+    encoder.write(outputFile, &finalImage);
+
+//    GrayImage grayOriginalImage(originalImage.getDimension());
+//    {
+//      Convert<GrayImage, ColorImage, RGBToGray> transform(&grayOriginalImage, &originalImage, RGBToGray());
+//      fout << MESSAGE("Converting image: ColorImage->GrayImage") << ' '
+//           << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
+//      transform();
+//    }
+//
+//    GrayImage finalImage(grayOriginalImage.getDimension());
+//    {
+//      EqualizeHistogram transform(&finalImage, &grayOriginalImage);
+//      fout << MESSAGE("Transforming image: ") << ' ' << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
+//      Timer timer;
+//      transform();
+//      fout << MESSAGE("Time elapsed for equalization: ") << timer.getLiveMicroseconds() << MESSAGE(" microseconds") << EOL;
+//    }
+//
+//    fout << MESSAGE("Exporting image with encoder: ") << encoder.getDescription() << ENDL;
+//    encoder.writeGray(outputFile, &finalImage);
   }
   
   void main() throw() {
