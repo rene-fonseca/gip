@@ -83,9 +83,9 @@ namespace gip {
         red += temp.red * weight;
 
         ColorPixel result;
-        result.blue = static_cast<Intensity>(blue); // overflow not possible
-        result.green = static_cast<Intensity>(green); // overflow not possible
-        result.red = static_cast<Intensity>(red); // overflow not possible
+        result.blue = static_cast<unsigned char>(blue); // overflow not possible
+        result.green = static_cast<unsigned char>(green); // overflow not possible
+        result.red = static_cast<unsigned char>(red); // overflow not possible
         *column = result;
         ++column;
 
@@ -100,9 +100,9 @@ namespace gip {
         ColorPixel current = *srcCurrentRow[srcColumnIndex];
         ColorPixel next = *srcNextRow[srcColumnIndex];
         ColorPixel result;
-        result.blue = static_cast<Intensity>(current.blue * weight + next.blue * weightRow);
-        result.green = static_cast<Intensity>(current.green * weight + next.green * weightRow);
-        result.red = static_cast<Intensity>(current.red * weight + next.red * weightRow);
+        result.blue = static_cast<unsigned char>(current.blue * weight + next.blue * weightRow);
+        result.green = static_cast<unsigned char>(current.green * weight + next.green * weightRow);
+        result.red = static_cast<unsigned char>(current.red * weight + next.red * weightRow);
         *column = result; // no need to increment column
       }
 
@@ -124,9 +124,9 @@ namespace gip {
       ++srcColumn;
       ColorPixel next = *srcColumn;
       ColorPixel result;
-      result.blue = static_cast<Intensity>(current.blue * weight + next.blue * weightColumn);
-      result.green = static_cast<Intensity>(current.green * weight + next.green * weightColumn);
-      result.red = static_cast<Intensity>(current.red * weight + next.red * weightColumn);
+      result.blue = static_cast<unsigned char>(current.blue * weight + next.blue * weightColumn);
+      result.green = static_cast<unsigned char>(current.green * weight + next.green * weightColumn);
+      result.red = static_cast<unsigned char>(current.red * weight + next.red * weightColumn);
       *column = result;
       ++column;
 
