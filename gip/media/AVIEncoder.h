@@ -141,7 +141,7 @@ namespace gip {
       bool isInterleaved;
       /** Use CKType to find key frames. */
       bool trustCKType;
-      /** . */
+      /** Capture file. */
       bool wasCaptureFile;
       /** Specifies that the AVI file contains copyrighted data. */
       bool copyrighted;
