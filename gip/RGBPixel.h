@@ -92,6 +92,18 @@ namespace gip {
   */
   typedef RGBPixel<unsigned char> ColorPixel;
 
+  struct HiColor {
+    union {
+      uint16 rgb;
+      struct {
+        unsigned char red : 5;
+        unsigned char green : 6;
+        unsigned char blue : 5;
+      } _DK_SDU_MIP__BASE__PACKED;
+    } _DK_SDU_MIP__BASE__PACKED;
+  } _DK_SDU_MIP__BASE__PACKED;
+
+  
 
 
   /**
@@ -144,13 +156,17 @@ namespace gip {
   template<>
   inline ColorPixel blend(ColorPixel back, ColorPixel front, unsigned int opaque, unsigned int opacity) throw() {
     ColorPixel result;
-    unsigned int transparency = opaque - opacity;
-    result.red = (2 * transparency * static_cast<PixelTraits<ColorPixel>::Arithmetic>(back.red) + 2 * opacity * static_cast<PixelTraits<ColorPixel>::Arithmetic>(front.red) + opaque)/(2 * opaque);
-    result.green = (2 * transparency * static_cast<PixelTraits<ColorPixel>::Arithmetic>(back.green) + 2 * opacity * static_cast<PixelTraits<ColorPixel>::Arithmetic>(front.green) + opaque)/(2 * opaque);
-    result.blue = (2 * transparency * static_cast<PixelTraits<ColorPixel>::Arithmetic>(back.blue) + 2 * opacity * static_cast<PixelTraits<ColorPixel>::Arithmetic>(front.blue) + opaque)/(2 * opaque);
+    if (opaque == 2 * opacity) { // handle average
+      result.rgb = (((back.rgb ^ front.rgb) & 0xfefefefe) >> 1) + back.rgb & front.rgb; // no overflow
+    } else {
+      unsigned int transparency = opaque - opacity;
+      result.red = (2 * transparency * static_cast<PixelTraits<ColorPixel>::Arithmetic>(back.red) + 2 * opacity * static_cast<PixelTraits<ColorPixel>::Arithmetic>(front.red) + opaque)/(2 * opaque);
+      result.green = (2 * transparency * static_cast<PixelTraits<ColorPixel>::Arithmetic>(back.green) + 2 * opacity * static_cast<PixelTraits<ColorPixel>::Arithmetic>(front.green) + opaque)/(2 * opaque);
+      result.blue = (2 * transparency * static_cast<PixelTraits<ColorPixel>::Arithmetic>(back.blue) + 2 * opacity * static_cast<PixelTraits<ColorPixel>::Arithmetic>(front.blue) + opaque)/(2 * opaque);
+    }
     return result;
   }
-
+  
 
 
   template<class COMPONENT>
