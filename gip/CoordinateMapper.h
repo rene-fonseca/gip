@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,7 +27,8 @@ namespace gip {
     coordinates have a corresponding index but this is not required.
 
     @short Mapper of coordinates into one-dimensional indices.
-    @author Rene Moeller Fonseca
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    @version 1.0
   */
 
   class CoordinateMapper : public Object {
@@ -38,29 +39,30 @@ namespace gip {
   public:
 
     /**
-       Initializes the coordinate mapper.
+      Initializes the coordinate mapper.
 
-       @param dimension The dimension to be enumerated.
+      @param dimension The dimension to be enumerated.
     */
     CoordinateMapper(const Dimension& dimension) throw();
     
     /**
-       Returns the total number of valid indices.
+      Returns the total number of valid indices.
     */
     virtual unsigned int getSize() const throw() = 0;
 
     /**
-       Translates the specified index into a coordinate.
+      Translates the specified index into a coordinate.
     */
     virtual Point2D translate(unsigned int index) throw(OutOfRange) = 0;
 
     /**
-       Translates the specified coordinate into an index.
+      Translates the specified coordinate into an index.
     */
     virtual unsigned int translate(const Point2D& coordinate) throw(OutOfRange) = 0;
   };
 
-  inline CoordinateMapper::CoordinateMapper(const Dimension& d) throw() : dimension(d) {}
+  inline CoordinateMapper::CoordinateMapper(const Dimension& _dimension) throw() :
+    dimension(_dimension) {}
 
 }; // end of namespace
 
