@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,23 +18,40 @@
 
 namespace gip {
 
-/**
-  Tag Image File Format (TIFF) encoder/decoder.
+  /**
+    Tag Image File Format (TIFF) encoder/decoder.
+     
+    @short TIFF format encoder/decoder.
+    @ingroup imageEncoders
+    @author Rene Moeller Fonseca
+    @version 1.1
+  */
+  
+  class TIFFEncoder : public ImageEncoder {
+  public:
+    
+    TIFFEncoder() throw();
 
-  @short TIFF format encoder/decoder.
-  @author René Møller Fonseca
-*/
+    /**
+      Returns a description of the encoder.
+    */
+    virtual String getDescription() const throw() = 0;
+    
+    /**
+      Returns the default extension.
+    */
+    virtual String getDefaultExtension() const throw() = 0;
+    
+    /**
+      Returns an array of extensions.
+    */
+    virtual Array<String> getExtensions() const throw();
 
-class TIFFEncoder : public ImageEncoder {
-public:
-
-  TIFFEncoder();
-
-  ColorImage read(InputStream& stream) throw(IOException);
-
-  void write(OutputStream& stream, const ColorImage& image) throw(IOException);
-};
-
+    ColorImage* read(const String& filename) throw(IOException);
+    
+    void write(const String& filename, const ColorImage& image) throw(IOException);
+  };
+  
 }; // end of namespace
 
 #endif

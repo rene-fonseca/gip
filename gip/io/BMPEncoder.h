@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,45 +19,44 @@
 
 namespace gip {
 
-/**
-  Windows Bitmap (BMP) format encoder/decoder.
-
-  @short BMP format encoder/decoder.
-  @author René Møller Fonseca
-*/
-
-class BMPEncoder : public ImageEncoder {
-private:
-
-  const String filename;
-public:
-
-  /** Compression. */
-  enum Compression {
-    RGB = 0, /**< Uncompressed image. */
-    RLE8 = 1, /**< Run-length encoded (RLE) 8-bit format. */
-    RLE4 = 2 /**< Run-length encoded (RLE) 4-bit format. */
-  };
-  
   /**
-    Initializes Windows Bitmap encoder.
+    Windows Bitmap (BMP) format encoder/decoder.
+    
+    @short BMP format encoder/decoder.
+    @ingroup imageEncoders
+    @author Rene Moeller Fonseca
+    @version 1.1
   */
-  BMPEncoder(const String& filename) throw();
 
-  String getDescription() const throw();
+  class BMPEncoder : public ImageEncoder {
+  public:
 
-  String getDefaultExtension() const throw();
+    /** Compression. */
+    enum Compression {
+      RGB = 0, /**< Uncompressed image. */
+      RLE8 = 1, /**< Run-length encoded (RLE) 8-bit format. */
+      RLE4 = 2 /**< Run-length encoded (RLE) 4-bit format. */
+    };
+  
+    /**
+       Initializes Windows Bitmap encoder.
+    */
+    BMPEncoder() throw();
 
-  bool isValid() throw(IOException);
+    String getDescription() const throw();
 
-  ColorImage* read() throw(InvalidFormat, IOException);
+    String getDefaultExtension() const throw();
 
-  void write(const ColorImage* image) throw(IOException);
+    bool isValid(const String& filename) throw(IOException);
 
-  void writeGray(const GrayImage* image) throw(IOException);
+    ColorImage* read(const String& filename) throw(InvalidFormat, IOException);
 
-  FormatOutputStream& getInfo(FormatOutputStream& stream) throw(IOException);
-};
+    void write(const String& filename, const ColorImage* image) throw(IOException);
+
+    void writeGray(const String& filename, const GrayImage* image) throw(IOException);
+
+    FormatOutputStream& getInfo(FormatOutputStream& stream, const String& filename) throw(IOException);
+  };
 
 }; // end of namespace
 

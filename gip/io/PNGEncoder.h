@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,25 +15,41 @@
 #define _DK_SDU_MIP__GIP_IO__PNG_ENCODER_H
 
 #include <gip/io/ImageEncoder.h>
+#include <base/string/String.h>
 
 namespace gip {
 
-/**
-  Portable Network Graphics (PNG) format encoder/decoder.
+  /**
+    Portable Network Graphics (PNG) format encoder/decoder.
 
-  @short PNG format encoder/decoder.
-  @author René Møller Fonseca
-*/
+    @short PNG format encoder/decoder.
+    @ingroup imageEncoders
+    @author Rene Moeller Fonseca
+    @version 1.1
+  */
+  
+  class PNGEncoder : public ImageEncoder {
+  public:
 
-class PNGEncoder : public ImageEncoder {
-public:
+    /**
+      Initializes PNG encoder.
+    */
+    PNGEncoder() throw();
 	
-	PNGEncoder();
-	
-	ColorImage read(InputStream& stream) throw(IOException);
+    String getDescription() const throw();
 
-	void write(OutputStream& stream, const ColorImage& image) throw(IOException);
-};
+    String getDefaultExtension() const throw();
+
+    bool isValid(const String& filename) throw(IOException);
+
+    ColorImage* read(const String& filename) throw(InvalidFormat, IOException);
+
+    void write(const String& filename, const ColorImage* image) throw(ImageException, IOException);
+
+    void writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException);
+
+    FormatOutputStream& getInfo(FormatOutputStream& stream, const String& filename) throw(IOException);
+  };
 
 }; // end of namespace
 

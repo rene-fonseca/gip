@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,37 +19,37 @@
 
 namespace gip {
 
-/**
-
-  @short PCX format encoder/decoder.
-  @author René Møller Fonseca
-*/
-
-class PCXEncoder : public ImageEncoder {
-private:
-
-  const String filename;
-public:
-
   /**
-    Initializes Windows Bitmap encoder.
+    Zsoft Corporation PC Paintbrush (PCX) format.
+  
+    @short PCX format encoder/decoder.
+    @ingroup imageEncoders
+    @author Rene Moeller Fonseca
+    @version 1.1
   */
-  PCXEncoder(const String& filename) throw();
+  
+  class PCXEncoder : public ImageEncoder {
+  public:
 
-  String getDescription() const throw();
+    /**
+      Initializes the encoder.
+    */
+    PCXEncoder() throw();
 
-  String getDefaultExtension() const throw();
+    String getDescription() const throw();
 
-  bool isValid() throw(IOException);
+    String getDefaultExtension() const throw();
 
-  ColorImage* read() throw(IOException);
+    bool isValid(const String& filename) throw(IOException);
 
-  void write(const ColorImage* image) throw(IOException);
+    ColorImage* read(const String& filename) throw(InvalidFormat, IOException);
 
-  void writeGray(const GrayImage* image) throw(IOException);
+    void write(const String& filename, const ColorImage* image) throw(ImageException, IOException);
 
-  FormatOutputStream& getInfo(FormatOutputStream& stream) throw(IOException);
-};
+    void writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException);
+
+    FormatOutputStream& getInfo(FormatOutputStream& stream, const String& filename) throw(IOException);
+  };
 
 }; // end of namespace
 

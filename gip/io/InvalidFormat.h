@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,28 +18,34 @@
 
 namespace gip {
 
-/**
-  Exception thrown by GIP classes.
-
-  @short Image exception.
-  @author René Møller Fonseca
-*/
-
-class InvalidFormat : public ImageException {
-public:
-
   /**
-    Initializes the exception object without an associated message.
-  */
-  InvalidFormat() throw();
+    Exception thrown by GIP classes.
 
-  /**
-    Initializes the exception object with the specified message.
-
-    @param message The message.
+    @short Image exception.
+    @ingroup imageEncoders
+    @author Rene Moeller Fonseca
+    @version 1.0
   */
-  InvalidFormat(const char* message) throw();
-};
+
+  class InvalidFormat : public ImageException {
+  public:
+
+    /**
+      Initializes the exception object without an associated message.
+    */
+    InvalidFormat() throw();
+
+    /**
+      Initializes the exception object with the specified message.
+
+      @param message The message.
+    */
+    InvalidFormat(const char* message) throw();
+
+    InvalidFormat(Type type) throw() : ImageException(type) {}
+
+    InvalidFormat(const char* message, Type type) throw() : ImageException(message, type) {}
+  };
 
 }; // end of namespace
 
