@@ -54,18 +54,6 @@ public:
     : Application(MESSAGE("WalshTransformation"), numberOfArguments, arguments, environment) {
   }
 
-  unsigned int getPowerOf2(unsigned int value) throw(OutOfDomain) {
-    assert(value <= (1 << 31), OutOfDomain(this));
-    unsigned int powerOf2 = 1 << 31;
-    while (powerOf2 > value) {
-      powerOf2 >>= 1;
-    }
-    if (powerOf2 < value) {
-      powerOf2 <<= 1;
-    }
-    return powerOf2;
-  }
-  
   void walshTransformation(const String& inputFile, const String& outputFile) throw() {    
     BMPEncoder encoder;
     
@@ -74,7 +62,10 @@ public:
     ColorImage originalImage(*image);
     delete image;
     
-    Dimension dimension(getPowerOf2(originalImage.getDimension().getWidth()), getPowerOf2(originalImage.getDimension().getHeight()));
+    Dimension dimension(
+      Math::getPowerOf2(originalImage.getDimension().getWidth()),
+      Math::getPowerOf2(originalImage.getDimension().getHeight())
+    );
     
     ColorImage scaledImage(dimension);
     {
