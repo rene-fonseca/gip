@@ -25,6 +25,7 @@ namespace gip {
 
   @short Discrete two-dimensional point.
   @author René Møller Fonseca
+  @version 1.0
 */
 
 class Point2D {
@@ -112,6 +113,6 @@ inline void Point2D::setRow(unsigned int row) throw() {this->row = row;}
 
 template<> inline bool isRelocateable<Point2D>() throw() {return isRelocateable<unsigned int>();}
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

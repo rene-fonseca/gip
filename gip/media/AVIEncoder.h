@@ -279,6 +279,6 @@ public:
   bool isValid() const throw() {return valid;}
 };
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

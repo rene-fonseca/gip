@@ -26,6 +26,7 @@ namespace gip {
 
   @short A region of an image.
   @author René Møller Fonseca
+  @version 1.0
 */
 
 class Region {
