@@ -95,7 +95,7 @@ namespace gip {
     File file(filename, File::READ, 0);
     if (file.getSize() >= sizeof(footer)) {
       file.setPosition(-sizeof(footer), File::END);
-      file.read(getCharAddress(footer), sizeof(footer));
+      file.read(Cast::getCharAddress(footer), sizeof(footer));
       if ((compare<char>(footer.signature, TGAEncoderImpl::signature, TGAEncoderImpl::signature.getLength()) == 0) &&
           (footer.dot == '.') &&
           (footer.zero == '\0')) {
@@ -103,7 +103,7 @@ namespace gip {
       }
       file.setPosition(0);
     }
-    file.read(getCharAddress(header), sizeof(header));
+    file.read(Cast::getCharAddress(header), sizeof(header));
     
     switch (header.type) {
     case TGAEncoderImpl::TYPE_UNCOMPRESSED_COLOR_MAPPED:
@@ -128,7 +128,7 @@ namespace gip {
     File file(filename, File::READ, 0);
     if (file.getSize() >= sizeof(footer)) {
       file.setPosition(-sizeof(footer), File::END);
-      file.read(getCharAddress(footer), sizeof(footer));
+      file.read(Cast::getCharAddress(footer), sizeof(footer));
       if ((compare<char>(footer.signature, TGAEncoderImpl::signature, TGAEncoderImpl::signature.getLength()) == 0) &&
           (footer.dot == '.') &&
           (footer.zero == '\0')) {
@@ -136,7 +136,7 @@ namespace gip {
       }
       file.setPosition(0);
     }
-    file.read(getCharAddress(header), sizeof(header));
+    file.read(Cast::getCharAddress(header), sizeof(header));
 
     if (header.type != TGAEncoderImpl::TYPE_UNCOMPRESSED_TRUE_COLOR) {
       return 0;
@@ -190,7 +190,7 @@ namespace gip {
     
     Allocator<char> buffer(BUFFER_SIZE);
     File file(filename, File::WRITE, File::CREATE | File::EXCLUSIVE);
-    file.write(getCharAddress(header), sizeof(header));
+    file.write(Cast::getCharAddress(header), sizeof(header));
     
     unsigned int count = dimension.getSize(); // max is 0xffff * 0xffff
     const ColorPixel* src = image->getElements();
@@ -208,7 +208,7 @@ namespace gip {
       count -= elementsToCopy;
     }
     
-    file.write(getCharAddress(footer), sizeof(footer));
+    file.write(Cast::getCharAddress(footer), sizeof(footer));
     file.truncate(sizeof(header) + static_cast<unsigned long long>(dimension.getSize()) * 3 + sizeof(footer));
   }
 
@@ -235,7 +235,7 @@ namespace gip {
     
     Allocator<char> buffer(BUFFER_SIZE);
     File file(filename, File::WRITE, File::CREATE | File::EXCLUSIVE);
-    file.write(getCharAddress(header), sizeof(header));
+    file.write(Cast::getCharAddress(header), sizeof(header));
     
     unsigned int count = dimension.getSize(); // max is 0xffff * 0xffff
     const ColorAlphaPixel* src = image->getElements();
@@ -254,7 +254,7 @@ namespace gip {
       count -= elementsToCopy;
     }
 
-    file.write(getCharAddress(footer), sizeof(footer));
+    file.write(Cast::getCharAddress(footer), sizeof(footer));
     file.truncate(sizeof(header) + static_cast<unsigned long long>(dimension.getSize()) * 4 + sizeof(footer));
   }
 
@@ -283,11 +283,11 @@ namespace gip {
     unsigned int count = dimension.getSize(); // max is 0xffff * 0xffff
     const GrayPixel* src = image->getElements();
     if (sizeof(GrayPixel) == 1) {
-      file.write(getCharAddress(header), sizeof(header));
+      file.write(Cast::getCharAddress(header), sizeof(header));
       file.write(Cast::pointer<const char*>(src), count);
     } else {
       Allocator<char> buffer(BUFFER_SIZE);
-      file.write(getCharAddress(header), sizeof(header));
+      file.write(Cast::getCharAddress(header), sizeof(header));
       while (count > 0) {
         unsigned int bytesToCopy = minimum(BUFFER_SIZE, count);
         char* dest = buffer.getElements();
@@ -300,21 +300,22 @@ namespace gip {
       }
     }
     
-    file.write(getCharAddress(footer), sizeof(footer));
+    file.write(Cast::getCharAddress(footer), sizeof(footer));
     file.truncate(sizeof(header) + dimension.getSize() * 1 + sizeof(footer));
   }
 
-  FormatOutputStream& TGAEncoder::getInfo(FormatOutputStream& stream, const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> TGAEncoder::getInformation(const String& filename) throw(IOException) {
+    HashTable<String, AnyValue> result;
     static const StringLiteral signature = MESSAGE("TRUEVISION-XFILE");
     
     bool newFormat = false;
     TGAEncoderImpl::Header header;
     TGAEncoderImpl::Footer footer;
-
+    
     File file(filename, File::READ, 0);
     if (file.getSize() >= sizeof(footer)) {
       file.setPosition(-sizeof(footer), File::END);
-      file.read(getCharAddress(footer), sizeof(footer) - 1);
+      file.read(Cast::getCharAddress(footer), sizeof(footer) - 1);
       if ((compare<char>(footer.signature, signature, signature.getLength()) == 0) &&
           (footer.dot == '.') &&
           (footer.zero == '\0')) {
@@ -322,8 +323,8 @@ namespace gip {
       }
       file.setPosition(0, File::BEGIN);
     }
-    file.read(getCharAddress(header), sizeof(header));
-
+    file.read(Cast::getCharAddress(header), sizeof(header));
+    
     switch (header.type) {
     case TGAEncoderImpl::TYPE_NO_IMAGE_DATA:
     case TGAEncoderImpl::TYPE_UNCOMPRESSED_COLOR_MAPPED:
@@ -334,19 +335,17 @@ namespace gip {
     case TGAEncoderImpl::TYPE_RUN_LENGTH_BLACK_WHITE:
       break;
     default:
-      return stream;
+      throw InvalidFormat(this);
     }
-
-    stream << MESSAGE("TGAEncoder (Truevision Targa):") << EOL
-           << MESSAGE("  new format=") << newFormat << EOL
-           << MESSAGE("  color map type=") << header.colorMapType << EOL
-           << MESSAGE("  type=") << header.type << EOL
-           << MESSAGE("  x=") << header.image.x << EOL
-           << MESSAGE("  y=") << header.image.y << EOL
-           << MESSAGE("  width=") << header.image.width << EOL
-           << MESSAGE("  height=") << header.image.height << EOL
-           << MESSAGE("  pixel depth=") << header.image.pixelDepth << EOL;
-    return stream;
+    
+    result[MESSAGE("encoder")] = Type::getType(*this);
+    result[MESSAGE("description")] = MESSAGE("Truevision Targa");
+    result[MESSAGE("x")] = static_cast<unsigned int>(header.image.x);
+    result[MESSAGE("y")] = static_cast<unsigned int>(header.image.y);
+    result[MESSAGE("width")] = static_cast<unsigned int>(header.image.width);
+    result[MESSAGE("height")] = static_cast<unsigned int>(header.image.height);
+    result[MESSAGE("depth")] = static_cast<unsigned int>(header.image.pixelDepth);
+    return result;
   }
 
 }; // end of gip namespace
