@@ -54,7 +54,8 @@ public:
     RASEncoder readEncoder;
     
     fout << MESSAGE("Information:") << ENDL;
-    readEncoder.getInfo(fout, inputFile);
+    HashTable<String, AnyValue> information = readEncoder.getInformation(inputFile);
+    fout << information << ENDL;
     
     if (readEncoder.isValid(inputFile)) {
       fout << MESSAGE("Importing image with encoder: ") << readEncoder.getDescription() << ENDL;

@@ -53,7 +53,8 @@ public:
     GIFEncoder readEncoder;
     
     fout << MESSAGE("Information:") << ENDL;
-    readEncoder.getInfo(fout, filename);
+    HashTable<String, AnyValue> information = readEncoder.getInformation(filename);
+    fout << information << ENDL;
     
     if (readEncoder.isValid(filename)) {
       fout << MESSAGE("Importing image with encoder: ") << readEncoder.getDescription() << ENDL;
