@@ -2,9 +2,7 @@ default: all
 
 dist:
 	@echo "This file is to make it easier for you to create all you need"
-	cat acinclude.m4.in libtool.m4.in >acinclude.m4
 	aclocal
-	autoheader
 # use --include-deps, if you want to release the stuff. Don't use it for
 # yourself
 	automake --include-deps
@@ -18,9 +16,9 @@ dist:
 	rm -f Makefile.dist
 
 all:
-	cat acinclude.m4.in libtool.m4.in >acinclude.m4
 	aclocal
-	autoheader
 	automake
 	autoconf
 
+klampenborg-gcc:
+	CXX="g++ -mno-cygwin -mthreads" CXXFLAGS="-O0 -g3" ./configure --prefix=/usr/local/gip --with-base-include=//d/projects/base/base --with-base-lib=//d/projects/base/base/base --target=i686-pc-mingw32
