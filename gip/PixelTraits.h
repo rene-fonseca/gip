@@ -22,6 +22,8 @@ namespace gip {
   /**
     Specifies the default type which is used when calculations are performed on
     a component of a pixel. The type MUST be signed.
+
+    @short Describes the component(s) of a pixel type.
   */
   template<class COMPONENT>
   class PixelComponent {
@@ -104,7 +106,12 @@ namespace gip {
 
 
 
-  /** Specifies if true that the pixel is a value type which doesn't have any compoenents. */
+  /**
+    Specifies if true that the pixel is a value type which doesn't have any
+    compoenents.
+
+    @short Specifies whether or not a pixel is a gray pixel.
+  */
   template<class PIXEL>
   class IsGrayPixel {
   public:
@@ -113,21 +120,34 @@ namespace gip {
     // TAG: or remove 'cause all pixels must be compatible with a 'gray' pixel (intensity)
   };
 
-  /** Specifies when true that the pixel has a gray and alpha component. */
+  /**
+    Specifies when true that the pixel has a gray and alpha component.
+    
+    @short Specifies whether or not a pixel is a gray alpha pixel.
+  */
   template<class PIXEL>
   class IsGrayAlphaPixel {
   public:
     enum {IS_GRAY_ALPHA_PIXEL = false};
   };
 
-  /** Specifies when true that the pixel has red, green, and blue components. */
+  /**
+    Specifies when true that the pixel has red, green, and blue components.
+
+    @short Specifies whether or not a pixel is an RGB pixel.
+  */
   template<class PIXEL>
   class IsRGBPixel {
   public:
     enum {IS_RGB_PIXEL = false};
   };
 
-  /** Specifies when true that the pixel has red, green, blue, and alpha components. */
+  /**
+    Specifies when true that the pixel has red, green, blue, and alpha
+    components.
+
+    @short Specifies whether or not a pixel is an RGBA pixel.
+  */
   template<class PIXEL>
   class IsRGBAPixel {
   public:
@@ -136,35 +156,45 @@ namespace gip {
 
 
 
-  /** Specifies the the pixel has a gray component. */
+  /**
+    @short Specifies the the pixel has a gray component.
+  */
   template<class PIXEL>
   class HasGrayComponent {
   public:
     enum {HAS_GRAY_COMPONENT = false};
   };
-
-  /** Specifies that the pixel has a red component. */
+  
+  /**
+    @short Specifies that the pixel has a red component.
+  */
   template<class PIXEL>
   class HasRedComponent {
   public:
     enum {HAS_RED_COMPONENT = false};
   };
 
-  /** Specifies that the pixel has a green component. */
+  /**
+    @short Specifies that the pixel has a green component.
+  */
   template<class PIXEL>
   class HasGreenComponent {
   public:
     enum {HAS_GREEN_COMPONENT = false};
   };
   
-  /** Specifies that the pixel has a blue component. */
+  /**
+    @short Specifies that the pixel has a blue component.
+  */
   template<class PIXEL>
   class HasBlueComponent {
   public:
     enum {HAS_BLUE_COMPONENT = false};
   };
   
-  /** Specifies that the pixel has an alpha component. */
+  /**
+    @short Specifies that the pixel has an alpha component.
+  */
   template<class PIXEL>
   class HasAlphaComponent {
   public:

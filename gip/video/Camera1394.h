@@ -233,7 +233,7 @@ namespace gip {
     /** The modes supported by this class. */
     static const Mode MODES[NUMBER_OF_MODES];
     
-    /** Describes details about a feature. */
+    /* Describes details about a feature. */
     struct GenericFeatureDescriptor {
       /** Specifies whether the feature is available. */
       bool available : 1;
@@ -253,7 +253,7 @@ namespace gip {
       unsigned int maximum;
     };
 
-    /** Describes the trigger feature. */
+    /* Describes the trigger feature. */
     struct TriggerFeatureDescriptor {
       /** Specifies whether the feature is available. */
       bool available : 1;
@@ -267,7 +267,7 @@ namespace gip {
       unsigned int availableSignals;
     };
 
-    /** Describes the partial image mode. */
+    /* Describes the partial image mode. */
     struct ModeDescriptor {
       Dimension maximumDimension;
       Dimension unitDimension;
@@ -275,7 +275,7 @@ namespace gip {
       unsigned int pixelFormats;
     };
 
-    /** IEEE 1394 isochronous transmission descriptor. */
+    /* IEEE 1394 isochronous transmission descriptor. */
     struct IsochronousTransmission {
       /** Isochronous channel. */
       unsigned int subchannel;
@@ -929,23 +929,29 @@ namespace gip {
       
       @return True if acquisition succeeded.
     */
-    bool acquire(uint8* buffer, unsigned int size) throw(ImageException, IEEE1394Exception);
+    bool acquire(
+      uint8* buffer,
+      unsigned int size) throw(ImageException, IEEE1394Exception);
     
     /**
       Acquires a single frame. The current mode must support the 8 bit mono
       pixel format. Implicit switch to Y_8BIT pixel format if supported.
-      ImageException is raised if the dimension of the frame is not equal to the
-      current region dimension.
+      ImageException is raised if the dimension of the frame is not equal to
+      the current region dimension.
 
       @return True if acquisition succeeded.
     */
-    bool acquire(ArrayImage<uint8>& frame) throw(NotSupported, ImageException, IEEE1394Exception);
+    bool acquire(
+      ArrayImage<uint8>& frame)
+      throw(NotSupported, ImageException, IEEE1394Exception);
     
     /**
       Acquires a single frame. The current mode must support the 16 bit mono
       pixel format. Implicit switch to Y_16BIT pixel format if supported.
     */
-    bool acquire(ArrayImage<uint16>& frame) throw(NotSupported, ImageException, IEEE1394Exception);
+    bool acquire(
+      ArrayImage<uint16>& frame)
+      throw(NotSupported, ImageException, IEEE1394Exception);
     
     struct RGB24Pixel {
       uint8 red;
@@ -955,15 +961,19 @@ namespace gip {
     
     /**
       Acquires a single frame in RGB 24 bit format. The current mode must
-      support the 24 bit RGB format. Implicit switch to RGB_8BIT pixel format if
-      supported.
+      support the 24 bit RGB format. Implicit switch to RGB_8BIT pixel format
+      if supported.
       
       @return True if acquisition succeeded.
     */
-    bool acquire(ArrayImage<RGB24Pixel>& frame) throw(NotSupported, ImageException, IEEE1394Exception);
+    bool acquire(
+      ArrayImage<RGB24Pixel>& frame)
+      throw(NotSupported, ImageException, IEEE1394Exception);
 
     /**
-      Acquisition listener.
+      Interface implemented by camera acquisition listeners.
+      
+      @short Acquisition listener.
     */
     class AcquisitionListener {
     public:
@@ -1044,17 +1054,26 @@ namespace gip {
       @param frames The frame buffer.
       @param listener The acquisition listener to be notifier on completion of each frame.
     */
-    bool acquireContinuously(Array<FrameBuffer> frames, AcquisitionListener* listener) throw(NotSupported, ImageException, Camera1394Exception, IEEE1394Exception);
+    bool acquireContinuously(
+      Array<FrameBuffer> frames,
+      AcquisitionListener* listener)
+      throw(NotSupported, ImageException, Camera1394Exception, IEEE1394Exception);
 
     /**
       Convert the frame of the specified pixel format to a GrayImage.
     */
-    static void convert(GrayImage& image, PixelFormat pixelFormat, const uint8* buffer) throw(ImageException);
+    static void convert(
+      GrayImage& image,
+      PixelFormat pixelFormat,
+      const uint8* buffer) throw(ImageException);
 
     /**
       Convert the frame of the specified pixel format to a ColorImage.
     */
-    static void convert(ColorImage& image, PixelFormat pixelFormat, const uint8* buffer) throw(ImageException);
+    static void convert(
+      ColorImage& image,
+      PixelFormat pixelFormat,
+      const uint8* buffer) throw(ImageException);
   };
 
 }; // end of gip namespace

@@ -43,7 +43,7 @@ namespace gip {
 
 
   /**
-    @short AVI encoder
+    @short AVI encoder.
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
@@ -54,7 +54,7 @@ namespace gip {
     String filename;
   public:
 
-    /** Compression formats. */
+    /* Compression formats. */
     class Compression {
     public:
 
@@ -66,6 +66,11 @@ namespace gip {
       static const unsigned int RLE4 = 2;
     };
 
+    /**
+      Initializes AVI encoder.
+
+      @param filename The filename.
+    */
     AVIEncoder(const String& filename) throw(IOException);
 
     /**
@@ -116,7 +121,7 @@ namespace gip {
 
     typedef enum {RGB, RLE8, RLE4} FrameCompression;
 
-    /**
+    /*
       This class describes the whole AVI file.
       
       @short Description of the AVI file.
@@ -170,10 +175,10 @@ namespace gip {
       }
     };
 
-    /**
+    /*
       This class specifies the format of the video stream data.
       
-      @short Format of the video stream data
+      @short Format of the video stream data.
       @version 1.0
     */
     class VideoStreamDescriptor : public Object {
@@ -259,7 +264,7 @@ namespace gip {
       Analyses the AVI file.
     */
     void analyse() throw(IOException);
-
+    
     /**
       @param frame The image to receive the elements.
       @param src The encoded frame data.

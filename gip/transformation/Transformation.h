@@ -24,8 +24,9 @@ namespace gip {
   */
 
   /**
-    Transformation.
-
+    Base class of all binary transformations.
+    
+    @short Base class of binary transformations.
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
@@ -43,18 +44,21 @@ namespace gip {
     /** The source image of the transformation. */
     const SourceImage* const source;
   public:
-
+    
     /**
       Initializes transformation object.
       
       @param destination The destination image.
       @param source The source image.
     */
-    Transformation(DestinationImage* destination, const SourceImage* source) throw();
+    Transformation(
+      DestinationImage* destination,
+      const SourceImage* source) throw();
   };
 
   template<class DEST, class SRC>
-  inline Transformation<DEST, SRC>::Transformation(DestinationImage* dest, const SourceImage* src) throw()
+  inline Transformation<DEST, SRC>::Transformation(
+    DestinationImage* dest, const SourceImage* src) throw()
     : destination(dest), source(src) {
   }
 

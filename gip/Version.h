@@ -20,8 +20,8 @@
 namespace gip {
 
 /**
-  This class returns information concerning the framework.
-
+  This class provides information concerning the framework.
+  
   @short Framework information.
   @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
   @version 1.0

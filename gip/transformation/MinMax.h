@@ -21,7 +21,8 @@
 namespace gip {
   
   /**
-    @short Find the maximum element (normally intensity or mapped intensity) of an element
+    @short Finds the maximum element (normally intensity or mapped intensity)
+    of an element.
     @ingroup transformations
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.1
@@ -58,7 +59,7 @@ namespace gip {
       }
     };
 
-    /** Returns an unary operation from a binary operation using a value as the first argument. */
+    /* Returns an unary operation from a binary operation using a value as the first argument. */
     template<class UNOPRARG, class UNOPRRES>
     inline NestOperations<UNOPRARG, UNOPRRES> nestOperations(UNOPRARG& inner, const UNOPRRES& outer) {
       return NestOperations<UNOPRARG, UNOPRRES>(inner, outer);

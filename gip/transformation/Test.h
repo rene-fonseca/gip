@@ -19,13 +19,14 @@
 namespace gip {
 
   /**
-    Test transformation.
-
+    This transformation generates a test image.
+    
+    @short Test transformation.
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @ingroup transformations
     @version 1.0
   */
-
+  
   class Test : public UnaryTransformation<ColorImage> {
   public:
 
