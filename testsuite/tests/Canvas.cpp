@@ -106,7 +106,10 @@ public:
     // test line
     for (int i = 0; i < 60; ++i) {
       Point p1(100, 400);
-      Point p2(50 * Math::cos(2*constant::PI/60*i) + 100, 50 * Math::sin(2*constant::PI/60*i) + 400);
+      Point p2(
+        static_cast<int>(50 * Math::cos(2*constant::PI/60*i) + 100),
+        static_cast<int>(50 * Math::sin(2*constant::PI/60*i) + 400)
+      );
       canvas.line(p1, p2, makeColorPixel((i * 255 + 15)/60, 128, 128 - i * 3), Canvas::ANTIALIASING);
     }
 
@@ -136,7 +139,15 @@ public:
 
     canvas.ring(Point(100, 100), 62, 38, makeColorPixel(32, 128, 64), Canvas::ANTIALIASING);
     for (int i = 0; i < 6; ++i) {
-      canvas.circle(Point(50 * Math::cos(constant::PI/3*i) + 100, 50 * Math::sin(constant::PI/3*i) + 100), 10, primaryColors[i], Canvas::ANTIALIASING + Canvas::FILL);
+      canvas.circle(
+        Point(
+          static_cast<int>(50 * Math::cos(constant::PI/3*i) + 100),
+          static_cast<int>(50 * Math::sin(constant::PI/3*i) + 100)
+        ),
+        10,
+        primaryColors[i],
+        Canvas::ANTIALIASING + Canvas::FILL
+      );
     }
 
 fout << MESSAGE("Dimension of test: ") << canvas.getDimensionOfText(MESSAGE("Hello, World!")) << ENDL;
