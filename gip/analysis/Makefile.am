@@ -15,9 +15,9 @@ include $(top_srcdir)/common.am
 
 noinst_LTLIBRARIES = libanalysis.la
 
-libanalysis_la_SOURCES = Histogram.cpp traverse.cpp
+libanalysis_la_SOURCES = Histogram.cpp MinimumMaximum.cpp traverse.cpp
 
 sectiondir = $(includedir)/gip
-section_HEADERS = traverse.h Histogram.h
+section_HEADERS = traverse.h Histogram.h MinimumMaximum.h
 
 EXTRA_DIST =
