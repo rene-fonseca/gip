@@ -25,6 +25,7 @@ namespace gip {
   
   /**
     @short Stretches the intensity of the image
+    @ingroup transformations
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */

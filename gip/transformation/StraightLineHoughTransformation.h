@@ -25,6 +25,7 @@ namespace gip {
     stores the result in the destination image.
 
     @short Straight line Hough transformation
+    @ingroup transformations
     @author Rene Moeller Fonseca
     @version 1.0
   */

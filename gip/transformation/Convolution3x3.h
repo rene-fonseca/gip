@@ -64,9 +64,9 @@ namespace gip {
   public:
 
     enum {
-      M00 = -1, M01 = 4321, M02 = 1,
-      M10 = -2, M11 = 1234, M12 = 2,
-      M20 = -1, M21 = 4321, M22 = 1
+      M00 = -1, M01 = 0, M02 = 1,
+      M10 = -2, M11 = 0, M12 = 2,
+      M20 = -1, M21 = 0, M22 = 1
     };
   };
 
@@ -132,7 +132,8 @@ namespace gip {
     Convolution with 3x3 matrix.
     
     @short Convolution with 3x3 matrix
-    @author Rene Moeller Fonseca
+    @ingroup transformations
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 
@@ -351,7 +352,7 @@ namespace gip {
       typename DestinationImage::Rows::RowIterator destRow = destination->getRows().getFirst();
       
       // handle first row
-      destRow++;
+      ++destRow;
       
       while (nextRow < endRow) {
         typename SourceImage::ReadableRows::RowIterator::ElementIterator previousRowColumn = previousRow.getFirst();
@@ -377,8 +378,10 @@ namespace gip {
         
         // last column
         
+        ++destRow;
         previousRow = currentRow;
         currentRow = nextRow;
+        ++nextRow;
       }
 
       // handle last row

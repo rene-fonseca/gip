@@ -25,6 +25,7 @@ namespace gip {
     salt and pepper noise from an image.
     
     @short Median filter with 3x3 window
+    @ingroup transformations
     @author Rene Moeller Fonseca
     @version 1.0
   */

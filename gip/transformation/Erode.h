@@ -26,6 +26,7 @@ namespace gip {
     
     @short Erode
     @see Dilate
+    @ingroup transformations
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
@@ -150,7 +151,7 @@ namespace gip {
       typename DestinationImage::Rows::RowIterator destRow = destination->getRows().getFirst();
       
       // handle first row
-      destRow++;
+      ++destRow;
       
       while (nextRow < endRow) {
         typename SourceImage::ReadableRows::RowIterator::ElementIterator previousRowColumn = previousRow.getFirst();
@@ -176,8 +177,10 @@ namespace gip {
         
         // last column
         
+        ++destRow;
         previousRow = currentRow;
         currentRow = nextRow;
+        ++nextRow;
       }
 
       // handle last row

@@ -26,10 +26,12 @@ namespace gip {
     
     @short Dilate
     @see Erode
+    @ingroup transformations
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
-  
+
+  template<class KERNEL>
   class Dilate : public Transformation<GrayImage, GrayImage> {
   public:
 
@@ -74,13 +76,13 @@ namespace gip {
         if (KERNEL::M02 && (maximum < previous[1])) {
           maximum = previous[1];
         }
-        if (KERNEL::M10 && (maxmum < current[-1])) {
+        if (KERNEL::M10 && (maximum < current[-1])) {
           maximum = current[-1];
         }
         if (KERNEL::M11 && (maximum < current[0])) {
           maximum = current[0];
         }
-        if (KERNEL::M12 && (maxmum < current[1])) {
+        if (KERNEL::M12 && (maximum < current[1])) {
           maximum = current[1];
         }
         if (KERNEL::M20 && (maximum < next[-1])) {
@@ -118,8 +120,8 @@ namespace gip {
       typename DestinationImage::Rows::RowIterator destRow = destination->getRows().getFirst();
       
       // handle first row
-      destRow++;
-      
+      ++destRow;
+
       while (nextRow < endRow) {
         typename SourceImage::ReadableRows::RowIterator::ElementIterator previousRowColumn = previousRow.getFirst();
         typename SourceImage::ReadableRows::RowIterator::ElementIterator currentRowColumn = currentRow.getFirst();
@@ -144,8 +146,10 @@ namespace gip {
         
         // last column
         
+        ++destRow;
         previousRow = currentRow;
         currentRow = nextRow;
+        ++nextRow;
       }
 
       // handle last row
