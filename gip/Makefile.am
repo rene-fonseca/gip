@@ -11,12 +11,12 @@ libgip_la_LIBADD = transformation/libtransformation.la analysis/libanalysis.la d
 libgip_la_LDFLAGS = -avoid-version -module -no-undefined -version-info 0:1:0 @GIP_ADDITIONAL_LDFLAGS@
 
 sectiondir = $(includedir)/gip
-section_HEADERS = gip.h features.h ArrayImage.h CoordinateMapper.h Image.h ImageException.h Pixel.h Point2D.h Region.h Segmentor.h  ShadowImage.h Subimage.h Version.h
+section_HEADERS = features.h gip.h ArrayImage.h CoordinateMapper.h Image.h ImageException.h Pixel.h Point2D.h Region.h Segmentor.h  ShadowImage.h Subimage.h Version.h
 
 libgip_la_DEPENDENCIES = transformation/libtransformation.la analysis/libanalysis.la draw/libdraw.la io/libio.la media/libmedia.la @GIP_ADDITIONAL_DEPENDENCIES@
 
 winrcver.o: gip.rc
-	windres --include-dir .. --output-format coff $< $@
+	windres --preprocessor "${CXXCPP} -xc-header ${CPPFLAGS}" --output-format coff $< $@
 
 gip_SOURCES = main.cpp
 gip_LDADD = libgip.la
