@@ -1,13 +1,27 @@
-dnl Copyright 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
-dnl Process this file with autoconf to produce a configure script.
+dnl ***************************************************************************
+dnl    Generic Image Processing (GIP) Framework
+dnl    A framework for developing image processing applications
+dnl
+dnl    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+dnl
+dnl    This framework is distributed in the hope that it will be useful,
+dnl    but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+dnl
+dnl    For the licensing terms refer to the file 'LICENSE'.
+dnl ***************************************************************************
+
+dnl Process this file with autoconf to produce a configure script
 
 AC_INIT(Makefile.am)
+AC_CONFIG_SRCDIR(gip/features.h)
 
 ac_gip_build_date=$(date -u +"%D %T UTC")
 ac_gip_build_user=$(whoami)
 ac_gip_build_host=$(uname -n)
 
-AC_PREREQ(2.50)
+AC_PREREQ(2.52)
+AC_COPYRIGHT([Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>])
 dnl AC_CHECK_COMPILERS()
 AC_PROG_CXX()
 dnl AC_ENABLE_SHARED(yes)
@@ -54,11 +68,10 @@ AC_ARG_WITH(base-lib,
   ])
 
 if test "x$ac_base_include" != "x"; then
-  CPPFLAGS="-I${ac_base_include}${CPPFLAGS:+ }${CPPFLAGS}"
+  BASE_INCLUDES_ADD="-I${ac_base_include}${BASE_INCLUDES_ADD:+ }${BASE_INCLUDES_ADD}"
 fi
 if test "x$ac_base_lib" != "x"; then
-  BASE_LIBADD="${ac_base_lib}/libbase.la"
-  AC_SUBST(BASE_LIBADD)
+  BASE_LDFLAGS_ADD="-L${ac_base_lib}"
 fi
 
 
@@ -67,8 +80,8 @@ dnl Add VERSION resource to the dynamic library on Windows platforms (i.e. cygwi
 case "$ac_cv_target" in
 *-*-cygwin|*-*-mingw32)
   dnl The -Wl option is used to circumvent libtool
-  GIP_ADDITIONAL_LIBADD="${GIP_ADDITIONAL_LIBADD}${GIP_ADDITIONAL_LIBADD:+ }"'-Wl,winrcver.o'
-  GIP_ADDITIONAL_DEPENDENCIES="${GIP_ADDITIONAL_DEPENDENCIES}${GIP_ADDITIONAL_DEPENDENCIES:+ }"'winrcver.o'
+  GIP_LIBADD_ADD="${GIP_LIBADD_ADD}${GIP_LIBADD_ADD:+ }"'-Wl,winrcver.o'
+  GIP_DEPENDENCIES_ADD="${GIP_DEPENDENCIES_ADD}${GIP_DEPENDENCIES_ADD:+ }"'winrcver.o'
   ;;
 esac
 
@@ -85,15 +98,18 @@ AC_GIP_DEFINE(TARGET_SYSTEM, [\"]$ac_cv_target[\"])
 dnl Tell the compiler where it should look for the generated and static framework headers
 if (test -f gip/features.h) then
   dnl We are building directly in the source tree
-  CPPFLAGS='-I${top_srcdir}'"${CPPFLAGS:+ }${CPPFLAGS}"
+  GIP_INCLUDES_ADD='-I${top_srcdir}'"${GIP_INCLUDES_ADD:+ }${GIP_INCLUDES_ADD}"
 else
   dnl We are building in a separate directory tree
-  CPPFLAGS='-I${top_builddir} -I${top_srcdir}'"${CPPFLAGS:+ }${CPPFLAGS}"
+  GIP_INCLUDES_ADD='-I${top_builddir} -I${top_srcdir}'"${GIP_INCLUDES_ADD:+ }${GIP_INCLUDES_ADD}"
 fi
 
-AC_SUBST(GIP_ADDITIONAL_LIBADD)
-AC_SUBST(GIP_ADDITIONAL_LDFLAGS)
-AC_SUBST(GIP_ADDITIONAL_DEPENDENCIES)
+AC_SUBST(BASE_INCLUDES_ADD)
+AC_SUBST(BASE_LDFLAGS_ADD)
+AC_SUBST(GIP_INCLUDES_ADD)
+AC_SUBST(GIP_LIBADD_ADD)
+AC_SUBST(GIP_LDFLAGS_ADD)
+AC_SUBST(GIP_DEPENDENCIES_ADD)
 
 dnl Store the symbols
 ac_gip_header=gip/configuration.h
@@ -101,4 +117,15 @@ echo "updating configuration..."
 mkdir -p gip
 mv $ac_gip_config $ac_gip_header
 
-AC_OUTPUT(Makefile gip/Makefile gip/docs/Makefile gip/docs/en/Makefile gip/transformation/Makefile gip/analysis/Makefile gip/Makefile gip/draw/Makefile gip/io/Makefile gip/media/Makefile)
+dnl Generate make files
+AC_CONFIG_FILES(Makefile)
+AC_CONFIG_FILES(gip/Makefile)
+AC_CONFIG_FILES(gip/docs/Makefile)
+AC_CONFIG_FILES(gip/docs/en/Makefile)
+AC_CONFIG_FILES(gip/transformation/Makefile)
+AC_CONFIG_FILES(gip/analysis/Makefile)
+AC_CONFIG_FILES(gip/draw/Makefile)
+AC_CONFIG_FILES(gip/io/Makefile)
+AC_CONFIG_FILES(gip/media/Makefile)
+
+AC_OUTPUT()
