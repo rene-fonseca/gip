@@ -21,7 +21,7 @@
 #include <base/collection/Array.h>
 #include <gip/ArrayImage.h>
 #include <gip/ImageException.h>
-#include <gip/io/InvalidFormat.h>
+#include <base/string/InvalidFormat.h>
 
 namespace gip {
 

@@ -14,7 +14,7 @@
 #include <gip/media/AVIEncoder.h>
 #include <base/mem/Allocator.h>
 #include <base/ByteOrder.h>
-#include <gip/io/InvalidFormat.h>
+#include <base/string/InvalidFormat.h>
 
 namespace gip {
 
