@@ -1,9 +1,13 @@
 ####### kdevelop will overwrite this part!!! (begin)##########
-noinst_LIBRARIES = libmedia.a
-
-libmedia_a_SOURCES = AVIEncoder.cpp 
-
-
-EXTRA_DIST = AVIEncoder.cpp AVIEncoder.h 
-
 ####### kdevelop will overwrite this part!!! (end)############
+DEFS =
+DEFAULT_INCLUDES =
+
+noinst_LTLIBRARIES = libmedia.la
+
+libmedia_la_SOURCES = AVIEncoder.cpp
+
+sectiondir = $(includedir)/gip
+section_HEADERS = AVIEncoder.h
+
+EXTRA_DIST =

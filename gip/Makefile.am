@@ -1,18 +1,26 @@
 ####### kdevelop will overwrite this part!!! (begin)##########
-bin_PROGRAMS = gip
-gip_SOURCES = Point2D.cpp ImageException.cpp ArrayImage.cpp CoordinateMapper.cpp Region.cpp Segmentor.cpp Pixel.cpp ShadowImage.cpp Subimage.cpp Image.cpp main.cpp 
-gip_LDADD   = ./transformation/libtransformation.a ./io/libio.a ./analysis/libanalysis.a ./draw/libdraw.a ./media/libmedia.a -lbase
-
-SUBDIRS = docs transformation io analysis draw media 
-
-EXTRA_DIST = main.cpp Image.cpp Image.h Subimage.cpp Subimage.h ShadowImage.cpp ShadowImage.h Pixel.cpp Pixel.h Segmentor.cpp Segmentor.h Region.cpp Region.h CoordinateMapper.cpp CoordinateMapper.h ArrayImage.cpp ArrayImage.h gip.h features.h ImageException.cpp ImageException.h Point2D.h Point2D.cpp 
-
 ####### kdevelop will overwrite this part!!! (end)############
 DEFS =
-bin_PROGRAMS = gip
+DEFAULT_INCLUDES =
 
-# set the include path found by configure
+bin_PROGRAMS = gip
+lib_LTLIBRARIES = libgip.la
+
 INCLUDES = $(all_includes)
- 
-# the library search path.
-gip_LDFLAGS = $(all_libraries) 
+
+libgip_la_SOURCES = Point2D.cpp ImageException.cpp ArrayImage.cpp CoordinateMapper.cpp Region.cpp Segmentor.cpp Pixel.cpp ShadowImage.cpp Subimage.cpp Image.cpp
+
+libgip_la_LIBADD = ./transformation/libtransformation.la ./analysis/libanalysis.la ./draw/libdraw.la ./io/libio.la ./media/libmedia.la @BASE_LIBADD@
+
+libgip_la_LDFLAGS = -avoid-version -module -no-undefined -version-info 0:1:0
+
+sectiondir = $(includedir)/gip
+section_HEADERS = gip.h features.h ArrayImage.h CoordinateMapper.h Image.h ImageException.h Pixel.h Point2D.h Region.h Segmentor.h  ShadowImage.h Subimage.h
+
+gip_SOURCES = main.cpp
+gip_LDADD = libgip.la
+gip_LDFLAGS =
+
+EXTRA_DIST =
+
+SUBDIRS = docs transformation analysis draw io media 

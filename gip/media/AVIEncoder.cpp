@@ -13,6 +13,7 @@
 
 #include <gip/media/AVIEncoder.h>
 #include <base/mem/Allocator.h>
+#include <base/ByteOrder.h>
 
 namespace gip {
 
@@ -160,7 +161,7 @@ typedef struct {
   AVIPaletteEntry entry[0];
 } __attribute__ ((packed)) AVIPaletteChange;
 
-enum {BI_RGB = 0, BI_RLE8 = 1, BI_RLE4 = 2, BI_BITFIELDS = 3};
+enum {BMP_RGB = 0, BMP_RLE8 = 1, BMP_RLE4 = 2, BMP_BITFIELDS = 3};
 
 AVIEncoder::AVIEncoder(const String& f) throw(IOException) : filename(f) {
 }

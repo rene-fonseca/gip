@@ -384,6 +384,8 @@ int main(int argc, char* argv[]) {
   try {
 //    testAVI();
 //    test(input, output);
+    Timer timer;
+    while (timer.getLiveMicroseconds() < 30000000);
   } catch(Exception& e) {
     ferr << typeid(e).name() << ": "<< e.getMessage() << ENDL;
     return 1;

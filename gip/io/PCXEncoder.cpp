@@ -16,6 +16,7 @@
 #include <base/io/File.h>
 #include <base/concurrency/Thread.h>
 #include <base/Type.h>
+#include <base/ByteOrder.h>
 
 using namespace base;
 

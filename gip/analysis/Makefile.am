@@ -1,10 +1,13 @@
 ####### kdevelop will overwrite this part!!! (begin)##########
-noinst_LIBRARIES = libanalysis.a
-
-libanalysis_a_SOURCES = Histogram.cpp traverse.cpp 
-
-
-EXTRA_DIST = traverse.cpp traverse.h Histogram.cpp Histogram.h 
-
 ####### kdevelop will overwrite this part!!! (end)############
 DEFS =
+DEFAULT_INCLUDES =
+
+noinst_LTLIBRARIES = libanalysis.la
+
+libanalysis_la_SOURCES = Histogram.cpp traverse.cpp
+
+sectiondir = $(includedir)/gip
+section_HEADERS = traverse.h Histogram.h
+
+EXTRA_DIST =

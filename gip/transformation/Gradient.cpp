@@ -16,6 +16,8 @@
 
 namespace gip {
 
+#define M_SQRT2 1.44
+
 Gradient::Gradient(DestinationImage* destination, const SourceImage* source) throw(ImageException) :
   Transformation<DestinationImage, SourceImage>(destination, source) {
   assert(

@@ -17,6 +17,7 @@
 #include <base/io/FileReader.h>
 #include <base/concurrency/Thread.h>
 #include <base/Type.h>
+#include <base/ByteOrder.h>
 
 using namespace base;
 
@@ -57,7 +58,7 @@ public:
 
 
 
-enum {BI_RGB = 0, BI_RLE8 = 1, BI_RLE4 = 2, BI_BITFIELDS = 3};
+enum {BMP_RGB = 0, BMP_RLE8 = 1, BMP_RLE4 = 2, BMP_BITFIELDS = 3};
 
 typedef struct {
   char identifier[2]; // the characters identifying the bitmap

@@ -16,6 +16,8 @@
 
 namespace gip {
 
+#define M_PIl 3.14
+
 inline bool isPowerOfTwo(unsigned int value) throw() {
   if (value == 0) {
     return true;

@@ -20,8 +20,10 @@
 namespace gip {
 
 /**
+
+  @short
   @author |AUTHOR|
-  @version 1.0
+  @version $Revision$
 */
 
 }; // end of gip namespace
