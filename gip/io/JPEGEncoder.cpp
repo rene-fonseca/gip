@@ -18,7 +18,10 @@
 
 #include <sys/types.h> // get size_t
 #include <stdio.h> // get FILE (but we do not use this)
+
+extern "C" {
 #include <jpeglib.h>
+};
 
 namespace gip {
 
@@ -351,4 +354,4 @@ namespace gip {
                   << EOL;
   }
 
-}; // end of namespace
+}; // end of gip namespace
