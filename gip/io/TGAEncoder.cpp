@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2002-2003 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -25,7 +25,7 @@ namespace gip {
 
   namespace TGAEncoderImpl {
 
-    static const StringLiteral signature = MESSAGE("TRUEVISION-XFILE");
+    static const Literal signature = "TRUEVISION-XFILE";
     
     enum {
       TYPE_NO_IMAGE_DATA = 0,
@@ -71,17 +71,17 @@ namespace gip {
   }
 
   String TGAEncoder::getDescription() const throw() {
-    return MESSAGE("Truevision Targa");
+    return Literal("Truevision Targa");
   }
 
   String TGAEncoder::getDefaultExtension() const throw() {
-    return MESSAGE("tga");
+    return Literal("tga");
   }
 
   Array<String> TGAEncoder::getExtensions() const throw() {
     Array<String> extensions;
-    extensions.append(MESSAGE("tga"));
-    extensions.append(MESSAGE("tpic"));
+    extensions.append("tga");
+    extensions.append("tpic");
     return extensions;
   }
   
@@ -94,7 +94,10 @@ namespace gip {
     if (file.getSize() >= sizeof(footer)) {
       file.setPosition(-sizeof(footer), File::END);
       file.read(Cast::getCharAddress(footer), sizeof(footer));
-      if ((compare<char>(footer.signature, TGAEncoderImpl::signature, TGAEncoderImpl::signature.getLength()) == 0) &&
+      if ((compare<char>(
+             footer.signature,
+             TGAEncoderImpl::signature.getValue(),
+             TGAEncoderImpl::signature.getLength()) == 0) &&
           (footer.dot == '.') &&
           (footer.zero == '\0')) {
         newFormat = true;
@@ -118,7 +121,8 @@ namespace gip {
     }
   }
   
-  ColorImage* TGAEncoder::read(const String& filename) throw(InvalidFormat, IOException) {    
+  ColorImage* TGAEncoder::read(
+    const String& filename) throw(InvalidFormat, IOException) {    
     bool newFormat = false;
     TGAEncoderImpl::Header header;
     TGAEncoderImpl::Footer footer;    
@@ -127,7 +131,11 @@ namespace gip {
     if (file.getSize() >= sizeof(footer)) {
       file.setPosition(-sizeof(footer), File::END);
       file.read(Cast::getCharAddress(footer), sizeof(footer));
-      if ((compare<char>(footer.signature, TGAEncoderImpl::signature, TGAEncoderImpl::signature.getLength()) == 0) &&
+      if ((compare<char>(
+             footer.signature,
+             TGAEncoderImpl::signature.getValue(),
+             TGAEncoderImpl::signature.getLength()
+           ) == 0) &&
           (footer.dot == '.') &&
           (footer.zero == '\0')) {
         newFormat = true;
@@ -140,7 +148,10 @@ namespace gip {
       return 0;
     }
     
-    assert((header.colorMapType == 0) && (header.image.pixelDepth == 24), InvalidFormat(this));
+    assert(
+      (header.colorMapType == 0) && (header.image.pixelDepth == 24),
+      InvalidFormat(this)
+    );
     
     const Dimension dimension(header.image.width, header.image.height);
     ColorImage* image = new ColorImage(dimension);
@@ -166,10 +177,15 @@ namespace gip {
     return image;
   }
   
-  void TGAEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException) {
+  void TGAEncoder::write(
+    const String& filename,
+    const ColorImage* image) throw(ImageException, IOException) {
     assert(image, NullPointer(this));
     Dimension dimension = image->getDimension();
-    assert((dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff), ImageException(this));
+    assert(
+      (dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff),
+      ImageException(this)
+    );
 
     TGAEncoderImpl::Header header;
     clear(header);
@@ -182,7 +198,11 @@ namespace gip {
     TGAEncoderImpl::Footer footer;
     footer.extensionOffset = 0;
     footer.directoryOffset = 0;
-    copy<char>(footer.signature, TGAEncoderImpl::signature, TGAEncoderImpl::signature.getLength());
+    copy<char>(
+      footer.signature,
+      TGAEncoderImpl::signature.getValue(),
+      TGAEncoderImpl::signature.getLength()
+    );
     footer.dot = '.';
     footer.zero = '\0';
     
@@ -207,13 +227,21 @@ namespace gip {
     }
     
     file.write(Cast::getCharAddress(footer), sizeof(footer));
-    file.truncate(sizeof(header) + static_cast<unsigned long long>(dimension.getSize()) * 3 + sizeof(footer));
+    file.truncate(
+      sizeof(header) +
+      static_cast<unsigned long long>(dimension.getSize()) * 3 + sizeof(footer)
+    );
   }
 
-  void TGAEncoder::write(const String& filename, const ColorAlphaImage* image) throw(ImageException, IOException) {
+  void TGAEncoder::write(
+    const String& filename,
+    const ColorAlphaImage* image) throw(ImageException, IOException) {
     assert(image, NullPointer(this));
     Dimension dimension = image->getDimension();
-    assert((dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff), ImageException(this));
+    assert(
+      (dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff),
+      ImageException(this)
+    );
     
     TGAEncoderImpl::Header header;
     clear(header);
@@ -227,7 +255,11 @@ namespace gip {
     TGAEncoderImpl::Footer footer;
     footer.extensionOffset = 0;
     footer.directoryOffset = 0;
-    copy<char>(footer.signature, TGAEncoderImpl::signature, TGAEncoderImpl::signature.getLength());
+    copy<char>(
+      footer.signature,
+      TGAEncoderImpl::signature.getValue(),
+      TGAEncoderImpl::signature.getLength()
+    );
     footer.dot = '.';
     footer.zero = '\0';
     
@@ -253,13 +285,21 @@ namespace gip {
     }
 
     file.write(Cast::getCharAddress(footer), sizeof(footer));
-    file.truncate(sizeof(header) + static_cast<unsigned long long>(dimension.getSize()) * 4 + sizeof(footer));
+    file.truncate(
+      sizeof(header) +
+      static_cast<unsigned long long>(dimension.getSize()) * 4 + sizeof(footer)
+    );
   }
 
-  void TGAEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
+  void TGAEncoder::writeGray(
+    const String& filename,
+    const GrayImage* image) throw(ImageException, IOException) {
     assert(image, NullPointer(this));
     Dimension dimension = image->getDimension();
-    assert((dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff), ImageException(this));
+    assert(
+      (dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff),
+      ImageException(this)
+    );
 
     TGAEncoderImpl::Header header;
     clear(header);
@@ -272,7 +312,11 @@ namespace gip {
     TGAEncoderImpl::Footer footer;
     footer.extensionOffset = 0;
     footer.directoryOffset = 0;
-    copy<char>(footer.signature, TGAEncoderImpl::signature, TGAEncoderImpl::signature.getLength());
+    copy<char>(
+      footer.signature,
+      TGAEncoderImpl::signature.getValue(),
+      TGAEncoderImpl::signature.getLength()
+    );
     footer.dot = '.';
     footer.zero = '\0';
     
@@ -302,9 +346,10 @@ namespace gip {
     file.truncate(sizeof(header) + dimension.getSize() * 1 + sizeof(footer));
   }
 
-  HashTable<String, AnyValue> TGAEncoder::getInformation(const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> TGAEncoder::getInformation(
+    const String& filename) throw(IOException) {
     HashTable<String, AnyValue> result;
-    static const StringLiteral signature = MESSAGE("TRUEVISION-XFILE");
+    static const Literal signature("TRUEVISION-XFILE");
     
     bool newFormat = false;
     TGAEncoderImpl::Header header;
@@ -314,7 +359,11 @@ namespace gip {
     if (file.getSize() >= sizeof(footer)) {
       file.setPosition(-sizeof(footer), File::END);
       file.read(Cast::getCharAddress(footer), sizeof(footer) - 1);
-      if ((compare<char>(footer.signature, signature, signature.getLength()) == 0) &&
+      if ((compare<char>(
+             footer.signature,
+             signature.getValue(),
+             signature.getLength()
+           ) == 0) &&
           (footer.dot == '.') &&
           (footer.zero == '\0')) {
         newFormat = true;
@@ -336,13 +385,13 @@ namespace gip {
       throw InvalidFormat(this);
     }
     
-    result[MESSAGE("encoder")] = Type::getType(*this);
-    result[MESSAGE("description")] = MESSAGE("Truevision Targa");
-    result[MESSAGE("x")] = static_cast<unsigned int>(header.image.x);
-    result[MESSAGE("y")] = static_cast<unsigned int>(header.image.y);
-    result[MESSAGE("width")] = static_cast<unsigned int>(header.image.width);
-    result[MESSAGE("height")] = static_cast<unsigned int>(header.image.height);
-    result[MESSAGE("depth")] = static_cast<unsigned int>(header.image.pixelDepth);
+    result["encoder"] = Type::getType(*this);
+    result["description"] = "Truevision Targa";
+    result["x"] = static_cast<unsigned int>(header.image.x);
+    result["y"] = static_cast<unsigned int>(header.image.y);
+    result["width"] = static_cast<unsigned int>(header.image.width);
+    result["height"] = static_cast<unsigned int>(header.image.height);
+    result["depth"] = static_cast<unsigned int>(header.image.pixelDepth);
     return result;
   }
 

@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2002-2003 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -405,7 +405,7 @@ namespace gip {
   };
 
   String Camera1394::getFormatAsString(Mode mode) throw() {
-    static const StringLiteral FORMATS[] = {
+    static const Literal FORMATS[] = {
       MESSAGE("Uncompressed VGA"),
       MESSAGE("Uncompressed Super VGA I"),
       MESSAGE("Uncompressed Super VGA II"),
@@ -419,7 +419,7 @@ namespace gip {
   }
   
   String Camera1394::getModeAsString(Mode mode) throw() {
-    static const StringLiteral MODES[] = {
+    static const Literal MODES[] = {
       MESSAGE("YUV (4:4:4) 160x120 24bit/pixel"),
       MESSAGE("YUV (4:2:2) 320x240 16bit/pixel"),
       MESSAGE("YUV (4:1:1) 640x480 12bit/pixel"),

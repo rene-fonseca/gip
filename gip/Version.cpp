@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2002-2003 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,7 +18,7 @@ namespace gip {
 const char Version::banner[] =
 "Generic Image Processing (GIP) Framework release "_DK_SDU_MIP__GIP__RELEASE"\n"
 "A framework for developing image processing applications\n"
-"Copyright (C) 2000, 2001, 2002 Rene Moeller Fonseca\n\n"
+"Copyright (C) 2001, 2002, 2003 Rene Moeller Fonseca\n\n"
 "This framework is distributed in the hope that it will be useful,\n"
 "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
 "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
@@ -43,15 +43,15 @@ unsigned int Version::getMicroVersion() const throw() {
 }
 
 String Version::getRelease() const throw() {
-  return MESSAGE(_DK_SDU_MIP__GIP__RELEASE);
+  return Literal(_DK_SDU_MIP__GIP__RELEASE);
 }
 
 String Version::getVersion() const throw() {
-  return MESSAGE(_DK_SDU_MIP__GIP__VERSION);
+  return Literal(_DK_SDU_MIP__GIP__VERSION);
 }
 
 String Version::getBanner() const throw() {
-  return MESSAGE(banner);
+  return Literal(banner);
 }
  
 }; // end of gip namespace
