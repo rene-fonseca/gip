@@ -23,6 +23,8 @@ namespace gip {
   class NoiseOperation {
   public:
     
+    typedef PIXEL Pixel;
+
     inline Pixel operator()() const throw() {
       return Random::getLongDouble() * PixelTraits<Pixel>::MAXIMUM;
     }
@@ -31,6 +33,8 @@ namespace gip {
   template<class COMPONENT>
   class NoiseOperation<RGBPixel<COMPONENT> > {
   public:
+
+    typedef RGBPixel<COMPONENT> Pixel;
     
     inline Pixel operator()() const throw() {
       return makeRGBPixel(
@@ -45,7 +49,7 @@ namespace gip {
   class NoiseOperation<ColorPixel> {
   public:
     
-    inline Pixel operator()() const throw() {
+    inline ColorPixel operator()() const throw() {
       ColorPixel result;
       result.rgb = Random::getInteger();
       return result;
