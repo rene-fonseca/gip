@@ -14,9 +14,12 @@
 #include <gip/io/BMPEncoder.h>
 #include <gip/transformation/LinearScale.h>
 #include <gip/transformation/FourierTransformation.h>
+#include <gip/transformation/FourierExchange.h>
 #include <gip/transformation/Convert.h>
+#include <gip/operation/HeatColorMap.h>
 #include <gip/ArrayImage.h>
 #include <gip/analysis/traverse.h>
+#include <gip/Functor.h>
 #include <base/Application.h>
 #include <base/string/FormatOutputStream.h>
 #include <base/string/StringOutputStream.h>
@@ -36,14 +39,52 @@ public:
   inline FourierToGray(const Dimension& dimension) throw() : scale(1.0/dimension.getSize()) {}
 
   inline GrayPixel operator()(const Complex& value) const throw() {
-    long double temp = 0xff * log(1 + value.getModulus() * scale);
-    if (temp < 0x00) {
-      return 0x00;
-    } else if (temp > 0xff) {
-      return 0xff;
-    } else {
-      return static_cast<GrayPixel>(temp);
+    return clamp(0, static_cast<GrayPixel>(255 * log(1 + value.getModulus() * scale)), 255);
+  }
+};
+
+class FourierToLogModulus : public UnaryOperation<Complex, long double> {
+private:
+
+   long double scale;
+   long double max;
+public:
+
+  inline FourierToLogModulus(const Dimension& dimension) throw()
+     : scale(1.0/dimension.getSize()),
+       max(0) {
+  }
+
+  inline long double operator()(const Complex& value) throw() {
+    long double result = log(1 + value.getModulus() * scale);
+    if (result > max) {
+      max = result;
     }
+    return result;
+  }
+
+  inline long double getMaximum() const throw() {
+    return max;
+  }
+};
+
+class MapToHue : public UnaryOperation<ColorPixel, long double> {
+private:
+
+  long double scale;
+  HeatColorMap map;
+public:
+
+  MapToHue(long double _scale) throw() : scale(_scale) {
+  }
+
+  inline ColorPixel operator()(const long double& value) const throw() {
+    RGBPixel<long double> temp = map(sqrt(value * scale));
+    ColorPixel result;
+    result.red = static_cast<PixelTraits<ColorPixel>::Component>(PixelTraits<ColorPixel>::MAXIMUM * temp.red + 0.5);
+    result.green = static_cast<PixelTraits<ColorPixel>::Component>(PixelTraits<ColorPixel>::MAXIMUM * temp.green + 0.5);
+    result.blue = static_cast<PixelTraits<ColorPixel>::Component>(PixelTraits<ColorPixel>::MAXIMUM * temp.blue + 0.5);
+    return result;
   }
 };
 
@@ -101,16 +142,36 @@ public:
       fout << MESSAGE("Time elapsed for Fourier transformation: ") << timer.getLiveMicroseconds() << MESSAGE(" microseconds") << EOL;
     }
 
-    GrayImage grayImage(fourierImage.getDimension());
+//    GrayImage grayImage(fourierImage.getDimension());
+//    {
+//      Convert<GrayImage, ComplexImage, FourierToGray> transform(&grayImage, &fourierImage, FourierToGray(fourierImage.getDimension()));
+//      fout << MESSAGE("Converting image: ComplexImage->GrayImage") << ' '
+//           << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
+//      transform();
+//    }
+
+    ArrayImage<long double> modulusImage(fourierImage.getDimension());
+    long double maximumModulus;
     {
-      Convert<GrayImage, ComplexImage, FourierToGray> transform(&grayImage, &fourierImage, FourierToGray(fourierImage.getDimension()));
-      fout << MESSAGE("Converting image: ComplexImage->GrayImage") << ' '
-           << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
+      Convert<ArrayImage<long double>, ComplexImage, FourierToLogModulus> transform(&modulusImage, &fourierImage, FourierToLogModulus(fourierImage.getDimension()));
+      fout << MESSAGE("Converting image: ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
+      transform();
+      maximumModulus = transform.getResult().getMaximum();
+    }
+
+    ColorImage finalImage(modulusImage.getDimension());
+    MapToHue map(1.0/maximumModulus);
+    fillWithUnary(finalImage, modulusImage, map);
+
+    {
+      FourierExchange<ColorImage> transform(&finalImage);
+      fout << MESSAGE("Transforming image: ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
       transform();
     }
 
     fout << MESSAGE("Exporting image with encoder: ") << encoder.getDescription() << ENDL;
-    encoder.writeGray(outputFile, &grayImage);
+    encoder.write(outputFile, &finalImage);
+//    encoder.writeGray(outputFile, &grayImage);
   }
   
   void main() throw() {
