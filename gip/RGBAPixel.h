@@ -90,9 +90,9 @@ namespace gip {
         unsigned char green;
         unsigned char blue;
         unsigned char alpha;
-      } __attribute__ ((packed));
-    } __attribute__ ((packed));
-  } __attribute__ ((packed));
+      } _DK_SDU_MIP__BASE__PACKED;
+    } _DK_SDU_MIP__BASE__PACKED;
+  } _DK_SDU_MIP__BASE__PACKED;
 
   /**
     The RGBA pixel type represented by a single 32 bit word (with 8 bit

@@ -75,9 +75,9 @@ struct YCbCrPixel<unsigned char> {
       unsigned char luma;
       unsigned char cb;
       unsigned char cr;
-    } __attribute__ ((packed));
-  } __attribute__ ((packed));
-} __attribute__ ((packed));
+    } _DK_SDU_MIP__BASE__PACKED;
+  } _DK_SDU_MIP__BASE__PACKED;
+} _DK_SDU_MIP__BASE__PACKED;
 
 /**
   This function returns the Y'CbCr pixel corresponding to the specified component values.
