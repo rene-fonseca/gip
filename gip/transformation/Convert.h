@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -61,14 +61,14 @@ namespace gip {
 
     inline FloatToGrayWithScale(long double _scale) throw() : scale(_scale) {}
 
-    inline Result operator()(const Argument& value) const throw() {
+    inline GrayPixel operator()(const float& value) const throw() {
       long double temp = scale * value;
       if (temp < 0x00) {
         return 0x00;
       } else if (temp > 0xff) {
         return 0xff;
       } else {
-        return GrayPixel(static_cast<unsigned char>(temp));
+        return static_cast<GrayPixel>(temp);
       }
     }
   };
@@ -78,8 +78,8 @@ namespace gip {
 
     inline GrayToFloat() throw() {}
 
-    inline Result operator()(const Argument& value) const throw() {
-      return float(value);
+    inline float operator()(const GrayPixel& value) const throw() {
+      return value;
     }
   };
 
@@ -91,7 +91,7 @@ namespace gip {
 
     inline RGBToComplex(long double _scale) throw() : scale(_scale) {}
 
-    inline Result operator()(const Argument& value) const throw() {
+    inline Complex operator()(const ColorPixel& value) const throw() {
       RGBToGray opr;
       return Complex(scale * opr(value), 0);
     }
