@@ -42,6 +42,7 @@ bin_PROGRAMS += StraightLineHoughTransformation
 bin_PROGRAMS += Tile
 bin_PROGRAMS += Transpose
 bin_PROGRAMS += videophone
+bin_PROGRAMS += viewer
 bin_PROGRAMS += WalshTransformation
 
 gip_SOURCES = gip.cpp
@@ -73,6 +74,7 @@ StraightLineHoughTransformation_SOURCES = StraightLineHoughTransformation.cpp
 Tile_SOURCES = Tile.cpp
 Transpose_SOURCES = Transpose.cpp
 videophone_SOURCES = videophone.cpp
+viewer_SOURCES = viewer.cpp
 WalshTransformation_SOURCES = WalshTransformation.cpp
 
 EXTRA_DIST =
