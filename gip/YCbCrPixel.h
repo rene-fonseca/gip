@@ -20,7 +20,7 @@
 namespace gip {
 
 /**
-  Y'CbCr color space pixel.
+  Pixel specified by luma and two chroma (blue and red) components.
 
   @short Y'CbCr color space pixel
   @ingroup pixels
@@ -124,9 +124,9 @@ inline YCbCrPixel<unsigned char> RGBToYCbCr<unsigned char>(const RGBPixel<unsign
   // we know that overflow isn't possible: (299 + 587 + 114) * 255 * 255 <= PrimitiveTraits<PixelTraits<ColorPixel>::Arithmetic>::MAXIMUM
   // see ITU-R recommendation BT (map into range [0; 255])
   Arithmetic temp = 299 * static_cast<Arithmetic>(pixel.red) + 587 * static_cast<Arithmetic>(pixel.green) + 114 * static_cast<Arithmetic>(pixel.blue);
-  result.luma = temp/1000;
-  result.cb = (1000 * static_cast<Arithmetic>(pixel.blue) - temp) * 255/(2 * 1000 * (1000-114)) + 128;
-  result.cr = (1000 * static_cast<Arithmetic>(pixel.red) - temp) * 255/(2 * 1000 * (1000-299)) + 128;
+  result.luma = (temp + 1000/2)/1000; // round to nearest
+  result.cb = ((1000 * static_cast<Arithmetic>(pixel.blue) - temp) + (255+1)*(1000-114))/(2 * (1000-114)); // round to nearest
+  result.cr = ((1000 * static_cast<Arithmetic>(pixel.red) - temp) + (255+1)*(1000-299))/(2 * (1000-299)); // round to nearest
   return result;
 }
 
@@ -135,12 +135,34 @@ inline YCbCrPixel<unsigned char> RGBToYCbCr<unsigned char>(const RGBPixel<unsign
 */
 template<class COMPONENT>
 inline RGBPixel<COMPONENT> YCbCrToRGB(const YCbCrPixel<COMPONENT>& pixel) throw() {
-  RGBPixel<COMPONENT> result;
   typedef PixelTraits<YCbCrPixel<COMPONENT> >::Arithmetic Arithmetic;
+  RGBPixel<COMPONENT> result;
    // map components into range [0; 1]
   result.red = static_cast<Arithmetic>(pixel.luma) + 2 * (1.000-0.299) * static_cast<Arithmetic>(pixel.cr);
   result.green = static_cast<Arithmetic>(pixel.luma) + (-0.114/0.587 * 2 * (1.000-0.114)) * static_cast<Arithmetic>(pixel.cb) + (-0.299/0.587 * 2 * (1.000-0.299)) * static_cast<Arithmetic>(pixel.cr);
   result.blue = static_cast<Arithmetic>(pixel.luma) + 2 * (1.000-0.114) * static_cast<Arithmetic>(pixel.cb);
+  return result;
+}
+
+/**
+  Converts an Y'CbCr pixel into the RGB color space. The components will be mapped from the range [0; 255] into [0; 255].
+*/
+template<>
+inline RGBPixel<unsigned char> YCbCrToRGB(const YCbCrPixel<unsigned char>& pixel) throw() {
+  typedef PixelTraits<YCbCrPixel<unsigned char> >::Arithmetic Arithmetic;
+  RGBPixel<unsigned char> result;
+  Arithmetic temp;
+  temp = static_cast<Arithmetic>(pixel.luma) + (2*(1000-299) * static_cast<Arithmetic>(pixel.cr) - (1000-299)*255 + 1000/2)/1000; // round to nearest
+  result.red = (temp >= 0) ? ((temp <= 255) ? temp : 255) : 0;
+  temp = static_cast<Arithmetic>(pixel.luma) +
+    (
+      587 * 1000/2 + (114 * (1000-114)) * 255 + (299 * (1000-299)) * 255
+      - (114 * (1000-114)) * 2 * static_cast<Arithmetic>(pixel.cb)
+      - (299 * (1000-299)) * 2 * static_cast<Arithmetic>(pixel.cr)
+    )/(587*1000); // round to nearest
+  result.green = (temp >= 0) ? ((temp <= 255) ? temp : 255) : 0;
+  temp = static_cast<Arithmetic>(pixel.luma) + (2*(1000-114) * static_cast<Arithmetic>(pixel.cb) - (1000-114)*255 + 1000/2)/1000; // round to nearest
+  result.blue = (temp >= 0) ? ((temp <= 255) ? temp : 255) : 0;
   return result;
 }
 
