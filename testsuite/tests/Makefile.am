@@ -11,10 +11,7 @@
 #    For the licensing terms refer to the file 'LICENSE'.
 # ***************************************************************************
 
-DEFS =
-AUTOMAKE_OPTIONS = 1.4 foreign nostdinc
-
-LIBS=-lgip -lbase
+include $(top_srcdir)/common.am
 
 bin_PROGRAMS = gip types bmpio gifio WalshTransformation
 
