@@ -24,12 +24,12 @@ namespace gip {
 
     static void read(png_structp context, png_bytep buffer, png_size_t size) {
       File* file = (File*)::png_get_io_ptr(context);
-      file->read(pointer_cast<char*>(buffer), static_cast<unsigned int>(size)); // could raise exception
+      file->read(Cast::pointer<char*>(buffer), static_cast<unsigned int>(size)); // could raise exception
     }
 
     static void write(png_structp context, png_bytep buffer, png_size_t size) {
       File* file = (File*)::png_get_io_ptr(context);
-      file->write(pointer_cast<const char*>(buffer), static_cast<unsigned int>(size)); // could raise exception
+      file->write(Cast::pointer<const char*>(buffer), static_cast<unsigned int>(size)); // could raise exception
     }
 
     static void flush(png_structp context) throw() {
@@ -139,7 +139,7 @@ namespace gip {
           *row++ = src;
         }
         ::png_read_rows(context, (png_bytepp)rows, 0, blockHeight); // TAG: fix for bad prototype in PNG API
-//        ::png_read_image(context, pointer_cast<png_bytepp>(rows));
+//        ::png_read_image(context, Cast::pointer<png_bytepp>(rows));
       }
       
       ::png_read_end(context, 0);

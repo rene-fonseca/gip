@@ -452,7 +452,7 @@ void AVIReader::analyse() throw(IOException) {
     fill<char>(buffer.getElements(), buffer.getSize(), 0);
     file.read(buffer.getElements(), (avih.size + 1)/2*2);
     totalRead += sizeof(avih) + (avih.size + 1)/2*2;
-    AVIHeader* header = pointer_cast<AVIHeader*>(buffer.getElements());
+    AVIHeader* header = Cast::pointer<AVIHeader*>(buffer.getElements());
 
     // initialize global descriptor
     globalDescriptor.microSecPerFrame = header->microSecPerFrame;

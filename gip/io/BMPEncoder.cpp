@@ -322,8 +322,8 @@ namespace gip {
         {
           Allocator<char> buffer(header.bitmapDataSize); // all image data
           file.read(buffer.getElements(), header.bitmapDataSize); // read all image data
-          const unsigned char* src = pointer_cast<const unsigned char*>(buffer.getElements());
-          const unsigned char* srcEnd = pointer_cast<const unsigned char*>(src + header.bitmapDataSize);
+          const unsigned char* src = Cast::pointer<const unsigned char*>(buffer.getElements());
+          const unsigned char* srcEnd = Cast::pointer<const unsigned char*>(src + header.bitmapDataSize);
           ColorPixel* elements = image->getElements();
           unsigned int row = 0;
           unsigned int column = 0;
@@ -376,8 +376,8 @@ namespace gip {
         {
           Allocator<char> buffer(header.bitmapDataSize); // all image data
           file.read(buffer.getElements(), header.bitmapDataSize); // read all image data
-          const unsigned char* src = pointer_cast<const unsigned char*>(buffer.getElements());
-          const unsigned char* srcEnd = pointer_cast<const unsigned char*>(src + header.bitmapDataSize);
+          const unsigned char* src = Cast::pointer<const unsigned char*>(buffer.getElements());
+          const unsigned char* srcEnd = Cast::pointer<const unsigned char*>(src + header.bitmapDataSize);
           ColorPixel* elements = image->getElements();
           unsigned int row = 0;
           unsigned int column = 0;
@@ -583,7 +583,7 @@ namespace gip {
 
         unsigned int pixelCount = endOfBuffer - p;
         if (pixelCount == 0) {
-          file.write(pointer_cast<const char*>(beginOfBuffer), p - beginOfBuffer); // empty buffer
+          file.write(Cast::pointer<const char*>(beginOfBuffer), p - beginOfBuffer); // empty buffer
           p = beginOfBuffer;
           pixelCount = endOfBuffer - p;
         }
@@ -595,7 +595,7 @@ namespace gip {
       }
 
       if (endOfBuffer - p == 0) {
-        file.write(pointer_cast<const char*>(beginOfBuffer), p - beginOfBuffer); // empty buffer
+        file.write(Cast::pointer<const char*>(beginOfBuffer), p - beginOfBuffer); // empty buffer
         p = beginOfBuffer;
       }
 
@@ -609,7 +609,7 @@ namespace gip {
       }
     }
 
-    file.write(pointer_cast<const char*>(beginOfBuffer), p - beginOfBuffer); // empty buffer
+    file.write(Cast::pointer<const char*>(beginOfBuffer), p - beginOfBuffer); // empty buffer
     file.truncate(sizeOfFile);
   }
 

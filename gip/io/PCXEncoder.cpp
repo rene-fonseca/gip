@@ -107,7 +107,7 @@ namespace gip {
 
     if (header.version == 5) { // do we need to look for palette
       file.setPosition(-(256 * 3 + 1), File::END);
-      file.read(pointer_cast<char*>(encoded.getElements()), 256 * 3 + 1);
+      file.read(Cast::pointer<char*>(encoded.getElements()), 256 * 3 + 1);
       const unsigned char* current = encoded.getElements();
       if (*current++ == 12) {
         palettePresent = true;
@@ -139,7 +139,7 @@ namespace gip {
     for (unsigned int row = 0; row < height; ++row) { // read all rows of image
       switch (header.encoding) {
       case 0: // scan line is not encoded
-        file.read(pointer_cast<char*>(decoded.getElements()), decoded.getSize());
+        file.read(Cast::pointer<char*>(decoded.getElements()), decoded.getSize());
         break;
 
       case 1: // scan line is run length encoded
@@ -148,7 +148,7 @@ namespace gip {
 
         for (unsigned int bytesToRead = bytesPerRow; bytesToRead > 0; ) {
           if (src >= endOfBuffer) { // if empty buffer then refill
-            unsigned int count = file.read(pointer_cast<char*>(encoded.getElements()), encoded.getSize(), true);
+            unsigned int count = file.read(Cast::pointer<char*>(encoded.getElements()), encoded.getSize(), true);
             assert(count > 0, InvalidFormat(this));
             src = encoded.getElements();
             endOfBuffer = src + count;
@@ -161,7 +161,7 @@ namespace gip {
             assert(count <= bytesToRead, InvalidFormat(this));
 
             if (src >= endOfBuffer) { // if empty buffer then refill
-              unsigned int count = file.read(pointer_cast<char*>(encoded.getElements()), encoded.getSize(), true);
+              unsigned int count = file.read(Cast::pointer<char*>(encoded.getElements()), encoded.getSize(), true);
               assert(count > 0, InvalidFormat(this));
               src = encoded.getElements();
               endOfBuffer = src + count;

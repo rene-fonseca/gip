@@ -284,7 +284,7 @@ namespace gip {
     const GrayPixel* src = image->getElements();
     if (sizeof(GrayPixel) == 1) {
       file.write(getCharAddress(header), sizeof(header));
-      file.write(pointer_cast<const char*>(src), count);
+      file.write(Cast::pointer<const char*>(src), count);
     } else {
       Allocator<char> buffer(BUFFER_SIZE);
       file.write(getCharAddress(header), sizeof(header));

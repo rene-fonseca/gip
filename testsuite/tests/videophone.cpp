@@ -297,7 +297,7 @@ public:
         Allocator<char> buffer(128); // convert frame to stream
         
         try {
-          streamSocket.write(pointer_cast<const char*>(buffer.getElements()), buffer.getByteSize());
+          streamSocket.write(Cast::pointer<const char*>(buffer.getElements()), buffer.getByteSize());
         } catch (IOException& e) {
           fout << MESSAGE("IOException: ") << e.getMessage() << ENDL;
           Application::getApplication()->terminate();
@@ -330,7 +330,7 @@ public:
         Allocator<char> buffer(128);
         
         try {
-          unsigned int bytesRead = streamSocket.read(pointer_cast<char*>(buffer.getElements()), buffer.getByteSize());
+          unsigned int bytesRead = streamSocket.read(Cast::pointer<char*>(buffer.getElements()), buffer.getByteSize());
         } catch (EndOfFile& e) {
           fout << MESSAGE("Connection terminated by remote host") << ENDL;
           Application::getApplication()->terminate();

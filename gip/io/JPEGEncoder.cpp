@@ -35,19 +35,19 @@ namespace gip {
     };
     
     static void initializeDestination(j_compress_ptr cinfo) {
-      //JPEGDestination* dest = pointer_cast<JPEGDestination*>(cinfo->dest);
+      //JPEGDestination* dest = Cast::pointer<JPEGDestination*>(cinfo->dest);
     }
 
     static boolean empty(j_compress_ptr cinfo) {
-      JPEGDestination* dest = pointer_cast<JPEGDestination*>(cinfo->dest);
+      JPEGDestination* dest = Cast::pointer<JPEGDestination*>(cinfo->dest);
       dest->file->write(dest->buffer, JPEGEncoder::BUFFER_SIZE);
-      dest->pub.next_output_byte = pointer_cast<JOCTET*>(dest->buffer);
+      dest->pub.next_output_byte = Cast::pointer<JOCTET*>(dest->buffer);
       dest->pub.free_in_buffer = JPEGEncoder::BUFFER_SIZE;
       return TRUE;
     }
     
     static void flush(j_compress_ptr cinfo) {
-      JPEGDestination* dest = pointer_cast<JPEGDestination*>(cinfo->dest);
+      JPEGDestination* dest = Cast::pointer<JPEGDestination*>(cinfo->dest);
       dest->file->write(dest->buffer, JPEGEncoder::BUFFER_SIZE - dest->pub.free_in_buffer);
     }
     
@@ -69,7 +69,7 @@ namespace gip {
       if (bytesRead == 0) {
         bytesRead = source->file->read(source->buffer, JPEGEncoder::BUFFER_SIZE, 1); // blocking
       }
-      source->pub.next_input_byte = pointer_cast<JOCTET*>(source->buffer);
+      source->pub.next_input_byte = Cast::pointer<JOCTET*>(source->buffer);
       source->pub.bytes_in_buffer = bytesRead;
       //source->startOfFile = false;
       return TRUE;
@@ -138,7 +138,7 @@ namespace gip {
     
     try {
       ::jpeg_create_decompress(&cinfo);
-      cinfo.src = pointer_cast<struct jpeg_source_mgr*>(&source);
+      cinfo.src = Cast::pointer<struct jpeg_source_mgr*>(&source);
       try {
         ::jpeg_read_header(&cinfo, TRUE);
       } catch(...) {
@@ -175,7 +175,7 @@ namespace gip {
     ColorImage* image = 0;
     try {
       ::jpeg_create_decompress(&cinfo);
-      cinfo.src = pointer_cast<struct jpeg_source_mgr*>(&source);
+      cinfo.src = Cast::pointer<struct jpeg_source_mgr*>(&source);
       try {
         ::jpeg_read_header(&cinfo, TRUE);
         
@@ -188,7 +188,7 @@ namespace gip {
         ::jpeg_start_decompress(&cinfo);
         
         JSAMPLE row[cinfo.output_width * cinfo.output_components];
-        JSAMPROW prow = pointer_cast<JSAMPROW>(row);
+        JSAMPROW prow = Cast::pointer<JSAMPROW>(row);
         
         ASSERT(sizeof(JSAMPLE) == 1);
         
@@ -230,7 +230,7 @@ namespace gip {
     dest.pub.init_destination = JPEGEncoderImpl::initializeDestination;
     dest.pub.empty_output_buffer = JPEGEncoderImpl::empty;
     dest.pub.term_destination = JPEGEncoderImpl::flush;
-    dest.pub.next_output_byte = pointer_cast<JOCTET*>(buffer.getElements());
+    dest.pub.next_output_byte = Cast::pointer<JOCTET*>(buffer.getElements());
     dest.pub.free_in_buffer = BUFFER_SIZE;
     dest.file = &file;
     dest.buffer = buffer.getElements();
@@ -239,7 +239,7 @@ namespace gip {
 
     try {
       ::jpeg_create_compress(&cinfo);
-      cinfo.dest = pointer_cast<struct jpeg_destination_mgr*>(&dest);
+      cinfo.dest = Cast::pointer<struct jpeg_destination_mgr*>(&dest);
       
       cinfo.image_width = image->getDimension().getWidth();
       cinfo.image_height = image->getDimension().getHeight();
@@ -254,7 +254,7 @@ namespace gip {
     
         ASSERT(sizeof(JSAMPLE) == 1);
         JSAMPLE row[cinfo.image_width * cinfo.num_components];
-        JSAMPROW prow = pointer_cast<JSAMPROW>(row);
+        JSAMPROW prow = Cast::pointer<JSAMPROW>(row);
         const ColorPixel* src = image->getElements();
         
         while (cinfo.next_scanline < cinfo.image_height) {
@@ -332,7 +332,7 @@ namespace gip {
 
     try {
       ::jpeg_create_decompress(&cinfo);
-      cinfo.src = pointer_cast<struct jpeg_source_mgr*>(&source);
+      cinfo.src = Cast::pointer<struct jpeg_source_mgr*>(&source);
       try {
         ::jpeg_read_header(&cinfo, TRUE);
       } catch(...) {

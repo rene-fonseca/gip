@@ -2011,7 +2011,7 @@ namespace gip {
     request.setHeaderSize(sizeof(IEEE1394::Quadlet));
     request.setPayload(transmission.bytesPerPacket);
     request.setBuffer(
-      pointer_cast<char*>(frame.getElements()),
+      Cast::pointer<char*>(frame.getElements()),
       transmission.bytesPerPacket * (transmission.packetsPerFrame - 1),
       Cast::getCharAddress(headers)
     );
@@ -2023,7 +2023,7 @@ namespace gip {
     lastRequest.setHeaderSize(sizeof(IEEE1394::Quadlet));
     lastRequest.setPayload(transmission.bytesPerPacket /*bytesInLastPacket*/);
     lastRequest.setBuffer(
-      Cast::getCharAddress(lastPacket), // pointer_cast<char*>(frame.getElements() + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1))
+      Cast::getCharAddress(lastPacket), // Cast::pointer<char*>(frame.getElements() + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1))
       bytesInLastPacket,
       Cast::getCharAddress(headers[transmission.packetsPerFrame - 1])
     );
@@ -2120,7 +2120,7 @@ namespace gip {
     request.setHeaderSize(sizeof(IEEE1394::Quadlet));
     request.setPayload(transmission.bytesPerPacket);
     request.setBuffer(
-      pointer_cast<char*>(frame.getElements()),
+      Cast::pointer<char*>(frame.getElements()),
       transmission.bytesPerPacket * (transmission.packetsPerFrame - 1),
       Cast::getCharAddress(headers)
     );
@@ -2132,7 +2132,7 @@ namespace gip {
     lastRequest.setHeaderSize(sizeof(IEEE1394::Quadlet));
     lastRequest.setPayload(transmission.bytesPerPacket /*bytesInLastPacket*/);
     lastRequest.setBuffer(
-      Cast::getCharAddress(lastPacket), // pointer_cast<char*>(frame.getElements() + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1))
+      Cast::getCharAddress(lastPacket), // Cast::pointer<char*>(frame.getElements() + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1))
       bytesInLastPacket,
       Cast::getCharAddress(headers[transmission.packetsPerFrame - 1])
     );
@@ -2207,7 +2207,7 @@ namespace gip {
     request.setHeaderSize(sizeof(IEEE1394::Quadlet));
     request.setPayload(transmission.bytesPerPacket);
     request.setBuffer(
-      pointer_cast<char*>(frame.getElements()),
+      Cast::pointer<char*>(frame.getElements()),
       transmission.bytesPerPacket * (transmission.packetsPerFrame - 1),
       Cast::getCharAddress(headers)
     );
@@ -2219,7 +2219,7 @@ namespace gip {
     lastRequest.setHeaderSize(sizeof(IEEE1394::Quadlet));
     lastRequest.setPayload(transmission.bytesPerPacket /*bytesInLastPacket*/);
     lastRequest.setBuffer(
-      Cast::getCharAddress(lastPacket), // pointer_cast<char*>(frame.getElements() + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1))
+      Cast::getCharAddress(lastPacket), // Cast::pointer<char*>(frame.getElements() + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1))
       bytesInLastPacket,
       Cast::getCharAddress(headers[transmission.packetsPerFrame - 1])
     );
