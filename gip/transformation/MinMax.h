@@ -85,6 +85,6 @@ namespace gip {
     }
   };
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

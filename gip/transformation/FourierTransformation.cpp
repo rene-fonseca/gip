@@ -172,4 +172,4 @@ void FourierTransformation::operator()() throw() {
 //  }
 }
 
-}; // end of namespace
+}; // end of gip namespace

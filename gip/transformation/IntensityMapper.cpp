@@ -22,4 +22,4 @@ namespace gip {
 //  return lookup[intensity];
 //}
 
-}; // end of namespace
+}; // end of gip namespace

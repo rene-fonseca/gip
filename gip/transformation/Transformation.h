@@ -58,6 +58,6 @@ namespace gip {
     : destination(dest), source(src) {
   }
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

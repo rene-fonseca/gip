@@ -175,6 +175,6 @@ namespace gip {
     void inverse() throw();
   };
   
-}; // end of namespace gip
+}; // end of gip namespace
 
 #endif

@@ -853,4 +853,4 @@ void AVIReader::getFrame(ColorImage& frame) throw(IOException) {
   ++frameIndex;
 }
 
-}; // end of namespace
+}; // end of gip namespace

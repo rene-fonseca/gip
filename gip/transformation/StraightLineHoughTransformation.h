@@ -56,6 +56,6 @@ namespace gip {
     void operator()() throw();
   };
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

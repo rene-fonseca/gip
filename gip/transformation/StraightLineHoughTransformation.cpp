@@ -82,4 +82,4 @@ namespace gip {
     }
   }
   
-}; // end of namespace gip
+}; // end of gip namespace

@@ -65,6 +65,6 @@ namespace gip {
     fillWithUnary(*destination, *source, operation);
   }
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif
