@@ -14,6 +14,6 @@
 DEFS =
 AUTOMAKE_OPTIONS = 1.4 foreign nostdinc dist-bzip2 dist-zip
 
-EXTRA_DIST = gip.kdevprj AUTHORS COPYING ChangeLog INSTALL README TODO gip.lsm
+EXTRA_DIST = gip.kdevprj gip.spec AUTHORS COPYING ChangeLog INSTALL README TODO gip.lsm
 
 SUBDIRS = gip
