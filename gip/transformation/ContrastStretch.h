@@ -23,33 +23,44 @@
 
 namespace gip {
   
+  template<class DEST, class SRC>
+  class ContrastStretch {
+  };
+
   /**
     @short Stretches the intensity of the image
     @ingroup transformations
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
-  
-  class ContrastStretch : public Transformation<GrayImage, GrayImage> {
+
+  template<>
+  class ContrastStretch<GrayImage, GrayImage> : public Transformation<GrayImage, GrayImage> {
   public:
 
-    typedef GrayImage::Pixel Pixel;
+    typedef SourceImage::Pixel Pixel;
     
     class MapPixel : public UnaryOperation<Pixel, Pixel> {
     private:
 
-      Pixel minimum;
-      Pixel range;
+      typedef PixelTraits<SourceImage::Pixel>::Arithmetic Arithmetic;
+      Allocator<Pixel> allocatorLookup;
+      Pixel* lookup;
     public:
 
-      inline MapPixel(const Pixel& _minimum, const Pixel& _maximum) throw()
-        : minimum(_minimum),
-          range(_maximum - _minimum) {
+      inline MapPixel(const Pixel& minimum, const Pixel& maximum) throw()
+        : allocatorLookup(static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + 1) {
+          lookup = allocatorLookup.getElements();
+          lookup += minimum;
+          Arithmetic range = maximum - minimum;
+          for (unsigned int i = 0; i <= range; ++i) {
+            *lookup++ = (2 * i * static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + range)/(2 * range);
+          }
+          lookup = allocatorLookup.getElements();
       }
       
       inline Pixel operator()(const Pixel& value) const throw() {
-        return static_cast<PixelTraits<SourceImage::Pixel>::Arithmetic>(value - minimum) *
-          PixelTraits<SourceImage::Pixel>::MAXIMUM/range;
+        return lookup[value];
       }
     };
     
@@ -72,6 +83,83 @@ namespace gip {
       fillWithUnary(*destination, *source, mapPixel);
     }
     
+  };
+
+  template<>
+  class ContrastStretch<ColorImage, ColorImage> : public Transformation<ColorImage, ColorImage> {
+  public:
+
+    typedef SourceImage::Pixel Pixel;
+    typedef PixelTraits<SourceImage::Pixel>::Component Component;
+    typedef PixelTraits<SourceImage::Pixel>::Arithmetic Arithmetic;
+
+    class MapPixel : public UnaryOperation<Pixel, Pixel> {
+    private:
+
+      Allocator<Component> redAllocatorLookup;
+      Allocator<Component> greenAllocatorLookup;
+      Allocator<Component> blueAllocatorLookup;
+      Component* redLookup;
+      Component* greenLookup;
+      Component* blueLookup;
+    public:
+
+      inline MapPixel(const Pixel& minimum, const Pixel& maximum) throw()
+        : redAllocatorLookup(static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + 1),
+          greenAllocatorLookup(static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + 1),
+          blueAllocatorLookup(static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + 1) {
+          Arithmetic range;
+
+          redLookup = redAllocatorLookup.getElements();
+          redLookup += minimum.red;
+          range = maximum.red - minimum.red;
+          for (unsigned int i = 0; i <= range; ++i) {
+            *redLookup++ = (2 * i * static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + range)/(2 * range);
+          }
+          redLookup = redAllocatorLookup.getElements();
+
+          greenLookup = greenAllocatorLookup.getElements();
+          greenLookup += minimum.green;
+          range = maximum.green - minimum.green;
+          for (unsigned int i = 0; i <= range; ++i) {
+            *greenLookup++ = (2 * i * static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + range)/(2 * range);
+          }
+          greenLookup = greenAllocatorLookup.getElements();
+
+          blueLookup = blueAllocatorLookup.getElements();
+          blueLookup += minimum.blue;
+          range = maximum.blue - minimum.blue;
+          for (unsigned int i = 0; i <= range; ++i) {
+            *blueLookup++ = (2 * i * static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + range)/(2 * range);
+          }
+          blueLookup = blueAllocatorLookup.getElements();
+
+      }
+
+      inline Pixel operator()(const Pixel& value) const throw() {
+        return makeColorPixel(redLookup[value.red], greenLookup[value.green], blueLookup[value.blue]);
+      }
+    };
+
+    /**
+      Initializes the transformation.
+
+      @param destination The destination image.
+      @param source The source image.
+    */
+    ContrastStretch(DestinationImage* destination, const SourceImage* source) throw(ImageException)
+      : Transformation<ColorImage, ColorImage>(destination, source) {
+
+      assert(destination->getDimension() == source->getDimension(), ImageException(this));
+    }
+
+    void operator()() const throw() {
+      MinimumMaximum<Pixel> minmax;
+      forEach(*source, minmax);
+      MapPixel mapPixel(minmax.getMinimum(), minmax.getMaximum());
+      fillWithUnary(*destination, *source, mapPixel);
+    }
+
   };
 
 }; // end of gip namespace
