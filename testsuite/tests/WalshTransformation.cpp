@@ -27,30 +27,30 @@
 using namespace gip;
 using namespace base;
 
-// class WalshToGray : public UnaryOperation<float, GrayPixel> {
-// private:
+class WalshToGray : public UnaryOperation<float, GrayPixel> {
+private:
 
-//   long double scale;
-// public:
-
-//   inline WalshToGray(const Dimension& dimension) throw() : scale(1./dimension.getSize()) {}
-
-//   inline Result operator()(const Argument& value) {
-//     long double temp = 0xff * log(1 + value * scale);
-//     if (temp < 0x00) {
-//       return 0x00;
-//     } else if (temp > 0xff) {
-//       return 0xff;
-//     } else {
-//       return GrayPixel(static_cast<unsigned char>(temp));
-//     }
-//   }
-// };
-
-class GIPApplication : public Application {
+   long double scale;
 public:
 
-  GIPApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
+  inline WalshToGray(const Dimension& dimension) throw() : scale(1.0/dimension.getSize()) {}
+
+  inline GrayPixel operator()(const float& value) const throw() {
+    long double temp = 0xff * log(1 + value * scale);
+    if (temp < 0x00) {
+      return 0x00;
+    } else if (temp > 0xff) {
+      return 0xff;
+    } else {
+      return static_cast<GrayPixel>(temp);
+    }
+  }
+};
+
+class WalshApplication : public Application {
+public:
+
+  WalshApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
     : Application(MESSAGE("WalshTransformation"), numberOfArguments, arguments, environment) {
   }
 
@@ -90,22 +90,25 @@ public:
            << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
       transform();
     }
-    
+
     FloatImage walshImage(spaceImage.getDimension());
     {
       WalshTransformation transform(&walshImage, &spaceImage);
       fout << MESSAGE("Transforming image: Space->Walsh") << ' '
            << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
+      Timer timer;
       transform();
+      fout << MESSAGE("Time elapsed for Walsh transformation: ") << timer.getLiveMicroseconds() << MESSAGE(" microseconds") << EOL;
     }
-    
+
     GrayImage grayImage(walshImage.getDimension());
     {
-      long double scale = 1./walshImage.getDimension().getSize();
-      Convert<GrayImage, FloatImage, FloatToGrayWithScale> transform(&grayImage, &spaceImage, FloatToGrayWithScale(scale));
+      Convert<GrayImage, FloatImage, WalshToGray> transform(&grayImage, &walshImage, WalshToGray(walshImage.getDimension()));
+      fout << MESSAGE("Converting image: FloatImage->GrayImage") << ' '
+           << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
       transform();
     }
-    
+
     fout << MESSAGE("Exporting image with encoder: ") << encoder.getDescription() << ENDL;
     encoder.writeGray(outputFile, &grayImage);
   }
@@ -130,15 +133,12 @@ public:
       return; // stop
     }
     
-    Timer timer;
     walshTransformation(inputFile, outputFile);
-    
-    fout << MESSAGE("Time elapsed: ") << timer.getLiveMicroseconds() << MESSAGE(" microseconds") << EOL;
   }
 };
 
 int main(int argc, const char* argv[], const char* env[]) {
-  GIPApplication application(argc, argv, env);
+  WalshApplication application(argc, argv, env);
   try {
     application.main();
   } catch(Exception& e) {
