@@ -141,7 +141,17 @@ namespace gip {
     return result;
   }
 
-  
+  template<>
+  inline ColorPixel blend(ColorPixel back, ColorPixel front, unsigned int opaque, unsigned int opacity) throw() {
+    ColorPixel result;
+    unsigned int transparency = opaque - opacity;
+    result.red = (2 * transparency * static_cast<PixelTraits<ColorPixel>::Arithmetic>(back.red) + 2 * opacity * static_cast<PixelTraits<ColorPixel>::Arithmetic>(front.red) + opaque)/(2 * opaque);
+    result.green = (2 * transparency * static_cast<PixelTraits<ColorPixel>::Arithmetic>(back.green) + 2 * opacity * static_cast<PixelTraits<ColorPixel>::Arithmetic>(front.green) + opaque)/(2 * opaque);
+    result.blue = (2 * transparency * static_cast<PixelTraits<ColorPixel>::Arithmetic>(back.blue) + 2 * opacity * static_cast<PixelTraits<ColorPixel>::Arithmetic>(front.blue) + opaque)/(2 * opaque);
+    return result;
+  }
+
+
 
   template<class COMPONENT>
   inline RGBPixel<COMPONENT> operator*(RGBPixel<COMPONENT> pixel, int factor) throw() {
