@@ -70,7 +70,7 @@ namespace gip {
   */
   template<class PIXEL>
   inline PIXEL blend(PIXEL back, PIXEL front, unsigned int opaque, unsigned int opacity) throw() {
-    return ((opaque - opacity) * static_cast<PixelTraits<PIXEL>::Arithmetic>(back.blue) + opacity * static_cast<PixelTraits<PIXEL>::Arithmetic>(front.blue))/opaque;
+    return ((opaque - opacity) * static_cast<PixelTraits<PIXEL>::Arithmetic>(back) + opacity * static_cast<PixelTraits<PIXEL>::Arithmetic>(front))/opaque;
   }
 
 
