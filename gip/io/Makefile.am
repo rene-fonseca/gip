@@ -15,9 +15,9 @@ include $(top_srcdir)/common.am
 
 noinst_LTLIBRARIES = libio.la
 
-libio_la_SOURCES = InvalidFormat.cpp GIFEncoder.cpp PCXEncoder.cpp JPEGEncoder.cpp BMPEncoder.cpp TIFFEncoder.cpp PNGEncoder.cpp ImageEncoder.cpp
+libio_la_SOURCES = InvalidFormat.cpp ImageEncoder.cpp BMPEncoder.cpp GIFEncoder.cpp JPEGEncoder.cpp PCXEncoder.cpp PGMEncoder.cpp PNGEncoder.cpp PPMEncoder.cpp TGAEncoder.cpp TIFFEncoder.cpp
 
 sectiondir = $(includedir)/gip
-section_HEADERS = ImageEncoder.h PNGEncoder.h TIFFEncoder.h BMPEncoder.h JPEGEncoder.h PCXEncoder.h GIFEncoder.h InvalidFormat.h
+section_HEADERS = InvalidFormat.h ImageEncoder.h BMPEncoder.h GIFEncoder.h JPEGEncoder.h PCXEncoder.h PGMEncoder.h PNGEncoder.h PPMEncoder.h TGAEncoder.h TIFFEncoder.h
 
 EXTRA_DIST =
