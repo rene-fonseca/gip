@@ -57,13 +57,17 @@ namespace gip {
     void lineClippedAntiAliased(const Point& p1, const Point& p2, Pixel color) throw();
 
     inline void pixelInternal(const Point& point, Pixel color) throw() {
-      if ((point.getX() >= 0) && (point.getY() >= 0) && (point.getX() < dimension.getWidth()) && (point.getY() < dimension.getHeight())) {
+      if ((point.getX() >= 0) && (point.getY() >= 0) &&
+          (point.getX() < dimension.getWidth()) &&
+          (point.getY() < dimension.getHeight())) {
         rows[point.getY()][point.getX()] = color;
       }
     }
 
     inline Pixel getPixelInternal(const Point& point) const throw() {
-      if ((point.getX() >= 0) && (point.getY() >= 0) && (point.getX() < dimension.getWidth()) && (point.getY() < dimension.getHeight())) {
+      if ((point.getX() >= 0) && (point.getY() >= 0) &&
+          (point.getX() < dimension.getWidth()) &&
+          (point.getY() < dimension.getHeight())) {
         return rows[point.getY()][point.getX()];
       }
     }
@@ -114,7 +118,11 @@ namespace gip {
       @param color The color of the circle.
       @param options The options. The default is 0.
     */
-    void circle(const Point& center, unsigned int radius, Pixel color, unsigned int options = 0) throw();
+    void circle(
+      const Point& center,
+      unsigned int radius,
+      Pixel color,
+      unsigned int options = 0) throw();
 
     /**
       Draws a disk filled with the specified color. This methods accepts the
@@ -139,7 +147,12 @@ namespace gip {
       @param color The color of the circle.
       @param options The options. The default is 0.
     */
-    void ring(const Point& center, unsigned int innerRadius, unsigned int outerRadius, Pixel color, unsigned int options = 0) throw();
+    void ring(
+      const Point& center,
+      unsigned int innerRadius,
+      unsigned int outerRadius,
+      Pixel color,
+      unsigned int options = 0) throw();
 
     /**
       Draws an ellipse. This methods accepts the options FILL and ANTIALIASING.
@@ -149,7 +162,11 @@ namespace gip {
       @param color The color of the ellipse.
       @param options The options. The default is 0.
     */
-    void ellipse(const Point& p1, const Dimension& dimension, Pixel color, unsigned int options = 0) throw();
+    void ellipse(
+      const Point& center,
+      const Dimension& dimension,
+      Pixel color,
+      unsigned int options = 0) throw();
 
     /**
       Draws a rectangle. This methods accepts the option FILL.
@@ -159,7 +176,11 @@ namespace gip {
       @param color The fill color.
       @param options Drawing options. The default is 0.
     */
-    void rectangle(const Point& p1, const Point& p2, Pixel color, unsigned int options = 0) throw();
+    void rectangle(
+      const Point& p1,
+      const Point& p2,
+      Pixel color,
+      unsigned int options = 0) throw();
 
     /**
       Draws a rectangular box filled with the specified color. This method
@@ -170,7 +191,11 @@ namespace gip {
       @param color The fill color.
       @param options Drawing options. The default is 0.
     */
-    inline void fill(const Point& p1, const Point& p2, Pixel color, unsigned int options = 0) throw() {
+    inline void fill(
+      const Point& p1,
+      const Point& p2,
+      Pixel color,
+      unsigned int options = 0) throw() {
       rectangle(p1, p2, color, options | FILL);
     }
 
@@ -191,16 +216,25 @@ namespace gip {
     Pixel getPixel(const Point& point) const throw();
 
     /**
-      Draw line for p1 to p2 with the specified color. This methods accepts the options FILL and ANTIALIASING.
+      Draw line for p1 to p2 with the specified color. This methods accepts the
+      options FILL and ANTIALIASING.
 
       @param p1 The first end point.
       @param p2 The second end point.
       @param color The color of the line.
       @param options Drawing options. The default is 0.
     */
-    void line(const Point& p1, const Point& p2, Pixel color, unsigned int options = 0) throw();
-
-    void line(const Point& p1, const Point& p2, ColorAlphaPixel color, unsigned int options = 0) throw();
+    void line(
+      const Point& p1,
+      const Point& p2,
+      Pixel color,
+      unsigned int options = 0) throw();
+    
+    void line(
+      const Point& p1,
+      const Point& p2,
+      ColorAlphaPixel color,
+      unsigned int options = 0) throw();
 
     /**
       Select the font for used when writing text.
@@ -213,21 +247,22 @@ namespace gip {
       Returns the name of the current font.
     */
     String getFont() const throw();
-
+    
     /**
-      Returns the dimension of the specified message using the active font. Nothing is written to the canvas.
-
+      Returns the dimension of the specified message using the active font.
+      Nothing is written to the canvas.
+      
       @param message The message.
     */
     Dimension getDimensionOfText(const String& message) const throw();
-
+    
     /**
       Writes the message to the canvas at the current raster position.
 
       @param message The message to be written.
     */
 //    void write(const String& message) throw();
-
+    
     /**
       Writes the message to the canvas at the specified raster position.
 
