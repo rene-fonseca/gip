@@ -31,12 +31,12 @@ private:
 public:
 
   /**
-    Initializes region.
+    Initializes region with offset (0, 0) and dimension (0, 0).
   */
-  inline Region() throw() {}
+  inline Region() throw() : offset(0, 0), dimension(0, 0) {}
 
   /**
-    Initializes the region with the specified value.
+    Initializes the region with the specified offset and dimension.
 
     @param offset The desired offset of the region.
     @param dimension The desired dimension of the region.
@@ -82,7 +82,7 @@ public:
   }
 
   /**
-    Returns true if the region spans elements.
+    Returns true if the region spans elements (i.e. the dimension is proper).
   */
   inline bool isProper() const throw() {return dimension.isProper();}
 };
