@@ -21,10 +21,13 @@
 namespace gip {
 
   /**
-    Pixel with gray and alpha components.
+    Pixel with gray (achromatic) and alpha components.
 
+    @short Gray (achromatic) pixel with alpha component
     @see RGBPixel RGBAPixel
     @ingroup pixels
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    @version 1.0
   */
   template<class COMPONENT>
   struct GrayAlphaPixel {

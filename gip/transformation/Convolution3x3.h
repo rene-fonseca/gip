@@ -132,7 +132,7 @@ namespace gip {
     Convolution with 3x3 matrix.
     
     @short Convolution with 3x3 matrix
-    @ingroup transformations
+    @ingroup transformations filtering
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
