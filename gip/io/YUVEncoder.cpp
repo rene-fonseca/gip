@@ -68,6 +68,8 @@ namespace gip {
 //       );
 //      }
 //    }
+    throw InvalidFormat(this); // TAG: fixme
+    return 0;
   }
   
   void YUVEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException) {
@@ -81,13 +83,13 @@ namespace gip {
     throw NotSupported(this);
   }
   
-  FormatOutputStream& YUVEncoder::getInfo(FormatOutputStream& stream, const String& filename) throw(IOException) {
-    stream << MESSAGE("YUVEncoder (Abekas YUV):") << EOL
-//            << MESSAGE("  type=") << header.type << EOL
-            << MESSAGE("  width=") << WIDTH << EOL
-            << MESSAGE("  height=") << HEIGHT << EOL;
-//            << MESSAGE("  depth=") << header.pixelDepth << EOL;
-    return stream;
+  HashTable<String, AnyValue> YUVEncoder::getInformation(const String& filename) throw(IOException) {
+    HashTable<String, AnyValue> result;
+    result[MESSAGE("encoder")] = Type::getType(*this);
+    result[MESSAGE("description")] = MESSAGE("Abekas YUV");
+    result[MESSAGE("width")] = static_cast<unsigned int>(WIDTH);
+    result[MESSAGE("height")] = static_cast<unsigned int>(HEIGHT);
+    return result;
   }
 
 }; // end of gip namespace
