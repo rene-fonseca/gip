@@ -12,8 +12,7 @@
 # ***************************************************************************
 
 DEFS =
-DEFAULT_INCLUDES =
-AUTOMAKE_OPTIONS = 1.4 foreign nostdinc dist-tarZ dist-bzip2 dist-zip
+AUTOMAKE_OPTIONS = 1.4 foreign nostdinc dist-bzip2 dist-zip
 
 LIBS=-lgip -lbase
 
