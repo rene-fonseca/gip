@@ -30,22 +30,25 @@ namespace gip {
   class TIFFEncoder : public ImageEncoder {
   public:
     
+    /**
+      Initializes the encoder.
+    */
     TIFFEncoder() throw();
 
     /**
       Returns a description of the encoder.
     */
-    virtual String getDescription() const throw() = 0;
+    String getDescription() const throw();
     
     /**
       Returns the default extension.
     */
-    virtual String getDefaultExtension() const throw() = 0;
+    String getDefaultExtension() const throw();
     
     /**
       Returns an array of extensions.
     */
-    virtual Array<String> getExtensions() const throw();    
+    Array<String> getExtensions() const throw();
   };
   
 }; // end of gip namespace
