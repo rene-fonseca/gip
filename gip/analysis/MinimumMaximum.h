@@ -14,7 +14,7 @@
 #ifndef _DK_SDU_MIP__GIP_ANALYSIS__MINIMUM_MAXIMUM_H
 #define _DK_SDU_MIP__GIP_ANALYSIS__MINIMUM_MAXIMUM_H
 
-#include <gip/features.h>
+#include <gip/Pixel.h>
 #include <base/Functor.h>
 
 namespace gip {
