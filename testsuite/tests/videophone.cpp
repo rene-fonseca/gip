@@ -1542,7 +1542,9 @@ public:
       exceptionHandler(e);
     }
   }
-  
+
+  ~VideoPhoneApplication() throw() {
+  }
 };
 
 const StringLiteral VideoPhoneApplication::PIXEL_FORMAT_DESCRIPTION[] = {
