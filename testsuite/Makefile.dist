@@ -1,0 +1,41 @@
+# ***************************************************************************
+#    Generic Image Processing (GIP) Framework (Test Suite)
+#    A framework for developing image processing applications
+#
+#    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+#
+#    This framework is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#    For the licensing terms refer to the file 'LICENSE'.
+# ***************************************************************************
+
+all:
+	aclocal
+	automake
+	autoconf
+
+dist:
+	@echo "This file is to make it easier for you to create all you need"
+	aclocal
+# use --include-deps, if you want to release the stuff. Don't use it for
+# yourself
+	automake --include-deps
+	autoconf
+	touch stamp-h.in
+	LIST=`find ./po -name "*.po"`; \
+	for i in $$LIST; do \
+	  file2=`echo $$i | sed -e "s#\.po#\.gmo#"`; \
+	  msgfmt -o $$file2 $$i; \
+	done 
+	rm -f Makefile.dist
+
+klampenborg-gcc-2.95:
+	CC="/usr/bin/gcc" CFLAGS="-pipe -mno-cygwin -mthreads -x c" CXX="/usr/bin/gcc" CPPFLAGS="-I/d/projects/gip/gip -I/d/projects/base/base" CXXFLAGS="-pipe -mno-cygwin -mthreads -x c++ -ansi -O0 -g3" LDFLAGS="-x none" configure --target=i386-pc-mingw32 --prefix=/usr/local/gip --disable-shared --with-base-include=/d/projects/base/build/debug --with-base-lib=/d/projects/base/build/debug/base --with-gip-include=/d/projects/gip/build/debug --with-gip-lib=/d/projects/gip/build/debug/gip
+
+klampenborg-gcc-3.0.4:
+	CC="gcc" CFLAGS="-pipe -mno-cygwin -mthreads -x c" CXX="g++" CPPFLAGS="-I/d/projects/gip/gip -I/d/projects/base/base -I/usr/include/mingw/g++-3/i386-pc-mingw32 -I/usr/include/mingw/g++-3/backward -I/usr/include/mingw/g++-3" CXXFLAGS="-pipe -mno-cygwin -mthreads -x c++ -ansi -O0 -g3" LDFLAGS="-x none" configure --target=i386-pc-mingw32 --prefix=/usr/local/gip --disable-shared --with-base-include=/d/projects/base/build/debug --with-base-lib=/d/projects/base/build/debug/base --with-gip-include=/d/projects/gip/build/debug --with-gip-lib=/d/projects/gip/build/debug/gip
+
+klampenborg-gcc-3.0.4-release:
+	CC="gcc" CFLAGS="-pipe -mno-cygwin -mthreads -x c" CXX="g++" CPPFLAGS="-I/d/projects/gip/gip -I/d/projects/base/base -I/usr/include/mingw/g++-3/i386-pc-mingw32 -I/usr/include/mingw/g++-3/backward -I/usr/include/mingw/g++-3" CXXFLAGS="-pipe -mno-cygwin -mthreads -x c++ -ansi -O3 -g3 -march=i686 -malign-double -fomit-frame-pointer -funroll-loops" LDFLAGS="-x none" configure --target=i686-pc-mingw32 --prefix=/usr/local/gip --disable-shared --with-base-include=/d/projects/base/build/release --with-base-lib=/d/projects/base/build/release/base --with-gip-include=/d/projects/gip/build/release --with-gip-lib=/d/projects/gip/build/release/gip

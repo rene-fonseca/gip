@@ -1,0 +1,15 @@
+TESTS = types
+
+TEST_BIN_PATH = .
+TEST_RESULTS_PATH = test_results
+TEST_RESULTS = $(addprefix $(TEST_RESULTS_PATH)/, $(addsuffix .stdout, $(TESTS)))
+
+all: $(TEST_RESULTS)
+
+$(TEST_RESULTS_PATH)/%.stdout: %
+	$(TEST_BIN_PATH)/$< > $(TEST_RESULTS_PATH)/$<.stdout 2> $(TEST_RESULTS_PATH)/$<.stderr ; echo $$? > $(TEST_RESULTS_PATH)/$<.status
+
+clean:
+	rm -f $(TEST_RESULTS_PATH)/*.stdout
+	rm -f $(TEST_RESULTS_PATH)/*.stderr
+	rm -f $(TEST_RESULTS_PATH)/*.status
