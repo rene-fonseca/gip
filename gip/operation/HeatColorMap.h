@@ -22,7 +22,7 @@ namespace gip {
     Color map. Black -> dark orange -> bright yellow -> white.
 
     @short Heat color map.
-    @ingroup colormap
+    @ingroup colormaps
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
@@ -31,7 +31,7 @@ namespace gip {
 
     inline RGBPixel<long double> operator()(const long double& value) const throw() {
       RGBPixel<long double> result;
-      if (value < 0) {
+      if (value <= 0) {
         result.red = 0;
         result.green = 0;
         result.blue = 0;

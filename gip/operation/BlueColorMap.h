@@ -22,7 +22,7 @@ namespace gip {
     Color map from black to pure blue.
 
     @short Pure blue color map.
-    @ingroup colormap
+    @ingroup colormaps
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */

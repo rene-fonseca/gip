@@ -22,7 +22,7 @@ namespace gip {
     Color map. Blue -> cyan -> green -> yellow -> red.
 
     @short Cold to hot color map.
-    @ingroup colormap
+    @ingroup colormaps
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
