@@ -22,7 +22,7 @@ namespace gip {
     This transformation reverses an image along its vertical axis.
 
     @short Vertical flip.
-    @ingroup transformations
+    @ingroup transformations geometric
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */

@@ -26,7 +26,7 @@ namespace gip {
      
     @short Graphics Interchange Format (GIF) encoder.
     @ingroup imageEncoders
-    @author Rene Moeller Fonseca
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.1
   */
 

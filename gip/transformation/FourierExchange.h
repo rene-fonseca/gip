@@ -31,7 +31,7 @@ namespace gip {
     @li <tt>Region IV:</tt> is the lower right quadrant.
 
     @short Fourier region exchange.
-    @ingroup transformations
+    @ingroup transformations geometric
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */

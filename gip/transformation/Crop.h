@@ -24,7 +24,7 @@ namespace gip {
     images is not changed.
 
     @short Crop.
-    @ingroup transformations
+    @ingroup transformations geometric
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */

@@ -23,7 +23,7 @@ namespace gip {
     
     @short Joint Photographic Experts Group (JPEG) encoder/decoder
     @ingroup imageEncoders
-    @author Rene Moeller Fonseca
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.1
   */
 

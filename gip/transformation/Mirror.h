@@ -23,7 +23,7 @@ namespace gip {
      This transformation reverses an image along its horizontal axis.
 
      @short Mirror
-     @ingroup transformations
+     @ingroup transformations geometric
      @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
      @version 1.0
   */

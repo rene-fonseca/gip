@@ -22,7 +22,7 @@ namespace gip {
     This transformation tiles the source image into the destination image.
 
     @short Tile.
-    @ingroup transformations
+    @ingroup transformations geometric
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
