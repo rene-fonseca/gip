@@ -77,17 +77,53 @@ AC_ARG_WITH(gip-lib,
 
 
 if test "x$ac_base_include" != "x"; then
-  INCLUDES="-I${ac_base_include}${INCLUDES:+ }${INCLUDES}"
+  if ! test -a "$ac_base_include/base/features.h"; then
+    AC_MSG_ERROR(Specified location of Base Framework headers is invalid.)
+  fi
+  ac_temp=`cd $ac_base_include >&AC_FD_CC 2>&AC_FD_CC && pwd`
+  if test x$ac_temp = x; then
+    AC_MSG_ERROR(Location of Base Framework headers is invalid.)
+  elif test $ac_temp != $ac_base_include; then
+    AC_MSG_WARN(Using $ac_temp as location for Base Framework headers.)
+  fi
+  INCLUDES="-I${ac_temp}${INCLUDES:+ }${INCLUDES}"
 fi
 if test "x$ac_gip_include" != "x"; then
-  INCLUDES="-I${ac_gip_include}${INCLUDES:+ }${INCLUDES}"
+  if ! test -a "$ac_gip_include/gip/features.h"; then
+    AC_MSG_ERROR(Specified location of GIP Framework headers is invalid.)
+  fi
+  ac_temp=`cd $ac_gip_include >&AC_FD_CC 2>&AC_FD_CC && pwd`
+  if test x$ac_temp = x; then
+    AC_MSG_ERROR(Location of GIP Framework headers is invalid.)
+  elif test $ac_temp != $ac_gip_include; then
+    AC_MSG_WARN(Using $ac_temp as location for GIP Framework headers.)
+  fi
+  INCLUDES="-I${ac_temp}${INCLUDES:+ }${INCLUDES}"
 fi
 
 if test "x$ac_gip_lib" != "x"; then
-  LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-L${ac_gip_lib}"
+  if ! test -a "$ac_gip_lib/libgip.la"; then
+    AC_MSG_ERROR(Specified location of GIP Framework libraries is invalid.)
+  fi
+  ac_temp=`cd $ac_gip_lib >&AC_FD_CC 2>&AC_FD_CC && pwd`
+  if test x$ac_temp = x; then
+    AC_MSG_ERROR(Location of GIP Framework libraries is invalid.)
+  elif test $ac_temp != $ac_gip_lib; then
+    AC_MSG_WARN(Using $ac_temp as location for GIP Framework libraries.)
+  fi
+  LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-L${ac_temp}"
 fi
 if test "x$ac_base_lib" != "x"; then
-  LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-L${ac_base_lib}"
+  if ! test -a "$ac_base_lib/libbase.la"; then
+    AC_MSG_ERROR(Specified location of Base Framework libraries is invalid.)
+  fi
+  ac_temp=`cd $ac_base_lib >&AC_FD_CC 2>&AC_FD_CC && pwd`
+  if test x$ac_temp = x; then
+    AC_MSG_ERROR(Location of Base Framework libraries is invalid.)
+  elif test $ac_temp != $ac_base_lib; then
+    AC_MSG_WARN(Using $ac_temp as location for Base Framework libraries.)
+  fi
+  LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-L${ac_temp}"
 fi
 
 
