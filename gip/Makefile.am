@@ -22,7 +22,7 @@ libgip_la_LIBADD = transformation/libtransformation.la analysis/libanalysis.la c
 libgip_la_LDFLAGS = -avoid-version -module -no-undefined -version-info 0:1:0 @GIP_LDFLAGS_ADD@ @BASE_LDFLAGS_ADD@
 
 sectiondir = $(includedir)/gip
-section_HEADERS = features.h gip.h ArrayImage.h CoordinateMapper.h Image.h ImageException.h PixelTraits.h GrayAlphaPixel.h HLSPixel.h HSVPixel.h RGBPixel.h RGBAPixel.h Pixel.h Point2D.h Point.h Region.h Segmentor.h  ShadowImage.h Subimage.h Version.h YCbCrPixel.h
+section_HEADERS = features.h gip.h ArrayImage.h CoordinateMapper.h Functor.h Image.h ImageException.h PixelTraits.h GrayAlphaPixel.h HLSPixel.h HSVPixel.h RGBPixel.h RGBAPixel.h Pixel.h Point2D.h Point.h Region.h Segmentor.h  ShadowImage.h Subimage.h Version.h YCbCrPixel.h
 
 libgip_la_DEPENDENCIES = transformation/libtransformation.la analysis/libanalysis.la canvas/libcanvas.la io/libio.la media/libmedia.la @GIP_DEPENDENCIES_ADD@
 
@@ -35,4 +35,4 @@ winrcver.o: gip.rc
 
 EXTRA_DIST =
 
-SUBDIRS = docs analysis io media canvas transformation
+SUBDIRS = docs analysis io media canvas operation transformation
