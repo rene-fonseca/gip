@@ -22,7 +22,7 @@ namespace gip {
     Exception thrown by GIP classes.
 
     @short Image exception.
-    @ingroup imageEncoders
+    @ingroup imageEncoders exceptions
     @author Rene Moeller Fonseca
     @version 1.0
   */
@@ -42,8 +42,19 @@ namespace gip {
     */
     InvalidFormat(const char* message) throw();
 
+    /**
+      Initializes the exception object without an associated message.
+      
+      @param type The identity of the type.
+    */
     InvalidFormat(Type type) throw() : ImageException(type) {}
 
+    /**
+      Initializes the exception object.
+      
+      @param message An NULL-terminated string (ASCII).
+      @param type The identity of the type.
+    */
     InvalidFormat(const char* message, Type type) throw() : ImageException(message, type) {}
   };
 

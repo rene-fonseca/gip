@@ -22,7 +22,7 @@ namespace gip {
   /**
     Zsoft Corporation PC Paintbrush (PCX) format.
   
-    @short PCX format encoder/decoder.
+    @short Zsoft Corporation PC Paintbrush (PCX) format encoder
     @ingroup imageEncoders
     @author Rene Moeller Fonseca
     @version 1.1

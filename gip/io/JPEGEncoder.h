@@ -21,7 +21,7 @@ namespace gip {
   /**
     Joint Photographic Experts Group (JPEG) format encoder/decoder.
     
-    @short JPEG format encoder/decoder.
+    @short Joint Photographic Experts Group (JPEG) encoder/decoder
     @ingroup imageEncoders
     @author Rene Moeller Fonseca
     @version 1.1
@@ -34,25 +34,65 @@ namespace gip {
     /** Internal buffer size in bytes (used for both reading and writing). */
     static const unsigned int BUFFER_SIZE = 4096;
   public:
-	
+
+    /**
+      Initializes encoder.
+    */
     JPEGEncoder() throw();
-    
+
+    /**
+    */
     String getDescription() const throw();
-    
+
+    /**
+      Returns the default extension.
+    */
     String getDefaultExtension() const throw();
 
+    /**
+      Reads a color image from the specified file.
+      
+      @param filename The path of the file.
+    */
     Array<String> getExtensions() const throw();
 
+    /**
+      Returns true if the file seems to be a valid.
+      
+      @param filename The path of the file.
+    */
     bool isValid(const String& filename) throw(IOException);
     
+    /**
+      Reads a color image from the specified file.
+      
+      @param filename The path of the file.
+    */
     ColorImage* read(const String& filename) throw(InvalidFormat, IOException);
     
+    /**
+      Writes the specified image to the specified file.
+      
+      @param filename The path of the file.
+      @param image The image to be written.
+    */
     void write(const String& filename, const ColorImage* image) throw(ImageException, IOException);
 
+    /**
+      Writes the specified image to the specified file.
+      
+      @param filename The path of the file.
+      @param image The image to be written.
+    */
     void writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException);
 
+    /**
+      Returns a description of the object.
+      
+      @param stream The stream to write the information to.
+      @param filename The path of the file.
+    */
     FormatOutputStream& JPEGEncoder::getInfo(FormatOutputStream& stream, const String& filename) throw(IOException);
-    
   };
 
 }; // end of namespace

@@ -20,9 +20,9 @@
 namespace gip {
   
   /**
-    Portable pixmap (PPM) file format encoder/decoder.
+    Portable pixmap (PPM) format encoder/decoder.
     
-    @short Portable pixmap (PPM) file format encoder/decoder.
+    @short Portable pixmap (PPM) format encoder
     @ingroup imageEncoders
     @author Rene Moeller Fonseca
     @version 1.0
@@ -46,13 +46,11 @@ namespace gip {
     
     void write(const String& filename, const ColorImage* image) throw(ImageException, IOException);
     
-    void write(const String& filename, const ArrayImage<RGBAPixel>* image) throw(ImageException, IOException);
-    
     void writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException);
     
     FormatOutputStream& getInfo(FormatOutputStream& stream, const String& filename) throw(IOException);
   };
   
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

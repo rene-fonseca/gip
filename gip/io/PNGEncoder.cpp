@@ -108,7 +108,7 @@ namespace gip {
 
       // expand into 32 bits per pixel
       if ((bitDepth == 8) && (colorType == PNG_COLOR_TYPE_RGB)) {
-        ::png_set_filler(context, ALPHA_OPAQUE_INTENSITY, PNG_FILLER_AFTER);
+        ::png_set_filler(context, 0xff /*ALPHA_OPAQUE_INTENSITY*/, PNG_FILLER_AFTER);
       }
       
       //if (colorType == PNG_COLOR_TYPE_RGB_ALPHA) {

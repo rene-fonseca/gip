@@ -23,7 +23,7 @@ namespace gip {
     Truevision Targa (TGA) format encoder/decoder. Implementation in agreement
     with the Truevision TGA FILE FORMAT SPECIFICATION Version 2.0.
     
-    @short Truevision Targa (TGA) format encoder/decoder.
+    @short Truevision Targa (TGA) format encoder
     @ingroup imageEncoders
     @author Rene Moeller Fonseca
     @version 1.0
@@ -52,13 +52,13 @@ namespace gip {
     
     void write(const String& filename, const ColorImage* image) throw(ImageException, IOException);
     
-    void write(const String& filename, const ArrayImage<RGBAPixel>* image) throw(ImageException, IOException);
+    void write(const String& filename, const ColorAlphaImage* image) throw(ImageException, IOException);
     
     void writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException);
     
     FormatOutputStream& getInfo(FormatOutputStream& stream, const String& filename) throw(IOException);
   };
   
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

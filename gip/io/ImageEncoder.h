@@ -32,7 +32,7 @@ namespace gip {
   /**
     Image encoding and decoding interface.
   
-    @short Interface implemented by image encoders/decoders.
+    @short Interface implemented by image encoders/decoders
     @ingroup imageEncoders
     @author Rene Moeller Fonseca
     @version 1.1
@@ -58,7 +58,7 @@ namespace gip {
     virtual Array<String> getExtensions() const throw();
     
     /**
-      Returns true if the format is valid.
+      Returns true if the file seems to be a valid.
       
       @param filename The path of the file.
     */

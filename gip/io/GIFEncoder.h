@@ -24,7 +24,7 @@ namespace gip {
     Format(c) is the Copyright property of CompuServe Incorporated. GIF(sm) is
     a Service Mark property of CompuServe Incorporated.
      
-    @short Graphics Interchange Format (GIF) encoder/decoder.
+    @short Graphics Interchange Format (GIF) encoder.
     @ingroup imageEncoders
     @author Rene Moeller Fonseca
     @version 1.1
@@ -42,6 +42,11 @@ namespace gip {
 
     String getDefaultExtension() const throw();
 
+    /**
+      Returns true if the file seems to be a valid.
+      
+      @param filename The path of the file.
+    */
     bool isValid(const String& filename) throw(IOException);
 
     ColorImage* read(const String& filename) throw(InvalidFormat, IOException);

@@ -22,7 +22,7 @@ namespace gip {
   /**
     Windows Bitmap (BMP) format encoder/decoder.
     
-    @short BMP format encoder/decoder.
+    @short Windows Bitmap (BMP) format encoder
     @ingroup imageEncoders
     @author Rene Moeller Fonseca
     @version 1.1

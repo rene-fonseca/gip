@@ -22,7 +22,7 @@ namespace gip {
   /**
     Portable graymap (PGM) file format encoder/decoder.
     
-    @short Portable graymap (PGM) file format encoder/decoder.
+    @short Portable graymap (PGM) file format encoder
     @ingroup imageEncoders
     @author Rene Moeller Fonseca
     @version 1.0

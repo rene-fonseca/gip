@@ -21,7 +21,7 @@ namespace gip {
   /**
     Tag Image File Format (TIFF) encoder/decoder.
      
-    @short TIFF format encoder/decoder.
+    @short Tag Image File Format (TIFF) encoder
     @ingroup imageEncoders
     @author Rene Moeller Fonseca
     @version 1.1
