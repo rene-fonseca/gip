@@ -11,11 +11,6 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-/*
-  base test suite:
-    time. real time, user and kernel time for process (threads???)
-*/
-
 #include <gip/io/BMPEncoder.h>
 #include <gip/analysis/Statistic.h>
 #include <gip/transformation/Convert.h>
@@ -48,7 +43,6 @@ public:
       transform();
     }
     delete image;
-
     
     Timer timer;
     timer.start();
