@@ -472,7 +472,12 @@ namespace gip {
   void Camera1394::reset() throw(IEEE1394Exception) {
     BigEndian<uint32> buffer;
     buffer = 1 << 31;
-    adapter.write(camera, commandRegisters + Camera1394Impl::INITIALIZE, Cast::getCharAddress(buffer), sizeof(buffer));
+    adapter.write(
+      camera,
+      commandRegisters + Camera1394Impl::INITIALIZE,
+      Cast::getCharAddress(buffer),
+      sizeof(buffer)
+    );
     // TAG: could be set to unsupported mode
     // TAG: could be set to unsupported pixel format
     readModeSpecificState();
@@ -489,7 +494,12 @@ namespace gip {
     assert(node < IEEE1394::BROADCAST, OutOfDomain(this));
     try {
       Camera1394Impl::ConfigurationIntro config;
-      adapter.read(node, IEEE1394::CSR_BASE_ADDRESS + IEEE1394::CONFIGURATION_ROM, Cast::getCharAddress(config), sizeof(config));
+      adapter.read(
+        node,
+        IEEE1394::CSR_BASE_ADDRESS + IEEE1394::CONFIGURATION_ROM,
+        Cast::getCharAddress(config),
+        sizeof(config)
+      );
       
       if (((config.crc >> 24) * sizeof(IEEE1394::Quadlet) >= sizeof(Camera1394Impl::BusInfo)) && // check for general ROM format
           (config.busInfo.name == 0x31333934) && // "1394"
@@ -534,7 +544,12 @@ namespace gip {
     for (unsigned int node = 0; node < adapter.getNumberOfNodes(); ++node) {      
       try {
         Camera1394Impl::ConfigurationIntro config;
-        adapter.read(node, IEEE1394::CSR_BASE_ADDRESS + IEEE1394::CONFIGURATION_ROM, Cast::getCharAddress(config), sizeof(config));
+        adapter.read(
+          node,
+          IEEE1394::CSR_BASE_ADDRESS + IEEE1394::CONFIGURATION_ROM,
+          Cast::getCharAddress(config),
+          sizeof(config)
+        );
         
         if (((config.crc >> 24) * sizeof(IEEE1394::Quadlet) >= sizeof(Camera1394Impl::BusInfo)) && // check for general ROM format
             (config.busInfo.name == 0x31333934) && // "1394"
@@ -551,10 +566,12 @@ namespace gip {
             OFFSETOF(Camera1394Impl::ConfigurationIntro, rootDirectory.deviceDirectoryOffset);
           
           Camera1394Impl::DeviceIndependentDirectory deviceIndependentDirectory;
-          adapter.read(node,
-                       IEEE1394::CSR_BASE_ADDRESS + deviceIndependentDirectoryOffset,
-                       Cast::getCharAddress(deviceIndependentDirectory),
-                       sizeof(deviceIndependentDirectory));
+          adapter.read(
+            node,
+            IEEE1394::CSR_BASE_ADDRESS + deviceIndependentDirectoryOffset,
+            Cast::getCharAddress(deviceIndependentDirectory),
+            sizeof(deviceIndependentDirectory)
+          );
 
           if ((deviceIndependentDirectory.specification == 0x1200a02d) && // (ID for 1394TA)
               ((deviceIndependentDirectory.version & 0xff000000) == 0x13000000) &&
@@ -575,7 +592,12 @@ namespace gip {
     assert(isCamera(node), bindCause(Camera1394Exception("Not a camera", this), Camera1394::NOT_A_CAMERA));
     
     Camera1394Impl::ConfigurationIntro config;
-    adapter.read(node, IEEE1394::CSR_BASE_ADDRESS + IEEE1394::CONFIGURATION_ROM, Cast::getCharAddress(config), sizeof(config));
+    adapter.read(
+      node,
+      IEEE1394::CSR_BASE_ADDRESS + IEEE1394::CONFIGURATION_ROM,
+      Cast::getCharAddress(config),
+      sizeof(config)
+    );
     
     assert(
       ((config.crc >> 24) * sizeof(IEEE1394::Quadlet) >= sizeof(Camera1394Impl::BusInfo)) && // check for general ROM format
@@ -597,10 +619,12 @@ namespace gip {
       OFFSETOF(Camera1394Impl::ConfigurationIntro, rootDirectory.deviceDirectoryOffset);
     
     Camera1394Impl::DeviceIndependentDirectory deviceIndependentDirectory;
-    adapter.read(node,
-                 IEEE1394::CSR_BASE_ADDRESS + deviceIndependentDirectoryOffset,
-                 Cast::getCharAddress(deviceIndependentDirectory),
-                 sizeof(deviceIndependentDirectory));
+    adapter.read(
+      node,
+      IEEE1394::CSR_BASE_ADDRESS + deviceIndependentDirectoryOffset,
+      Cast::getCharAddress(deviceIndependentDirectory),
+      sizeof(deviceIndependentDirectory)
+    );
     
     assert(
       (deviceIndependentDirectory.specification == 0x1200a02d) && // (ID for 1394TA)
@@ -629,10 +653,12 @@ namespace gip {
       deviceIndependentDirectoryOffset;
     
     Camera1394Impl::DeviceDependentDirectory deviceDependentDirectory;
-    adapter.read(node,
-                 IEEE1394::CSR_BASE_ADDRESS + deviceDependentDirectoryOffset,
-                 Cast::getCharAddress(deviceDependentDirectory),
-                 sizeof(deviceDependentDirectory));
+    adapter.read(
+      node,
+      IEEE1394::CSR_BASE_ADDRESS + deviceDependentDirectoryOffset,
+      Cast::getCharAddress(deviceDependentDirectory),
+      sizeof(deviceDependentDirectory)
+    );
     
     assert(
       ((deviceDependentDirectory.commandRegisters & 0xff000000) == 0x40000000) &&
@@ -651,7 +677,12 @@ namespace gip {
       getFieldOffset(&Camera1394Impl::DeviceDependentDirectory::vendorNameLeaf) +
       deviceDependentDirectoryOffset;
     
-    adapter.read(node, IEEE1394::CSR_BASE_ADDRESS + vendorNameOffset, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      node,
+      IEEE1394::CSR_BASE_ADDRESS + vendorNameOffset,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     unsigned int vendorLeafSize = quadlet >> 16;
     ASSERT(vendorLeafSize >= 2);
     if (vendorLeafSize > 2) {
@@ -668,7 +699,12 @@ namespace gip {
       getFieldOffset(&Camera1394Impl::DeviceDependentDirectory::modelNameLeaf) +
       deviceDependentDirectoryOffset;
     
-    adapter.read(node, IEEE1394::CSR_BASE_ADDRESS + modelNameOffset, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      node,
+      IEEE1394::CSR_BASE_ADDRESS + modelNameOffset,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     unsigned int modelLeafSize = quadlet >> 16;
     ASSERT(modelLeafSize >= 2);
     if (modelLeafSize > 2) {
@@ -678,7 +714,12 @@ namespace gip {
     }
     
     // get supported formats
-    adapter.read(node, commandRegisters + Camera1394Impl::V_FORMAT_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      node,
+      commandRegisters + Camera1394Impl::V_FORMAT_INQ,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     formats = Math::getBitReversal(quadlet);
     
     // get supported modes
@@ -687,7 +728,12 @@ namespace gip {
       for (unsigned int i = 0; i < 8; ++i) {
         buffer[i] = 0;
         if (isFormatSupported(static_cast<Format>(i))) {
-          adapter.read(node, commandRegisters + Camera1394Impl::V_MODE_INQ_0 + i * sizeof(IEEE1394::Quadlet), Cast::getCharAddress(buffer[i]), sizeof(buffer[i]));
+          adapter.read(
+            node,
+            commandRegisters + Camera1394Impl::V_MODE_INQ_0 + i * sizeof(IEEE1394::Quadlet),
+            Cast::getCharAddress(buffer[i]),
+            sizeof(buffer[i])
+          );
         }
       }
       for (unsigned int i = 0; i < getArraySize(supportedModes); ++i) {
@@ -721,27 +767,52 @@ namespace gip {
         if (!isModeSupported(mode)) {
           continue;
         }
-        adapter.read(node, commandRegisters + Camera1394Impl::V_CSR_INQ_7_0 + i * sizeof(IEEE1394::Quadlet), Cast::getCharAddress(quadlet), sizeof(quadlet));
+        adapter.read(
+          node,
+          commandRegisters + Camera1394Impl::V_CSR_INQ_7_0 + i * sizeof(IEEE1394::Quadlet),
+          Cast::getCharAddress(quadlet),
+          sizeof(quadlet)
+        );
         partialImageModeOffset[i] = quadlet * sizeof(IEEE1394::Quadlet); // TAG: check for overflow
         
         if (supportedModes[PARTIAL_IMAGE_MODE_0 + i]) { // partial image modes  are guaranteed to be consecutive
           IEEE1394::Quadlet maximumImageSize;
-          adapter.read(node, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[i] + Camera1394Impl::MAX_IMAGE_SIZE_INQ, Cast::getCharAddress(maximumImageSize), sizeof(maximumImageSize));
+          adapter.read(
+            node,
+            IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[i] + Camera1394Impl::MAX_IMAGE_SIZE_INQ,
+            Cast::getCharAddress(maximumImageSize),
+            sizeof(maximumImageSize)
+          );
           partialImageMode[i].maximumDimension = Dimension(maximumImageSize >> 16, maximumImageSize & 0xffff);
           
           IEEE1394::Quadlet unitSize;
-          adapter.read(node, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[i] + Camera1394Impl::UNIT_SIZE_INQ, Cast::getCharAddress(unitSize), sizeof(unitSize));
+          adapter.read(
+            node,
+            IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[i] + Camera1394Impl::UNIT_SIZE_INQ,
+            Cast::getCharAddress(unitSize),
+            sizeof(unitSize)
+          );
           unsigned int unitWidth = unitSize >> 16;
           unsigned int unitHeight = unitSize & 0xffff;
           
           IEEE1394::Quadlet colorCodingInquery;
-          adapter.read(node, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[i] + Camera1394Impl::COLOR_CODING_INQ, Cast::getCharAddress(colorCodingInquery), sizeof(colorCodingInquery));
+          adapter.read(
+            node,
+            IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[i] + Camera1394Impl::COLOR_CODING_INQ,
+            Cast::getCharAddress(colorCodingInquery),
+            sizeof(colorCodingInquery)
+          );
           
           unsigned int unitHorizontalOffset = 0;
           unsigned int unitVerticalOffset = 0;
           if (specification >= Camera1394::SPECIFICATION_1_30) {
             IEEE1394::Quadlet unitOffsetInquery;
-            adapter.read(node, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[i] + Camera1394Impl::UNIT_POSITION_INQ, Cast::getCharAddress(unitOffsetInquery), sizeof(unitOffsetInquery));
+            adapter.read(
+              node,
+              IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[i] + Camera1394Impl::UNIT_POSITION_INQ,
+              Cast::getCharAddress(unitOffsetInquery),
+              sizeof(unitOffsetInquery)
+            );
             unitHorizontalOffset = unitOffsetInquery >> 16;
             unitVerticalOffset = unitOffsetInquery & 0xffff;
             
@@ -775,7 +846,12 @@ namespace gip {
     }
 
     // get capabilities
-    adapter.read(node, commandRegisters + Camera1394Impl::BASIC_FUNC_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      node,
+      commandRegisters + Camera1394Impl::BASIC_FUNC_INQ,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     capabilities = 0;
     capabilities |= (quadlet & (1 << 15)) ? Camera1394::POWER_CONTROL : 0;
     capabilities |= (quadlet & (1 << 12)) ? Camera1394::SINGLE_ACQUISITION : 0;
@@ -800,9 +876,19 @@ namespace gip {
 
     // get the current mode
     {
-      adapter.read(camera, commandRegisters + Camera1394Impl::CURRENT_V_MODE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::CURRENT_V_MODE,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       unsigned int mode = quadlet >> 29;
-      adapter.read(camera, commandRegisters + Camera1394Impl::CURRENT_V_FORMAT, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::CURRENT_V_FORMAT,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       unsigned int format = quadlet >> 29;
       
       static const int MODE_BASE[] = {
@@ -835,7 +921,12 @@ namespace gip {
     }
 
     // TAG: not for revision for format 6 and partial image format
-    adapter.read(camera, commandRegisters + Camera1394Impl::CURRENT_V_RATE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::CURRENT_V_RATE,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     frameRate = static_cast<FrameRate>(quadlet >> 29);
     
     const Camera1394Impl::ModeInformation& info = Camera1394Impl::MODE_INFORMATION[currentMode];
@@ -843,19 +934,54 @@ namespace gip {
       this->mode = partialImageMode[info.mode];
       
       IEEE1394::Quadlet imageOffset;
-      adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::IMAGE_POSITION, Cast::getCharAddress(imageOffset), sizeof(imageOffset));
+      adapter.read(
+        camera,
+        IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::IMAGE_POSITION,
+        Cast::getCharAddress(imageOffset),
+        sizeof(imageOffset)
+      );
       IEEE1394::Quadlet imageDimension;
-      adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::IMAGE_SIZE, Cast::getCharAddress(imageDimension), sizeof(imageDimension));
+      adapter.read(
+        camera,
+        IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::IMAGE_SIZE,
+        Cast::getCharAddress(imageDimension),
+        sizeof(imageDimension)
+      );
       IEEE1394::Quadlet colorCoding;
-      adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::COLOR_CODING_ID, Cast::getCharAddress(colorCoding), sizeof(colorCoding));
+      adapter.read(
+        camera,
+        IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::COLOR_CODING_ID,
+        Cast::getCharAddress(colorCoding),
+        sizeof(colorCoding)
+      );
       IEEE1394::Quadlet pixelsPerFrameInquery;
-      adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::PIXEL_NUMBER_INQ, Cast::getCharAddress(pixelsPerFrameInquery), sizeof(pixelsPerFrameInquery));
+      adapter.read(
+        camera,
+        IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::PIXEL_NUMBER_INQ,
+        Cast::getCharAddress(pixelsPerFrameInquery),
+        sizeof(pixelsPerFrameInquery)
+      );
       BigEndian<uint64> totalBytesPerFrameInquery;
-      adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::TOTAL_BYTES_HI_INQ, Cast::getCharAddress(totalBytesPerFrameInquery), sizeof(totalBytesPerFrameInquery));
+      adapter.read(
+        camera,
+        IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::TOTAL_BYTES_HI_INQ,
+        Cast::getCharAddress(totalBytesPerFrameInquery),
+        sizeof(totalBytesPerFrameInquery)
+      );
       IEEE1394::Quadlet packetParaInquery;
-      adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::PACKET_PARA_INQ, Cast::getCharAddress(packetParaInquery), sizeof(packetParaInquery));
+      adapter.read(
+        camera,
+        IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::PACKET_PARA_INQ,
+        Cast::getCharAddress(packetParaInquery),
+        sizeof(packetParaInquery)
+      );
       IEEE1394::Quadlet bytesPerPacket;
-      adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::BYTE_PER_PACKET, Cast::getCharAddress(bytesPerPacket), sizeof(bytesPerPacket));
+      adapter.read(
+        camera,
+        IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::BYTE_PER_PACKET,
+        Cast::getCharAddress(bytesPerPacket),
+        sizeof(bytesPerPacket)
+      );
       
       region.setOffset(Point2D(imageOffset & 0xffff, imageOffset >> 16));
       region.setDimension(Dimension(imageDimension >> 16, imageDimension & 0xffff));
@@ -880,11 +1006,21 @@ namespace gip {
 
       // TAG: temporary fix
       bytesPerPacket = transmission.bytesPerPacket << 16;
-      adapter.write(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::BYTE_PER_PACKET, Cast::getCharAddress(bytesPerPacket), sizeof(bytesPerPacket));
+      adapter.write(
+        camera,
+        IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::BYTE_PER_PACKET,
+        Cast::getCharAddress(bytesPerPacket),
+        sizeof(bytesPerPacket)
+      );
 
       // packetsPerFrameInquery is updated when bytesPerPacket is written
       IEEE1394::Quadlet packetsPerFrameInquery;
-      adapter.read(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::PACKET_PER_FRAME_INQ, Cast::getCharAddress(packetsPerFrameInquery), sizeof(packetsPerFrameInquery));
+      adapter.read(
+        camera,
+        IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::PACKET_PER_FRAME_INQ,
+        Cast::getCharAddress(packetsPerFrameInquery),
+        sizeof(packetsPerFrameInquery)
+      );
       transmission.packetsPerFrame = packetsPerFrameInquery;
       
       // TAG: what about value settings
@@ -966,7 +1102,12 @@ namespace gip {
     {
       features = 0;
       
-      adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_HI_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::FEATURE_HI_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       features |= (quadlet & (1 << 31)) ? (1 << Camera1394::BRIGHTNESS_CONTROL) : 0;
       features |= (quadlet & (1 << 30)) ? (1 << Camera1394::AUTO_EXPOSURE_CONTROL) : 0;
       features |= (quadlet & (1 << 29)) ? (1 << Camera1394::SHARPNESS_CONTROL) : 0;
@@ -981,7 +1122,12 @@ namespace gip {
       features |= (quadlet & (1 << 20)) ? (1 << Camera1394::TEMPERATURE_CONTROL) : 0;
       features |= (quadlet & (1 << 19)) ? (1 << Camera1394::TRIGGER_CONTROL) : 0;
 
-      adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_LO_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::FEATURE_LO_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       features |= (quadlet & (1 << 31)) ? (1 << Camera1394::ZOOM_CONTROL) : 0;
       features |= (quadlet & (1 << 30)) ? (1 << Camera1394::PAN_CONTROL) : 0;
       features |= (quadlet & (1 << 29)) ? (1 << Camera1394::TILT_CONTROL) : 0;
@@ -991,62 +1137,132 @@ namespace gip {
 
       advancedFeatureAddress = 0;
       if (capabilities & Camera1394::ADVANCED_FEATURES) {
-        adapter.read(camera, commandRegisters + Camera1394Impl::ADVANCED_FEATURE_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+        adapter.read(
+          camera,
+          commandRegisters + Camera1394Impl::ADVANCED_FEATURE_INQ,
+          Cast::getCharAddress(quadlet),
+          sizeof(quadlet)
+        );
         advancedFeatureAddress = commandRegisters + quadlet * sizeof(IEEE1394::Quadlet); // TAG: is this allowed to be changed per mode
       }
     }
 
     fill<char>(Cast::getCharAddress(featureDescriptors), sizeof(featureDescriptors), 0);
     if (isFeatureSupported(Camera1394::BRIGHTNESS_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::BRIGHTNESS_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::BRIGHTNESS_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.brightness);
     }
     if (isFeatureSupported(Camera1394::AUTO_EXPOSURE_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::AUTO_EXPOSURE_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::AUTO_EXPOSURE_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.autoExposure);
     }
     if (isFeatureSupported(Camera1394::SHARPNESS_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::SHARPNESS_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::SHARPNESS_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.sharpness);
     }
     if (isFeatureSupported(Camera1394::WHITE_BALANCE_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::WHITE_BALANCE_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::WHITE_BALANCE_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.whiteBalance);
     }
     if (isFeatureSupported(Camera1394::HUE_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::HUE_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::HUE_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.hue);
     }
     if (isFeatureSupported(Camera1394::SATURATION_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::SATURATION_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::SATURATION_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.saturation);
     }
     if (isFeatureSupported(Camera1394::GAMMA_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::GAMMA_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::GAMMA_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.gamma);
     }
     if (isFeatureSupported(Camera1394::SHUTTER_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::SHUTTER_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::SHUTTER_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.shutter);
     }
     if (isFeatureSupported(Camera1394::GAIN_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::GAIN_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::GAIN_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.gain);
     }
     if (isFeatureSupported(Camera1394::IRIS_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::IRIS_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::IRIS_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.iris);
     }
     if (isFeatureSupported(Camera1394::FOCUS_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::FOCUS_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::FOCUS_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.focus);
     }
     if (isFeatureSupported(Camera1394::TEMPERATURE_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::TEMPERATURE_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::TEMPERATURE_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.temperature);
     }
     if (isFeatureSupported(Camera1394::TRIGGER_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::TRIGGER_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::TRIGGER_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       union {
         uint32 integral;
         Camera1394Impl::TriggerFeatureInquery inquery;
@@ -1061,27 +1277,57 @@ namespace gip {
         (inquery.mode0 << 0) | (inquery.mode1 << 1) | (inquery.mode2 << 2) | (inquery.mode3 << 3);
     }
     if (isFeatureSupported(Camera1394::ZOOM_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::ZOOM_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::ZOOM_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.zoom);
     }
     if (isFeatureSupported(Camera1394::PAN_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::PAN_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::PAN_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.pan);
     }
     if (isFeatureSupported(Camera1394::TILT_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::TILT_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::TILT_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.tilt);
     }
     if (isFeatureSupported(Camera1394::OPTICAL_FILTER_CONTROL)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::OPTICAL_FILTER_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::OPTICAL_FILTER_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.opticalFilter);
     }
     if (isFeatureSupported(Camera1394::CAPTURE_SIZE)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::CAPTURE_SIZE_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::CAPTURE_SIZE_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.captureSize);
     }
     if (isFeatureSupported(Camera1394::CAPTURE_QUALITY)) {
-      adapter.read(camera, commandRegisters + Camera1394Impl::CAPTURE_QUALITY_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + Camera1394Impl::CAPTURE_QUALITY_INQ,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.captureQuality);
     }
   }
@@ -1213,9 +1459,19 @@ namespace gip {
 
     IEEE1394::Quadlet quadlet;
     quadlet = 0 << 31; // disable continuous
-    adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.write(
+      camera,
+      commandRegisters + Camera1394Impl::ISO_ENABLE,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     quadlet = (0 << 31) | (0 << 30) | 0; // disable finite shots
-    adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.write(
+      camera,
+      commandRegisters + Camera1394Impl::FINITE_SHOTS,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
 
     if ((frameRates[mode] & (1 << frameRate)) == 0) { // is current frame rate supported for new mode
       for (unsigned int i = 0; i < 32; ++i) { // find new frame rate
@@ -1231,11 +1487,26 @@ namespace gip {
     setCommandRegister(Camera1394Impl::CURRENT_V_RATE, quadlet);
     //adapter.write(camera, commandRegisters + Camera1394Impl::CURRENT_V_RATE, Cast::getCharAddress(quadlet), sizeof(quadlet));
     quadlet = Camera1394Impl::MODE_INFORMATION[mode].mode << 29;
-    adapter.write(camera, commandRegisters + Camera1394Impl::CURRENT_V_MODE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.write(
+      camera,
+      commandRegisters + Camera1394Impl::CURRENT_V_MODE,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     quadlet = Camera1394Impl::MODE_INFORMATION[mode].format << 29;
-    adapter.write(camera, commandRegisters + Camera1394Impl::CURRENT_V_FORMAT, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.write(
+      camera,
+      commandRegisters + Camera1394Impl::CURRENT_V_FORMAT,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     quadlet = (transmission.subchannel << 28) | (transmission.speed << 24);
-    adapter.write(camera, commandRegisters + Camera1394Impl::ISO_CHANNEL, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.write(
+      camera,
+      commandRegisters + Camera1394Impl::ISO_CHANNEL,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     
     readModeSpecificState();
   }
@@ -1250,26 +1521,41 @@ namespace gip {
     this->frameRate = frameRate;
     
     IEEE1394::Quadlet quadlet = frameRate << 29;
-    adapter.write(camera, commandRegisters + Camera1394Impl::CURRENT_V_RATE, getCharAddress(quadlet), sizeof(quadlet));
+    adapter.write(
+      camera,
+      commandRegisters + Camera1394Impl::CURRENT_V_RATE,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
 //     quadlet = Camera1394Impl::MODE_INFORMATION[currentMode].mode << 29;
-//     adapter.write(camera, commandRegisters + Camera1394Impl::CURRENT_V_MODE, getCharAddress(quadlet), sizeof(quadlet));
+//     adapter.write(camera, commandRegisters + Camera1394Impl::CURRENT_V_MODE, Cast::getCharAddress(quadlet), sizeof(quadlet));
 //     quadlet = Camera1394Impl::MODE_INFORMATION[currentMode].format << 29;
-//     adapter.write(camera, commandRegisters + Camera1394Impl::CURRENT_V_FORMAT, getCharAddress(quadlet), sizeof(quadlet));
+//     adapter.write(camera, commandRegisters + Camera1394Impl::CURRENT_V_FORMAT, Cast::getCharAddress(quadlet), sizeof(quadlet));
 //     quadlet = (transmission.subchannel << 28) | (transmission.speed << 24);
-//     adapter.write(camera, commandRegisters + Camera1394Impl::ISO_CHANNEL, getCharAddress(quadlet), sizeof(quadlet));
+//     adapter.write(camera, commandRegisters + Camera1394Impl::ISO_CHANNEL, Cast::getCharAddress(quadlet), sizeof(quadlet));
     
   }
 
   void Camera1394::enable() throw(IEEE1394Exception) {
     IEEE1394::Quadlet quadlet;
     quadlet = 1 << 31;
-    adapter.write(camera, commandRegisters + Camera1394Impl::POWER, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.write(
+      camera,
+      commandRegisters + Camera1394Impl::POWER,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
   }
   
   void Camera1394::disable() throw(IEEE1394Exception) {
     IEEE1394::Quadlet quadlet;
     quadlet = 0 << 31;
-    adapter.write(camera, commandRegisters + Camera1394Impl::POWER, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.write(
+      camera,
+      commandRegisters + Camera1394Impl::POWER,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
   }
   
   bool Camera1394::isUpAndRunning() const throw(IEEE1394Exception) {
@@ -1294,7 +1580,12 @@ namespace gip {
     };
     ASSERT(features < getArraySize(BIT));
     BigEndian<uint64> status;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_ERROR_STATUS_HIGH, Cast::getCharAddress(status), sizeof(status));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_ERROR_STATUS_HIGH,
+      Cast::getCharAddress(status),
+      sizeof(status)
+    );
     return (status >> BIT[feature]) == 0; // check if error or warning
   }
 
@@ -1504,7 +1795,12 @@ namespace gip {
     ASSERT(feature < getArraySize(feature));
     uint64 featureRegister = commandRegisters + Camera1394Impl::FEATURE_CONTROL_REGISTER[feature];
     IEEE1394::Quadlet original;
-    adapter.read(camera, featureRegister, Cast::getCharAddress(original), sizeof(original));
+    adapter.read(
+      camera,
+      featureRegister,
+      Cast::getCharAddress(original),
+      sizeof(original)
+    );
     Camera1394Impl::FeatureControl control = Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(original);
     assert(
       control.enabled && !control.automaticMode && !control.autoAdjustmentMode,
@@ -1516,7 +1812,12 @@ namespace gip {
     quadlet = Cast::impersonate<uint32>(control);
     adapter.write(camera, featureRegister, Cast::getCharAddress(quadlet), sizeof(quadlet));
     if (!getFeatureStatus(feature)) { // check if error or warning
-      adapter.write(camera, featureRegister, Cast::getCharAddress(original), sizeof(original)); // try to restore original value
+      adapter.write(
+        camera,
+        featureRegister,
+        Cast::getCharAddress(original),
+        sizeof(original)
+      ); // try to restore original value
     }
   }
   
@@ -1526,7 +1827,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_BRIGHTNESS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_BRIGHTNESS,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1540,7 +1846,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_AUTO_EXPOSURE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_AUTO_EXPOSURE,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1554,7 +1865,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_SHARPNESS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_SHARPNESS,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1568,7 +1884,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_WHITE_BALANCE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_WHITE_BALANCE,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::WhiteBalanceFeatureControl, uint32>(quadlet).blueRatio;
   }
 
@@ -1578,7 +1899,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_WHITE_BALANCE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_WHITE_BALANCE,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::WhiteBalanceFeatureControl, uint32>(quadlet).redRatio;
   }
   
@@ -1594,7 +1920,12 @@ namespace gip {
     );
     uint64 featureRegister = commandRegisters + Camera1394Impl::FEATURE_WHITE_BALANCE;
     IEEE1394::Quadlet original;
-    adapter.read(camera, featureRegister, Cast::getCharAddress(original), sizeof(original));
+    adapter.read(
+      camera,
+      featureRegister,
+      Cast::getCharAddress(original),
+      sizeof(original)
+    );
     Camera1394Impl::WhiteBalanceFeatureControl control = Cast::impersonate<Camera1394Impl::WhiteBalanceFeatureControl, uint32>(original);
     assert(
       control.enabled && !control.automaticMode && !control.autoAdjustmentMode,
@@ -1607,7 +1938,12 @@ namespace gip {
     quadlet = Cast::impersonate<uint32>(control);
     adapter.write(camera, featureRegister, Cast::getCharAddress(quadlet), sizeof(quadlet));
     if (!getFeatureStatus(WHITE_BALANCE_CONTROL)) { // check if error or warning
-      adapter.write(camera, featureRegister, Cast::getCharAddress(original), sizeof(original)); // try to restore original value
+      adapter.write(
+        camera,
+        featureRegister,
+        Cast::getCharAddress(original),
+        sizeof(original)
+      ); // try to restore original value
     }
   }
 
@@ -1617,7 +1953,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_HUE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_HUE,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1631,7 +1972,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_SATURATION, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_SATURATION,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1645,7 +1991,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_GAMMA, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_GAMMA,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1659,7 +2010,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_SHUTTER, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_SHUTTER,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1673,7 +2029,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_GAIN, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_GAIN,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1687,7 +2048,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_IRIS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_IRIS,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1701,7 +2067,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_FOCUS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_FOCUS,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1715,7 +2086,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_TEMPERATURE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_TEMPERATURE,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::TemperatureFeatureControl, uint32>(quadlet).currentValue;
   }
 
@@ -1725,7 +2101,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_TEMPERATURE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_TEMPERATURE,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::TemperatureFeatureControl, uint32>(quadlet).targetValue;
   }
 
@@ -1734,7 +2115,12 @@ namespace gip {
     assert((value >= featureDescriptors.temperature.minimum) && (value <= featureDescriptors.temperature.maximum), OutOfDomain(this));
     uint64 featureRegister = commandRegisters + Camera1394Impl::FEATURE_TEMPERATURE;
     IEEE1394::Quadlet original;
-    adapter.read(camera, featureRegister, Cast::getCharAddress(original), sizeof(original));
+    adapter.read(
+      camera,
+      featureRegister,
+      Cast::getCharAddress(original),
+      sizeof(original)
+    );
     Camera1394Impl::TemperatureFeatureControl control = Cast::impersonate<Camera1394Impl::TemperatureFeatureControl, uint32>(original);
     assert(
       control.enabled && !control.automaticMode && !control.autoAdjustmentMode,
@@ -1760,7 +2146,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_ZOOM, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_ZOOM,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1774,7 +2165,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_PAN, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_PAN,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1788,7 +2184,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_TILT, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_TILT,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1802,7 +2203,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_OPTICAL_FILTER, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_OPTICAL_FILTER,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1816,7 +2222,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_CAPTURE_SIZE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_CAPTURE_SIZE,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1830,7 +2241,12 @@ namespace gip {
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
     IEEE1394::Quadlet quadlet;
-    adapter.read(camera, commandRegisters + Camera1394Impl::FEATURE_CAPTURE_QUALITY, Cast::getCharAddress(quadlet), sizeof(quadlet));
+    adapter.read(
+      camera,
+      commandRegisters + Camera1394Impl::FEATURE_CAPTURE_QUALITY,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
@@ -1900,9 +2316,19 @@ namespace gip {
     const Camera1394Impl::ModeInformation& info = Camera1394Impl::MODE_INFORMATION[currentMode];
 
     IEEE1394::Quadlet imageOffset = (offset.getColumn() << 16) | offset.getRow();
-    adapter.write(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::IMAGE_POSITION, Cast::getCharAddress(imageOffset), sizeof(imageOffset));
+    adapter.write(
+      camera,
+      IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::IMAGE_POSITION,
+      Cast::getCharAddress(imageOffset),
+      sizeof(imageOffset)
+    );
     IEEE1394::Quadlet imageDimension = (dimension.getWidth() << 16) | dimension.getHeight();
-    adapter.write(camera, IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::IMAGE_SIZE, Cast::getCharAddress(imageDimension), sizeof(imageDimension));
+    adapter.write(
+      camera,
+      IEEE1394::CSR_BASE_ADDRESS + partialImageModeOffset[info.mode] + Camera1394Impl::IMAGE_SIZE,
+      Cast::getCharAddress(imageDimension),
+      sizeof(imageDimension)
+    );
     
     readModeSpecificState(); // reloads new region
   }
@@ -1953,13 +2379,27 @@ namespace gip {
     IEEE1394::Quadlet quadlet;
     if (capabilities & SINGLE_ACQUISITION) {
       quadlet = 1 << 31; // single shot
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::FINITE_SHOTS,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     } else if (capabilities & MULTI_ACQUISITION) {
       quadlet = (1 << 30) + 1; // multi shot (ask for one frame)
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::FINITE_SHOTS,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     } else {
       quadlet = 1 << 31; // use continuous
-      adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::ISO_ENABLE, Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     }
 
     unsigned int period = getFramePeriod(getFrameRate());
@@ -1975,17 +2415,32 @@ namespace gip {
     if (capabilities & SINGLE_ACQUISITION) {
       if (!success) { // only required on failure
         quadlet = 0 << 31; // single shot
-        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+        adapter.write(
+          camera,
+          commandRegisters + Camera1394Impl::FINITE_SHOTS,
+          Cast::getCharAddress(quadlet),
+          sizeof(quadlet)
+        );
       }
     } else if (capabilities & MULTI_ACQUISITION) {
       if (!success) { // only required on failure
         quadlet = 0 << 30 + 0; // multi shot
-        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+        adapter.write(
+          camera,
+          commandRegisters + Camera1394Impl::FINITE_SHOTS,
+          Cast::getCharAddress(quadlet),
+          sizeof(quadlet)
+        );
       }
     } else {
       // always required to be stopped - continuous
       quadlet = 0;
-      adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::ISO_ENABLE,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     }
     
     if (success) {
@@ -2035,13 +2490,28 @@ namespace gip {
     IEEE1394::Quadlet quadlet;
     if (capabilities & SINGLE_ACQUISITION) {
       quadlet = 1 << 31; // single shot
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::FINITE_SHOTS,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     } else if (capabilities & MULTI_ACQUISITION) {
       quadlet = (1 << 30) + 1; // multi shot (ask for one frame)
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::FINITE_SHOTS,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     } else {
       quadlet = 1 << 31; // use continuous
-      adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::ISO_ENABLE,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     }
 
     unsigned int period = getFramePeriod(getFrameRate());
@@ -2083,17 +2553,32 @@ namespace gip {
     if (capabilities & SINGLE_ACQUISITION) {
       if (!success) { // only required on failure
         quadlet = 0 << 31; // single shot
-        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+        adapter.write(
+          camera,
+          commandRegisters + Camera1394Impl::FINITE_SHOTS,
+          Cast::getCharAddress(quadlet),
+          sizeof(quadlet)
+        );
       }
     } else if (capabilities & MULTI_ACQUISITION) {
       if (!success) { // only required on failure
         quadlet = 0 << 30 + 0; // multi shot
-        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+        adapter.write(
+          camera,
+          commandRegisters + Camera1394Impl::FINITE_SHOTS,
+          Cast::getCharAddress(quadlet),
+          sizeof(quadlet)
+        );
       }
     } else {
       // always required to be stopped - continuous
       quadlet = 0;
-      adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::ISO_ENABLE,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     }
     
     if (success) {
@@ -2144,13 +2629,28 @@ namespace gip {
     IEEE1394::Quadlet quadlet;
     if (capabilities & SINGLE_ACQUISITION) {
       quadlet = 1 << 31; // single shot
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::FINITE_SHOTS,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     } else if (capabilities & MULTI_ACQUISITION) {
       quadlet = (1 << 30) + 1; // multi shot (ask for one frame)
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::FINITE_SHOTS,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     } else {
       quadlet = 1 << 31; // use continuous
-      adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::ISO_ENABLE,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     }
 
     unsigned int period = getFramePeriod(getFrameRate());
@@ -2166,17 +2666,32 @@ namespace gip {
     if (capabilities & SINGLE_ACQUISITION) {
       if (!success) { // only required on failure
         quadlet = 0 << 31; // single shot
-        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+        adapter.write(
+          camera,
+          commandRegisters + Camera1394Impl::FINITE_SHOTS,
+          Cast::getCharAddress(quadlet),
+          sizeof(quadlet)
+        );
       }
     } else if (capabilities & MULTI_ACQUISITION) {
       if (!success) { // only required on failure
         quadlet = 0 << 30 + 0; // multi shot
-        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+        adapter.write(
+          camera,
+          commandRegisters + Camera1394Impl::FINITE_SHOTS,
+          Cast::getCharAddress(quadlet),
+          sizeof(quadlet)
+        );
       }
     } else {
       // always required to be stopped - continuous
       quadlet = 0;
-      adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::ISO_ENABLE,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     }
     
     if (success) {
@@ -2231,13 +2746,28 @@ namespace gip {
     IEEE1394::Quadlet quadlet;
     if (capabilities & SINGLE_ACQUISITION) {
       quadlet = 1 << 31; // single shot
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::FINITE_SHOTS,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     } else if (capabilities & MULTI_ACQUISITION) {
       quadlet = (1 << 30) + 1; // multi shot (ask for one frame)
-      adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::FINITE_SHOTS,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     } else {
       quadlet = 1 << 31; // use continuous
-      adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::ISO_ENABLE,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     }
 
     unsigned int period = getFramePeriod(getFrameRate());
@@ -2253,17 +2783,32 @@ namespace gip {
     if (capabilities & SINGLE_ACQUISITION) {
       if (!success) { // only required on failure
         quadlet = 0 << 31; // single shot
-        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+        adapter.write(
+          camera,
+          commandRegisters + Camera1394Impl::FINITE_SHOTS,
+          Cast::getCharAddress(quadlet),
+          sizeof(quadlet)
+        );
       }
     } else if (capabilities & MULTI_ACQUISITION) {
       if (!success) { // only required on failure
         quadlet = 0 << 30 + 0; // multi shot
-        adapter.write(camera, commandRegisters + Camera1394Impl::FINITE_SHOTS, Cast::getCharAddress(quadlet), sizeof(quadlet));
+        adapter.write(
+          camera,
+          commandRegisters + Camera1394Impl::FINITE_SHOTS,
+          Cast::getCharAddress(quadlet),
+          sizeof(quadlet)
+        );
       }
     } else {
       // always required to be stopped - continuous
       quadlet = 0;
-      adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + Camera1394Impl::ISO_ENABLE,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     }
     
     if (success) {
@@ -2348,10 +2893,20 @@ namespace gip {
     
     // enable continuous transmission
     IEEE1394::Quadlet quadlet = 0; // first disable continuous transmission as a precaution
-    adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
+    adapter.write(
+      camera,
+      commandRegisters + Camera1394Impl::ISO_ENABLE,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     Thread::nanosleep(5000000); // wait a few milliseconds
     quadlet = 1 << 31; // enable continuous transmission
-    adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
+    adapter.write(
+      camera,
+      commandRegisters + Camera1394Impl::ISO_ENABLE,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     
     bool success = true;
     bool stopped = false;
@@ -2382,7 +2937,12 @@ namespace gip {
         
         if (success && ((headers[0] & 1) == 0)) { // if sync is lost
           IEEE1394::Quadlet quadlet = 0; // disable continuous transmission
-          adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
+          adapter.write(
+            camera,
+            commandRegisters + Camera1394Impl::ISO_ENABLE,
+            Cast::getCharAddress(quadlet),
+            sizeof(quadlet)
+          );
           
           if (!listener->onAcquisitionLostSync(frame)) {
             success = false;
@@ -2392,7 +2952,12 @@ namespace gip {
             // TAG: queue requests until beginning of frame is found?
             Thread::nanosleep(5000000); // wait a few milliseconds
             quadlet = 1 << 31; // enable continuous transmission
-            adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
+            adapter.write(
+              camera,
+              commandRegisters + Camera1394Impl::ISO_ENABLE,
+              Cast::getCharAddress(quadlet),
+              sizeof(quadlet)
+            );
           }
         }
         
@@ -2430,7 +2995,12 @@ namespace gip {
     }
     
     quadlet = 0; // disable continuous transmission
-    adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
+    adapter.write(
+      camera,
+      commandRegisters + Camera1394Impl::ISO_ENABLE,
+      Cast::getCharAddress(quadlet),
+      sizeof(quadlet)
+    );
     
     return success;
   }
