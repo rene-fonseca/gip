@@ -44,7 +44,7 @@ namespace gip {
     
     typedef COMPONENT Component;
     typedef RGBAPixel<Component> Pixel;
-    typedef PixelComponent<Component>::Arithmetic Arithmetic;
+    typedef typename PixelComponent<Component>::Arithmetic Arithmetic;
     
     enum {
       MINIMUM = 0x00,
@@ -146,10 +146,10 @@ namespace gip {
   inline RGBAPixel<COMPONENT> blend(RGBAPixel<COMPONENT> back, RGBAPixel<COMPONENT> front, unsigned int opaque, unsigned int opacity) throw() {
     RGBAPixel<COMPONENT> result;
     unsigned int transparency = opaque - opacity;
-    result.red = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.red) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.red))/opaque;
-    result.green = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.green) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.green))/opaque;
-    result.blue = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.blue) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.blue))/opaque;
-    result.alpha = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.blue) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.alpha))/opaque;
+    result.red = (transparency * static_cast<typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.red) + opacity * static_cast<typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.red))/opaque;
+    result.green = (transparency * static_cast<typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.green) + opacity * static_cast<typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.green))/opaque;
+    result.blue = (transparency * static_cast<typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.blue) + opacity * static_cast<typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.blue))/opaque;
+    result.alpha = (transparency * static_cast<typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.blue) + opacity * static_cast<typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.alpha))/opaque;
     return result;
   }
 

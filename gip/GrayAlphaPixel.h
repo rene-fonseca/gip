@@ -41,7 +41,7 @@ namespace gip {
     
     typedef COMPONENT Component;
     typedef GrayAlphaPixel<Component> Pixel;
-    typedef PixelComponent<Component>::Arithmetic Arithmetic;
+    typedef typename PixelComponent<Component>::Arithmetic Arithmetic;
     
     enum {
       MINIMUM = 0x00,
@@ -166,8 +166,8 @@ namespace gip {
   inline GrayAlphaPixel<COMPONENT> blend(GrayAlphaPixel<COMPONENT> back, GrayAlphaPixel<COMPONENT> front, unsigned int opaque, unsigned int opacity) throw() {
     GrayAlphaPixel<COMPONENT> result;
     unsigned int transparency = opaque - opacity;
-    result.gray = (transparency * static_cast<PixelTraits<GrayAlphaPixel<COMPONENT> >::Arithmetic>(back.gray) + opacity * static_cast<PixelTraits<GrayAlphaPixel<COMPONENT> >::Arithmetic>(front.red))/opaque;
-    result.alpha = (transparency * static_cast<PixelTraits<GrayAlphaPixel<COMPONENT> >::Arithmetic>(back.alpha) + opacity * static_cast<PixelTraits<GrayAlphaPixel<COMPONENT> >::Arithmetic>(front.green))/opaque;
+    result.gray = (transparency * static_cast<typename PixelTraits<GrayAlphaPixel<COMPONENT> >::Arithmetic>(back.gray) + opacity * static_cast<typename PixelTraits<GrayAlphaPixel<COMPONENT> >::Arithmetic>(front.red))/opaque;
+    result.alpha = (transparency * static_cast<typename PixelTraits<GrayAlphaPixel<COMPONENT> >::Arithmetic>(back.alpha) + opacity * static_cast<typename PixelTraits<GrayAlphaPixel<COMPONENT> >::Arithmetic>(front.green))/opaque;
     return result;
   }
 

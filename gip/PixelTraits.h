@@ -86,7 +86,7 @@ namespace gip {
     
     typedef PIXEL Pixel;
     typedef Pixel Component;
-    typedef PixelComponent<Component>::Arithmetic Arithmetic;
+    typedef typename PixelComponent<Component>::Arithmetic Arithmetic;
 
     enum {
       MINIMUM = 0x00,

@@ -37,6 +37,8 @@ template<class PIXEL>
 class ArrayImage : public Image<PIXEL> {
 private:
 
+  typedef typename Image<PIXEL>::Pixel Pixel;
+  
   /** The elements of the image. */
   ReferenceCountedObjectPointer<ReferenceCountedAllocator<Pixel> > elements;
 public:
@@ -49,6 +51,7 @@ public:
   public:
 
     typedef MatrixRowIterator<TRAITS> RowIterator;
+    typedef typename Iterator<TRAITS>::Pointer Pointer;
   private:
 
     RowIterator first;
@@ -89,6 +92,7 @@ public:
   public:
 
     typedef MatrixColumnIterator<TRAITS> ColumnIterator;
+    typedef typename Iterator<TRAITS>::Pointer Pointer;
   private:
 
     ColumnIterator first;
@@ -202,13 +206,13 @@ ArrayImage<PIXEL>::ArrayImage(const ArrayImage& copy) throw() :
 }
 
 template<class PIXEL>
-ArrayImage<PIXEL>::Pixel* ArrayImage<PIXEL>::getElements() throw(MemoryException) {
+typename ArrayImage<PIXEL>::Pixel* ArrayImage<PIXEL>::getElements() throw(MemoryException) {
   elements.copyOnWrite();
   return elements->getElements();
 }
 
 template<class PIXEL>
-const ArrayImage<PIXEL>::Pixel* ArrayImage<PIXEL>::getElements() const throw() {
+const typename ArrayImage<PIXEL>::Pixel* ArrayImage<PIXEL>::getElements() const throw() {
   return elements->getElements();
 }
 
