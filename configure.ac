@@ -7,7 +7,7 @@ ac_gip_build_date=$(date -u +"%D %T UTC")
 ac_gip_build_user=$(whoami)
 ac_gip_build_host=$(uname -n)
 
-AC_PREREQ(2.5)
+AC_PREREQ(2.50)
 dnl AC_CHECK_COMPILERS()
 AC_PROG_CXX()
 dnl AC_ENABLE_SHARED(yes)
