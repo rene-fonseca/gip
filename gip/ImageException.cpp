@@ -15,10 +15,4 @@
 
 namespace gip {
 
-ImageException::ImageException() throw() {
-}
-
-ImageException::ImageException(const char* message) throw() : Exception(message) {
-}
-
 }; // end of gip namespace
