@@ -12,7 +12,7 @@
  ***************************************************************************/
 
 #include <gip/transformation/Gradient.h>
-#include <base/mathematics/constants.h>
+#include <base/mathematics/Constants.h>
 
 namespace gip {
 

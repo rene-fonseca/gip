@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,7 +12,7 @@
  ***************************************************************************/
 
 #include <gip/transformation/FourierTransformation.h>
-#include <base/mathematics/constants.h>
+#include <base/mathematics/Constants.h>
 
 namespace gip {
 
@@ -35,15 +35,15 @@ FourierTransformation::FourierTransformation(DestinationImage* destination, cons
 
   assert(
     source->getDimension().isProper(),
-    ImageException("Source image has inproper dimension")
+    ImageException("Source image has inproper dimension", this)
   );
   assert(
     destination->getDimension() == source->getDimension(),
-    ImageException("Source and destination images must have equal dimension")
+    ImageException("Source and destination images must have equal dimension", this)
   );
   assert(
     isPowerOfTwo(source->getDimension().getWidth()) && isPowerOfTwo(source->getDimension().getHeight()),
-    ImageException("Width and height of images must be power of two")
+    ImageException("Width and height of images must be power of two", this)
   );
 
   {
