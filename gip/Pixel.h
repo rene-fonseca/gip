@@ -31,10 +31,10 @@ namespace gip {
     Image element wrapper for a single intensity (e.g. gray level) with the
     intensity represented by one byte.
 
-    @short Image element
+    @short Achromatic image element
     @ingroup pixels
   */
-  typedef int __attribute__ ((aligned (4) )) GrayPixel;
+  typedef int GrayPixel; // __attribute__ ((aligned (4) ))
   
   template<>
   class PixelTraits<GrayPixel> {
