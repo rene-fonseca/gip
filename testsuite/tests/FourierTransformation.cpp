@@ -41,7 +41,11 @@ public:
   }
 
   inline GrayPixel operator()(const Complex& value) const throw() {
-    return clamp(0, static_cast<GrayPixel>(255 * Math::log(1 + value.getModulus() * scale)), 255);
+    return clamp(
+      0,
+      static_cast<GrayPixel>(255 * Math::ln(1 + value.getModulus() * scale)),
+      255
+    );
   }
 };
 
@@ -58,7 +62,7 @@ public:
   }
 
   inline long double operator()(const Complex& value) throw() {
-    long double result = Math::log(1 + value.getModulus() * scale);
+    long double result = Math::ln(1 + value.getModulus() * scale);
     if (result > max) {
       max = result;
     }

@@ -103,7 +103,7 @@ namespace gip {
       maximum = PixelTraits<Pixel>::MINIMUM;
       used = 0;
       long double sqrsum = 0;
-      entropy = numberOfSamples * Math::log(Cast::implicit<long double>(numberOfSamples));
+      entropy = numberOfSamples * Math::ln(Cast::implicit<long double>(numberOfSamples));
       for (unsigned int i = 0; i < NUMBER_OF_SYMBOLS; ++i) {
         if (frequency[i] != 0) {
           if (frequency[i] < minimumFrequency) {
@@ -123,7 +123,7 @@ namespace gip {
           }
           ++used;
           sqrsum += frequency[i] * (i - mean) * (i - mean);
-          entropy -= frequency[i] * Math::log(Cast::implicit<long double>(frequency[i]));
+          entropy -= frequency[i] * Math::ln(Cast::implicit<long double>(frequency[i]));
         } else {
           minimumFrequency = 0;
         }

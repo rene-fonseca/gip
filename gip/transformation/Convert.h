@@ -191,7 +191,7 @@ namespace gip {
     inline ComplexToRGBLogModulus(double _scale) throw() : scale(_scale) {}
 
     inline Result operator()(const Argument& value) const throw() {
-      long double temp = scale * Math::log(1 + value.getModulus());
+      long double temp = scale * Math::ln(1 + value.getModulus());
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
       } else if (temp > 0xff) {

@@ -46,7 +46,11 @@ public:
   }
   
   inline GrayPixel operator()(const float& value) const throw() {
-    return clamp<GrayPixel>(0, static_cast<GrayPixel>(scale * Math::log(1 + value)), PixelTraits<GrayPixel>::MAXIMUM);
+    return clamp<GrayPixel>(
+      0,
+      static_cast<GrayPixel>(scale * Math::ln(1 + value)),
+      PixelTraits<GrayPixel>::MAXIMUM
+    );
   }
 };
 
@@ -129,7 +133,11 @@ public:
     
     GrayImage finalImage(cosineImage.getDimension());
     {
-      Convert<GrayImage, FloatImage, CosineToGray> transform(&finalImage, &cosineImage, CosineToGray(1/Math::log(1 + maximum)));
+      Convert<GrayImage, FloatImage, CosineToGray> transform(
+        &finalImage,
+        &cosineImage,
+        CosineToGray(1/Math::ln(1 + maximum))
+      );
       transform();
     }
     
