@@ -20,7 +20,7 @@
 #include <base/iterator/MatrixRowIterator.h>
 #include <base/iterator/MatrixColumnIterator.h>
 #include <base/mem/ReferenceCountedAllocator.h>
-#include <base/mem/ReferenceCountedObjectPointer.h>
+#include <base/mem/Reference.h>
 
 namespace gip {
 
@@ -42,7 +42,7 @@ public:
 private:
   
   /** The elements of the image. */
-  ReferenceCountedObjectPointer<ReferenceCountedAllocator<Pixel> > elements;
+  Reference<ReferenceCountedAllocator<Pixel> > elements;
 public:
 
   template<class TRAITS = IteratorTraits<Pixel> >
