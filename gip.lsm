@@ -1,14 +1,14 @@
 Begin3
-Title:          Gip 
+Title:          Generic Image Processing Framework (GIP)
 Version:        0.1
 Entered-date:   
-Description:    
-Keywords:        
+Description:    A framework for developing image processing applications.
+Keywords:       generic image processing gip c++
 Author:         René Møller Fonseca <fonseca@mip.sdu.dk> 
 Maintained-by:  René Møller Fonseca <fonseca@mip.sdu.dk> 
-Primary-site:   	        
-Home-page:      http:// 
-Original-site:  
-Platforms:       Linux and other Unices
-Copying-policy: GNU Public License
+Primary-site:   http://www.mip.sdu.dk/~fonseca/gip
+Home-page:      http://www.mip.sdu.dk/~fonseca/gip
+Original-site:  http://www.mip.sdu.dk/~fonseca/gip
+Platforms:      Utilizes the Base Framework (www.mip.sdu.dk/~fonseca/base)
+Copying-policy: GNU General Public License Version 2, June 1991
 End
