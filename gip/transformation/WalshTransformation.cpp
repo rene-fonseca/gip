@@ -105,7 +105,7 @@ namespace gip {
             ElementIterator evenBlockPoint = offset;
             ElementIterator oddBlockPoint = offset + halfBlockSize;
             while (evenBlockPoint < endPoint) {
-              FloatPixel temp = *oddBlockPoint;
+              DestinationImage::Pixel temp = *oddBlockPoint;
               *oddBlockPoint = *evenBlockPoint - temp;
               *evenBlockPoint += temp;
               evenBlockPoint += blockSize;
@@ -118,19 +118,19 @@ namespace gip {
 
     // Walsh transformation column by column
     {
-      FloatPixel* column = destination->getElements();
-      const FloatPixel* endColumn = column + columns;
-      const FloatPixel* endPoint = column + columns * rows;
+      DestinationImage::Pixel* column = destination->getElements();
+      const DestinationImage::Pixel* endColumn = column + columns;
+      const DestinationImage::Pixel* endPoint = column + columns * rows;
       for (; column < endColumn; ++column) {
         for (unsigned int halfStep = columns; halfStep < columns * rows; halfStep <<= 1) {
           unsigned int fullStep = halfStep << 1;
-          FloatPixel* offset = column;
-          const FloatPixel* endOffset = offset + halfStep;
+          DestinationImage::Pixel* offset = column;
+          const DestinationImage::Pixel* endOffset = offset + halfStep;
           for (; offset < endOffset; offset += columns) {
-            FloatPixel* evenBlockPoint = offset;
-            FloatPixel* oddBlockPoint = offset + halfStep;
+            DestinationImage::Pixel* evenBlockPoint = offset;
+            DestinationImage::Pixel* oddBlockPoint = offset + halfStep;
             while (evenBlockPoint < endPoint) {
-              FloatPixel temp = *oddBlockPoint;
+              DestinationImage::Pixel temp = *oddBlockPoint;
               *oddBlockPoint = *evenBlockPoint - temp;
               *evenBlockPoint += temp;
               evenBlockPoint += fullStep;
