@@ -21,7 +21,7 @@
 #define _DK_SDU_MIP__GIP__MINOR_VERSION 1
 #define _DK_SDU_MIP__GIP__MICRO_VERSION 2
 #define _DK_SDU_MIP__GIP__VERSION "0.1.2"
-#define _DK_SDU_MIP__GIP__RELEASE "0.1.2 build 1"
+#define _DK_SDU_MIP__GIP__RELEASE "0.1.2 prerelease 1"
 
 #define _DK_SDU_MIP__GIP__REQUIRE(major, minor, micro) \
   ((major <= _DK_SDU_MIP__GIP__MAJOR_VERSION) && \
