@@ -146,7 +146,7 @@ namespace gip {
 
       @param center The center of the ellipse.
       @param dimension The half dimension of the ellipse.
-      @pram color The color of the ellipse.
+      @param color The color of the ellipse.
       @param options The options. The default is 0.
     */
     void ellipse(const Point& p1, const Dimension& dimension, Pixel color, unsigned int options = 0) throw();
