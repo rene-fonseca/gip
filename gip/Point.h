@@ -102,6 +102,9 @@ namespace gip {
     return Point(left.getX() - right.getX(), left.getY() - right.getY());
   }
 
+  /**
+    Writes the specified point to the stream (e.g. "(x,y)").
+  */
   FormatOutputStream& operator<<(FormatOutputStream& stream, const Point& value) throw(IOException);
 
 }; // end of gip namespace
