@@ -1,3 +1,16 @@
+# ***************************************************************************
+#    Generic Image Processing (GIP) Framework
+#    A framework for developing image processing applications
+#
+#    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+#
+#    This framework is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#    For the licensing terms refer to the file 'LICENSE'.
+# ***************************************************************************
+
 all:
 	aclocal
 	automake
@@ -13,10 +26,19 @@ dist:
 	touch stamp-h.in
 	LIST=`find ./po -name "*.po"`; \
 	for i in $$LIST; do \
-	 file2=`echo $$i | sed -e "s#\.po#\.gmo#"`; \
-	 msgfmt -o $$file2 $$i; \
+	  file2=`echo $$i | sed -e "s#\.po#\.gmo#"`; \
+	  msgfmt -o $$file2 $$i; \
 	done 
 	rm -f Makefile.dist
+
+lendum-gcc-2.96: all
+	CXXFLAGS='-O0 -g3' ./configure --with-base=/usr/local/base
+
+lendum-gcc-3.0.4: all
+	CC="/usr/local/gcc-3.0.4/bin/gcc" CFLAGS="-pipe -x c" CXX="/usr/local/gcc-3.0.4/bin/gcc" CXXFLAGS="-pipe -x c++ -ansi -O0 -g3" LDFLAGS="-x none" ./configure --target=i386-pc-linux --prefix=/usr/local/gip --enable-debug --with-base-include=/home/fonseca/src/base --with-base-lib=/home/fonseca/src/base/base
+
+lendum-gcc-3.0.4-release: all
+	CC="/usr/local/gcc-3.0.4/bin/gcc" CFLAGS="-pipe -x c" CXX="/usr/local/gcc-3.0.4/bin/gcc" CXXFLAGS="-pipe -x c++ -ansi -O3 -g3 -march=i686 -malign-double" LDFLAGS="-x none" ./configure --target=i686-pc-linux --prefix=/usr/local/gip --enable-debug --with-base-include=/home/fonseca/src/base --with-base-lib=/home/fonseca/src/base/base
 
 # LDFLAGS="-Wl,--enable-auto-import"
 klampenborg-gcc-3.0.4:
