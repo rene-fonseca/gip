@@ -18,15 +18,22 @@
 
 namespace gip {
 
-/**
-  @author Rene Moeller Fonseca
-  @version 1.0
-*/
-//class IntensityMapper : public UnaryTransformation {
-//public:
-//  IntensityMapper();
-//};
+  /**
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    @version 1.0
+  */
+  
+//   class IntensityMapper : public UnaryTransformation {
+//   public:
+    
+//     IntensityMapper(DestinationImage* destination, const SourceImage* source) : UnaryTransformation<?, ?>() {
+//     }
 
-}; // end of namespace
+//     void operator()() const throw() {
+//     }
+    
+//   };
+
+}; // end of gip namespace
 
 #endif
