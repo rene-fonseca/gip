@@ -11,26 +11,72 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_TRANSFORMATION__MIN_MAX_H
-#define _DK_SDU_MIP__GIP_TRANSFORMATION__MIN_MAX_H
+#ifndef _DK_SDU_MIP__GIP_TRANSFORMATION__FIND_MAXIMUM_H
+#define _DK_SDU_MIP__GIP_TRANSFORMATION__FIND_MAXIMUM_H
 
 #include <gip/transformation/UnaryTransformation.h>
 #include <gip/ArrayImage.h>
+#include <gip/analysis/traverse.h>
 
 namespace gip {
-
+  
   /**
-    @short Find the maximum value of an element
+    @short Find the maximum element (normally intensity or mapped intensity) of an element
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
-    @version 1.0
+    @version 1.1
   */
-
-  class FindMaximum : public UnaryTransformation<ComplexImage> {
+  
+  template<class DEST>
+  class FindMaximum : public UnaryTransformation<DEST> {
   public:
 
-    FindMaximum(DestinationImage* destination) throw();
+    /** Nests an unary operation to another unary operation. */
+    template<class UNOPRARG, class UNOPRRES>
+    class NestOperations : UnaryOperation<typename UNOPRARG::Argument, typename UNOPRRES::Result> {
+    protected:
 
-    long double operator()() throw();
+      UNOPRARG innerOperation;
+      UNOPRRES outerOperation;
+    public:
+
+      inline NestOperations(UNOPRARG inner, UNOPRRES outer) throw()
+        : innerOperation(inner), outerOperation(outer) {}
+
+      inline void operator()(const Argument& value) throw() {
+        outerOperation(innerOperation(value));
+      }
+
+      inline Result getResult() const throw() {
+        return outerOperation.getResult();
+      }
+    };
+
+    /** Returns an unary operation from a binary operation using a value as the first argument. */
+    template<class UNOPRARG, class UNOPRRES>
+    inline NestOperations<UNOPRARG, UNOPRRES> nestOperations(UNOPRARG& inner, const UNOPRRES& outer) {
+      return NestOperations<UNOPRARG, UNOPRRES>(inner, outer);
+    }
+
+    class ComplexToSqrModulus : public UnaryOperation<Complex, long double> {
+    public:
+
+      inline ComplexToSqrModulus() throw() {}
+
+      inline Result operator()(const Argument& value) throw() {
+        return value.getSqrModulus();
+      }
+    };
+    
+    FindMaximum(const DestinationImage* destination) throw()
+      : UnaryTransformation<DestinationImage>(destination) {
+    }
+
+    long double operator()() throw() { // DestinationImage::Pixel
+      ComplexToSqrModulus innerOperation;
+      NestOperations<ComplexToSqrModulus, Maximum<long double> > opr(innerOperation, Maximum<long double>(0));
+      forEach(*destination, opr);
+      return opr.getResult();
+    }
   };
 
 }; // end of namespace
