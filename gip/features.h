@@ -1,8 +1,8 @@
 /***************************************************************************
-    The Base Framework
-    A framework for developing platform independent applications
+    Generic Image Processing (GIP) Framework
+    A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,8 +19,9 @@
 
 #define _DK_SDU_MIP__GIP__MAJOR_VERSION 0
 #define _DK_SDU_MIP__GIP__MINOR_VERSION 1
-#define _DK_SDU_MIP__GIP__MICRO_VERSION 1
-#define _DK_SDU_MIP__GIP__VERSION "0.1.1"
+#define _DK_SDU_MIP__GIP__MICRO_VERSION 2
+#define _DK_SDU_MIP__GIP__VERSION "0.1.2"
+#define _DK_SDU_MIP__GIP__RELEASE "0.1.2 build 1"
 
 #define _DK_SDU_MIP__GIP__REQUIRE(major, minor, micro) \
   ((major <= _DK_SDU_MIP__GIP__MAJOR_VERSION) && \
