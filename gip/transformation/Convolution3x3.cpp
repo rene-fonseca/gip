@@ -15,11 +15,4 @@
 
 namespace gip {
 
-  void x() {
-    ArrayImage<RGBPixel<float> >* dest = 0;
-    ColorImage* src = 0;
-    Convolution3x3<ArrayImage<RGBPixel<float> >, ColorImage, SmoothUniformRectangular3x3> convolution(dest, src);
-    convolution();
-  }
-  
-}; // end of namespace
+}; // end of gip namespace
