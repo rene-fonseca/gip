@@ -76,9 +76,9 @@ struct HSVPixel<unsigned char> {
       unsigned char hue;
       unsigned char saturation;
       unsigned char value;
-    } __attribute__ ((packed));
-  } __attribute__ ((packed));
-} __attribute__ ((packed));
+    } _DK_SDU_MIP__BASE__PACKED;
+  } _DK_SDU_MIP__BASE__PACKED;
+} _DK_SDU_MIP__BASE__PACKED;
 
 /**
   This function returns the HSV pixel corresponding to the specified component values.

@@ -84,9 +84,9 @@ namespace gip {
         unsigned char cyan;
         unsigned char magenta;
         unsigned char yellow;
-      } __attribute__ ((packed));
-    } __attribute__ ((packed));
-  } __attribute__ ((packed));
+      } _DK_SDU_MIP__BASE__PACKED;
+    } _DK_SDU_MIP__BASE__PACKED;
+  } _DK_SDU_MIP__BASE__PACKED;
 
 
 

@@ -76,9 +76,9 @@ struct HLSPixel<unsigned char> {
       unsigned char hue;
       unsigned char lightness;
       unsigned char saturation;
-    } __attribute__ ((packed));
-  } __attribute__ ((packed));
-} __attribute__ ((packed));
+    } _DK_SDU_MIP__BASE__PACKED;
+  } _DK_SDU_MIP__BASE__PACKED;
+} _DK_SDU_MIP__BASE__PACKED;
 
 /**
   This function returns the HLS pixel corresponding to the specified component values.

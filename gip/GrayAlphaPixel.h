@@ -83,9 +83,9 @@ namespace gip {
       struct {
         unsigned char gray;
         unsigned char alpha;
-      } __attribute__ ((packed));
-    } __attribute__ ((packed));
-  } __attribute__ ((packed));
+      } _DK_SDU_MIP__BASE__PACKED;
+    } _DK_SDU_MIP__BASE__PACKED;
+  } _DK_SDU_MIP__BASE__PACKED;
 
   typedef GrayAlphaPixel<unsigned char> GrayAlphaPixel8;
 
@@ -96,9 +96,9 @@ namespace gip {
       struct {
         unsigned short gray;
         unsigned short alpha;
-      } __attribute__ ((packed));
-    } __attribute__ ((packed));
-  } __attribute__ ((packed));
+      } _DK_SDU_MIP__BASE__PACKED;
+    } _DK_SDU_MIP__BASE__PACKED;
+  } _DK_SDU_MIP__BASE__PACKED;
   
   typedef GrayAlphaPixel<unsigned short> GrayAlphaPixel16;
 
