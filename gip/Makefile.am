@@ -19,7 +19,7 @@ libgip_la_SOURCES = Point2D.cpp Point.cpp ImageException.cpp ArrayImage.cpp Coor
 
 libgip_la_LIBADD = transformation/libtransformation.la analysis/libanalysis.la canvas/libcanvas.la io/libio.la media/libmedia.la -lbase @GIP_LIBADD_ADD@ -lpng -ljpeg
 
-libgip_la_LDFLAGS = -avoid-version -module -no-undefined -version-info 0:1:0 @GIP_LDFLAGS_ADD@ @BASE_LDFLAGS_ADD@
+libgip_la_LDFLAGS = -no-undefined -version-info 0:1:0 @GIP_LDFLAGS_ADD@ @BASE_LDFLAGS_ADD@
 
 sectiondir = $(includedir)/gip
 section_HEADERS = features.h gip.h ArrayImage.h CoordinateMapper.h Functor.h Image.h ImageException.h PixelTraits.h GrayAlphaPixel.h HLSPixel.h HSVPixel.h RGBPixel.h RGBAPixel.h Pixel.h Point2D.h Point.h Region.h Segmentor.h  ShadowImage.h Subimage.h Version.h YCbCrPixel.h
