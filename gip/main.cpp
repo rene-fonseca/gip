@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -34,7 +34,6 @@
 #include <base/Functor.h>
 #include <base/Timer.h>
 #include <base/TypeInfo.h>
-#include <math.h>
 
 using namespace gip;
 using namespace base;
@@ -133,7 +132,7 @@ void testAVI() {
       reader.getFrame(frame);
       StringOutputStream filename;
       filename << MESSAGE("frame") << setWidth(3) << ZEROPAD << i << MESSAGE(".bmp") << FLUSH;
-      BMPEncoder(filename.getString()).write(&frame);
+      BMPEncoder().write(filename.getString(), &frame);
     }
   } catch (Exception& e) {
     ferr << MESSAGE("Exception: ") << e.getMessage() << ENDL;
@@ -217,25 +216,25 @@ void testWalshTransformation(ColorImage* image) {
     transform();
   }
 
-  BMPEncoder walshEncoder("walsh.bmp");
-  walshEncoder.writeGray(&grayImage);
+  BMPEncoder walshEncoder;
+  walshEncoder.writeGray(MESSAGE("walsh.bmp"), &grayImage);
 }
 
 void test(const String& input, const String& output) {
-
-  readEncoder = new GIFEncoder(input);
-  writeEncoder = new BMPEncoder(output);
-
+  
+  readEncoder = new GIFEncoder();
+  writeEncoder = new BMPEncoder();
+  
   fout << MESSAGE("Information:") << ENDL;
-  readEncoder->getInfo(fout);
+  readEncoder->getInfo(fout, input);
 
   fout << MESSAGE("Checking whether file is valid...") << ENDL;
-  if (readEncoder->isValid()) {
+  if (readEncoder->isValid(input)) {
     fout << MESSAGE("Importing image with encoder: ") << readEncoder->getDescription() << ENDL;
-    image = readEncoder->read();
-
+    image = readEncoder->read(input);
+    
     fout << MESSAGE("Exporting image with encoder: ") << writeEncoder->getDescription() << ENDL;
-    writeEncoder->write(image);
+    writeEncoder->write(output, image);
     return;
 
     ColorImage* scaledImage = new ColorImage(Dimension(512, 512));
@@ -324,7 +323,7 @@ void test(const String& input, const String& output) {
       fout << MESSAGE("Transforming image... ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
       transform();
     }
-
+    
 //    {
 //      InvertColor opr;
 //      transform(*finalImage, opr);
@@ -345,7 +344,7 @@ void test(const String& input, const String& output) {
 //    Test2 transform(destImage);
 
     fout << MESSAGE("Exporting image with encoder: ") << writeEncoder->getDescription() << ENDL;
-    writeEncoder->write(finalImage);
+    writeEncoder->write(output, finalImage);
     delete writeEncoder;
   } else {
     fout << MESSAGE("File format not supported by image encoder") << ENDL;
