@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -26,7 +26,7 @@ namespace gip {
 
 /**
   @short Image containing the image elements in an array for random access.
-  @author René Møller Fonseca
+  @author Rene Moeller Fonseca
 */
 
 template<class PIXEL>
@@ -37,6 +37,9 @@ private:
   ReferenceCountedObjectPointer<ReferenceCountedAllocator<Pixel> > elements;
 public:
 
+  /** The type of the pixels. */
+  typedef PIXEL Pixel;
+  
   template<class TRAITS = IteratorTraits<Pixel> >
   class RowsImpl : public Iterator<TRAITS> {
   public:
