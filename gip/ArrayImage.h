@@ -35,17 +35,16 @@ namespace gip {
 
 template<class PIXEL>
 class ArrayImage : public Image<PIXEL> {
-private:
+public:
 
+  /** The type of the pixels. */
   typedef typename Image<PIXEL>::Pixel Pixel;
+private:
   
   /** The elements of the image. */
   ReferenceCountedObjectPointer<ReferenceCountedAllocator<Pixel> > elements;
 public:
 
-  /** The type of the pixels. */
-  typedef PIXEL Pixel;
-  
   template<class TRAITS = IteratorTraits<Pixel> >
   class RowsImpl : public Iterator<TRAITS> {
   public:
