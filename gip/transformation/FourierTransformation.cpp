@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -12,11 +12,9 @@
  ***************************************************************************/
 
 #include <gip/transformation/FourierTransformation.h>
-#include <math.h>
+#include <base/mathematics/constants.h>
 
 namespace gip {
-
-#define M_PIl 3.14
 
 inline bool isPowerOfTwo(unsigned int value) throw() {
   if (value == 0) {
@@ -101,7 +99,7 @@ void FourierTransformation::operator()() throw() {
     DestinationImage::Rows::RowIterator row = rowsLookup.getFirst();
     for (; row != rowsLookup.getEnd(); ++row) {
       ElementIterator endPoint = row.getEnd();
-      double delta = forward ? M_PIl : -M_PIl;
+      long double delta = forward ? constant::PI : -constant::PI;
       for (unsigned int halfBlockSize = 1; halfBlockSize < columns; halfBlockSize <<= 1) { // double size of block per loop
         unsigned int blockSize = halfBlockSize << 1;
         Complex u(1, 0); // (cos(0); sin(0))
@@ -131,7 +129,7 @@ void FourierTransformation::operator()() throw() {
     const Complex* endColumn = column + columns;
     const Complex* endPoint = column + columns * rows;
     for (; column < endColumn; ++column) {
-      double delta = forward ? M_PIl : -M_PIl;
+      long double delta = forward ? constant::PI : -constant::PI;
       for (unsigned int halfStep = columns; halfStep < columns * rows; halfStep <<= 1) {
         unsigned int fullStep = halfStep << 1;
         Complex u(1, 0); // (cos(0); sin(0))
