@@ -37,24 +37,24 @@ namespace gip {
     unsigned int clip1 = 0;
     if (clipped1.getX() < 0) {
       clip1 |= LEFT;
-    } else if (clipped1.getX() >= dimension.getWidth()) {
+    } else if (static_cast<unsigned int>(clipped1.getX()) >= dimension.getWidth()) {
       clip1 |= RIGHT;
     }
     if (clipped1.getY() < 0) {
       clip1 |= BOTTOM;
-    } else if (clipped1.getY() >= dimension.getHeight()) {
+    } else if (static_cast<unsigned int>(clipped1.getY()) >= dimension.getHeight()) {
       clip1 |= TOP;
     }
 
     unsigned int clip2 = 0;
     if (clipped2.getX() < 0) {
       clip2 |= LEFT;
-    } else if (clipped2.getX() >= dimension.getWidth()) {
+    } else if (static_cast<unsigned int>(clipped2.getX()) >= dimension.getWidth()) {
       clip2 |= RIGHT;
     }
     if (clipped2.getY() < 0) {
       clip2 |= BOTTOM;
-    } else if (clipped2.getY() >= dimension.getHeight()) {
+    } else if (static_cast<unsigned int>(clipped2.getY()) >= dimension.getHeight()) {
       clip2 |= TOP;
     }
 
@@ -68,7 +68,7 @@ namespace gip {
         clipped1 = Point(delta.getX() * (y - p1.getY())/delta.getY() + p1.getX(), y);
         if (clipped1.getX() < 0) {
           clip1 = LEFT;
-        } else if (clipped1.getX() >= dimension.getWidth()) {
+        } else if (static_cast<unsigned int>(clipped1.getX()) >= dimension.getWidth()) {
           clip1 = RIGHT;
         } else {
           clip1 = 0;
@@ -78,7 +78,7 @@ namespace gip {
         clipped1 = Point(x, delta.getY() * (x - p1.getX())/delta.getX() + p1.getY());
         if (clipped1.getY() < 0) {
           clip1 = BOTTOM;
-        } else if (clipped1.getY() >= dimension.getHeight()) {
+        } else if (static_cast<unsigned int>(clipped1.getY()) >= dimension.getHeight()) {
           clip1 = TOP;
         } else {
           clip1 = 0;
@@ -88,7 +88,7 @@ namespace gip {
         clipped2 = Point(delta.getX() * (y - p1.getY())/delta.getY() + p1.getX(), y);
         if (clipped2.getX() < 0) {
           clip2 = LEFT;
-        } else if (clipped2.getX() >= dimension.getWidth()) {
+        } else if (static_cast<unsigned int>(clipped2.getX()) >= dimension.getWidth()) {
           clip2 = RIGHT;
         } else {
           clip2 = 0;
@@ -98,7 +98,7 @@ namespace gip {
         clipped2 = Point(x, delta.getY() * (x - p1.getX())/delta.getX() + p1.getY());
         if (clipped2.getY() < 0) {
           clip2 = BOTTOM;
-        } else if (clipped2.getY() >= dimension.getHeight()) {
+        } else if (static_cast<unsigned int>(clipped2.getY()) >= dimension.getHeight()) {
           clip2 = TOP;
         } else {
           clip2 = 0;
@@ -113,11 +113,15 @@ namespace gip {
   void Canvas::image(const Point& offset, const ColorImage& image) throw() {
     Dimension srcDimension = image.getDimension();
 
-    if ((offset.getX() >= static_cast<int>(dimension.getWidth())) || ((offset.getX() + srcDimension.getWidth()) < 0) ||
-       (offset.getY() >= static_cast<int>(dimension.getHeight())) || ((offset.getY() + srcDimension.getHeight()) < 0)) {
+    if (
+      ((offset.getX() >= 0) && (static_cast<unsigned int>(offset.getX()) >= dimension.getWidth())) ||
+      ((offset.getX() + srcDimension.getWidth()) < 0) ||
+      ((offset.getY() >= 0) && (static_cast<unsigned int>(offset.getY()) >= dimension.getHeight())) ||
+      ((offset.getY() + srcDimension.getHeight()) < 0)
+    ) {
       return;
     }
-
+    
     Point srcOffset(0, 0);
     Point destOffset = offset;
     if (destOffset.getX() < 0) {
@@ -164,22 +168,46 @@ namespace gip {
       int otherY; // selects inner or outer pixel
 
       if (options & FILL) { // anti aliased filled circle
-        unsigned int yLast = Math::isqrt(radius * radius/2); // TAG: rounding problem
+        unsigned int yLast = Math::iSqrt(radius * radius/2); // TAG: rounding problem
         while (x < y) {
-          unsigned int yExact = Math::isqrt8Round(yExactSquared); // scaled with 256 // TAG: could be optimized
+          unsigned int yExact = Math::iSqrt8Round(yExactSquared); // scaled with 256 // TAG: could be optimized
           unsigned int error = yExact & 0xff; // use fraction - error = y - y' <= 0.5 - scaled with 256
           int yBlend = (yExact < y * 256) ? y /*blend with inner*/ : (y + 1) /*blend with outer*/;
 
-          pixelInternal(Point(x, yBlend) + center, blend(getPixelInternal(Point(x, yBlend) + center), color, 255, error));
-          pixelInternal(Point(x, -yBlend) + center, blend(getPixelInternal(Point(x, -yBlend) + center), color, 255, error));
-          pixelInternal(Point(-x, -yBlend) + center, blend(getPixelInternal(Point(-x, -yBlend) + center), color, 255, error));
-          pixelInternal(Point(-x, yBlend) + center, blend(getPixelInternal(Point(-x, yBlend) + center), color, 255, error));
+          pixelInternal(
+            Point(x, yBlend) + center,
+            blend(getPixelInternal(Point(x, yBlend) + center), color, 255, error)
+          );
+          pixelInternal(
+            Point(x, -yBlend) + center,
+            blend(getPixelInternal(Point(x, -yBlend) + center), color, 255, error)
+          );
+          pixelInternal(
+            Point(-x, -yBlend) + center,
+            blend(getPixelInternal(Point(-x, -yBlend) + center), color, 255, error)
+          );
+          pixelInternal(
+            Point(-x, yBlend) + center,
+            blend(getPixelInternal(Point(-x, yBlend) + center), color, 255, error)
+          );
 
-          pixelInternal(Point(yBlend, x) + center, blend(getPixelInternal(Point(yBlend, x) + center), color, 255, error));
-          pixelInternal(Point(yBlend, -x) + center, blend(getPixelInternal(Point(yBlend, -x) + center), color, 255, error));
-          pixelInternal(Point(-yBlend, -x) + center, blend(getPixelInternal(Point(-yBlend, -x) + center), color, 255, error));
-          pixelInternal(Point(-yBlend, x) + center, blend(getPixelInternal(Point(-yBlend, x) + center), color, 255, error));
-
+          pixelInternal(
+            Point(yBlend, x) + center,
+            blend(getPixelInternal(Point(yBlend, x) + center), color, 255, error)
+          );
+          pixelInternal(
+            Point(yBlend, -x) + center,
+            blend(getPixelInternal(Point(yBlend, -x) + center), color, 255, error)
+          );
+          pixelInternal(
+            Point(-yBlend, -x) + center,
+            blend(getPixelInternal(Point(-yBlend, -x) + center), color, 255, error)
+          );
+          pixelInternal(
+            Point(-yBlend, x) + center,
+            blend(getPixelInternal(Point(-yBlend, x) + center), color, 255, error)
+          );
+          
           line(Point(x, yBlend - 1) + center, Point(x, yLast) + center, color);
           line(Point(-x, yBlend - 1) + center, Point(-x, yLast) + center, color);
           line(Point(x, -yBlend + 1) + center, Point(x, -yLast) + center, color);
@@ -208,7 +236,7 @@ namespace gip {
           unsigned int error;
           unsigned int otherError;
           int otherY;
-          unsigned int yExact = Math::isqrt8Round(yExactSquared); // scaled with 256 // TAG: could be optimized
+          unsigned int yExact = Math::iSqrt8Round(yExactSquared); // scaled with 256 // TAG: could be optimized
           if (yExact < y * 256) {
             error = yExact & 0xff; // use fraction
             otherError = 255 - error;
@@ -219,24 +247,72 @@ namespace gip {
             otherY = y + 1; // blend with the outer pixel
           }
 
-          pixelInternal(Point(x, y) + center, blend(getPixelInternal(Point(x, y) + center), color, 255, error));
-          pixelInternal(Point(x, otherY) + center, blend(getPixelInternal(Point(x, otherY) + center), color, 255, otherError));
-          pixelInternal(Point(x, -y) + center, blend(getPixelInternal(Point(x, -y) + center), color, 255, error));
-          pixelInternal(Point(x, -otherY) + center, blend(getPixelInternal(Point(x, -otherY) + center), color, 255, otherError));
-          pixelInternal(Point(-x, -y) + center, blend(getPixelInternal(Point(-x, -y ) + center), color, 255, error));
-          pixelInternal(Point(-x, -otherY) + center, blend(getPixelInternal(Point(-x, -otherY) + center), color, 255, otherError));
-          pixelInternal(Point(-x, y) + center, blend(getPixelInternal(Point(-x, y) + center), color, 255, error));
-          pixelInternal(Point(-x, otherY) + center, blend(getPixelInternal(Point(-x, otherY) + center), color, 255, otherError));
+          pixelInternal(
+            Point(x, y) + center,
+            blend(getPixelInternal(Point(x, y) + center), color, 255, error)
+          );
+          pixelInternal(
+            Point(x, otherY) + center,
+            blend(getPixelInternal(Point(x, otherY) + center), color, 255, otherError)
+          );
+          pixelInternal(
+            Point(x, -y) + center,
+            blend(getPixelInternal(Point(x, -y) + center), color, 255, error)
+          );
+          pixelInternal(
+            Point(x, -otherY) + center,
+            blend(getPixelInternal(Point(x, -otherY) + center), color, 255, otherError)
+          );
+          pixelInternal(
+            Point(-x, -y) + center,
+            blend(getPixelInternal(Point(-x, -y ) + center), color, 255, error)
+          );
+          pixelInternal(
+            Point(-x, -otherY) + center,
+            blend(getPixelInternal(Point(-x, -otherY) + center), color, 255, otherError)
+          );
+          pixelInternal(
+            Point(-x, y) + center,
+            blend(getPixelInternal(Point(-x, y) + center), color, 255, error)
+          );
+          pixelInternal(
+            Point(-x, otherY) + center,
+            blend(getPixelInternal(Point(-x, otherY) + center), color, 255, otherError)
+          );
 
-          pixelInternal(Point(y, x) + center, blend(getPixelInternal(Point(y, x) + center), color, 255, error));
-          pixelInternal(Point(otherY, x) + center, blend(getPixelInternal(Point(otherY, x) + center), color, 255, otherError));
-          pixelInternal(Point(y, -x) + center, blend(getPixelInternal(Point(y, -x) + center), color, 255, error));
-          pixelInternal(Point(otherY, -x) + center, blend(getPixelInternal(Point(otherY, -x) + center), color, 255, otherError));
-          pixelInternal(Point(-y, -x) + center, blend(getPixelInternal(Point(-y, -x) + center), color, 255, error));
-          pixelInternal(Point(-otherY, -x) + center, blend(getPixelInternal(Point(-otherY, -x) + center), color, 255, otherError));
-          pixelInternal(Point(-y, x) + center, blend(getPixelInternal(Point(-y, x) + center), color, 255, error));
-          pixelInternal(Point(-otherY, x) + center, blend(getPixelInternal(Point(-otherY, x) + center), color, 255, otherError));
-
+          pixelInternal(
+            Point(y, x) + center,
+            blend(getPixelInternal(Point(y, x) + center), color, 255, error)
+          );
+          pixelInternal(
+            Point(otherY, x) + center,
+            blend(getPixelInternal(Point(otherY, x) + center), color, 255, otherError)
+          );
+          pixelInternal(
+            Point(y, -x) + center,
+            blend(getPixelInternal(Point(y, -x) + center), color, 255, error)
+          );
+          pixelInternal(
+            Point(otherY, -x) + center,
+            blend(getPixelInternal(Point(otherY, -x) + center), color, 255, otherError)
+          );
+          pixelInternal(
+            Point(-y, -x) + center,
+            blend(getPixelInternal(Point(-y, -x) + center), color, 255, error)
+          );
+          pixelInternal(
+            Point(-otherY, -x) + center,
+            blend(getPixelInternal(Point(-otherY, -x) + center), color, 255, otherError)
+          );
+          pixelInternal(
+            Point(-y, x) + center,
+            blend(getPixelInternal(Point(-y, x) + center), color, 255, error)
+          );
+          pixelInternal(
+            Point(-otherY, x) + center,
+            blend(getPixelInternal(Point(-otherY, x) + center), color, 255, otherError)
+          );
+          
           if (d < 0) {
             d += 4 * x + 6;
           } else {
@@ -317,29 +393,79 @@ namespace gip {
       while (x < yInner) {
         int error;
 
-        unsigned int yOuterExact = Math::isqrt8Round(radiusOuter*radiusOuter - x*x); // scaled with 256 // TAG: could be optimized
+        unsigned int yOuterExact = Math::iSqrt8Round(radiusOuter*radiusOuter - x*x); // scaled with 256 // TAG: could be optimized
         error = yOuterExact & 0xff; // use fraction
-        int yOuterBlend = (yOuterExact < yOuter * 256) ? yOuter /*blend with inner*/ : (yOuter + 1) /*blend with outer*/;
-        pixelInternal(Point(x, yOuterBlend) + center, blend(getPixelInternal(Point(x, yOuterBlend) + center), color, 255, error));
-        pixelInternal(Point(x, -yOuterBlend) + center, blend(getPixelInternal(Point(x, -yOuterBlend) + center), color, 255, error));
-        pixelInternal(Point(-x, -yOuterBlend) + center, blend(getPixelInternal(Point(-x, -yOuterBlend) + center), color, 255, error));
-        pixelInternal(Point(-x, yOuterBlend) + center, blend(getPixelInternal(Point(-x, yOuterBlend) + center), color, 255, error));
-        pixelInternal(Point(yOuterBlend, x) + center, blend(getPixelInternal(Point(yOuterBlend, x) + center), color, 255, error));
-        pixelInternal(Point(yOuterBlend, -x) + center, blend(getPixelInternal(Point(yOuterBlend, -x) + center), color, 255, error));
-        pixelInternal(Point(-yOuterBlend, -x) + center, blend(getPixelInternal(Point(-yOuterBlend, -x) + center), color, 255, error));
-        pixelInternal(Point(-yOuterBlend, x) + center, blend(getPixelInternal(Point(-yOuterBlend, x) + center), color, 255, error));
+        int yOuterBlend =
+          (yOuterExact < yOuter * 256) ? yOuter /*blend with inner*/ : (yOuter + 1) /*blend with outer*/;
+        pixelInternal(
+          Point(x, yOuterBlend) + center,
+          blend(getPixelInternal(Point(x, yOuterBlend) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(x, -yOuterBlend) + center,
+          blend(getPixelInternal(Point(x, -yOuterBlend) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-x, -yOuterBlend) + center,
+          blend(getPixelInternal(Point(-x, -yOuterBlend) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-x, yOuterBlend) + center,
+          blend(getPixelInternal(Point(-x, yOuterBlend) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(yOuterBlend, x) + center,
+          blend(getPixelInternal(Point(yOuterBlend, x) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(yOuterBlend, -x) + center,
+          blend(getPixelInternal(Point(yOuterBlend, -x) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-yOuterBlend, -x) + center,
+          blend(getPixelInternal(Point(-yOuterBlend, -x) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-yOuterBlend, x) + center,
+          blend(getPixelInternal(Point(-yOuterBlend, x) + center), color, 255, error)
+        );
 
-        unsigned int yInnerExact = Math::isqrt8Round(radiusInner*radiusInner - x*x); // scaled with 256 // TAG: could be optimized
+        unsigned int yInnerExact = Math::iSqrt8Round(radiusInner*radiusInner - x*x); // scaled with 256 // TAG: could be optimized
         error = 255 - yInnerExact & 0xff; // use fraction
-        int yInnerBlend = (yInnerExact < yInner * 256) ? (yInner - 1) /*blend with outer*/ : yInner /*blend with inner*/;
-        pixelInternal(Point(x, yInnerBlend) + center, blend(getPixelInternal(Point(x, yInnerBlend) + center), color, 255, error));
-        pixelInternal(Point(x, -yInnerBlend) + center, blend(getPixelInternal(Point(x, -yInnerBlend) + center), color, 255, error));
-        pixelInternal(Point(-x, -yInnerBlend) + center, blend(getPixelInternal(Point(-x, -yInnerBlend) + center), color, 255, error));
-        pixelInternal(Point(-x, yInnerBlend) + center, blend(getPixelInternal(Point(-x, yInnerBlend) + center), color, 255, error));
-        pixelInternal(Point(yInnerBlend, x) + center, blend(getPixelInternal(Point(yInnerBlend, x) + center), color, 255, error));
-        pixelInternal(Point(yInnerBlend, -x) + center, blend(getPixelInternal(Point(yInnerBlend, -x) + center), color, 255, error));
-        pixelInternal(Point(-yInnerBlend, -x) + center, blend(getPixelInternal(Point(-yInnerBlend, -x) + center), color, 255, error));
-        pixelInternal(Point(-yInnerBlend, x) + center, blend(getPixelInternal(Point(-yInnerBlend, x) + center), color, 255, error));
+        int yInnerBlend =
+          (yInnerExact < yInner * 256) ? (yInner - 1) /*blend with outer*/ : yInner /*blend with inner*/;
+        pixelInternal(
+          Point(x, yInnerBlend) + center,
+          blend(getPixelInternal(Point(x, yInnerBlend) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(x, -yInnerBlend) + center,
+          blend(getPixelInternal(Point(x, -yInnerBlend) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-x, -yInnerBlend) + center,
+          blend(getPixelInternal(Point(-x, -yInnerBlend) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-x, yInnerBlend) + center,
+          blend(getPixelInternal(Point(-x, yInnerBlend) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(yInnerBlend, x) + center,
+          blend(getPixelInternal(Point(yInnerBlend, x) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(yInnerBlend, -x) + center,
+          blend(getPixelInternal(Point(yInnerBlend, -x) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-yInnerBlend, -x) + center,
+          blend(getPixelInternal(Point(-yInnerBlend, -x) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-yInnerBlend, x) + center,
+          blend(getPixelInternal(Point(-yInnerBlend, x) + center), color, 255, error)
+        );
 
         line(Point(x, yInnerBlend + 1) + center, Point(x, yOuterBlend - 1) + center, color); // right top
         line(Point(-x, yInnerBlend + 1) + center, Point(-x, yOuterBlend - 1) + center, color); // left top
@@ -370,17 +496,42 @@ namespace gip {
       // case 2: draw horizontal lines between outer circle and last x of inner circle (i.e. for first octant)
       int xLast = x;
       while (x < yOuter) {
-        unsigned int yOuterExact = Math::isqrt8Round(radiusOuter*radiusOuter - x*x); // scaled with 256 // TAG: could be optimized
+        unsigned int yOuterExact = Math::iSqrt8Round(radiusOuter*radiusOuter - x*x); // scaled with 256 // TAG: could be optimized
         int error = yOuterExact & 0xff; // use fraction
-        int yOuterBlend = (yOuterExact < yOuter * 256) ? yOuter /*blend with inner*/ : (yOuter + 1) /*blend with outer*/;
-        pixelInternal(Point(x, yOuterBlend) + center, blend(getPixelInternal(Point(x, yOuterBlend) + center), color, 255, error));
-        pixelInternal(Point(x, -yOuterBlend) + center, blend(getPixelInternal(Point(x, -yOuterBlend) + center), color, 255, error));
-        pixelInternal(Point(-x, -yOuterBlend) + center, blend(getPixelInternal(Point(-x, -yOuterBlend) + center), color, 255, error));
-        pixelInternal(Point(-x, yOuterBlend) + center, blend(getPixelInternal(Point(-x, yOuterBlend) + center), color, 255, error));
-        pixelInternal(Point(yOuterBlend, x) + center, blend(getPixelInternal(Point(yOuterBlend, x) + center), color, 255, error));
-        pixelInternal(Point(yOuterBlend, -x) + center, blend(getPixelInternal(Point(yOuterBlend, -x) + center), color, 255, error));
-        pixelInternal(Point(-yOuterBlend, -x) + center, blend(getPixelInternal(Point(-yOuterBlend, -x) + center), color, 255, error));
-        pixelInternal(Point(-yOuterBlend, x) + center, blend(getPixelInternal(Point(-yOuterBlend, x) + center), color, 255, error));
+        int yOuterBlend =
+          (yOuterExact < yOuter * 256) ? yOuter /*blend with inner*/ : (yOuter + 1) /*blend with outer*/;
+        pixelInternal(
+          Point(x, yOuterBlend) + center,
+          blend(getPixelInternal(Point(x, yOuterBlend) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(x, -yOuterBlend) + center,
+          blend(getPixelInternal(Point(x, -yOuterBlend) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-x, -yOuterBlend) + center,
+          blend(getPixelInternal(Point(-x, -yOuterBlend) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-x, yOuterBlend) + center,
+          blend(getPixelInternal(Point(-x, yOuterBlend) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(yOuterBlend, x) + center,
+          blend(getPixelInternal(Point(yOuterBlend, x) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(yOuterBlend, -x) + center,
+          blend(getPixelInternal(Point(yOuterBlend, -x) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-yOuterBlend, -x) + center,
+          blend(getPixelInternal(Point(-yOuterBlend, -x) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-yOuterBlend, x) + center,
+          blend(getPixelInternal(Point(-yOuterBlend, x) + center), color, 255, error)
+        );
 
         line(Point(xLast, yOuterBlend - 1) + center, Point(x, yOuterBlend - 1) + center, color);
         line(Point(xLast, x) + center, Point(yOuterBlend - 1, x) + center, color);
@@ -408,20 +559,44 @@ namespace gip {
         line(Point(-xLast, -yOuter) + center, Point(-x + 1, -yOuter) + center, color);
 
         // TAG: case 1: only one blend - case 2: need to blend with vertical and horizontal
-        unsigned int yOuterExact = Math::isqrt8Round(radiusOuter*radiusOuter - x*x); // scaled with 256 // TAG: could be optimized
+        unsigned int yOuterExact = Math::iSqrt8Round(radiusOuter*radiusOuter - x*x); // scaled with 256 // TAG: could be optimized
         unsigned int error = yOuterExact & 0xff; // use fraction
-        pixelInternal(Point(x, yOuter) + center, blend(getPixelInternal(Point(x, yOuter) + center), color, 255, error));
-        pixelInternal(Point(x, -yOuter) + center, blend(getPixelInternal(Point(x, -yOuter) + center), color, 255, error));
-        pixelInternal(Point(-x, -yOuter) + center, blend(getPixelInternal(Point(-x, -yOuter) + center), color, 255, error));
-        pixelInternal(Point(-x, yOuter) + center, blend(getPixelInternal(Point(-x, yOuter) + center), color, 255, error));
+        pixelInternal(
+          Point(x, yOuter) + center,
+          blend(getPixelInternal(Point(x, yOuter) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(x, -yOuter) + center,
+          blend(getPixelInternal(Point(x, -yOuter) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-x, -yOuter) + center,
+          blend(getPixelInternal(Point(-x, -yOuter) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-x, yOuter) + center,
+          blend(getPixelInternal(Point(-x, yOuter) + center), color, 255, error)
+        );
       } else {
-        unsigned int yOuterExact = Math::isqrt8Round(radiusOuter*radiusOuter - x*x); // scaled with 256 // TAG: could be optimized
+        unsigned int yOuterExact = Math::iSqrt8Round(radiusOuter*radiusOuter - x*x); // scaled with 256 // TAG: could be optimized
         unsigned int error = yOuterExact & 0xff; // use fraction
         ++yOuter;
-        pixelInternal(Point(x, yOuter) + center, blend(getPixelInternal(Point(x, yOuter) + center), color, 255, error));
-        pixelInternal(Point(x, -yOuter) + center, blend(getPixelInternal(Point(x, -yOuter) + center), color, 255, error));
-        pixelInternal(Point(-x, -yOuter) + center, blend(getPixelInternal(Point(-x, -yOuter) + center), color, 255, error));
-        pixelInternal(Point(-x, yOuter) + center, blend(getPixelInternal(Point(-x, yOuter) + center), color, 255, error));
+        pixelInternal(
+          Point(x, yOuter) + center,
+          blend(getPixelInternal(Point(x, yOuter) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(x, -yOuter) + center,
+          blend(getPixelInternal(Point(x, -yOuter) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-x, -yOuter) + center,
+          blend(getPixelInternal(Point(-x, -yOuter) + center), color, 255, error)
+        );
+        pixelInternal(
+          Point(-x, yOuter) + center,
+          blend(getPixelInternal(Point(-x, yOuter) + center), color, 255, error)
+        );
       }
     } else { // normal ring
       // case 1: draw vertical lines between inner and outer circles (i.e. for first octant)
@@ -500,25 +675,49 @@ namespace gip {
           unsigned int opacity;
           unsigned int otherOpacity;
           int otherX;
-          int xExact = dimension.getWidth() * Math::isqrt8(dimension.getHeight()*dimension.getHeight() - y * y)/dimension.getHeight(); // TAG: rounding problem
+          int xExact = dimension.getWidth() * Math::iSqrt8(dimension.getHeight()*dimension.getHeight() - y * y)/dimension.getHeight(); // TAG: rounding problem
           if (xExact < 256 * x) {
             otherOpacity = 256 * x - xExact; // use fraction
             opacity = 255 - otherOpacity;
             otherX = x - 1; // blend with inner pixel
-            pixelInternal(Point(x, y) + center, blend(getPixelInternal(Point(x, y) + center), color, 255, opacity));
-            pixelInternal(Point(x, -y) + center, blend(getPixelInternal(Point(x, -y) + center), color, 255, opacity));
-            pixelInternal(Point(-x, -y) + center, blend(getPixelInternal(Point(-x, -y ) + center), color, 255, opacity));
-            pixelInternal(Point(-x, y) + center, blend(getPixelInternal(Point(-x, y) + center), color, 255, opacity));
+            pixelInternal(
+              Point(x, y) + center,
+              blend(getPixelInternal(Point(x, y) + center), color, 255, opacity)
+            );
+            pixelInternal(
+              Point(x, -y) + center,
+              blend(getPixelInternal(Point(x, -y) + center), color, 255, opacity)
+            );
+            pixelInternal(
+              Point(-x, -y) + center,
+              blend(getPixelInternal(Point(-x, -y ) + center), color, 255, opacity)
+            );
+            pixelInternal(
+              Point(-x, y) + center,
+              blend(getPixelInternal(Point(-x, y) + center), color, 255, opacity)
+            );
             line(Point(-otherX, y) + center, Point(otherX, y) + center, color);
             line(Point(-otherX, -y) + center, Point(otherX, -y) + center, color);
           } else {
             otherOpacity = xExact - 256 * x; // use fraction
             opacity = 255 - otherOpacity;
             otherX = x + 1; // blend with the outer pixel
-            pixelInternal(Point(otherX, y) + center, blend(getPixelInternal(Point(otherX, y) + center), color, 255, otherOpacity));
-            pixelInternal(Point(otherX, -y) + center, blend(getPixelInternal(Point(otherX, -y) + center), color, 255, otherOpacity));
-            pixelInternal(Point(-otherX, -y) + center, blend(getPixelInternal(Point(-otherX, -y) + center), color, 255, otherOpacity));
-            pixelInternal(Point(-otherX, y) + center, blend(getPixelInternal(Point(-otherX, y) + center), color, 255, otherOpacity));
+            pixelInternal(
+              Point(otherX, y) + center,
+              blend(getPixelInternal(Point(otherX, y) + center), color, 255, otherOpacity)
+            );
+            pixelInternal(
+              Point(otherX, -y) + center,
+              blend(getPixelInternal(Point(otherX, -y) + center), color, 255, otherOpacity)
+            );
+            pixelInternal(
+              Point(-otherX, -y) + center,
+              blend(getPixelInternal(Point(-otherX, -y) + center), color, 255, otherOpacity)
+            );
+            pixelInternal(
+              Point(-otherX, y) + center,
+              blend(getPixelInternal(Point(-otherX, y) + center), color, 255, otherOpacity)
+            );
             line(Point(-x, y) + center, Point(x, y) + center, color);
             line(Point(-x, -y) + center, Point(x, -y) + center, color);
           }
@@ -548,15 +747,27 @@ namespace gip {
           unsigned int opacity;
           unsigned int otherOpacity;
           int otherY;
-          int yExact = dimension.getHeight() * Math::isqrt8(dimension.getWidth()*dimension.getWidth() - x * x)/dimension.getWidth(); // TAG: rounding problem
+          int yExact = dimension.getHeight() * Math::iSqrt8(dimension.getWidth()*dimension.getWidth() - x * x)/dimension.getWidth(); // TAG: rounding problem
           if (yExact < 256 * y) {
             otherOpacity = 256 * y - yExact;
             opacity = 255 - otherOpacity;
             otherY = y - 1; // blend with inner pixel
-            pixelInternal(Point(x, y) + center, blend(getPixelInternal(Point(x, y) + center), color, 255, opacity));
-            pixelInternal(Point(x, -y) + center, blend(getPixelInternal(Point(x, -y) + center), color, 255, opacity));
-            pixelInternal(Point(-x, -y) + center, blend(getPixelInternal(Point(-x, -y ) + center), color, 255, opacity));
-            pixelInternal(Point(-x, y) + center, blend(getPixelInternal(Point(-x, y) + center), color, 255, opacity));
+            pixelInternal(
+              Point(x, y) + center,
+              blend(getPixelInternal(Point(x, y) + center), color, 255, opacity)
+            );
+            pixelInternal(
+              Point(x, -y) + center,
+              blend(getPixelInternal(Point(x, -y) + center), color, 255, opacity)
+            );
+            pixelInternal(
+              Point(-x, -y) + center,
+              blend(getPixelInternal(Point(-x, -y ) + center), color, 255, opacity)
+            );
+            pixelInternal(
+              Point(-x, y) + center,
+              blend(getPixelInternal(Point(-x, y) + center), color, 255, opacity)
+            );
             line(Point(x, otherY) + center, Point(x, lastY) + center, color);
             line(Point(-x, otherY) + center, Point(-x, lastY) + center, color);
             line(Point(x, -otherY) + center, Point(x, -lastY) + center, color);
@@ -565,10 +776,22 @@ namespace gip {
             otherOpacity = yExact - 256 * y; // use fraction
             opacity = 255 - otherOpacity;
             otherY = y + 1; // blend with the outer pixel
-            pixelInternal(Point(x, otherY) + center, blend(getPixelInternal(Point(x, otherY) + center), color, 255, otherOpacity));
-            pixelInternal(Point(x, -otherY) + center, blend(getPixelInternal(Point(x, -otherY) + center), color, 255, otherOpacity));
-            pixelInternal(Point(-x, -otherY) + center, blend(getPixelInternal(Point(-x, -otherY) + center), color, 255, otherOpacity));
-            pixelInternal(Point(-x, otherY) + center, blend(getPixelInternal(Point(-x, otherY) + center), color, 255, otherOpacity));
+            pixelInternal(
+              Point(x, otherY) + center,
+              blend(getPixelInternal(Point(x, otherY) + center), color, 255, otherOpacity)
+            );
+            pixelInternal(
+              Point(x, -otherY) + center,
+              blend(getPixelInternal(Point(x, -otherY) + center), color, 255, otherOpacity)
+            );
+            pixelInternal(
+              Point(-x, -otherY) + center,
+              blend(getPixelInternal(Point(-x, -otherY) + center), color, 255, otherOpacity)
+            );
+            pixelInternal(
+              Point(-x, otherY) + center,
+              blend(getPixelInternal(Point(-x, otherY) + center), color, 255, otherOpacity)
+            );
             line(Point(x, y) + center, Point(x, lastY) + center, color);
             line(Point(-x, y) + center, Point(-x, lastY) + center, color);
             line(Point(x, -y) + center, Point(x, -lastY) + center, color);
@@ -591,7 +814,7 @@ namespace gip {
           unsigned int opacity;
           unsigned int otherOpacity;
           int otherX;
-          int xExact = dimension.getWidth() * Math::isqrt8(dimension.getHeight()*dimension.getHeight() - y * y)/dimension.getHeight(); // TAG: rounding problem
+          int xExact = dimension.getWidth() * Math::iSqrt8(dimension.getHeight()*dimension.getHeight() - y * y)/dimension.getHeight(); // TAG: rounding problem
           if (xExact < 256 * x) {
             otherOpacity = 256 * x - xExact; // use fraction
             otherX = x - 1; // blend with inner pixel
@@ -601,14 +824,38 @@ namespace gip {
           }
           opacity = 255 - otherOpacity;
 
-          pixelInternal(Point(x, y) + center, blend(getPixelInternal(Point(x, y) + center), color, 255, opacity));
-          pixelInternal(Point(otherX, y) + center, blend(getPixelInternal(Point(otherX, y) + center), color, 255, otherOpacity));
-          pixelInternal(Point(x, -y) + center, blend(getPixelInternal(Point(x, -y) + center), color, 255, opacity));
-          pixelInternal(Point(otherX, -y) + center, blend(getPixelInternal(Point(otherX, -y) + center), color, 255, otherOpacity));
-          pixelInternal(Point(-x, -y) + center, blend(getPixelInternal(Point(-x, -y ) + center), color, 255, opacity));
-          pixelInternal(Point(-otherX, -y) + center, blend(getPixelInternal(Point(-otherX, -y) + center), color, 255, otherOpacity));
-          pixelInternal(Point(-x, y) + center, blend(getPixelInternal(Point(-x, y) + center), color, 255, opacity));
-          pixelInternal(Point(-otherX, y) + center, blend(getPixelInternal(Point(-otherX, y) + center), color, 255, otherOpacity));
+          pixelInternal(
+            Point(x, y) + center,
+            blend(getPixelInternal(Point(x, y) + center), color, 255, opacity)
+          );
+          pixelInternal(
+            Point(otherX, y) + center,
+            blend(getPixelInternal(Point(otherX, y) + center), color, 255, otherOpacity)
+          );
+          pixelInternal(
+            Point(x, -y) + center,
+            blend(getPixelInternal(Point(x, -y) + center), color, 255, opacity)
+          );
+          pixelInternal(
+            Point(otherX, -y) + center,
+            blend(getPixelInternal(Point(otherX, -y) + center), color, 255, otherOpacity)
+          );
+          pixelInternal(
+            Point(-x, -y) + center,
+            blend(getPixelInternal(Point(-x, -y ) + center), color, 255, opacity)
+          );
+          pixelInternal(
+            Point(-otherX, -y) + center,
+            blend(getPixelInternal(Point(-otherX, -y) + center), color, 255, otherOpacity)
+          );
+          pixelInternal(
+            Point(-x, y) + center,
+            blend(getPixelInternal(Point(-x, y) + center), color, 255, opacity)
+          );
+          pixelInternal(
+            Point(-otherX, y) + center,
+            blend(getPixelInternal(Point(-otherX, y) + center), color, 255, otherOpacity)
+          );
 
           ++y;
           yStopping += doubleSquareA;
@@ -634,7 +881,7 @@ namespace gip {
           unsigned int opacity;
           unsigned int otherOpacity;
           int otherY;
-          int yExact = dimension.getHeight() * Math::isqrt8(dimension.getWidth()*dimension.getWidth() - x * x)/dimension.getWidth(); // TAG: rounding problem
+          int yExact = dimension.getHeight() * Math::iSqrt8(dimension.getWidth()*dimension.getWidth() - x * x)/dimension.getWidth(); // TAG: rounding problem
           if (yExact < 256 * y) {
             otherOpacity = 256 * y - yExact; // use fraction
             otherY = y - 1; // blend with inner pixel
@@ -644,14 +891,38 @@ namespace gip {
           }
           opacity = 255 - otherOpacity;
 
-          pixelInternal(Point(x, y) + center, blend(getPixelInternal(Point(x, y) + center), color, 255, opacity));
-          pixelInternal(Point(x, otherY) + center, blend(getPixelInternal(Point(x, otherY) + center), color, 255, otherOpacity));
-          pixelInternal(Point(x, -y) + center, blend(getPixelInternal(Point(x, -y) + center), color, 255, opacity));
-          pixelInternal(Point(x, -otherY) + center, blend(getPixelInternal(Point(x, -otherY) + center), color, 255, otherOpacity));
-          pixelInternal(Point(-x, -y) + center, blend(getPixelInternal(Point(-x, -y ) + center), color, 255, opacity));
-          pixelInternal(Point(-x, -otherY) + center, blend(getPixelInternal(Point(-x, -otherY) + center), color, 255, otherOpacity));
-          pixelInternal(Point(-x, y) + center, blend(getPixelInternal(Point(-x, y) + center), color, 255, opacity));
-          pixelInternal(Point(-x, otherY) + center, blend(getPixelInternal(Point(-x, otherY) + center), color, 255, otherOpacity));
+          pixelInternal(
+            Point(x, y) + center,
+            blend(getPixelInternal(Point(x, y) + center), color, 255, opacity)
+          );
+          pixelInternal(
+            Point(x, otherY) + center,
+            blend(getPixelInternal(Point(x, otherY) + center), color, 255, otherOpacity)
+          );
+          pixelInternal(
+            Point(x, -y) + center,
+            blend(getPixelInternal(Point(x, -y) + center), color, 255, opacity)
+          );
+          pixelInternal(
+            Point(x, -otherY) + center,
+            blend(getPixelInternal(Point(x, -otherY) + center), color, 255, otherOpacity)
+          );
+          pixelInternal(
+            Point(-x, -y) + center,
+            blend(getPixelInternal(Point(-x, -y ) + center), color, 255, opacity)
+          );
+          pixelInternal(
+            Point(-x, -otherY) + center,
+            blend(getPixelInternal(Point(-x, -otherY) + center), color, 255, otherOpacity)
+          );
+          pixelInternal(
+            Point(-x, y) + center,
+            blend(getPixelInternal(Point(-x, y) + center), color, 255, opacity)
+          );
+          pixelInternal(
+            Point(-x, otherY) + center,
+            blend(getPixelInternal(Point(-x, otherY) + center), color, 255, otherOpacity)
+          );
 
           ++x;
           xStopping += doubleSquareB;
@@ -783,15 +1054,19 @@ namespace gip {
   }
 
   void Canvas::pixel(const Point& point, Pixel color) throw() {
-    if ((point.getX() >= 0) && (point.getY() >= 0) && (point.getX() < dimension.getWidth()) && (point.getY() < dimension.getHeight())) {
+    if ((point.getX() >= 0) && (point.getY() >= 0) &&
+        (point.getX() < dimension.getWidth()) && (point.getY() < dimension.getHeight())) {
       rows[point.getY()][point.getX()] = color;
     }
   }
 
   Canvas::Pixel Canvas::getPixel(const Point& point) const throw() {
-    if ((point.getX() >= 0) && (point.getY() >= 0) && (point.getX() < dimension.getWidth()) && (point.getY() < dimension.getHeight())) {
+    Canvas::Pixel result;
+    if ((point.getX() >= 0) && (point.getY() >= 0) &&
+        (point.getX() < dimension.getWidth()) && (point.getY() < dimension.getHeight())) {
       return rows[point.getY()][point.getX()];
     }
+    return result;
   }
 
   void Canvas::lineClipped(const Point& p1, const Point& p2, Pixel color) throw() {

@@ -39,8 +39,8 @@ namespace gip {
   public:
     
     inline MinimumMaximum() throw()
-      : maximumValue(PixelTraits<Pixel>::MINIMUM),
-        minimumValue(PixelTraits<Pixel>::MAXIMUM) {
+      : minimumValue(PixelTraits<Pixel>::MAXIMUM),
+        maximumValue(PixelTraits<Pixel>::MINIMUM) {
     }
     
     inline void operator()(const Pixel& value) throw() {
@@ -71,8 +71,20 @@ namespace gip {
   public:
 
     inline MinimumMaximum() throw()
-      : maximumValue(makeRGBPixel<COMPONENT>(PixelTraits<Pixel>::MINIMUM, PixelTraits<Pixel>::MINIMUM, PixelTraits<Pixel>::MINIMUM)),
-        minimumValue(makeRGBPixel<COMPONENT>(PixelTraits<Pixel>::MAXIMUM, PixelTraits<Pixel>::MAXIMUM, PixelTraits<Pixel>::MAXIMUM)) {
+      : minimumValue(
+          makeRGBPixel<COMPONENT>(
+            PixelTraits<Pixel>::MAXIMUM,
+            PixelTraits<Pixel>::MAXIMUM,
+            PixelTraits<Pixel>::MAXIMUM
+          )
+        ),
+        maximumValue(
+          makeRGBPixel<COMPONENT>(
+            PixelTraits<Pixel>::MINIMUM,
+            PixelTraits<Pixel>::MINIMUM,
+            PixelTraits<Pixel>::MINIMUM
+          )
+        ) {
     }
 
     inline void operator()(const Pixel& value) throw() {

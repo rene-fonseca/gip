@@ -369,7 +369,12 @@ namespace gip {
     */
     inline uint32 getCommandRegister(uint32 offset) const throw(IEEE1394Exception) {
       IEEE1394::Quadlet quadlet;
-      adapter.read(camera, commandRegisters + offset, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.read(
+        camera,
+        commandRegisters + offset,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
       return quadlet;
     }
     
@@ -381,7 +386,12 @@ namespace gip {
     */
     inline void setCommandRegister(uint32 offset, uint32 value) throw(IEEE1394Exception) {
       IEEE1394::Quadlet quadlet = value;
-      adapter.write(camera, commandRegisters + offset, Cast::getCharAddress(quadlet), sizeof(quadlet));
+      adapter.write(
+        camera,
+        commandRegisters + offset,
+        Cast::getCharAddress(quadlet),
+        sizeof(quadlet)
+      );
     }
 
     /**

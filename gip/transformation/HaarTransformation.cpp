@@ -15,7 +15,8 @@
 
 namespace gip {
 
-  HaarTransformation<FloatImage>::HaarTransformation<FloatImage>(DestinationImage* destination) throw(ImageException)
+  HaarTransformation<FloatImage>::HaarTransformation<FloatImage>(
+    DestinationImage* destination) throw(ImageException)
     : UnaryTransformation<FloatImage>(destination) {
 
     assert(
@@ -23,12 +24,13 @@ namespace gip {
       ImageException("Image has inproper dimension", this)
     );
     assert(
-      Math::isPowerOf2(destination->getDimension().getWidth()) && Math::isPowerOf2(destination->getDimension().getHeight()),
+      Math::isPowerOf2(destination->getDimension().getWidth()) &&
+      Math::isPowerOf2(destination->getDimension().getHeight()),
       ImageException("Width and height of images must be power of two", this)
     );
     
-    numberOfColumnIterations = Math::ilog2(destination->getDimension().getWidth());
-    numberOfRowIterations = Math::ilog2(destination->getDimension().getHeight());
+    numberOfColumnIterations = Math::iLog2(destination->getDimension().getWidth());
+    numberOfRowIterations = Math::iLog2(destination->getDimension().getHeight());
   }
 
   void HaarTransformation<FloatImage>::operator()() throw() {
@@ -38,7 +40,9 @@ namespace gip {
       RowElementIterator even(buffer + (1 << (numberOfColumnIterations - 1)));
       
       DestinationImage::Rows rowsLookup = destination->getRows();
-      for (DestinationImage::Rows::RowIterator row = rowsLookup.getFirst(); row != rowsLookup.getEnd(); ++row) {
+      for (DestinationImage::Rows::RowIterator row = rowsLookup.getFirst();
+           row != rowsLookup.getEnd();
+           ++row) {
         unsigned int iteration = numberOfColumnIterations;
         RowElementIterator odd = partialTransform(even, row.getEnd(), row.getEnd(), 1 << iteration--);
         while (iteration >= 8) {
@@ -74,7 +78,8 @@ namespace gip {
       DestinationImage::Columns::ColumnIterator column = columnsLookup.getFirst();
       for (; column != columnsLookup.getEnd(); ++column) {
         unsigned int iteration = numberOfRowIterations;
-        ColumnElementIterator odd = partialColumnTransform(even, column.getEnd(), column.getEnd(), 1 << iteration--);
+        ColumnElementIterator odd =
+          partialColumnTransform(even, column.getEnd(), column.getEnd(), 1 << iteration--);
         while (iteration >= 8) {
           odd = partialColumnTransform(even, odd, even, 1 << iteration--);
         }
@@ -101,20 +106,22 @@ namespace gip {
     }
   }
 
-  HaarTransformation<GrayImage>::HaarTransformation<GrayImage>(DestinationImage* destination) throw(ImageException)
-          : UnaryTransformation<GrayImage>(destination) {
+  HaarTransformation<GrayImage>::HaarTransformation<GrayImage>(
+    DestinationImage* destination) throw(ImageException)
+    : UnaryTransformation<GrayImage>(destination) {
     
     assert(
       destination->getDimension().isProper(),
       ImageException("Image has inproper dimension", this)
     );
     assert(
-      Math::isPowerOf2(destination->getDimension().getWidth()) && Math::isPowerOf2(destination->getDimension().getHeight()),
+      Math::isPowerOf2(destination->getDimension().getWidth()) &&
+      Math::isPowerOf2(destination->getDimension().getHeight()),
       ImageException("Width and height of images must be power of two", this)
     );
 
-    numberOfColumnIterations = Math::ilog2(destination->getDimension().getWidth());
-    numberOfRowIterations = Math::ilog2(destination->getDimension().getHeight());
+    numberOfColumnIterations = Math::iLog2(destination->getDimension().getWidth());
+    numberOfRowIterations = Math::iLog2(destination->getDimension().getHeight());
   }
 
   void HaarTransformation<GrayImage>::operator()() throw() {
@@ -124,7 +131,9 @@ namespace gip {
       RowElementIterator even(buffer + (1 << (numberOfColumnIterations - 1)));
       
       DestinationImage::Rows rowsLookup = destination->getRows();
-      for (DestinationImage::Rows::RowIterator row = rowsLookup.getFirst(); row != rowsLookup.getEnd(); ++row) {
+      for (DestinationImage::Rows::RowIterator row = rowsLookup.getFirst();
+           row != rowsLookup.getEnd();
+           ++row) {
         unsigned int iteration = numberOfColumnIterations;
         RowElementIterator odd = partialTransform(even, row.getEnd(), row.getEnd(), 1 << iteration--);
         while (iteration >= 1) {
@@ -158,9 +167,12 @@ namespace gip {
       ColumnElementIterator even(buffer + (1 << (numberOfRowIterations - 1)), 1);
       
       DestinationImage::Columns columnsLookup = destination->getColumns();
-      for (DestinationImage::Columns::ColumnIterator column = columnsLookup.getFirst(); column != columnsLookup.getEnd(); ++column) {
+      for (DestinationImage::Columns::ColumnIterator column = columnsLookup.getFirst();
+           column != columnsLookup.getEnd();
+           ++column) {
         unsigned int iteration = numberOfRowIterations;
-        ColumnElementIterator odd = partialColumnTransform(even, column.getEnd(), column.getEnd(), 1 << iteration--);
+        ColumnElementIterator odd =
+          partialColumnTransform(even, column.getEnd(), column.getEnd(), 1 << iteration--);
         while (iteration >= 1) {
           odd = partialColumnTransform(even, odd, even, 1 << iteration--);
         }
@@ -194,7 +206,9 @@ namespace gip {
       ColumnElementIterator even(buffer + (1 << (numberOfRowIterations - 1)), 1);
       
       DestinationImage::Columns columnsLookup = destination->getColumns();
-      for (DestinationImage::Columns::ColumnIterator column = columnsLookup.getFirst(); column != columnsLookup.getEnd(); ++column) {
+      for (DestinationImage::Columns::ColumnIterator column = columnsLookup.getFirst();
+           column != columnsLookup.getEnd();
+           ++column) {
         unsigned int iteration = 1;
         ColumnElementIterator odd = column.getFirst();
         even[-1] = *odd++; // do not forget DC value
@@ -211,7 +225,9 @@ namespace gip {
       RowElementIterator even(buffer + (1 << (numberOfColumnIterations - 1)));
       
       DestinationImage::Rows rowsLookup = destination->getRows();
-      for (DestinationImage::Rows::RowIterator row = rowsLookup.getFirst(); row != rowsLookup.getEnd(); ++row) {
+      for (DestinationImage::Rows::RowIterator row = rowsLookup.getFirst();
+           row != rowsLookup.getEnd();
+           ++row) {
         unsigned int iteration = 1;
         RowElementIterator odd = row.getFirst();
         even[-1] = *odd++; // do not forget DC value
