@@ -57,15 +57,19 @@ namespace gip {
     unsigned int used;
     /** The mean value of the pixels. */
     long double mean;
+    /** The median. */
+    unsigned int median;
+    /** The mode. */
+    unsigned int mode;
     /** The variance of the pixels. */
     long double variance;
     /** The entropy of the pixels. */
     long double entropy;
   public:
-
+    
     /**
       Initializes the statistic object.
-
+      
       @param image The source image.
     */
     Statistic(const Image& image) throw()
@@ -73,7 +77,7 @@ namespace gip {
       // count frequency of each pixel value
       unsigned int frequency[NUMBER_OF_SYMBOLS];
       fill<unsigned int>(frequency, getArraySize(frequency), 0);
-
+      
       typename Image::ReadableRows rows = Cast::implicit<const Image>(image).getRows();
       typename Image::ReadableRows::RowIterator row = rows.getFirst();
       for (; row != rows.getEnd(); ++row) {
@@ -91,7 +95,8 @@ namespace gip {
         mean += Cast::implicit<long double>(i) * frequency[i];
       }
       mean /= numberOfSamples;
-
+      
+      int count = numberOfSamples/2;
       minimumFrequency = numberOfSamples;
       maximumFrequency = 0;
       minimum = PixelTraits<Pixel>::MAXIMUM;
@@ -106,11 +111,16 @@ namespace gip {
           }
           if (frequency[i] > maximumFrequency) {
             maximumFrequency = frequency[i];
+            mode = i;
           }
           if (i < minimum) {
             minimum = i;
           }
           maximum = i;
+          if (count >= 0) {
+            count -= frequency[i];
+            median = i;
+          }
           ++used;
           sqrsum += frequency[i] * (i - mean) * (i - mean);
           entropy -= frequency[i] * Math::log(Cast::implicit<long double>(frequency[i]));
@@ -166,6 +176,13 @@ namespace gip {
     }
 
     /**
+      Returns the dynamic range.
+    */
+    inline unsigned int getDynamicRange() const throw() {
+      return maximum - minimum;
+    }
+    
+    /**
       Returns the minimum value.
     */
     inline Pixel getMinimum() const throw() {
@@ -185,7 +202,22 @@ namespace gip {
     inline long double getMean() const throw() {
       return mean;
     }
+
+    /**
+      Returns the median (rounded down).
+    */
+    inline Pixel getMedian() const throw() {
+      return median;
+    }
     
+    /**
+      Returns the mode (the most frequent value) of the image. The mode may not
+      exist or be unique.
+    */
+    inline Pixel getMode() const throw() {
+      return mode;
+    }
+
     /**
       Returns the variance.
     */
@@ -197,9 +229,16 @@ namespace gip {
       Returns the standard deviation.
     */
     inline long double getDeviation() const throw() {
-      return Math::sqrt(getVariance());
+      return Math::sqrt(variance);
     }
 
+    /**
+      Returns the dimensionless coefficient-of-variation.
+    */
+    inline long double getCoefficientOfVariation() const throw() {
+      return Math::sqrt(variance)/mean;
+    }
+    
     /**
       Returns the entropy in binary units.
     */
