@@ -123,15 +123,9 @@ void testAVI() {
 
     for (unsigned int i = 0; i < reader.getNumberOfFrames(); ++i) {
       reader.getFrame(frame);
-//      StringOutputStream stream;
-//      stream << "frame" << HEX << i << ".bmp";
-//      String name = stream.getString();
-      char name[] = "frame###.bmp";
-      name[5] = (i/100) % 10 + '0';
-      name[6] = (i/10) % 10 + '0';
-      name[7] = i % 10 + '0';
-      BMPEncoder writeEncoder(name);
-      writeEncoder.write(&frame);
+      StringOutputStream filename;
+      filename << "frame" << setWidth(3) << ZEROPAD << i << ".bmp" << FLUSH;
+      BMPEncoder(filename.getString()).write(&frame);
     }
   } catch (Exception& e) {
     ferr << "Exception: " << e.getMessage() << ENDL;
@@ -382,7 +376,7 @@ int main(int argc, char* argv[]) {
 
   try {
 //    testAVI();
-    test(input, output);
+//    test(input, output);
   } catch(Exception& e) {
     ferr << typeid(e).name() << ": "<< e.getMessage() << ENDL;
     return 1;
