@@ -29,7 +29,7 @@ namespace gip {
       return Random::getLongDouble() * PixelTraits<Pixel>::MAXIMUM;
     }
   };
- 
+  
   template<class COMPONENT>
   class NoiseOperation<RGBPixel<COMPONENT> > {
   public:
@@ -59,18 +59,19 @@ namespace gip {
   /**
     Fills an image with noise.
 
+    @short Fills the destination with noise.
     @ingroup transformations
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
-
+  
   template<class DEST>
   class Noise : public UnaryTransformation<DEST> {
   public:
-
+    
     typedef typename UnaryTransformation<DEST>::DestinationImage DestinationImage;
     typedef typename DestinationImage::Pixel Pixel;    
-   
+    
     /**
       Initializes noise object.
 
@@ -79,7 +80,7 @@ namespace gip {
     Noise(DestinationImage* destination) throw()
       : UnaryTransformation<DestinationImage>(destination) {
     }
-
+    
     /**
       Fills the destination image with noise.
     */

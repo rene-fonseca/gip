@@ -1010,6 +1010,8 @@ namespace gip {
 
     /**
       Frame buffer descriptor for continuous acquisition.
+
+      @short Frame buffer.
     */
     class FrameBuffer {
     private:
@@ -1020,6 +1022,9 @@ namespace gip {
       unsigned int size;
     public:
 
+      /**
+        Initializes frame buffer as invalid.
+      */
       inline FrameBuffer() throw() : buffer(0), size(0) {
       }
       
@@ -1049,10 +1054,12 @@ namespace gip {
     };
     
     /**
-      Acquire frame continuously into the specified frames in a round-robin loop.
+      Acquire frame continuously into the specified frames in a round-robin
+      loop.
 
       @param frames The frame buffer.
-      @param listener The acquisition listener to be notifier on completion of each frame.
+      @param listener The acquisition listener to be notifier on completion of
+      each frame.
     */
     bool acquireContinuously(
       Array<FrameBuffer> frames,

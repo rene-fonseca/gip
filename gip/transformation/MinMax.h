@@ -34,7 +34,7 @@ namespace gip {
 
     typedef typename UnaryTransformation<DEST>::DestinationImage DestinationImage;
     
-    /** Nests an unary operation to another unary operation. */
+    /* Nests an unary operation to another unary operation. */
     template<class UNOPRARG, class UNOPRRES>
     class NestOperations : UnaryOperation<typename UNOPRARG::Argument, typename UNOPRRES::Result> {
     protected:
