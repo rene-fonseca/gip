@@ -31,6 +31,12 @@ dist:
 	done 
 	rm -f Makefile.dist
 
+lendum-gcc-3.0.4: all
+	CC="/usr/local/gcc-3.0.4/bin/gcc" CFLAGS="-pipe -x c" CXX="/usr/local/gcc-3.0.4/bin/gcc" CXXFLAGS="-pipe -x c++ -ansi -O0 -g3" LDFLAGS="-x none" ./configure --target=i386-pc-linux --prefix=/usr/local/gip --with-base-include=/home/fonseca/src/base --with-base-lib=/home/fonseca/src/base/base --with-gip-include=/home/fonseca/src/gip --with-gip-lib=/home/fonseca/src/gip/gip
+
+lendum-gcc-3.0.4-release: all
+	CC="/usr/local/gcc-3.0.4/bin/gcc" CFLAGS="-pipe -x c" CXX="/usr/local/gcc-3.0.4/bin/gcc" CXXFLAGS="-pipe -x c++ -ansi -O3 -g3 -march=i686 -malign-double -fomit-frame-pointer -funroll-loops" LDFLAGS="-x none" ./configure --target=i686-pc-linux --prefix=/usr/local/gip --with-base-include=/home/fonseca/src/base --with-base-lib=/home/fonseca/src/base/base --with-gip-include=/home/fonseca/src/gip --with-gip-lib=/home/fonseca/src/gip/gip
+
 klampenborg-gcc-2.95:
 	CC="/usr/bin/gcc" CFLAGS="-pipe -mno-cygwin -mthreads -x c" CXX="/usr/bin/gcc" CPPFLAGS="-I/d/projects/gip/gip -I/d/projects/base/base" CXXFLAGS="-pipe -mno-cygwin -mthreads -x c++ -ansi -O0 -g3" LDFLAGS="-x none" configure --target=i386-pc-mingw32 --prefix=/usr/local/gip --disable-shared --with-base-include=/d/projects/base/build/debug --with-base-lib=/d/projects/base/build/debug/base --with-gip-include=/d/projects/gip/build/debug --with-gip-lib=/d/projects/gip/build/debug/gip
 
