@@ -31,6 +31,9 @@ namespace gip {
   class Tile : public Transformation<DEST, SRC> {
   public:
 
+    typedef typename Transformation<DEST, SRC>::DestinationImage DestinationImage;
+    typedef typename Transformation<DEST, SRC>::SourceImage SourceImage;
+
     /**
       Initializes transformation object.
     */
@@ -69,19 +72,19 @@ namespace gip {
         typename SourceImage::ReadableRows::RowIterator::ElementIterator srcColumnEnd = srcRow.getEnd();
 
         for (unsigned int cycles = horizontalCycles; cycles > 0; --cycles) {
-          destColumn = copy(destColumn, srcRow.getFirst(), srcRow.getEnd());
-//          typename SourceImage::ReadableRows::RowIterator::ElementIterator srcColumn = srcRow.getFirst();
-//          while (srcColumn != srcColumnEnd) {
-//            *destColumn++ = *srcColumn++;
-//          }
+//          destColumn = copy(destColumn, srcRow.getFirst(), srcRow.getEnd());
+          typename SourceImage::ReadableRows::RowIterator::ElementIterator srcColumn = srcRow.getFirst();
+          while (srcColumn != srcColumnEnd) {
+            *destColumn++ = *srcColumn++;
+          }
         }
 
-        copy(destColumn, destRow.getEnd(), srcRow.getFirst());
-//        typename DestinationImage::Rows::RowIterator::ElementIterator destColumnEnd = destRow.getEnd();
-//        typename SourceImage::ReadableRows::RowIterator::ElementIterator srcColumn = srcRow.getFirst();
-//        while (destColumn != destColumnEnd) {
-//          *destColumn++ = *srcColumn++;
-//        }
+//        copy(destColumn, destRow.getEnd(), srcRow.getFirst());
+        typename DestinationImage::Rows::RowIterator::ElementIterator destColumnEnd = destRow.getEnd();
+        typename SourceImage::ReadableRows::RowIterator::ElementIterator srcColumn = srcRow.getFirst();
+        while (destColumn != destColumnEnd) {
+          *destColumn++ = *srcColumn++;
+        }
         ++destRow;
         ++srcRow;
       }
@@ -94,19 +97,19 @@ namespace gip {
       typename SourceImage::ReadableRows::RowIterator::ElementIterator srcColumnEnd = srcRow.getEnd();
 
       for (unsigned int cycles = horizontalCycles; cycles > 0; --cycles) {
-        destColumn = copy(destColumn, srcRow.getFirst(), srcRow.getEnd());
-//        typename SourceImage::ReadableRows::RowIterator::ElementIterator srcColumn = srcRow.getFirst();
-//        while (srcColumn != srcColumnEnd) {
-//          *destColumn++ = *srcColumn++;
-//        }
+//        destColumn = copy(destColumn, srcRow.getFirst(), srcRow.getEnd());
+        typename SourceImage::ReadableRows::RowIterator::ElementIterator srcColumn = srcRow.getFirst();
+        while (srcColumn != srcColumnEnd) {
+          *destColumn++ = *srcColumn++;
+        }
       }
 
-      copy(destColumn, destRow.getEnd(), srcRow.getFirst());
-//      typename DestinationImage::Rows::RowIterator::ElementIterator destColumnEnd = destRow.getEnd();
-//      typename SourceImage::ReadableRows::RowIterator::ElementIterator srcColumn = srcRow.getFirst();
-//      while (destColumn != destColumnEnd) {
-//        *destColumn++ = *srcColumn++;
-//      }
+//      copy(destColumn, destRow.getEnd(), srcRow.getFirst());
+      typename DestinationImage::Rows::RowIterator::ElementIterator destColumnEnd = destRow.getEnd();
+      typename SourceImage::ReadableRows::RowIterator::ElementIterator srcColumn = srcRow.getFirst();
+      while (destColumn != destColumnEnd) {
+        *destColumn++ = *srcColumn++;
+      }
       ++destRow;
       ++srcRow;
     }
