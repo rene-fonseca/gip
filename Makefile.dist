@@ -1,4 +1,7 @@
-default: all
+all:
+	aclocal
+	automake
+	autoconf
 
 dist:
 	@echo "This file is to make it easier for you to create all you need"
@@ -15,14 +18,12 @@ dist:
 	done 
 	rm -f Makefile.dist
 
-all:
-	aclocal
-	automake
-	autoconf
-
 # LDFLAGS="-Wl,--enable-auto-import"
-klampenborg-gcc-3.0.4: all
-	CC="gcc" CFLAGS="-pipe -mno-cygwin -mthreads -x c -ansi" CXX="gcc" CPPFLAGS="-I/usr/include/mingw/g++-3/i386-pc-mingw32 -I/usr/include/mingw/g++-3/backward -I/usr/include/mingw/g++-3" CXXFLAGS="-pipe -mno-cygwin -mthreads -x c++ -ansi -O0 -g3" LDFLAGS="-x none" ./configure --target=i386-pc-mingw32 --prefix=/usr/local/gip --disable-shared --with-base-include=/d/projects/base/base --with-base-lib=/d/projects/base/base/base
+klampenborg-gcc-3.0.4:
+	CC="gcc" CFLAGS="-pipe -mno-cygwin -mthreads -x c -ansi" CXX="gcc" CPPFLAGS="-I/usr/include/mingw/g++-3/i386-pc-mingw32 -I/usr/include/mingw/g++-3/backward -I/usr/include/mingw/g++-3" CXXFLAGS="-pipe -mno-cygwin -mthreads -x c++ -ansi -O0 -g3" LDFLAGS="-x none" configure --target=i386-pc-mingw32 --prefix=/usr/local/gip --disable-shared --with-base-include=/d/projects/base/base --with-base-lib=/d/projects/base/base/base
 
-klampenborg-gcc-3.0.4-release: all
-	CC="gcc" CFLAGS="-pipe -mno-cygwin -mthreads -x c -ansi" CXX="gcc" CPPFLAGS="-I/usr/include/mingw/g++-3/i386-pc-mingw32 -I/usr/include/mingw/g++-3/backward -I/usr/include/mingw/g++-3" CXXFLAGS="-pipe -mno-cygwin -mthreads -x c++ -ansi -O0 -g3 -march=i686 -malign-double" LDFLAGS="-x none" ./configure --target=i686-pc-mingw32 --prefix=/usr/local/gip --disable-shared --with-base-include=/d/projects/base/release/base --with-base-lib=/d/projects/base/release/base/base
+klampenborg-gcc-3.0.4-profiling:
+	CC="gcc" CFLAGS="-pipe -mno-cygwin -mthreads -x c -ansi" CXX="gcc" CPPFLAGS="-I/usr/include/mingw/g++-3/i386-pc-mingw32 -I/usr/include/mingw/g++-3/backward -I/usr/include/mingw/g++-3" CXXFLAGS="-pipe -mno-cygwin -mthreads -x c++ -ansi -O0 -g3 -pg -march=i686 -malign-double -fomit-frame-pointer -funroll-loops" LDFLAGS="-x none" configure --target=i686-pc-mingw32 --prefix=/usr/local/gip --disable-shared --with-base-include=/d/projects/base/release/base --with-base-lib=/d/projects/base/release/base/base
+
+klampenborg-gcc-3.0.4-release:
+	CC="gcc" CFLAGS="-pipe -mno-cygwin -mthreads -x c -ansi" CXX="gcc" CPPFLAGS="-I/usr/include/mingw/g++-3/i386-pc-mingw32 -I/usr/include/mingw/g++-3/backward -I/usr/include/mingw/g++-3" CXXFLAGS="-pipe -mno-cygwin -mthreads -x c++ -ansi -O0 -g3 -march=i686 -malign-double -fomit-frame-pointer -funroll-loops" LDFLAGS="-x none" configure --target=i686-pc-mingw32 --prefix=/usr/local/gip --disable-shared --with-base-include=/d/projects/base/release/base --with-base-lib=/d/projects/base/release/base/base
