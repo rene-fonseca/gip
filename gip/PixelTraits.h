@@ -171,6 +171,6 @@ namespace gip {
     enum {HAS_ALPHA_COMPONENT = false};
   };
   
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

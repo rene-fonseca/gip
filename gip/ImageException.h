@@ -24,9 +24,9 @@ namespace gip {
   */
 
   /**
-    Exception thrown by GIP classes.
+    Exception raised by GIP classes.
 
-    @short Image exception
+    @short Image exception.
     @ingroup exceptions
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
@@ -63,6 +63,6 @@ namespace gip {
     ImageException(const char* message, Type type) throw() : Exception(message, type) {}
   };
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

@@ -56,6 +56,6 @@ namespace gip {
     FormatOutputStream& getInfo(FormatOutputStream& stream, const String& filename) throw(IOException);
   };
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

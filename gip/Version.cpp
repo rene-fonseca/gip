@@ -56,4 +56,4 @@ String Version::getBanner() const throw() {
   return MESSAGE(banner);
 }
  
-}; // end of namespace
+}; // end of gip namespace

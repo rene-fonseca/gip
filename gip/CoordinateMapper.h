@@ -64,6 +64,6 @@ namespace gip {
   inline CoordinateMapper::CoordinateMapper(const Dimension& _dimension) throw() :
     dimension(_dimension) {}
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

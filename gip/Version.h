@@ -67,6 +67,6 @@ public:
   base::String getBanner() const throw();
 };
  
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

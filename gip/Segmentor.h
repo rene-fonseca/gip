@@ -63,6 +63,6 @@ namespace gip {
     return dimension;
   }
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

@@ -91,6 +91,6 @@ namespace gip {
     //Map<String, AnyValue> getInformation(const String& filename) throw(IOException);
   };
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

@@ -95,6 +95,6 @@ namespace gip {
     FormatOutputStream& JPEGEncoder::getInfo(FormatOutputStream& stream, const String& filename) throw(IOException);
   };
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

@@ -18,4 +18,4 @@ namespace gip {
   Segmentor::Segmentor(const Dimension& _dimension) throw() : dimension(_dimension) {
   }
 
-}; // end of namespace
+}; // end of gip namespace

@@ -396,4 +396,4 @@ namespace gip {
     return stream;
   }
 
-}; // end of namespace
+}; // end of gip namespace

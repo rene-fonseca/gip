@@ -52,6 +52,6 @@ inline const Dimension& ShadowImage<PIXEL>::getDimension() const throw() {
   return image->getDimension();
 }
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

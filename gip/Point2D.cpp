@@ -20,4 +20,4 @@ namespace gip {
     return stream << '(' << value.getColumn() << ',' << value.getRow() << ')';
   }
 
-}; // end of namespace gip
+}; // end of gip namespace

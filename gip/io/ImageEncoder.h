@@ -95,6 +95,6 @@ namespace gip {
     virtual FormatOutputStream& getInfo(FormatOutputStream& stream, const String& filename) throw(IOException) = 0;
   };
   
-}; // end of namespace
+}; // end of gip namespace
 
 #endif

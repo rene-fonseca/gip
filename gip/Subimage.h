@@ -68,6 +68,6 @@ inline Region Subimage<PIXEL>::getRegion() const throw() {
   return Region(offset, getDimension());
 }
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif
