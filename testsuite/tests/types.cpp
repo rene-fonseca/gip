@@ -64,6 +64,11 @@ int main() {
   YCbCrPixel<unsigned char> YCbCrArray[1024];
   HLSPixel<unsigned char> HLSArray[1024];
 
+  fout << MESSAGE("types version 1.0") << EOL
+        << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
+        << MESSAGE("http://www.mip.sdu.dk/~fonseca/gip") << EOL
+        << MESSAGE("Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>") << EOL << ENDL;
+
   fout << MESSAGE("Pixel Type Information:") << EOL
        << MESSAGE("  GrayPixel: single=") << sizeof(GrayPixel) << MESSAGE(" array=") << sizeof(grayArray) << EOL
        << MESSAGE("  GrayAlphaPixel8: single=") << sizeof(GrayAlphaPixel8) << MESSAGE(" array=") << sizeof(grayAlpha8Array) << EOL
