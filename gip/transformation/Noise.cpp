@@ -15,27 +15,4 @@
 
 namespace gip {
 
-  class NoiseOperation {
-  private:
-
-    ColorPixel pixel;
-  public:
-
-    inline NoiseOperation() throw() {
-    }
-
-    inline ColorPixel operator()() throw() {
-      return pixel;
-    }
-  };
-
-
-
-  Noise::Noise(DestinationImage* destination) throw() : UnaryTransformation<DestinationImage>(destination) {
-  }
-
-  void Noise::operator()() throw() {
-    //forEach(destination.getElements(), destination.getDimension().getSize(), NoiseOperation());
-  }
-
-}; // end of namespace
+}; // end of gip namespace

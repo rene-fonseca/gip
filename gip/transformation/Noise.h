@@ -15,8 +15,42 @@
 #define _DK_SDU_MIP__GIP_TRANSFORMATION__NOISE_H
 
 #include <gip/transformation/UnaryTransformation.h>
+#include <base/mathematics/Random.h>
 
 namespace gip {
+
+  template<class PIXEL>
+  class NoiseOperation {
+  public:
+    
+    inline Pixel operator()() const throw() {
+      return Random::getLongDouble() * PixelTraits<Pixel>::MAXIMUM;
+    }
+  };
+ 
+  template<class COMPONENT>
+  class NoiseOperation<RGBPixel<COMPONENT> > {
+  public:
+    
+    inline Pixel operator()() const throw() {
+      return makeRGBPixel(
+        Random::getLongDouble() * PixelTraits<Pixel>::MAXIMUM,
+        Random::getLongDouble() * PixelTraits<Pixel>::MAXIMUM,
+        Random::getLongDouble() * PixelTraits<Pixel>::MAXIMUM
+      );
+    }
+  };
+
+  template<>
+  class NoiseOperation<ColorPixel> {
+  public:
+    
+    inline Pixel operator()() const throw() {
+      ColorPixel result;
+      result.rgb = Random::getInteger();
+      return result;
+    }
+  };
 
   /**
     Fills an image with noise.
@@ -26,22 +60,34 @@ namespace gip {
     @version 1.0
   */
 
-  class Noise : public UnaryTransformation<ColorImage> {
+  template<class DEST>
+  class Noise : public UnaryTransformation<DEST> {
   public:
 
+    typedef typename UnaryTransformation<DEST>::DestinationImage DestinationImage;
+    typedef typename DestinationImage::Pixel Pixel;    
+   
     /**
       Initializes noise object.
 
       @param destination The destination image.
     */
-    Noise(DestinationImage* destination) throw();
+    Noise(DestinationImage* destination) throw()
+      : UnaryTransformation<DestinationImage>(destination) {
+    }
 
     /**
       Fills the destination image with noise.
     */
-    void operator()() throw();
+    void operator()() throw() {
+      forEach(
+        destination->getElements(),
+        destination->getDimension().getSize(),
+        NoiseOperation<Pixel>()
+      );
+    }
   };
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif
