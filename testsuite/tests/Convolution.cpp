@@ -12,7 +12,7 @@
  ***************************************************************************/
 
 #include <gip/io/BMPEncoder.h>
-#include <gip/transformation/MedianFilter3x3.h>
+#include <gip/transformation/Convolution3x3.h>
 #include <gip/transformation/Convert.h>
 #include <gip/ArrayImage.h>
 #include <base/Application.h>
@@ -23,14 +23,14 @@
 using namespace gip;
 using namespace base;
 
-class MedianApplication : public Application {
+class ConvolutionApplication : public Application {
 public:
 
-  MedianApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("MedianFilter3x3"), numberOfArguments, arguments, environment) {
+  ConvolutionApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
+    : Application(MESSAGE("Convolution"), numberOfArguments, arguments, environment) {
   }
 
-  void medianTransformation(const String& inputFile, const String& outputFile) throw() {
+  void convolutionTransformation(const String& inputFile, const String& outputFile) throw() {
     BMPEncoder encoder;
     
     fout << MESSAGE("Importing image with encoder: ") << encoder.getDescription() << ENDL;
@@ -46,21 +46,21 @@ public:
       transform();
     }
 
-    GrayImage medianImage(grayOriginalImage.getDimension());
+    GrayImage finalImage(grayOriginalImage.getDimension());
     {
-      MedianFilter3x3 transform(&medianImage, &grayOriginalImage);
+      Convolution3x3<GrayImage, GrayImage, SmoothUniformRectangular3x3> transform(&finalImage, &grayOriginalImage);
       fout << MESSAGE("Transforming image: ") << ' ' << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
       Timer timer;
       transform();
-      fout << MESSAGE("Time elapsed for Median filter transformation: ") << timer.getLiveMicroseconds() << MESSAGE(" microseconds") << EOL;
+      fout << MESSAGE("Time elapsed for convolution: ") << timer.getLiveMicroseconds() << MESSAGE(" microseconds") << EOL;
     }
 
     fout << MESSAGE("Exporting image with encoder: ") << encoder.getDescription() << ENDL;
-    encoder.writeGray(outputFile, &medianImage);
+    encoder.writeGray(outputFile, &finalImage);
   }
   
   void main() throw() {
-    fout << MESSAGE("MedianFilter3x3 version 1.0") << EOL
+    fout << MESSAGE("Convolution3x3 version 1.0") << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("http://www.mip.sdu.dk/~fonseca/gip") << EOL
          << MESSAGE("Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>") << EOL << ENDL;
@@ -79,12 +79,12 @@ public:
       return; // stop
     }
     
-    medianTransformation(inputFile, outputFile);
+    convolutionTransformation(inputFile, outputFile);
   }
 };
 
 int main(int argc, const char* argv[], const char* env[]) {
-  MedianApplication application(argc, argv, env);
+  ConvolutionApplication application(argc, argv, env);
   try {
     application.main();
   } catch(Exception& e) {

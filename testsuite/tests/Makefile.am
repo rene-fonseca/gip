@@ -13,7 +13,9 @@
 
 include $(top_srcdir)/common.am
 
-bin_PROGRAMS = gip types bmpio gifio FourierTransformation WalshTransformation MedianFilter3x3 LPF ContrastStretch EqualizeHistogram
+bin_PROGRAMS = gip types bmpio gifio FourierTransformation WalshTransformation MedianFilter3x3 LPF ContrastStretch EqualizeHistogram Convolution
+bin_PROGRAMS += Erode
+bin_PROGRAMS += Dilate
 
 gip_SOURCES = gip.cpp
 types_SOURCES = types.cpp
@@ -25,5 +27,8 @@ MedianFilter3x3_SOURCES = MedianFilter3x3.cpp
 LPF_SOURCES = LPF.cpp
 ContrastStretch_SOURCES = ContrastStretch.cpp
 EqualizeHistogram_SOURCES = EqualizeHistogram.cpp
+Convolution_SOURCES = Convolution.cpp
+Erode_SOURCES = Erode.cpp
+Dilate_SOURCES = Dilate.cpp
 
 EXTRA_DIST =
