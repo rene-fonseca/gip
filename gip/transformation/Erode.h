@@ -35,6 +35,9 @@ namespace gip {
   class Erode3x3 : public Transformation<DEST, SRC> {
   private:
 
+    typedef typename Transformation<DEST, SRC>::DestinationImage DestinationImage;
+    typedef typename Transformation<DEST, SRC>::SourceImage SourceImage;
+
     class TopLeftKernel : public KERNEL {
     public:
       enum {M00 = false, M01 = false, M02 = false, M10 = false, M20 = false};

@@ -32,6 +32,8 @@ namespace gip {
   class Mirror : public UnaryTransformation<DEST> {
   public:
 
+    typedef typename UnaryTransformation<DEST>::DestinationImage DestinationImage;
+
     Mirror(DestinationImage* destination) throw(ImageException);
 
     void operator()() throw();

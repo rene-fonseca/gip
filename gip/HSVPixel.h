@@ -46,7 +46,7 @@ public:
 
   typedef COMPONENT Component;
   typedef HSVPixel<Component> Pixel;
-  typedef PixelComponent<Component>::Arithmetic Arithmetic;
+  typedef typename PixelComponent<Component>::Arithmetic Arithmetic;
 
   enum {
     MINIMUM = 0x00,
@@ -104,12 +104,12 @@ inline HSVPixel<COMPONENT> makeHSVPixel(COMPONENT hue, COMPONENT saturation, COM
 */
 template<class COMPONENT>
 inline HSVPixel<COMPONENT> RGBToHSV(const RGBPixel<COMPONENT>& pixel) throw() {
-  typedef PixelTraits<RGBPixel<COMPONENT> >::Arithmetic Arithmetic;
+  typedef typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic Arithmetic;
   HSVPixel<COMPONENT> result;
 
   COMPONENT max = maximum(pixel.red, pixel.green, pixel.blue);
   COMPONENT min = minimum(pixel.red, pixel.green, pixel.blue);
-  PixelTraits<HSVPixel<COMPONENT> >::Arithmetic diff = max - min;
+  typename PixelTraits<HSVPixel<COMPONENT> >::Arithmetic diff = max - min;
 
   result.value = max;
   if (max == 0) { // TAG: problem if COMPONENT is floating-point type
@@ -180,7 +180,7 @@ inline HSVPixel<unsigned char> RGBToHSV<unsigned char>(const RGBPixel<unsigned c
 */
 template<class COMPONENT>
 inline RGBPixel<COMPONENT> HSVToRGB(const HSVPixel<COMPONENT>& pixel) throw() {
-  typedef PixelTraits<HSVPixel<COMPONENT> >::Arithmetic Arithmetic;
+  typedef typename PixelTraits<HSVPixel<COMPONENT> >::Arithmetic Arithmetic;
   RGBPixel<COMPONENT> result;
 
   if (pixel.saturation == 0) { // TAG: problem if COMPONENT is floating-point type

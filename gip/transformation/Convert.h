@@ -218,6 +218,9 @@ namespace gip {
     UNARY convert;
   public:
 
+    typedef typename Transformation<DEST, SRC>::DestinationImage DestinationImage;
+    typedef typename Transformation<DEST, SRC>::SourceImage SourceImage;
+    
     /**
       Initializes convert transformation.
 

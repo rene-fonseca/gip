@@ -46,7 +46,7 @@ public:
 
   typedef COMPONENT Component;
   typedef HLSPixel<Component> Pixel;
-  typedef PixelComponent<Component>::Arithmetic Arithmetic;
+  typedef typename PixelComponent<Component>::Arithmetic Arithmetic;
 
   enum {
     MINIMUM = 0x00,
@@ -104,13 +104,13 @@ inline HLSPixel<COMPONENT> makeHLSPixel(COMPONENT hue, COMPONENT lightness, COMP
 */
 template<class COMPONENT>
 inline HLSPixel<COMPONENT> RGBToHLS(const RGBPixel<COMPONENT>& pixel) throw() {
-  typedef PixelTraits<RGBPixel<COMPONENT> >::Arithmetic Arithmetic;
+  typedef typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic Arithmetic;
   HLSPixel<COMPONENT> result;
 
   COMPONENT max = maximum(pixel.red, pixel.green, pixel.blue);
   COMPONENT min = minimum(pixel.red, pixel.green, pixel.blue);
-  PixelTraits<HLSPixel<COMPONENT> >::Arithmetic sum = max + min;
-  PixelTraits<HLSPixel<COMPONENT> >::Arithmetic diff = max - min;
+  typename PixelTraits<HLSPixel<COMPONENT> >::Arithmetic sum = max + min;
+  typename PixelTraits<HLSPixel<COMPONENT> >::Arithmetic diff = max - min;
 
   result.lightness = sum/2;
 
@@ -188,7 +188,7 @@ inline HLSPixel<unsigned char> RGBToHLS<unsigned char>(const RGBPixel<unsigned c
 */
 template<class COMPONENT>
 inline RGBPixel<COMPONENT> HLSToRGB(const HLSPixel<COMPONENT>& pixel) throw() {
-  typedef PixelTraits<HLSPixel<COMPONENT> >::Arithmetic Arithmetic;
+  typedef typename PixelTraits<HLSPixel<COMPONENT> >::Arithmetic Arithmetic;
   RGBPixel<COMPONENT> result;
 
   if (pixel.saturation == 0) { // TAG: problem if COMPONENT is floating-point type

@@ -140,7 +140,10 @@ namespace gip {
   template<class DEST, class SRC, class KERNEL>
   class Convolution3x3 : public Transformation<DEST, SRC> {
   public:
-    
+
+    typedef typename Transformation<DEST, SRC>::DestinationImage DestinationImage;
+    typedef typename Transformation<DEST, SRC>::SourceImage SourceImage;
+
     /**
       Initializes the transformation.
 
@@ -158,8 +161,8 @@ namespace gip {
     public:
       
       typedef typename SourceImage::ReadableRows::RowIterator::ElementIterator Iterator;
-      typedef PixelTraits<typename SourceImage::Pixel>::Arithmetic Arithmetic;
-      typedef PixelTraits<typename DestinationImage::Pixel>::Arithmetic Result;
+      typedef typename PixelTraits<typename SourceImage::Pixel>::Arithmetic Arithmetic;
+      typedef typename PixelTraits<typename DestinationImage::Pixel>::Arithmetic Result;
       
       inline Result operator()(Iterator previous, Iterator current, Iterator next) const throw() {
         return static_cast<Result>(KERNEL::M00 * static_cast<Arithmetic>(previous[-1]) +
@@ -188,8 +191,8 @@ namespace gip {
     public:
       
       typedef typename SourceImage::ReadableRows::RowIterator::ElementIterator Iterator;
-      typedef PixelTraits<typename SourceImage::Pixel>::Arithmetic Arithmetic;
-      typedef GrayAlphaPixel<PixelTraits<typename DestinationImage::Pixel>::Arithmetic> Result;
+      typedef typename PixelTraits<typename SourceImage::Pixel>::Arithmetic Arithmetic;
+      typedef GrayAlphaPixel<typename PixelTraits<typename DestinationImage::Pixel>::Arithmetic> Result;
 
       inline Result operator()(Iterator previous, Iterator current, Iterator next) const throw() {
         Result result;
@@ -230,8 +233,8 @@ namespace gip {
     public:
       
       typedef typename SourceImage::ReadableRows::RowIterator::ElementIterator Iterator;
-      typedef PixelTraits<typename SourceImage::Pixel>::Arithmetic Arithmetic;
-      typedef RGBPixel<PixelTraits<typename DestinationImage::Pixel>::Arithmetic> Result;
+      typedef typename PixelTraits<typename SourceImage::Pixel>::Arithmetic Arithmetic;
+      typedef RGBPixel<typename PixelTraits<typename DestinationImage::Pixel>::Arithmetic> Result;
       
       inline Result operator()(Iterator previous, Iterator current, Iterator next) const throw() {
         Result result;
@@ -282,8 +285,8 @@ namespace gip {
     public:
       
       typedef typename SourceImage::ReadableRows::RowIterator::ElementIterator Iterator;
-      typedef PixelTraits<typename SourceImage::Pixel>::Arithmetic Arithmetic;
-      typedef RGBAPixel<PixelTraits<typename DestinationImage::Pixel>::Arithmetic> Result;
+      typedef typename PixelTraits<typename SourceImage::Pixel>::Arithmetic Arithmetic;
+      typedef RGBAPixel<typename PixelTraits<typename DestinationImage::Pixel>::Arithmetic> Result;
       
       inline Result operator()(Iterator previous, Iterator current, Iterator next) const throw() {
         Result result;

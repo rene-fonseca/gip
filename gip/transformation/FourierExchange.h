@@ -40,6 +40,8 @@ namespace gip {
   class FourierExchange : public UnaryTransformation<DEST> {
   public:
 
+    typedef typename UnaryTransformation<DEST>::DestinationImage DestinationImage;
+
     /**
       Initializes transformation object.
     */

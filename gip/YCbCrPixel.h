@@ -45,7 +45,7 @@ public:
 
   typedef COMPONENT Component;
   typedef YCbCrPixel<Component> Pixel;
-  typedef PixelComponent<Component>::Arithmetic Arithmetic;
+  typedef typename PixelComponent<Component>::Arithmetic Arithmetic;
 
   enum {
     MINIMUM = 0x00,
@@ -104,7 +104,7 @@ inline YCbCrPixel<COMPONENT> makeYCbCrPixel(COMPONENT luma, COMPONENT cb, COMPON
 template<class COMPONENT>
 inline YCbCrPixel<COMPONENT> RGBToYCbCr(const RGBPixel<COMPONENT>& pixel) throw() {
   YCbCrPixel<COMPONENT> result;
-  typedef PixelTraits<RGBPixel<COMPONENT> >::Arithmetic Arithmetic;
+  typedef typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic Arithmetic;
 
   // see ITU-R recommendation BT (map to range [0; 1])
   result.luma = 0.299 * static_cast<Arithmetic>(pixel.red) + 0.587 * static_cast<Arithmetic>(pixel.green) + 0.114 * static_cast<Arithmetic>(pixel.blue);
@@ -135,7 +135,7 @@ inline YCbCrPixel<unsigned char> RGBToYCbCr<unsigned char>(const RGBPixel<unsign
 */
 template<class COMPONENT>
 inline RGBPixel<COMPONENT> YCbCrToRGB(const YCbCrPixel<COMPONENT>& pixel) throw() {
-  typedef PixelTraits<YCbCrPixel<COMPONENT> >::Arithmetic Arithmetic;
+  typedef typename PixelTraits<YCbCrPixel<COMPONENT> >::Arithmetic Arithmetic;
   RGBPixel<COMPONENT> result;
    // map components into range [0; 1]
   result.red = static_cast<Arithmetic>(pixel.luma) + 2 * (1.000-0.299) * static_cast<Arithmetic>(pixel.cr);

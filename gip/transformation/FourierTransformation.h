@@ -40,7 +40,7 @@ namespace gip {
     /** Lookup table for column indices. */
     Allocator<unsigned int> mappedColumns;
   public:
-
+    
     /**
       Initializes Fast Fourier transformation object.
 
