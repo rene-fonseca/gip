@@ -16,6 +16,8 @@
 #include <base/mathematics/Math.h>
 #include <base/string/StringOutputStream.h>
 #include <base/Cast.h>
+#include <base/concurrency/Thread.h>
+#include <gip/YCbCrPixel.h>
 
 namespace gip {
 
@@ -361,7 +363,7 @@ namespace gip {
       descriptor.maximum = feature.maximumValue;
     }
 
-  }; // end of namespace Camera1394Impl
+  }; // end of Camera1394Impl namespace
 
   const Camera1394::Mode Camera1394::MODES[] = {
     Camera1394::YUV_444_160X120_24BIT,
@@ -476,8 +478,11 @@ namespace gip {
     readModeSpecificState();
   }
 
-  Camera1394::Camera1394() throw() {
+  Camera1394::Camera1394() throw()
+    : camera(IEEE1394::BROADCAST + 1) {
+    // TAG: init attributes FIXME
     adapter.open(); // TAG: temporary fix
+    readChannel = adapter.getReadChannel(4096 /*transmission.packetsPerFrame*/, Camera1394::ISOCHRONOUS_SUBCHANNELS);
   }
   
   bool Camera1394::isCamera(unsigned int node) throw(OutOfDomain, IEEE1394Exception) {
@@ -780,7 +785,7 @@ namespace gip {
     capabilities |= (quadlet & (1 << 29)) ? Camera1394::FEATURE_ERROR_STATUS : 0;
     // maximumMemoryChannel = quadlet & 0x0f;
     camera = node;
-    
+
     // reset
     // check if mode/pixel format is supported
     // if not activate code to set mode/pixel format after reset
@@ -1020,7 +1025,7 @@ namespace gip {
       adapter.read(camera, commandRegisters + Camera1394Impl::GAMMA_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.gamma);
     }
-   if (isFeatureSupported(Camera1394::SHUTTER_CONTROL)) {
+    if (isFeatureSupported(Camera1394::SHUTTER_CONTROL)) {
       adapter.read(camera, commandRegisters + Camera1394Impl::SHUTTER_INQ, Cast::getCharAddress(quadlet), sizeof(quadlet));
       Camera1394Impl::importGenericFeature(quadlet, featureDescriptors.shutter);
     }
@@ -1233,9 +1238,6 @@ namespace gip {
     adapter.write(camera, commandRegisters + Camera1394Impl::ISO_CHANNEL, Cast::getCharAddress(quadlet), sizeof(quadlet));
     
     readModeSpecificState();
-    
-    readChannel = adapter.getReadChannel(transmission.packetsPerFrame, Camera1394::ISOCHRONOUS_SUBCHANNELS);
-fout << MESSAGE("Isochronous channels: ") << HEX << setWidth(10) << ZEROPAD << readChannel.getSubchannels() << ENDL;
   }
   
   unsigned int Camera1394::getFrameRates(Mode mode) throw(NotSupported) {
@@ -1246,6 +1248,16 @@ fout << MESSAGE("Isochronous channels: ") << HEX << setWidth(10) << ZEROPAD << r
   void Camera1394::setFrameRate(FrameRate frameRate) throw(NotSupported) {
     assert(frameRates[currentMode] & (1 << frameRate), bindCause(NotSupported(this), Camera1394::FRAME_RATE_NOT_SUPPORTED));
     this->frameRate = frameRate;
+    
+    IEEE1394::Quadlet quadlet = frameRate << 29;
+    adapter.write(camera, commandRegisters + Camera1394Impl::CURRENT_V_RATE, getCharAddress(quadlet), sizeof(quadlet));
+//     quadlet = Camera1394Impl::MODE_INFORMATION[currentMode].mode << 29;
+//     adapter.write(camera, commandRegisters + Camera1394Impl::CURRENT_V_MODE, getCharAddress(quadlet), sizeof(quadlet));
+//     quadlet = Camera1394Impl::MODE_INFORMATION[currentMode].format << 29;
+//     adapter.write(camera, commandRegisters + Camera1394Impl::CURRENT_V_FORMAT, getCharAddress(quadlet), sizeof(quadlet));
+//     quadlet = (transmission.subchannel << 28) | (transmission.speed << 24);
+//     adapter.write(camera, commandRegisters + Camera1394Impl::ISO_CHANNEL, getCharAddress(quadlet), sizeof(quadlet));
+    
   }
 
   void Camera1394::enable() throw(IEEE1394Exception) {
@@ -1904,7 +1916,7 @@ fout << MESSAGE("Isochronous channels: ") << HEX << setWidth(10) << ZEROPAD << r
     }
   }
 
-  bool Camera1394::acquire(char* buffer, unsigned int size) throw(ImageException, IEEE1394Exception) {
+  bool Camera1394::acquire(uint8* buffer, unsigned int size) throw(ImageException, IEEE1394Exception) {
     assert(size == transmission.totalBytesPerFrame, bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH));
     IEEE1394::Quadlet headers[transmission.packetsPerFrame];
 
@@ -1917,12 +1929,12 @@ fout << MESSAGE("Isochronous channels: ") << HEX << setWidth(10) << ZEROPAD << r
     request.setHeaderSize(sizeof(IEEE1394::Quadlet));
     request.setPayload(transmission.bytesPerPacket);
     request.setBuffer(
-      buffer,
+      Cast::pointer<char*>(buffer),
       transmission.bytesPerPacket * (transmission.packetsPerFrame - 1),
       Cast::getCharAddress(headers)
     );
 
-    char lastPacket[transmission.bytesPerPacket];
+    uint8 lastPacket[transmission.bytesPerPacket];
     IEEE1394::IsochronousReadFixedDataRequest lastRequest = readChannel.getReadFixedDataRequest();
     lastRequest.setSubchannel(transmission.subchannel);
     lastRequest.setNumberOfPackets(1);
@@ -1977,7 +1989,7 @@ fout << MESSAGE("Isochronous channels: ") << HEX << setWidth(10) << ZEROPAD << r
     }
     
     if (success) {
-      copy<char>(buffer + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1), lastPacket, bytesInLastPacket);
+      copy<uint8>(buffer + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1), lastPacket, bytesInLastPacket);
     }
     
     return success;
@@ -1987,7 +1999,6 @@ fout << MESSAGE("Isochronous channels: ") << HEX << setWidth(10) << ZEROPAD << r
     if (pixelFormat != Camera1394::Y_8BIT) {
       setPixelFormat(Camera1394::Y_8BIT);
     }
-    
     assert(frame.getDimension() == region.getDimension(), bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH));
     IEEE1394::Quadlet headers[transmission.packetsPerFrame];
     
@@ -2034,7 +2045,7 @@ fout << MESSAGE("Isochronous channels: ") << HEX << setWidth(10) << ZEROPAD << r
     }
 
     unsigned int period = getFramePeriod(getFrameRate());
-    unsigned int requests = readChannel.dequeue(2, minimum<unsigned int>(2 * period/15, 999999999));
+    unsigned int requests = readChannel.dequeue(2, 9999999+0*minimum<unsigned int>(2 * period/15, 999999999));
     if (requests < 2) {
       readChannel.cancel();
       readChannel.dequeue(2 - requests, 999999999); // TAG: must wait forever
@@ -2264,6 +2275,312 @@ fout << MESSAGE("Isochronous channels: ") << HEX << setWidth(10) << ZEROPAD << r
     }
     
     return success;
+  }
+
+  bool Camera1394::AcquisitionListener::onAcquisitionLostSync(unsigned int frame) throw() {
+    return true;
+  }
+  
+  bool Camera1394::AcquisitionListener::onAcquisitionFailure(unsigned int frame) throw() {
+    return true;
+  }
+  
+  bool Camera1394::acquireContinuously(Array<FrameBuffer> frames, AcquisitionListener* listener) throw(NotSupported, ImageException, Camera1394Exception, IEEE1394Exception) {
+    if ((frames.getSize() == 0) || (listener == 0)) { // empty frame buffer or no listener
+      return true; // nothing to do
+    }
+    
+    Array<FrameBuffer>::Iterator first = frames.getBeginIterator();
+    Array<FrameBuffer>::Iterator end = frames.getEndIterator();
+    
+    // check if frames are valid
+    for (Array<FrameBuffer>::Iterator i = first; i < end; ++i) {
+      assert(i->getSize() == transmission.totalBytesPerFrame, bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH));
+      assert(i->getBuffer(), bindCause(ImageException(this), Camera1394::INVALID_FRAME_BUFFER));
+    }
+    
+    // inititialize requests
+    IEEE1394::Quadlet headers[transmission.packetsPerFrame]; // shared by frames
+    Allocator<IEEE1394::IsochronousReadFixedDataRequest> requests(frames.getSize() * 2); // 2 requests per frame
+
+    const Allocator<IEEE1394::IsochronousReadFixedDataRequest>::Iterator endRequest = requests.getEndIterator();
+    uint8 lastPacket[transmission.bytesPerPacket]; // TAG: need one per frame
+    
+    const unsigned int bytesInLastPacket =
+      transmission.totalBytesPerFrame - transmission.bytesPerPacket * (transmission.packetsPerFrame - 1);
+    
+    Allocator<IEEE1394::IsochronousReadFixedDataRequest>::Iterator request = requests.getBeginIterator();
+    for (Array<FrameBuffer>::Iterator i = first; i < end; ++i) {
+      IEEE1394::IsochronousReadFixedDataRequest firstRequest = readChannel.getReadFixedDataRequest();
+      firstRequest.setSubchannel(transmission.subchannel);
+      firstRequest.setNumberOfPackets(transmission.packetsPerFrame - 1);
+      firstRequest.setHeaderSize(sizeof(IEEE1394::Quadlet));
+      firstRequest.setPayload(transmission.bytesPerPacket);
+      firstRequest.setBuffer(
+        Cast::pointer<char*>(i->getBuffer()),
+        transmission.bytesPerPacket * (transmission.packetsPerFrame - 1),
+        Cast::getCharAddress(headers)
+      );
+      *request++ = firstRequest;
+      
+      IEEE1394::IsochronousReadFixedDataRequest lastRequest = readChannel.getReadFixedDataRequest();
+      lastRequest.setSubchannel(transmission.subchannel);
+      lastRequest.setNumberOfPackets(1);
+      lastRequest.setHeaderSize(sizeof(IEEE1394::Quadlet));
+      lastRequest.setPayload(transmission.bytesPerPacket /*bytesInLastPacket*/);
+      lastRequest.setBuffer(
+        Cast::getCharAddress(lastPacket), // Cast::pointer<char*>(frame.getElements() + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1))
+        bytesInLastPacket,
+        Cast::getCharAddress(headers[transmission.packetsPerFrame - 1])
+      );
+      *request++ = lastRequest;
+    }
+    
+    // queue all frame requests
+    unsigned int pendingRequests = 0;
+    request = requests.getBeginIterator();
+    while (request != endRequest) { // TAG: need to cancel all if exception is raised
+      readChannel.queue(*request++);
+      ++pendingRequests;
+      readChannel.queue(*request++);
+      ++pendingRequests;
+    }
+    
+    // enable continuous transmission
+    IEEE1394::Quadlet quadlet = 0; // first disable continuous transmission as a precaution
+    adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
+    Thread::nanosleep(5000000); // wait a few milliseconds
+    quadlet = 1 << 31; // enable continuous transmission
+    adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
+    
+    bool success = true;
+    bool stopped = false;
+    const unsigned int numberOfFrames = frames.getSize();
+    unsigned int frame = 0;
+    
+    request = requests.getBeginIterator();
+    while (pendingRequests && !stopped) { // we need to dequeue until queue is empty
+      // wait for completion of next frame (2 requests)
+      unsigned int dequeuedRequests = readChannel.dequeue(2, 9999999); // TAG: choose nice timeout
+      pendingRequests -= dequeuedRequests;
+      if (dequeuedRequests < 2) {
+        readChannel.cancel(); // cancel all pending requests
+        readChannel.dequeue(pendingRequests, 999999999); // TAG: must wait forever
+        success = false;
+        break;
+      }
+      // TAG: if stopped then cancel - it is too slow to dequeue
+      
+      if (!stopped) {
+        if (request == endRequest) { // queue 2 requests
+          request = requests.getBeginIterator();
+        }
+        
+        success = true;
+        success &= (request[0].getStatus() == IEEE1394::COMPLETED); // first request
+        success &= (request[1].getStatus() == IEEE1394::COMPLETED); // last request
+        
+        if (success && ((headers[0] & 1) == 0)) { // if sync is lost
+          IEEE1394::Quadlet quadlet = 0; // disable continuous transmission
+          adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
+          
+          if (!listener->onAcquisitionLostSync(frame)) {
+            success = false;
+            stopped = true;
+          } else {
+            // TAG: do we really need to dequeue every request
+            // TAG: queue requests until beginning of frame is found?
+            Thread::nanosleep(5000000); // wait a few milliseconds
+            quadlet = 1 << 31; // enable continuous transmission
+            adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
+          }
+        }
+        
+        if (success) {
+          uint8* buffer = Cast::pointer<uint8*>(request->getBuffer());
+          
+          // copy last packet content
+          copy<uint8>( // TAG: need better solution
+            buffer + transmission.bytesPerPacket * (transmission.packetsPerFrame - 1),
+            lastPacket,
+            bytesInLastPacket
+          );
+          
+          if (!listener->onAcquisition(frame, buffer)) {
+            stopped = true;
+          }
+        } else {
+          if (!listener->onAcquisitionFailure(frame)) {
+            stopped = true;
+          } else {
+            success = true; // allowed to continue
+          }
+        }
+      
+        // put frame requests back into queue
+        request->reset(); // prepare request
+        readChannel.queue(*request++);
+        ++pendingRequests;
+        request->reset(); // prepare request
+        readChannel.queue(*request++);
+        ++pendingRequests;
+      }
+
+      ++frame %= numberOfFrames;      
+    }
+    
+    quadlet = 0; // disable continuous transmission
+    adapter.write(camera, commandRegisters + Camera1394Impl::ISO_ENABLE, getCharAddress(quadlet), sizeof(quadlet));
+    
+    return success;
+  }
+
+  void Camera1394::convert(GrayImage& image, PixelFormat pixelFormat, const uint8* buffer) throw(ImageException) {
+    GrayImage::Rows rowLookup = image.getRows();
+    GrayImage::Rows::RowIterator row = rowLookup.getEnd();
+    const GrayImage::Rows::RowIterator endRow = rowLookup.getFirst();
+    
+    switch (pixelFormat) {
+    case Camera1394::Y_8BIT:
+      while (row != endRow) {
+        --row;
+        GrayImage::Rows::RowIterator::ElementIterator column = row.getFirst();
+        const GrayImage::Rows::RowIterator::ElementIterator endColumn = row.getEnd();
+        while (column < endColumn) {
+          *column++ = *buffer++;
+        }
+      }
+      break;
+    case Camera1394::RGB_8BIT:
+      while (row != endRow) {
+        --row;
+        GrayImage::Rows::RowIterator::ElementIterator column = row.getFirst();
+        const GrayImage::Rows::RowIterator::ElementIterator endColumn = row.getEnd();
+        while (column < endColumn) {
+          unsigned int red = *buffer++;
+          unsigned int green = *buffer++;
+          unsigned int blue = *buffer++;
+          *column++ = (red + green + blue + 1)/3;
+        }
+      }
+      break;
+    case Camera1394::YUV_422_8BIT:
+      {
+        assert(image.getWidth() % 2 == 0, ImageException(Type::getType<Camera1394>()));
+        while (row != endRow) {
+          --row;
+          GrayImage::Rows::RowIterator::ElementIterator column = row.getFirst();
+          const GrayImage::Rows::RowIterator::ElementIterator endColumn = row.getEnd();
+          while (column < endColumn) {
+            uint8 Cb = *buffer++;
+            uint8 Y0 = *buffer++;
+            uint8 Cr = *buffer++;
+            uint8 Y1 = *buffer++;
+            *column++ = Y0;
+            *column++ = Y1;
+          }
+        }
+      }
+      break;
+    case Camera1394::YUV_444_8BIT:
+      while (row != endRow) {
+        --row;
+        GrayImage::Rows::RowIterator::ElementIterator column = row.getFirst();
+        const GrayImage::Rows::RowIterator::ElementIterator endColumn = row.getEnd();
+        while (column < endColumn) {
+          uint8 Cb = *buffer++;
+          uint8 Y = *buffer++;
+          uint8 Cr = *buffer++;
+          *column++ = Y;
+        }
+      }
+      break;
+    default:
+      throw ImageException(Type::getType<Camera1394>());
+    }
+  }
+
+  void Camera1394::convert(ColorImage& image, PixelFormat pixelFormat, const uint8* buffer) throw(ImageException) {
+    ColorImage::Rows rowLookup = image.getRows();
+    ColorImage::Rows::RowIterator row = rowLookup.getEnd();
+    const ColorImage::Rows::RowIterator endRow = rowLookup.getFirst();
+
+    switch (pixelFormat) {
+    case Camera1394::Y_8BIT:
+      while (row != endRow) {
+        --row;
+        ColorImage::Rows::RowIterator::ElementIterator column = row.getFirst();
+        const ColorImage::Rows::RowIterator::ElementIterator endColumn = row.getEnd();
+        while (column < endColumn) {
+          uint8 Y = *buffer++;
+          *column++ = makeColorPixel(Y, Y, Y);
+        }
+      }
+      break;
+    case Camera1394::RGB_8BIT:
+      while (row != endRow) {
+        --row;
+        ColorImage::Rows::RowIterator::ElementIterator column = row.getFirst();
+        const ColorImage::Rows::RowIterator::ElementIterator endColumn = row.getEnd();
+        while (column < endColumn) {
+          uint8 red = *buffer++;
+          uint8 green = *buffer++;
+          uint8 blue = *buffer++;
+          *column++ = makeColorPixel(red, green, blue);
+        }
+      }
+      break;
+    case Camera1394::RGB_16BIT:
+      while (row != endRow) {
+        --row;
+        ColorImage::Rows::RowIterator::ElementIterator column = row.getFirst();
+        const ColorImage::Rows::RowIterator::ElementIterator endColumn = row.getEnd();
+        while (column < endColumn) {
+          ++buffer; // skip MSB
+          uint8 red = *buffer++;
+          ++buffer; // skip MSB
+          uint8 green = *buffer++;
+          ++buffer; // skip MSB
+          uint8 blue = *buffer++;
+          *column++ = makeColorPixel(red, green, blue);
+        }
+      }
+      break;
+    case Camera1394::YUV_422_8BIT:
+      {
+        // TAG: use FIR filter
+        assert(image.getWidth() % 2 == 0, ImageException(Type::getType<Camera1394>()));
+        while (row != endRow) {
+          --row;
+          ColorImage::Rows::RowIterator::ElementIterator column = row.getFirst();
+          const ColorImage::Rows::RowIterator::ElementIterator endColumn = row.getEnd();
+          while (column < endColumn) {
+            uint8 Cb = *buffer++;
+            uint8 Y0 = *buffer++;
+            uint8 Cr = *buffer++;
+            uint8 Y1 = *buffer++;
+            *column++ = YCbCrToRGB(makeYCbCrPixel(Y0, Cb, Cr));
+            *column++ = YCbCrToRGB(makeYCbCrPixel(Y1, Cb, Cr));
+          }
+        }
+      }
+      break;
+    case Camera1394::YUV_444_8BIT:
+      while (row != endRow) {
+        --row;
+        ColorImage::Rows::RowIterator::ElementIterator column = row.getFirst();
+        const ColorImage::Rows::RowIterator::ElementIterator endColumn = row.getEnd();
+        while (column < endColumn) {
+          uint8 Cb = *buffer++;
+          uint8 Y = *buffer++;
+          uint8 Cr = *buffer++;
+          *column++ = YCbCrToRGB(makeYCbCrPixel(Y, Cb, Cr));
+        }
+      }
+      break;
+    default:
+      throw ImageException(Type::getType<Camera1394>()); 
+    }
   }
   
 }; // end of gip namespace

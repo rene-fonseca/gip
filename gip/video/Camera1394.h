@@ -96,6 +96,7 @@ namespace gip {
       FEATURE_NOT_READABLE,
       REGION_NOT_SUPPORTED,
       FRAME_DIMENSION_MISMATCH,
+      INVALID_FRAME_BUFFER,
       LAST_CAUSE
     };
 
@@ -230,8 +231,6 @@ namespace gip {
     struct GenericFeatureDescriptor {
       /** Specifies whether the feature is available. */
       bool available : 1;
-//       /** Specifies whether the feature may be controlled. */
-//       bool controlable : 1;
       /** Automatic adjustment mode. */
       bool autoAdjustmentMode : 1;
       /** Specifies whether or not the value may be read. */
@@ -252,8 +251,6 @@ namespace gip {
     struct TriggerFeatureDescriptor {
       /** Specifies whether the feature is available. */
       bool available : 1;
-//       /** Specifies whether the feature may be controlled. */
-//       bool controlable : 1;
       /** Specifies whether or not the value may be read. */
       bool readable : 1;
       /** Specifies whether or not the feature may be turned ON and OFF. */
@@ -883,6 +880,22 @@ namespace gip {
     }
 
     /**
+      Returns the effective number of bits per pixel.
+    */
+    static inline unsigned int getBitsPerPixel(PixelFormat pixelFormat) throw() {
+      static unsigned int BITS_PER_PIXEL[] = {
+        8, // Y_8BIT
+        16, // Y_16BIT
+        12, // YUV_411_8BIT
+        16, // YUV_422_8BIT
+        16, // YUV_444_8BIT
+        24, // RGB_8BIT
+        48 // RGB_16BIT
+      };
+      return BITS_PER_PIXEL[pixelFormat];
+    }
+
+    /**
       Sets the pixel format. The is only required if the mode supports multiple
       pixel formats.
     */
@@ -900,7 +913,7 @@ namespace gip {
       
       @return True if acquisition succeeded.
     */
-    bool acquire(char* buffer, unsigned int size) throw(ImageException, IEEE1394Exception);
+    bool acquire(uint8* buffer, unsigned int size) throw(ImageException, IEEE1394Exception);
     
     /**
       Acquires a single frame. The current mode must support the 8 bit mono
@@ -932,26 +945,99 @@ namespace gip {
       @return True if acquisition succeeded.
     */
     bool acquire(ArrayImage<RGB24Pixel>& frame) throw(NotSupported, ImageException, IEEE1394Exception);
-    
+
+    /**
+      Acquisition listener.
+    */
     class AcquisitionListener {
     public:
 
-      virtual void acquired() throw() = 0;
+      /**
+        Invoked on successful acquisition.
+
+        @param frame The index of the frame within the cyclic buffer.
+        @param buffer The image buffer.
+        
+        @return True if acquisition should continue.
+      */
+      virtual bool onAcquisition(unsigned int frame, uint8* buffer) throw() = 0;
+      
+      /**
+        Invoked if synchronization with frame beginning is lost. This method
+        returns true by default.
+        
+        @param frame The index of the frame within the cyclic buffer.
+
+        @return True if acquisition should continue.
+      */
+      virtual bool onAcquisitionLostSync(unsigned int frame) throw();
+      
+      /**
+        Invoked on acquisition failure. This method returns true by default.
+        
+        @param frame The index of the frame within the cyclic buffer.
+        
+        @return True if acquisition should continue.
+      */
+      virtual bool onAcquisitionFailure(unsigned int frame) throw();
+    };
+
+    /**
+      Frame buffer descriptor for continuous acquisition.
+    */
+    class FrameBuffer {
+    private:
+      
+      /** The frame buffer. */
+      uint8* buffer;
+      /** The size of the frame buffer. */
+      unsigned int size;
+    public:
+
+      inline FrameBuffer() throw() : buffer(0), size(0) {
+      }
+      
+      /**
+        Initializes the buffer descriptor.
+        
+        @param buffer The buffer.
+        @param size The number of bytes in the buffer.
+      */
+      inline FrameBuffer(uint8* _buffer, unsigned int _size) throw() : buffer(_buffer), size(_size) {
+      }
+
+      /**
+        Returns the buffer.
+      */
+      inline uint8* getBuffer() const throw() {
+        return buffer;
+      }
+
+      /**
+        Returns the buffer size.
+      */
+      inline unsigned int getSize() const throw() {
+        return size;
+      }
     };
     
-    struct FrameBuffer {
-      bool busy;
-      bool skip;
-      char* buffer;
-      unsigned int size;
-    };
+    /**
+      Acquire frame continuously into the specified frames in a round-robin loop.
 
-    //void acquireContinuous(Array<FrameBuffer> frames, AcquisitionListener& listener) throw(Camera1394Exception, IEEE1394Exception);
+      @param frames The frame buffer.
+      @param listener The acquisition listener to be notifier on completion of each frame.
+    */
+    bool acquireContinuously(Array<FrameBuffer> frames, AcquisitionListener* listener) throw(NotSupported, ImageException, Camera1394Exception, IEEE1394Exception);
 
-    // acquisition policy: ROUND_ROBIN, SKIP_BUSY, OVERWRITE_BUFFER, WAIT, raise exception if no frame buffers available
-    // policy when all buffers are busy: throw exception
-    // synchronizeable with semaphore
-    // buffer overflow exception
+    /**
+      Convert the frame of the specified pixel format to a GrayImage.
+    */
+    static void convert(GrayImage& image, PixelFormat pixelFormat, const uint8* buffer) throw(ImageException);
+
+    /**
+      Convert the frame of the specified pixel format to a ColorImage.
+    */
+    static void convert(ColorImage& image, PixelFormat pixelFormat, const uint8* buffer) throw(ImageException);
   };
 
 }; // end of gip namespace
