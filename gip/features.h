@@ -45,6 +45,9 @@
 */
 
 namespace gip {
+  
+  // this framework depends on the base framework
+  using namespace base;
 };
 
 #endif

@@ -21,8 +21,6 @@
 #include <gip/ArrayImage.h>
 #include <gip/analysis/traverse.h>
 
-using namespace base; // this framework depends on the base framework
-
 namespace gip {
 
 /**

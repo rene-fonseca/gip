@@ -14,9 +14,8 @@
 #ifndef _DK_SDU_MIP__GIP__IMAGE_EXCEPTION_H
 #define _DK_SDU_MIP__GIP__IMAGE_EXCEPTION_H
 
+#include <gip/features.h>
 #include <base/Exception.h>
-
-using namespace base;
 
 namespace gip {
 

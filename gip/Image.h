@@ -18,8 +18,6 @@
 #include <base/Dimension.h>
 #include <gip/Pixel.h>
 
-using namespace base;
-
 namespace gip {
 
 /**

@@ -14,9 +14,8 @@
 #ifndef _DK_SDU_MIP__GIP__POINT_2D_H
 #define _DK_SDU_MIP__GIP__POINT_2D_H
 
+#include <gip/features.h>
 #include <base/Dimension.h>
-
-using namespace base;
 
 namespace gip {
 
@@ -40,7 +39,7 @@ public:
   /**
     Initializes point as origin (0, 0).
   */
-  Point2D() throw();
+  Point2D() throw() : row(0), column(0) {}
 
   /**
     Initializes point.
@@ -53,66 +52,65 @@ public:
   /**
     Initializes point from other point.
   */
-  Point2D(const Point2D& copy) throw();
+  inline Point2D(const Point2D& copy) throw() : row(copy.row), column(copy.column) {}
 
   /**
     Assignment of point by point.
   */
-  Point2D& operator=(const Point2D& eq) throw();
+  inline Point2D& operator=(const Point2D& eq) throw() {
+    row = eq.row; // no need to protect against self-assignment
+    column = eq.column;
+    return *this;
+  }
 
   /**
     Returns true if the point is contained within the specified dimension.
   */
-  bool isWithin(const Dimension& dimension) const throw();
+  inline bool isWithin(const Dimension& dimension) const throw() {
+    return (column < dimension.getWidth()) && (row < dimension.getHeight());
+  }
 
   /**
     Returns the column of the point.
   */
-  unsigned int getColumn() const throw();
+  inline unsigned int getColumn() const throw() {
+    return column;
+  }
 
   /**
     Returns the row of the point.
   */
-  unsigned int getRow() const throw();
+  inline unsigned int getRow() const throw() {
+    return row;
+  }
 
   /**
     Sets the column of the point.
   */
-  void setColumn(unsigned int column) throw();
+  inline void setColumn(unsigned int column) throw() {
+    this->column = column;
+  }
 
   /**
     Sets the row of the point.
   */
-  void setRow(unsigned int row) throw();
+  inline void setRow(unsigned int row) throw() {
+    this->row = row;
+  }
 };
 
-inline Point2D::Point2D() throw() : row(0), column(0) {}
-
-inline Point2D::Point2D(unsigned int r, unsigned int c) throw() : row(r), column(c) {}
-
-inline Point2D::Point2D(const Point2D& copy) throw() : row(copy.row), column(copy.column) {}
-
-inline Point2D& Point2D::operator=(const Point2D& eq) throw() {
-  // no need to protect against self-assignment
-  row = eq.row;
-  column = eq.column;
-  return *this;
-}
-
-inline bool Point2D::isWithin(const Dimension& dimension) const throw() {
-  return (column < dimension.getWidth()) && (row < dimension.getHeight());
-}
-
-inline unsigned int Point2D::getColumn() const throw() {return column;}
-
-inline unsigned int Point2D::getRow() const throw() {return row;}
-
-inline void Point2D::setColumn(unsigned int column) throw() {this->column = column;}
-
-inline void Point2D::setRow(unsigned int row) throw() {this->row = row;}
-
-template<> inline bool isRelocateable<Point2D>() throw() {return isRelocateable<unsigned int>();}
+inline Point2D::Point2D(unsigned int _row, unsigned int _column) throw() : row(_row), column(_column) {}
 
 }; // end of gip namespace
+
+namespace base {
+  
+  template<>
+  class Relocateable<gip::Point2D> {
+  public:
+    static const bool IS_RELOCATEABLE = Relocateable<unsigned int>::IS_RELOCATEABLE;
+  };
+
+}; // end of base namespace
 
 #endif

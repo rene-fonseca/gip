@@ -19,49 +19,47 @@
 #include <base/OutOfRange.h>
 #include <gip/Point2D.h>
 
-using namespace base;
-
 namespace gip {
 
-/**
-  Class responsible for mapping coordinates (spanned by a specified dimension)
-  into one-dimensional indices in a consistent manner. Offen all the
-  coordinates have a corresponding index but this is not required.
-
-  @short Mapper of coordinates into one-dimensional indices.
-  @author René Møller Fonseca
-*/
-
-class CoordinateMapper : public Object {
-protected:
-
-  /** The dimension to be enumerated. */
-  const Dimension dimension;
-public:
-
   /**
-    Initializes the coordinate mapper.
+    Class responsible for mapping coordinates (spanned by a specified dimension)
+    into one-dimensional indices in a consistent manner. Offen all the
+    coordinates have a corresponding index but this is not required.
 
-    @param dimension The dimension to be enumerated.
+    @short Mapper of coordinates into one-dimensional indices.
+    @author René Møller Fonseca
   */
-  CoordinateMapper(const Dimension& dimension) throw();
-  /**
-    Returns the total number of valid indices.
-  */
-  virtual unsigned int getSize() const throw() = 0;
 
-  /**
-    Translates the specified index into a coordinate.
-  */
-  virtual Point2D translate(unsigned int index) throw(OutOfRange) = 0;
+  class CoordinateMapper : public Object {
+  protected:
 
-  /**
-    Translates the specified coordinate into an index.
-  */
-  virtual unsigned int translate(const Point2D& coordinate) throw(OutOfRange) = 0;
-};
+    /** The dimension to be enumerated. */
+    const Dimension dimension;
+  public:
 
-inline CoordinateMapper::CoordinateMapper(const Dimension& d) throw() : dimension(d) {}
+    /**
+       Initializes the coordinate mapper.
+
+       @param dimension The dimension to be enumerated.
+    */
+    CoordinateMapper(const Dimension& dimension) throw();
+    /**
+       Returns the total number of valid indices.
+    */
+    virtual unsigned int getSize() const throw() = 0;
+
+    /**
+       Translates the specified index into a coordinate.
+    */
+    virtual Point2D translate(unsigned int index) throw(OutOfRange) = 0;
+
+    /**
+       Translates the specified coordinate into an index.
+    */
+    virtual unsigned int translate(const Point2D& coordinate) throw(OutOfRange) = 0;
+  };
+
+  inline CoordinateMapper::CoordinateMapper(const Dimension& d) throw() : dimension(d) {}
 
 }; // end of namespace
 
