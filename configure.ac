@@ -4,6 +4,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_INIT(Makefile.am)
 
 ac_gip_build_date=$(date -u +"%D %T UTC")
+ac_gip_build_user=$(whoami)
 ac_gip_build_host=$(uname -n)
 
 AC_PREREQ(2.5)
@@ -60,16 +61,37 @@ if test "x$ac_base_lib" != "x"; then
   AC_SUBST(BASE_LIBADD)
 fi
 
+
+
+dnl Add VERSION resource to the dynamic library on Windows platforms (i.e. cygwin or mingw targets)
+case "$ac_cv_target" in
+*-*-cygwin|*-*-mingw32)
+  dnl The -Wl option is used to circumvent libtool
+  GIP_ADDITIONAL_LIBADD="${GIP_ADDITIONAL_LIBADD}${GIP_ADDITIONAL_LIBADD:+ }"'-Wl,winrcver.o'
+  GIP_ADDITIONAL_DEPENDENCIES="${GIP_ADDITIONAL_DEPENDENCIES}${GIP_ADDITIONAL_DEPENDENCIES:+ }"'winrcver.o'
+  ;;
+esac
+
+
+
+dnl Define some describing symbols
 AC_GIP_DEFINE(CONFIGURE, [\"]$ac_configure_args[\"])
 AC_GIP_DEFINE(BUILD_DATE, [\"]$ac_gip_build_date[\"])
+AC_GIP_DEFINE(BUILD_USER, [\"]$ac_gip_build_user[\"])
 AC_GIP_DEFINE(BUILD_HOST, [\"]$ac_gip_build_host[\"])
 AC_GIP_DEFINE(BUILD_SYSTEM, [\"]$ac_cv_build[\"])
 AC_GIP_DEFINE(TARGET_SYSTEM, [\"]$ac_cv_target[\"])
 
+dnl The default include paths are not used
 CPPFLAGS='-I${top_srcdir}'"${CPPFLAGS:+ }${CPPFLAGS}"
 
+AC_SUBST(GIP_ADDITIONAL_LIBADD)
+AC_SUBST(GIP_ADDITIONAL_LDFLAGS)
+AC_SUBST(GIP_ADDITIONAL_DEPENDENCIES)
+
+dnl Store the symbols
 ac_gip_header=gip/configuration.h
 echo "updating configuration..."
 mv $ac_gip_config $ac_gip_header
 
-AC_OUTPUT(Makefile gip/Makefile gip/docs/Makefile gip/docs/en/Makefile gip/transformation/Makefile gip/analysis/Makefile gip/Makefile gip/draw/Makefile gip/io/Makefile gip/media/Makefile )
+AC_OUTPUT(Makefile gip/Makefile gip/docs/Makefile gip/docs/en/Makefile gip/transformation/Makefile gip/analysis/Makefile gip/Makefile gip/draw/Makefile gip/io/Makefile gip/media/Makefile)
