@@ -1,0 +1,31 @@
+# ***************************************************************************
+#    Generic Image Processing (GIP) Framework (Test Suite)
+#    A framework for developing image processing applications
+#
+#    Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+#
+#    This framework is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+#    For the licensing terms refer to the file 'LICENSE'.
+# ***************************************************************************
+
+TESTS = gip types
+
+TEST_BIN_PATH = .
+TEST_RESULTS_PATH = test_results
+TEST_RESULTS = $(addprefix $(TEST_RESULTS_PATH)/, $(addsuffix .stdout, $(TESTS)))
+
+all: makedir $(TEST_RESULTS)
+
+makedir:
+	mkdir -p $(TEST_RESULTS_PATH)
+
+$(TEST_RESULTS): $(TEST_RESULTS_PATH)/%.stdout: %
+	$(TEST_BIN_PATH)/$< > $(TEST_RESULTS_PATH)/$<.stdout 2> $(TEST_RESULTS_PATH)/$<.stderr ; echo $$? > $(TEST_RESULTS_PATH)/$<.status
+
+clean:
+	rm -f $(TEST_RESULTS_PATH)/*.stdout
+	rm -f $(TEST_RESULTS_PATH)/*.stderr
+	rm -f $(TEST_RESULTS_PATH)/*.status
