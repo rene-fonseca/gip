@@ -54,7 +54,7 @@ public:
     is unspecified.
   */
   base::String getRelease() const throw();
-  
+
   /**
     Returns the version of the framework as a string. The format of the string
     is 'major.minor.micro suffix' where suffix could be anything.
