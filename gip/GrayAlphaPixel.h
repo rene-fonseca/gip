@@ -23,6 +23,7 @@ namespace gip {
     Pixel with gray and alpha components.
 
     @see RGBPixel RGBAPixel
+    @ingroup pixels
   */
   template<class COMPONENT>
   struct GrayAlphaPixel {

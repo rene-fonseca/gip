@@ -24,10 +24,15 @@
 namespace gip {
 
   /**
+    @defgroup pixels Pixels
+  */
+
+  /**
     Image element wrapper for a single intensity (e.g. gray level) with the
     intensity represented by one byte.
 
     @short Image element
+    @ingroup pixels
   */
   typedef int __attribute__ ((aligned (4) )) GrayPixel;
   

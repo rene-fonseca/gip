@@ -20,9 +20,11 @@
 namespace gip {
 
   /**
-    Pixel with red, green, and blue components.
+    True color is the provision of three separate components for additive red, green, and blue reproduction.
 
+    @short True color pixel
     @see GrayAlphaPixel RGBAPixel
+    @ingroup pixels
   */
   template<class COMPONENT>
   struct RGBPixel {
