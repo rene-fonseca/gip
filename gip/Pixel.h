@@ -45,18 +45,21 @@ typedef Intensity __attribute__ ((aligned (4) )) GrayPixel;
 
   @short Image element.
 */
-typedef union {
+union RGBPixel {
   unsigned int rgb;
   struct {
     Intensity blue;
     Intensity green;
     Intensity red;
-  };
-} __attribute__ ((packed)) RGBPixel;
+  } __attribute__ ((packed));
+} __attribute__ ((packed));
 
 inline RGBPixel makeRGBPixel(Intensity blue, Intensity green, Intensity red) throw() {
   RGBPixel result;
-  result.rgb = (static_cast<unsigned int>(red) << 8 + green) << 8 + blue;
+  result.blue = blue;
+  result.green = green;
+  result.red = red;
+  //  result.rgb = (static_cast<unsigned int>(red) << 8 + green) << 8 + blue;
   return result;
 }
 
@@ -69,15 +72,15 @@ static const RGBPixel RGB_PIXEL_WHITE = {0xffffff};
 
   @short Image element.
 */
-typedef union {
+union RGBTPixel {
   unsigned int rgbt;
   struct {
     Intensity blue;
     Intensity green;
     Intensity red;
     Intensity transparency;
-  };
-} __attribute__ ((packed)) RGBTPixel;
+  } __attribute__ ((packed));
+} __attribute__ ((packed));
 
 typedef long double FloatPixel;
 
@@ -104,7 +107,7 @@ inline FloatPixel convertPixel<FloatPixel, GrayPixel>(const GrayPixel& value) th
 
 template<>
 inline GrayPixel convertPixel<GrayPixel, RGBPixel>(const RGBPixel& value) throw() {
-  return (GrayPixel){((unsigned int)value.blue + value.green + value.red)/3}; // looses information
+  return (GrayPixel){(static_cast<unsigned int>(value.blue) + value.green + value.red)/3}; // looses information
 }
 
 template<>

@@ -21,12 +21,6 @@
 #include <gip/ArrayImage.h>
 #include <gip/io/InvalidFormat.h>
 
-namespace base {
-  // TAG: temporary solution
-  extern __declspec(dllimport) FormatOutputStream fout;
-  extern __declspec(dllimport) FormatOutputStream ferr;
-};
-
 using namespace base;
 
 namespace gip {

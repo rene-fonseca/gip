@@ -32,7 +32,7 @@
 #include <base/string/StringOutputStream.h>
 #include <base/Functor.h>
 #include <base/Timer.h>
-#include <typeinfo>
+#include <base/TypeInfo.h>
 #include <math.h>
 
 using namespace gip;
@@ -174,14 +174,14 @@ void testWalshTransformation(ColorImage* image) {
   FloatImage spaceImage(image->getDimension());
   {
     Convert<FloatImage, ColorImage, RGBToFloat> transform(&spaceImage, image, RGBToFloat());
-    fout << "Transforming image... " << typeid(transform).name() << ENDL;
+    fout << "Transforming image... " << getTypeId(transform) << ENDL;
     transform();
   }
 
   FloatImage walshImage(spaceImage.getDimension());
   {
     WalshTransformation transform(&walshImage, &spaceImage);
-    fout << "Transforming image... " << typeid(transform).name() << ENDL;
+    fout << "Transforming image... " << getTypeId(transform) << ENDL;
     timeScope();
     transform();
   }

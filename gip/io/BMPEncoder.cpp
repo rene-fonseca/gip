@@ -119,6 +119,8 @@ bool BMPEncoder::isValid() throw(IOException) {
       (header.planes == 1) && (header.bitsPerPixel == 1) ||
       (header.planes == 1) && (header.bitsPerPixel == 4) ||
       (header.planes == 1) && (header.bitsPerPixel == 8) ||
+      (header.planes == 1) && (header.bitsPerPixel == 24) ||
+      (header.planes == 1) && (header.bitsPerPixel == 32) ||
       (header.planes == 3) && (header.bitsPerPixel == 24) ||
       (header.planes == 3) && (header.bitsPerPixel == 32)) {
       break;
@@ -159,6 +161,8 @@ ColorImage* BMPEncoder::read() throw(IOException) {
         (header.planes == 1) && (header.bitsPerPixel == 1) ||
         (header.planes == 1) && (header.bitsPerPixel == 4) ||
         (header.planes == 1) && (header.bitsPerPixel == 8) ||
+        (header.planes == 1) && (header.bitsPerPixel == 24) ||
+        (header.planes == 1) && (header.bitsPerPixel == 32) ||
         (header.planes == 3) && (header.bitsPerPixel == 24) ||
         (header.planes == 3) && (header.bitsPerPixel == 32)) {
         break;
@@ -283,7 +287,10 @@ ColorImage* BMPEncoder::read() throw(IOException) {
             for (unsigned int row = dimension.getHeight(); row > 0; --row) {
               FileReader::ReadIterator src = reader.peek(bytesPerLine);
               for (unsigned int column = dimension.getWidth(); column > 0; --column) {
-                *dest++ = makeRGBPixel(*src++, *src++, *src++); // order of args is blue, green, and red
+                Intensity blue = *src++;
+                Intensity green = *src++;
+                Intensity red = *src++;
+                *dest++ = makeRGBPixel(blue, green, red); // order of args is blue, green, and red
               }
               reader.skip(bytesPerLine);
             }
@@ -295,8 +302,11 @@ ColorImage* BMPEncoder::read() throw(IOException) {
             for (unsigned int row = dimension.getHeight(); row > 0; --row) {
               FileReader::ReadIterator src = reader.peek(bytesPerLine);
               for (unsigned int column = dimension.getWidth(); column > 0; --column) {
-                *dest++ = makeRGBPixel(*src++, *src++, *src++); // order of args is blue, green, and red
+                Intensity blue = *src++;
+                Intensity green = *src++;
+                Intensity red = *src++;
                 ++src;
+                *dest++ = makeRGBPixel(blue, green, red); // order of args is blue, green, and red
               }
               reader.skip(bytesPerLine);
             }
