@@ -1,7 +1,7 @@
 /** \mainpage The Generic Image Processing (GIP) Framework
 
 \section legal Legal Notice
-Copyright &copy; 2001, 2002 by René Møller Fonseca
+Copyright &copy; 2001, 2002 by Ren&eacute; Moeller Fonseca
 
 Warning and Disclaimer: Every effort has been made to make this documentation
 as complete and accurate as possible, but no warranty or fitness is implied.
@@ -13,7 +13,6 @@ the use of any software that may accompany it.
 
 \section intro Introduction
 This is the API documentation of <strong>The Generic Image Processing (GIP)
-Framework </strong>.  A framework for developing image processing applications.
-The home of this project is http://www.mip.sdu.dk/~fonseca/gip.
-
+Framework </strong>. A framework for developing image processing applications.
+The home of this project is <a href="http://www.mip.sdu.dk/~fonseca/gip">http://www.mip.sdu.dk/~fonseca/gip</a>.
 */
