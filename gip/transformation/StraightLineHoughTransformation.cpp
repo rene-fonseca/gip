@@ -13,6 +13,7 @@
 
 #include <gip/transformation/StraightLineHoughTransformation.h>
 #include <base/mathematics/Constants.h>
+#include <base/mathematics/Math.h>
 
 namespace gip {
 
@@ -34,17 +35,17 @@ namespace gip {
 // TAG: width % 2 == 1 ???
     long double deltaTheta = constant::PI/dimension.getHeight();
     long double inverseOfDeltaRho = dimension.getWidth() *
-      1/sqrt(
+      1/Math::sqrt(static_cast<long double>(
         static_cast<unsigned long long>(dimension.getHeight()) * dimension.getHeight() +
         static_cast<unsigned long long>(dimension.getWidth()) * dimension.getWidth()
-      );
+      ));
     Entry* dest = lookup.getElements();
     const Entry* end = dest + dimension.getHeight();
     unsigned int i = 0;
     while (dest < end) {
       long double inner = i++ * deltaTheta;
-      dest->cosine = cos(inner) * inverseOfDeltaRho;
-      dest->sine = sin(inner) * inverseOfDeltaRho;
+      dest->cosine = Math::cos(inner) * inverseOfDeltaRho;
+      dest->sine = Math::sin(inner) * inverseOfDeltaRho;
       ++dest;
     }
   }

@@ -13,6 +13,7 @@
 
 #include <gip/transformation/FourierTransformation.h>
 #include <base/mathematics/Constants.h>
+#include <base/mathematics/Math.h>
 
 namespace gip {
 
@@ -102,8 +103,8 @@ void FourierTransformation::operator()() throw() {
       long double delta = forward ? constant::PI : -constant::PI;
       for (unsigned int halfBlockSize = 1; halfBlockSize < columns; halfBlockSize <<= 1) { // double size of block per loop
         unsigned int blockSize = halfBlockSize << 1;
-        Complex u(1, 0); // (cos(0); sin(0))
-        Complex w(cos(delta), -sin(delta));
+        Complex u(1, 0); // (Math::cos(0); Math::sin(0))
+        Complex w(Math::cos(delta), -Math::sin(delta));
         delta *= 0.5;
         ElementIterator offset = row.getFirst();
         ElementIterator endOffset = offset + halfBlockSize;
@@ -132,8 +133,8 @@ void FourierTransformation::operator()() throw() {
       long double delta = forward ? constant::PI : -constant::PI;
       for (unsigned int halfStep = columns; halfStep < columns * rows; halfStep <<= 1) {
         unsigned int fullStep = halfStep << 1;
-        Complex u(1, 0); // (cos(0); sin(0))
-        Complex w(cos(delta), -sin(delta));
+        Complex u(1, 0); // (Math::cos(0); Math::sin(0))
+        Complex w(Math::cos(delta), -Math::sin(delta));
         delta *= 0.5;
         Complex* offset = column;
         const Complex* endOffset = offset + halfStep;
@@ -162,8 +163,8 @@ void FourierTransformation::operator()() throw() {
 //        ComplexPixel* oddBlockPoint = evenBlockPoint;
 //        while (evenBlockPoint < endPoint) {
 //          oddBlockPoint += blockSize * columns;
-//          double ar = 1; // cos(0)
-//          double ai = 0; // sin(0)
+//          double ar = 1; // Math::cos(0)
+//          double ai = 0; // Math::sin(0)
 //          const ComplexPixel* stopPoint = oddBlockPoint;
 //          while (evenBlockPoint < stopPoint) {
 //            double tr = ar * oddBlockPoint->real - ai * oddBlockPoint->imaginary;

@@ -13,6 +13,7 @@
 
 #include <gip/transformation/Gradient.h>
 #include <base/mathematics/Constants.h>
+#include <base/mathematics/Math.h>
 
 namespace gip {
 
@@ -69,8 +70,8 @@ namespace gip {
 //      horizontalGray += 0 * srcRow2[columnIndex];
         horizontalGray += constant::SQRT2 * srcRow2[columnIndex + 1];
 
-//      long double gray = fabs(verticalGray) + fabs(horizontalGray);
-        long double gray = sqrt(verticalGray * verticalGray + horizontalGray * horizontalGray);
+//      long double gray = Math::abs(verticalGray) + Math::abs(horizontalGray);
+        long double gray = Math::sqrt(verticalGray * verticalGray + horizontalGray * horizontalGray);
         *column++ = minimum<unsigned char>(static_cast<unsigned char>(gray), 0xff);
       }
       ++row;
