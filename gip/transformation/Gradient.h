@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -21,9 +21,10 @@
 namespace gip {
 
   /**
-    Calculate the gradient of an image.
+    Calculates the gradient of an image.
 
     @short Gradient of image
+    @ingroup transformations
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
@@ -45,6 +46,6 @@ namespace gip {
     void operator()() throw();
   };
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif
