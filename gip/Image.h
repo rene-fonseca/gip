@@ -48,7 +48,8 @@ namespace gip {
     /**
       Initializes image.
     */
-    Image() throw();
+    inline Image() throw() {
+    }
     
     /**
       Initializes image with the specified dimension.
@@ -60,7 +61,8 @@ namespace gip {
     /**
       Initializes image from other image.
     */
-    inline Image(const Image& copy) throw() : dimension(copy.dimension) {}
+    inline Image(const Image& copy) throw() : dimension(copy.dimension) {
+    }
 
     Image& operator=(const Image& eq) throw() {
       dimension = eq.dimension;
@@ -70,31 +72,29 @@ namespace gip {
     /**
       Returns the dimension of the image.
     */
-    const Dimension& getDimension() const throw();
+    inline const Dimension& getDimension() const throw() {
+      return dimension;
+    }
 
     /**
       Returns the height (i.e. the number of rows) of the image.
     */
-    unsigned int getHeight() const throw();
+    inline unsigned int getHeight() const throw() {
+      return dimension.getHeight();
+    }
 
     /**
       Returns the width (i.e. the number of columns) of the image.
     */
-    unsigned int getWidth() const throw();
+    inline unsigned int getWidth() const throw() {
+      return dimension.getWidth();
+    }
   };
 
   template<class PIXEL>
-  inline Image<PIXEL>::Image(const Dimension& d) throw() : dimension(d) {}
+  inline Image<PIXEL>::Image(const Dimension& _dimension) throw() : dimension(_dimension) {
+  }
 
-  template<class PIXEL>
-  inline const Dimension& Image<PIXEL>::getDimension() const throw() {return dimension;}
-
-  template<class PIXEL>
-  inline unsigned int Image<PIXEL>::getHeight() const throw() {return dimension.getHeight();}
-
-  template<class PIXEL>
-  inline unsigned int Image<PIXEL>::getWidth() const throw() {return dimension.getWidth();}
-
-}; // end of namespace
+}; // end of gip namespace
 
 #endif
