@@ -23,7 +23,7 @@ namespace gip {
     ColorPixel* element = destination->getElements();
 
     Canvas canvas(destination);
-    canvas.fill(Point(0, 0), Point(destination->getDimension().getWidth() - 1, destination->getDimension().getHeight() - 1), makeColorPixel(48, 32, 128));
+    canvas.rectangle(Point(0, 0), Point(destination->getDimension().getWidth() - 1, destination->getDimension().getHeight() - 1), makeColorPixel(48, 32, 128), Canvas::FILL);
 
     for (unsigned int row = 0; row < destination->getDimension().getHeight(); ++row) {
       for (unsigned int column = 0; column < destination->getDimension().getWidth(); ++column) {
