@@ -101,6 +101,11 @@ namespace gip {
 
   inline Point2D::Point2D(unsigned int _row, unsigned int _column) throw() : row(_row), column(_column) {}
 
+  /**
+    Writes the specified point to the stream (e.g. "(row, column)").
+  */
+  FormatOutputStream& operator<<(FormatOutputStream& stream, const Point2D& value) throw(IOException);
+
 }; // end of gip namespace
 
 namespace base {

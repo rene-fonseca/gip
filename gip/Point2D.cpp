@@ -12,3 +12,12 @@
  ***************************************************************************/
 
 #include <gip/Point2D.h>
+
+namespace gip {
+
+  FormatOutputStream& operator<<(FormatOutputStream& stream, const Point2D& value) throw(IOException) {
+    FormatOutputStream::PushContext pushContext(stream); // make current context the default context
+    return stream << '(' << value.getColumn() << ',' << value.getRow() << ')';
+  }
+
+}; // end of namespace gip
