@@ -33,6 +33,9 @@ namespace gip {
   class Scale : public Transformation<DEST, SRC> {
   public:
 
+    typedef typename Transformation<DEST, SRC>::DestinationImage DestinationImage;
+    typedef typename Transformation<DEST, SRC>::SourceImage SourceImage;
+
     /**
       Initializes scale object.
 

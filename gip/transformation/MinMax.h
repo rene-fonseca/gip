@@ -31,6 +31,8 @@ namespace gip {
   class FindMaximum : public UnaryTransformation<DEST> {
   public:
 
+    typedef typename UnaryTransformation<DEST>::DestinationImage DestinationImage;
+    
     /** Nests an unary operation to another unary operation. */
     template<class UNOPRARG, class UNOPRRES>
     class NestOperations : UnaryOperation<typename UNOPRARG::Argument, typename UNOPRRES::Result> {
@@ -40,6 +42,9 @@ namespace gip {
       UNOPRRES outerOperation;
     public:
 
+      typedef typename UnaryOperation<typename UNOPRARG::Argument, typename UNOPRRES::Result>::Argument Argument;
+      typedef typename UnaryOperation<typename UNOPRARG::Argument, typename UNOPRRES::Result>::Result Result;
+      
       inline NestOperations(UNOPRARG inner, UNOPRRES outer) throw()
         : innerOperation(inner), outerOperation(outer) {}
 

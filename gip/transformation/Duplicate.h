@@ -24,6 +24,10 @@ namespace gip {
   template<class TYPE>
   class Same : UnaryOperation<TYPE, TYPE> {
   public:
+
+    typedef typename UnaryOperation<TYPE, TYPE>::Argument Argument;
+    typedef typename UnaryOperation<TYPE, TYPE>::Result Result;
+    
     inline Result operator()(const Argument& value) const throw() {return value;}
   };
 
