@@ -175,14 +175,14 @@ void testWalshTransformation(ColorImage* image) {
   FloatImage spaceImage(image->getDimension());
   {
     Convert<FloatImage, ColorImage, RGBToFloat> transform(&spaceImage, image, RGBToFloat());
-    fout << MESSAGE("Transforming image... ") << '(' << getTypename(transform) << ')' << ENDL;
+    fout << MESSAGE("Transforming image... ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
     transform();
   }
 
   FloatImage walshImage(spaceImage.getDimension());
   {
     WalshTransformation transform(&walshImage, &spaceImage);
-    fout << MESSAGE("Transforming image... ") << '(' << getTypename(transform) << ')' << ENDL;
+    fout << MESSAGE("Transforming image... ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
     timeScope();
     transform();
   }
@@ -204,7 +204,7 @@ void testWalshTransformation(ColorImage* image) {
 
   {
     WalshTransformation transform(&spaceImage, &walshImage);
-    fout << MESSAGE("Transforming image... ") << '(' << getTypename(transform) << ')' << ENDL;
+    fout << MESSAGE("Transforming image... ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
     timeScope();
     transform();
   }
@@ -213,7 +213,7 @@ void testWalshTransformation(ColorImage* image) {
   {
     long double scale = 1./walshImage.getDimension().getSize();
     Convert<GrayImage, FloatImage, FloatToGrayWithScale> transform(&grayImage, &spaceImage, FloatToGrayWithScale(scale));
-    fout << MESSAGE("Transforming image... ") << '(' << getTypename(transform) << ')' << ENDL;
+    fout << MESSAGE("Transforming image... ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
     transform();
   }
 
@@ -241,7 +241,7 @@ void test(const String& input, const String& output) {
     ColorImage* scaledImage = new ColorImage(Dimension(512, 512));
     {
       LinearScale transform(scaledImage, image);
-      fout << MESSAGE("Transforming image... ") << '(' << getTypename(transform) << ')' << ENDL;
+      fout << MESSAGE("Transforming image... ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
       transform();
     }
 
@@ -259,7 +259,7 @@ void test(const String& input, const String& output) {
 //      color.red = 0x00;
 //      Region region(Coordinate(0, 0), Dimension(512, 512));
 //      DrawRectangle transform(scaledImage, region, color);
-//      fout << MESSAGE("Transforming image... ") << '(' << getTypename(transform) << ')' << ENDL;
+//      fout << MESSAGE("Transforming image... ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
 //      transform();
 //
 //      color.blue = 0xff;
@@ -267,14 +267,14 @@ void test(const String& input, const String& output) {
 //      color.red = 0xff;
 //      Region region2(Coordinate((512 - 64)/2, 64/2), Dimension(64, 512 - 64));
 //      DrawRectangle transform2(scaledImage, region2, color);
-//      fout << MESSAGE("Transforming image... ") << '(' << getTypename(transform) << ')' << ENDL;
+//      fout << MESSAGE("Transforming image... ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
 //      transform2();
 //    }
 
     ComplexImage* spaceImage = new ComplexImage(scaledImage->getDimension());
     {
       Convert<ComplexImage, ColorImage, RGBToComplex> transform(spaceImage, scaledImage, 1./scaledImage->getDimension().getSize());
-      fout << MESSAGE("Transforming image... ") << '(' << getTypename(transform) << ')' << ENDL;
+      fout << MESSAGE("Transforming image... ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
       transform();
     }
 
@@ -290,7 +290,7 @@ void test(const String& input, const String& output) {
     ComplexImage* frequencyImage = new ComplexImage(spaceImage->getDimension());
     {
       FourierTransformation transform(frequencyImage, spaceImage);
-      fout << MESSAGE("Transforming image... ") << '(' << getTypename(transform) << ')' << ENDL;
+      fout << MESSAGE("Transforming image... ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
       timeScope();
       transform();
     }
@@ -299,14 +299,14 @@ void test(const String& input, const String& output) {
 //    double scale = frequencyImage->getDimension().getSize();
 //    {
 //      FindMaximum analysis(frequencyImage);
-//      fout << MESSAGE("Analysing image... ") << '(' << getTypename(analysis) << ')' << ENDL;
+//      fout << MESSAGE("Analysing image... ") << '(' << TypeInfo::getTypename(analysis) << ')' << ENDL;
 //      scale = MAXIMUM_INTENSITY/analysis();
 //      fout << MESSAGE("  scale=") << scale << ENDL;
 //    }
 
     {
       FourierTransformation transform(spaceImage, frequencyImage, false);
-      fout << MESSAGE("Transforming image... ") << '(' << getTypename(transform) << ')' << ENDL;
+      fout << MESSAGE("Transforming image... ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
       timeScope();
       transform();
     }
@@ -321,7 +321,7 @@ void test(const String& input, const String& output) {
     ColorImage* finalImage = scaledImage;
     {
       Convert<ColorImage, ComplexImage, ComplexToRGB> transform(finalImage, spaceImage, 1);
-      fout << MESSAGE("Transforming image... ") << '(' << getTypename(transform) << ')' << ENDL;
+      fout << MESSAGE("Transforming image... ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
       transform();
     }
 
@@ -337,7 +337,7 @@ void test(const String& input, const String& output) {
 
 //    {
 //      Gradient transform(finalImage, scaledImage);
-//      fout << MESSAGE("Transforming image... ") << '(' << getTypename(transform) << ')' << ENDL;
+//      fout << MESSAGE("Transforming image... ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
 //      transform();
 //    }
 
@@ -397,8 +397,8 @@ public:
   }
 };
 
-int main(int argc, const char* argv[], const char* envp[]) {
-  GIPApplication application(argc, argv, envp);
+int main(int argc, const char* argv[], const char* env[]) {
+  GIPApplication application(argc, argv, env);
   try {
     application.main();
   } catch(Exception& e) {
@@ -406,5 +406,5 @@ int main(int argc, const char* argv[], const char* envp[]) {
   } catch(...) {
     return Application::getApplication()->exceptionHandler();
   }
-  return Application::EXIT_CODE_NORMAL;
+  return Application::getApplication()->getExitCode();
 }
