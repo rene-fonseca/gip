@@ -244,7 +244,7 @@ public:
   
   void record() throw() {
     recordContinuously();
-    fout << MESSAGE("Acquisition thread terminating") << ENDL;
+    fout << "Acquisition thread terminating" << ENDL;
   }
   
   void play() throw() {
@@ -264,7 +264,7 @@ public:
         // TAG: scale if too big
         
         StringOutputStream stream;
-        stream << MESSAGE("frame") << setWidth(3) << ZEROPAD << frameNumber << '.' << encoder.getDefaultExtension()
+        stream << "frame" << setWidth(3) << ZEROPAD << frameNumber << '.' << encoder.getDefaultExtension()
                << FLUSH;
         encoder.write(stream.getString(), frame);
         ++frameNumber %= 128;
@@ -280,7 +280,7 @@ public:
         guard.releaseLock();
       }
     }
-    fout << MESSAGE("Update thread terminating") << ENDL;
+    fout << "Update thread terminating" << ENDL;
   }
 
   void write() throw() {
@@ -297,12 +297,12 @@ public:
         ColorImage* frame = writingQueue.pop();
         guard.releaseLock();
         
-        Allocator<char> buffer(128); // convert frame to stream
+        Allocator<uint8> buffer(128); // convert frame to stream
         
         try {
-          streamSocket.write(Cast::pointer<const char*>(buffer.getElements()), buffer.getByteSize());
+          streamSocket.write(buffer.getElements(), buffer.getByteSize());
         } catch (IOException& e) {
-          fout << MESSAGE("IOException: ") << e.getMessage() << ENDL;
+          fout << "IOException: " << e.getMessage() << ENDL;
           Application::getApplication()->terminate();
           break;
         }
@@ -313,7 +313,7 @@ public:
       }
     }
     streamSocket.shutdownOutputStream();
-    fout << MESSAGE("Writing thread terminating") << ENDL;
+    fout << "Writing thread terminating" << ENDL;
   }
 
   void read() throw() {
@@ -330,16 +330,19 @@ public:
         ColorImage* frame = readingQueue.pop();
         guard.releaseLock();
 
-        Allocator<char> buffer(128);
+        Allocator<uint8> buffer(128);
         
         try {
-          unsigned int bytesRead = streamSocket.read(Cast::pointer<char*>(buffer.getElements()), buffer.getByteSize());
+          unsigned int bytesRead = streamSocket.read(
+            buffer.getElements(),
+            buffer.getByteSize()
+          );
         } catch (EndOfFile& e) {
-          fout << MESSAGE("Connection terminated by remote host") << ENDL;
+          fout << "Connection terminated by remote host" << ENDL;
           Application::getApplication()->terminate();
           break;
         } catch (IOException& e) {
-          fout << MESSAGE("IO error: ") << e.getMessage() << ENDL;
+          fout << "IO error: " << e.getMessage() << ENDL;
           Application::getApplication()->terminate();
           break;
         }
@@ -349,7 +352,7 @@ public:
         guard.releaseLock();
       }
     }
-    fout << MESSAGE("Reading thread terminating") << ENDL;
+    fout << "Reading thread terminating" << ENDL;
   }
 
   bool hostAllowed(const InetAddress& host) throw() {
@@ -358,33 +361,37 @@ public:
   }
 
   void server() throw() {
-    fout << MESSAGE("Initializing server socket: ") << endPoint << ENDL;
+    fout << "Initializing server socket: " << endPoint << ENDL;
     ServerSocket serverSocket(endPoint.getAddress(), endPoint.getPort(), 1);
 
     while (true) {
-      fout << MESSAGE("Waiting for client...") << ENDL;
+      fout << "Waiting for client..." << ENDL;
       streamSocket = serverSocket.accept();
-      fout << MESSAGE("Connection from: ") << InetEndPoint(streamSocket.getAddress(), streamSocket.getPort()) << ENDL;
+      fout << "Connection from: "
+           << InetEndPoint(streamSocket.getAddress(), streamSocket.getPort())
+           << ENDL;
 
       if (hostAllowed(streamSocket.getAddress())) {
         break;
       }
       
-      fout << MESSAGE("Host denied access") << ENDL;
+      fout << "Host denied access" << ENDL;
     }
   }
 
   void client() throw() {
-    fout << MESSAGE("Connecting to server: ") << endPoint << ENDL;
+    fout << "Connecting to server: " << endPoint << ENDL;
     streamSocket.connect(endPoint.getAddress(), endPoint.getPort());
-    fout << MESSAGE("Connected to: ") << InetEndPoint(streamSocket.getAddress(), streamSocket.getPort())<< ENDL;
+    fout << "Connected to: "
+         << InetEndPoint(streamSocket.getAddress(), streamSocket.getPort())
+         << ENDL;
   }
   
   void run() throw() {
     Dimension dimension(camera.getRegion().getDimension());
     const unsigned int NUMBER_OF_BUFFERS = 16;
     
-    fout << MESSAGE("Allocating buffers...") << ENDL;
+    fout << "Allocating buffers..." << ENDL;
     for (unsigned int i = 0; i < NUMBER_OF_BUFFERS; ++i) {
       recordingQueue.push(new ColorImage(dimension));
       recordingSemaphore.post();
@@ -394,7 +401,7 @@ public:
       readingSemaphore.post();
     }
     
-    fout << MESSAGE("Creating threads...") << ENDL;
+    fout << "Creating threads..." << ENDL;
     Thread recorderThread(&recorder);
     Thread playerThread(&player);
     Thread readerThread(&reader);
@@ -408,13 +415,13 @@ public:
       }
     }
 
-    fout << MESSAGE("Starting threads...") << ENDL;
+    fout << "Starting threads..." << ENDL;
     recorderThread.start();
     playerThread.start();
     readerThread.start();
     writerThread.start();
 
-    fout << MESSAGE("Waiting...") << ENDL;
+    fout << "Waiting..." << ENDL;
     Timer timer;
 
     for (unsigned int i = 0; i < 30*(1000/500); ++i) {
@@ -423,27 +430,27 @@ public:
       }
       Thread::millisleep(maximum<int>((i+1)*500 - timer.getLiveMicroseconds()/1000, 0));
       if (!loopback) {
-        fout << MESSAGE("Time: ") << setPrecision(5) << timer.getLiveMicroseconds()/1000000. << MESSAGE(" - ")
-             << MESSAGE("Recording queue: ") << setWidth(2) << recordingQueue.getSize() << MESSAGE(" - ")
-             << MESSAGE("Playing queue: ") << setWidth(2) << playingQueue.getSize() << MESSAGE(" - ")
-             << MESSAGE("Reading queue: ") << setWidth(2) << readingQueue.getSize() << MESSAGE(" - ")
-             << MESSAGE("Writing queue: ") << setWidth(2) << writingQueue.getSize() << CR
+        fout << "Time: " << setPrecision(5) << timer.getLiveMicroseconds()/1000000. << " - "
+             << "Recording queue: " << setWidth(2) << recordingQueue.getSize() << " - "
+             << "Playing queue: " << setWidth(2) << playingQueue.getSize() << " - "
+             << "Reading queue: " << setWidth(2) << readingQueue.getSize() << " - "
+             << "Writing queue: " << setWidth(2) << writingQueue.getSize() << CR
              << FLUSH;
       } else {
-        fout << MESSAGE("Time: ") << setPrecision(5) << timer.getLiveMicroseconds()/1000000. << MESSAGE(" - ")
-             << MESSAGE("Recording queue: ") << setWidth(2) << recordingQueue.getSize() << MESSAGE(" - ")
-             << MESSAGE("Playing queue: ") << setWidth(2) << playingQueue.getSize() << CR
+        fout << "Time: " << setPrecision(5) << timer.getLiveMicroseconds()/1000000. << " - "
+             << "Recording queue: " << setWidth(2) << recordingQueue.getSize() << " - "
+             << "Playing queue: " << setWidth(2) << playingQueue.getSize() << CR
              << FLUSH;
       }
     }
     fout << ENDL;
 
     if (!Application::getApplication()->isTerminated()) {
-      fout << MESSAGE("Voluntary termination") << ENDL;
+      fout << "Voluntary termination" << ENDL;
       Application::getApplication()->terminate();
     }
 
-    fout << MESSAGE("Waiting for threads to terminate...") << ENDL;
+    fout << "Waiting for threads to terminate..." << ENDL;
     recorderThread.terminate();
     recordingSemaphore.post();
     recorderThread.join();
@@ -458,7 +465,7 @@ public:
     writingSemaphore.post();
     writerThread.join();
 
-    fout << MESSAGE("Releasing buffers...") << ENDL;
+    fout << "Releasing buffers..." << ENDL;
     while (!recordingQueue.isEmpty()) {
       delete recordingQueue.pop();
     }
@@ -472,7 +479,7 @@ public:
       delete writingQueue.pop();
     }
 
-    fout << MESSAGE("Completed") << ENDL;
+    fout << "Completed" << ENDL;
   }
   
   ~VideoPhoneServlet() throw() {
@@ -568,8 +575,11 @@ public:
   
   String filename;
   
-  VideoPhoneApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("videophone"), numberOfArguments, arguments, environment) {
+  VideoPhoneApplication(
+    int numberOfArguments,
+    const char* arguments[],
+    const char* environment[]) throw()
+    : Application("videophone", numberOfArguments, arguments, environment) {
     
     verbosity = VERBOSITY_NORMAL;
     
@@ -626,35 +636,68 @@ public:
           command = COMMAND_HELP; // no need to continue argument processing
           return;
         } else if (*argument == "--adapter") {
-          assert(adapterGuid.isInvalid(), InvalidArgument("IEEE 1394 adapter has already been specified"));
-          assert(enu.hasNext(), InvalidArgument("EUI-64 of IEEE 1394 adapter is missing"));
+          assert(
+            adapterGuid.isInvalid(),
+            InvalidArgument("IEEE 1394 adapter has already been specified")
+          );
+          assert(
+            enu.hasNext(),
+            InvalidArgument("EUI-64 of IEEE 1394 adapter is missing")
+          );
           adapterGuid = EUI64(*enu.next());
         } else if (*argument == "--camera") {
-          assert(cameraGuid.isInvalid(), InvalidArgument("IEEE 1394 camera has already been specified"));
-          assert(enu.hasNext(), InvalidArgument("EUI-64 of IEEE 1394 camera is missing"));
+          assert(
+            cameraGuid.isInvalid(),
+            InvalidArgument("IEEE 1394 camera has already been specified")
+          );
+          assert(
+            enu.hasNext(),
+            InvalidArgument("EUI-64 of IEEE 1394 camera is missing")
+          );
           cameraGuid = EUI64(*enu.next());
         } else if (*argument == "--listnodes") {
-          assert(command == COMMAND_ERROR, InvalidArgument("Command has already been specified"));
+          assert(
+            command == COMMAND_ERROR,
+            InvalidArgument("Command has already been specified")
+          );
           command = COMMAND_LIST_NODES;
         } else if (*argument == "--listcameras") {
-          assert(command == COMMAND_ERROR, InvalidArgument("Command has already been specified"));
+          assert(
+            command == COMMAND_ERROR,
+            InvalidArgument("Command has already been specified")
+          );
           command = COMMAND_LIST_CAMERAS;
         } else if (*argument == "--capabilities") {
-          assert(command == COMMAND_ERROR, InvalidArgument("Command has already been specified"));
+          assert(
+            command == COMMAND_ERROR,
+            InvalidArgument("Command has already been specified")
+          );
           command = COMMAND_DUMP_CAPABILITIES;
         } else if (*argument == "--modecaps") {
-          assert(command == COMMAND_ERROR, InvalidArgument("Command has already been specified"));
+          assert(
+            command == COMMAND_ERROR,
+            InvalidArgument("Command has already been specified")
+          );
           command = COMMAND_DUMP_MODE_CAPABILITIES;
         } else if (*argument == "--acquire") {
-          assert(command == COMMAND_ERROR, InvalidArgument("Command has already been specified"));
+          assert(
+            command == COMMAND_ERROR,
+            InvalidArgument("Command has already been specified")
+          );
           assert(enu.hasNext(), InvalidArgument("File name is missing"));
           filename = *enu.next();
           command = COMMAND_ACQUIRE;
         } else if (*argument == "--loopback") {
-          assert(command == COMMAND_ERROR, InvalidArgument("Command has already been specified"));
+          assert(
+            command == COMMAND_ERROR,
+            InvalidArgument("Command has already been specified")
+          );
           command = COMMAND_LOOPBACK;
         } else if (*argument == "--host") {
-          assert(command == COMMAND_ERROR, InvalidArgument("Command has already been specified"));
+          assert(
+            command == COMMAND_ERROR,
+            InvalidArgument("Command has already been specified")
+          );
           assert(enu.hasNext(), InvalidArgument("Host value missing"));
           host = *enu.next();
           command = COMMAND_CONNECT;
@@ -662,12 +705,18 @@ public:
           assert(enu.hasNext(), InvalidArgument("Port value missing"));
           const String* rateString = enu.next();
           unsigned int temp = UnsignedInteger(*rateString).getValue();
-          assert((temp > 0) && (temp <= 0xffff), InvalidArgument("Port is invalid"));
+          assert(
+            (temp > 0) && (temp <= 0xffff),
+            InvalidArgument("Port is invalid")
+          );
           port = temp;
         } else if (*argument == "--mode") {
           assert(enu.hasNext(), InvalidArgument("Camera mode missing"));
           unsigned int temp = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
-          assert(temp <= Camera1394::PARTIAL_IMAGE_MODE_7, InvalidArgument("Invalid camera mode"));
+          assert(
+            temp <= Camera1394::PARTIAL_IMAGE_MODE_7,
+            InvalidArgument("Invalid camera mode")
+          );
           mode = static_cast<Camera1394::Mode>(temp);
           setMode = true;
         } else if (*argument == "--rate") {
@@ -692,7 +741,10 @@ public:
         } else if (*argument == "--format") {
           assert(enu.hasNext(), InvalidArgument("Pixel format missing"));
           unsigned int temp = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
-          assert(temp <= Camera1394::RGB_16BIT, InvalidArgument("Invalid pixel format"));
+          assert(
+            temp <= Camera1394::RGB_16BIT,
+            InvalidArgument("Invalid pixel format")
+          );
           pixelFormat = static_cast<Camera1394::PixelFormat>(temp);
           setPixelFormat = true;
         } else if (*argument == "--dimension") {
@@ -710,9 +762,15 @@ public:
           autoExposureValue = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
           setAutoExposure = true;
         } else if (*argument == "--balance") {
-          assert(enu.hasNext(), InvalidArgument("Blue ratio missing for white balance"));
+          assert(
+            enu.hasNext(),
+            InvalidArgument("Blue ratio missing for white balance")
+          );
           blueRatioValue = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
-          assert(enu.hasNext(), InvalidArgument("Red ratio missing for white balance"));
+          assert(
+            enu.hasNext(),
+            InvalidArgument("Red ratio missing for white balance")
+          );
           redRatioValue = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
           setWhiteBalance = true;
         } else if (*argument == "--hue") {
@@ -745,62 +803,63 @@ public:
   }
   
   void dumpHeader() throw() {
-    fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
-         << MESSAGE("Generic Image Processing (GIP) Framework (Test Suite)") << EOL
-         << MESSAGE("http://www.mip.sdu.dk/~fonseca/gip") << EOL
-         << MESSAGE("Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>") << EOL
+    fout << getFormalName() << " version "
+         << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
+         << "Generic Image Processing (GIP) Framework (Test Suite)" << EOL
+         << "http://www.mip.sdu.dk/~fonseca/gip" << EOL
+         << "Copyright (C) 2002-2003 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>" << EOL
          << ENDL;
   }
 
   void dumpHelp() throw() {
-    fout << MESSAGE("Usage: ") << getFormalName() << MESSAGE(" [--adapter EUI-64] [--camera EUI-64] [--host host]") << EOL
+    fout << "Usage: " << getFormalName() << " [--adapter EUI-64] [--camera EUI-64] [--host host]" << EOL
          << EOL
-         << MESSAGE("Options:") << EOL
-         << MESSAGE(" --help           Dumps this message.") << EOL
-         << MESSAGE(" --dumpidentifier Dumps the unique identifier of the application.") << EOL
-         << MESSAGE(" --dumpversion    Dumps the version.") << EOL
+         << "Options:" << EOL
+         << " --help           Dumps this message." << EOL
+         << " --dumpidentifier Dumps the unique identifier of the application." << EOL
+         << " --dumpversion    Dumps the version." << EOL
          << EOL
-         << MESSAGE(" --loopback       Selects loop-back mode. This option is mutual exclusive with") << EOL
-         << MESSAGE("                  --host and --port.") << EOL
-         << MESSAGE(" --host           Selects the host to connect to (name or IP address)") << EOL
-         << MESSAGE(" --port           Selects the post to connect to (name or value). The default") << EOL
-         << MESSAGE("                  port (") << DEFAULT_PORT <<  MESSAGE(") is used if this option is omitted.") << EOL
+         << " --loopback       Selects loop-back mode. This option is mutual exclusive with" << EOL
+         << "                  --host and --port." << EOL
+         << " --host           Selects the host to connect to (name or IP address)" << EOL
+         << " --port           Selects the post to connect to (name or value). The default" << EOL
+         << "                  port (" << DEFAULT_PORT <<  " is used if this option is omitted." << EOL
          << EOL
-         << MESSAGE(" --adapter EUI-64 The EUI-64 of the IEEE 1394 adapter. The default adapter is") << EOL
-         << MESSAGE("                  used if this option is omitted.") << EOL
-         << MESSAGE(" --camera EUI-64  Specifies the EUI-64 of the camera to be used. If the camera") << EOL
-         << MESSAGE("                  is not specified the camera selected automatically.") << EOL
+         << " --adapter EUI-64 The EUI-64 of the IEEE 1394 adapter. The default adapter is" << EOL
+         << "                  used if this option is omitted." << EOL
+         << " --camera EUI-64  Specifies the EUI-64 of the camera to be used. If the camera" << EOL
+         << "                  is not specified the camera selected automatically." << EOL
          << EOL
-         << MESSAGE(" --listadapters   Lists the available IEEE 1394 adapters.") << EOL
-         << MESSAGE(" --listnodes      Lists all nodes on the IEEE 1394 bus.") << EOL
-         << MESSAGE(" --listcameras    Lists the available IEEE 1394 cameras.") << EOL
-         << MESSAGE(" --capabilities   Lists the capabilities of the specified IEEE 1394 camera.") << EOL
-         << MESSAGE(" --modecaps       Lists the mode specific capabilities for the specified") << EOL
-         << MESSAGE("                  camera and mode. You can use this to list the valid range of") << EOL
-         << MESSAGE("                  the supported features.") << EOL
+         << " --listadapters   Lists the available IEEE 1394 adapters." << EOL
+         << " --listnodes      Lists all nodes on the IEEE 1394 bus." << EOL
+         << " --listcameras    Lists the available IEEE 1394 cameras." << EOL
+         << " --capabilities   Lists the capabilities of the specified IEEE 1394 camera." << EOL
+         << " --modecaps       Lists the mode specific capabilities for the specified" << EOL
+         << "                  camera and mode. You can use this to list the valid range of" << EOL
+         << "                  the supported features." << EOL
          << EOL
-         << MESSAGE(" --mode #         Specifies the camera mode.") << EOL
-         << MESSAGE(" --format #       Specifies the pixel format.") << EOL
-         << MESSAGE(" --rate #         Specifies the frame rate.") << EOL
-         << MESSAGE(" --dimension w h  Specifies the dimension of the frame (width and height).") << EOL
-         << MESSAGE(" --offset h v     Specifies the offset of the frame (horizontal and vertical).") << EOL
-         << MESSAGE(" --brightness #   Specifies the brightness value.") << EOL
-         << MESSAGE(" --exposure #     Specifies the auto exposure value.") << EOL
-         << MESSAGE(" --balance # #    Specifies the white balance (Cb/blue and Cr/red ratios).") << EOL
-         << MESSAGE(" --hue #          Specifies the hue value.") << EOL
-         << MESSAGE(" --saturation #   Specifies the saturation value.") << EOL
-         << MESSAGE(" --gamma #        Specifies the gamma value.") << EOL
-         << MESSAGE(" --shutter #      Specifies the shutter value.") << EOL
-         << MESSAGE(" --gain #         Specifies the gain value.") << EOL
+         << " --mode #         Specifies the camera mode." << EOL
+         << " --format #       Specifies the pixel format." << EOL
+         << " --rate #         Specifies the frame rate." << EOL
+         << " --dimension w h  Specifies the dimension of the frame (width and height)." << EOL
+         << " --offset h v     Specifies the offset of the frame (horizontal and vertical)." << EOL
+         << " --brightness #   Specifies the brightness value." << EOL
+         << " --exposure #     Specifies the auto exposure value." << EOL
+         << " --balance # #    Specifies the white balance (Cb/blue and Cr/red ratios)." << EOL
+         << " --hue #          Specifies the hue value." << EOL
+         << " --saturation #   Specifies the saturation value." << EOL
+         << " --gamma #        Specifies the gamma value." << EOL
+         << " --shutter #      Specifies the shutter value." << EOL
+         << " --gain #         Specifies the gain value." << EOL
          << EOL
-         << MESSAGE(" --acquire file   Specifies that one frame should be acquired and exported to") << EOL
-         << MESSAGE("                  the file.") << EOL
-         << MESSAGE(" --export file    Specifies that the first frame should be saved to the file.") << EOL
+         << " --acquire file   Specifies that one frame should be acquired and exported to" << EOL
+         << "                  the file." << EOL
+         << " --export file    Specifies that the first frame should be saved to the file." << EOL
          << ENDL;
   }
 
   void dumpIdentifier() throw() {
-    fout << MESSAGE("mip.sdu.dk/~fonseca/gip/testsuite/videophone") << ENDL;
+    fout << "mip.sdu.dk/~fonseca/gip/testsuite/videophone" << ENDL;
   }
   
   void dumpVersion() throw() {
@@ -810,12 +869,12 @@ public:
   void listAdapters() throw(IEEE1394Exception) {
     Array<EUI64> adapters = ieee1394.getAdapters();
     if (adapters.getSize() == 0) {
-      fout << MESSAGE("No IEEE 1394 adapters available") << ENDL;
+      fout << "No IEEE 1394 adapters available" << ENDL;
     } else {
       Array<EUI64>::ReadEnumerator enu = adapters.getReadEnumerator();
-      fout << MESSAGE("IEEE 1394 adapters:") << EOL;
+      fout << "IEEE 1394 adapters:" << EOL;
       while (enu.hasNext()) {
-        fout << MESSAGE("  ") << *enu.next() << EOL;
+        fout << "  " << *enu.next() << EOL;
       }
       fout << FLUSH;
     }
@@ -828,38 +887,38 @@ public:
       ieee1394.open(adapterGuid);
     }
     
-    fout << MESSAGE("Available IEEE 1394 nodes:") << EOL;
+    fout << "Available IEEE 1394 nodes:" << EOL;
     
     for (unsigned int node = 0; node < ieee1394.getNumberOfNodes(); ++node) {
-      fout << MESSAGE("  ") << MESSAGE("Node: ") << ieee1394.getIdentifier(node) << EOL
-           << MESSAGE("    ") << MESSAGE("Physical id: ") << node << ENDL;
+      fout << "  " << "Node: " << ieee1394.getIdentifier(node) << EOL
+           << "    " << "Physical id: " << node << ENDL;
       
       unsigned int vendor = ieee1394.getVendorId(node);
-      fout << MESSAGE("    ") << MESSAGE("Vendor id: ")
+      fout << "    " << "Vendor id: "
            << HEX << setWidth(2) << ZEROPAD << NOPREFIX << ((vendor >> 16) & 0xff) << ':'
            << HEX << setWidth(2) << ZEROPAD << NOPREFIX << ((vendor >> 8) & 0xff) << ':'
            << HEX << setWidth(2) << ZEROPAD << NOPREFIX << (vendor & 0xff) << ENDL;
       
       unsigned int capabilities = ieee1394.getCapabilities(node);
       if (capabilities) {
-        fout << MESSAGE("      ") << MESSAGE("Capabilities:") << EOL;
+        fout << indent(6) << "Capabilities:" << EOL;
         if (capabilities & IEEE1394::ISOCHRONOUS_RESOURCE_MANAGER_CAPABLE) {
-          fout << MESSAGE("        ") << MESSAGE("Isochronous resource manager") << EOL;
+          fout << indent(8) << "Isochronous resource manager" << EOL;
         }
         if (capabilities & IEEE1394::CYCLE_MASTER_CAPABLE) {
-          fout << MESSAGE("        ") << MESSAGE("Cycle master") << EOL;
+          fout << indent(8) << "Cycle master" << EOL;
         }
         if (capabilities & IEEE1394::ISOCHRONOUS_TRANSACTION_CAPABLE) {
-          fout << MESSAGE("        ") << MESSAGE("Isochronous transmission") << EOL;
+          fout << indent(8) << "Isochronous transmission" << EOL;
         }
         if (capabilities & IEEE1394::BUS_MASTER_CAPABLE) {
-          fout << MESSAGE("        ") << MESSAGE("Bus master") << EOL;
+          fout << indent(8) << "Bus master" << EOL;
         }
         if (capabilities & IEEE1394::POWER_MANAGER_CAPABLE) {
-          fout << MESSAGE("        ") << MESSAGE("Power manager") << EOL;
+          fout << indent(8) << "Power manager" << EOL;
         }
       }
-        fout << MESSAGE("    ") << MESSAGE("Maximum asynchronous payload: ") << ieee1394.getMaximumPayload(node) << EOL
+        fout << "    " << "Maximum asynchronous payload: " << ieee1394.getMaximumPayload(node) << EOL
              << ENDL;
     }
   }
@@ -868,248 +927,293 @@ public:
     Array<EUI64> cameras = camera.getCameras();
     
     if (cameras.getSize() == 0) {
-      fout << MESSAGE("No IEEE 1394 cameras available") << ENDL;
+      fout << "No IEEE 1394 cameras available" << ENDL;
     } else {
       unsigned int i = 0;
       Array<EUI64>::ReadEnumerator enu = cameras.getReadEnumerator();
-      fout << MESSAGE("IEEE 1394 cameras:") << EOL;
+      fout << "IEEE 1394 cameras:" << EOL;
       while (enu.hasNext()) {
-        fout << MESSAGE("  ") << *enu.next() << EOL;
+        fout << "  " << *enu.next() << EOL;
       }
       fout << FLUSH;
     }
   }
   
   void dumpFeatureInquery(const String& feature, const Camera1394::GenericFeatureDescriptor& descriptor) const throw() {
-    fout << MESSAGE("Feature: ") << feature << EOL
-         << MESSAGE("  Available: ") << descriptor.available << EOL
-         << MESSAGE("  Automatic adjustment mode: ") << descriptor.autoAdjustmentMode << EOL
-         << MESSAGE("  Readable: ") << descriptor.readable << EOL
-         << MESSAGE("  Switchable: ") << descriptor.switchable << EOL
-         << MESSAGE("  Automatic mode: ") << descriptor.automaticMode << EOL
-         << MESSAGE("  Manual mode: ") << descriptor.manualMode << EOL
-         << MESSAGE("  Minimume value: ") << descriptor.minimum << EOL
-         << MESSAGE("  Maximum value: ") << descriptor.maximum << ENDL;
+    fout << "Feature: " << feature << EOL
+         << "  Available: " << descriptor.available << EOL
+         << "  Automatic adjustment mode: " << descriptor.autoAdjustmentMode << EOL
+         << "  Readable: " << descriptor.readable << EOL
+         << "  Switchable: " << descriptor.switchable << EOL
+         << "  Automatic mode: " << descriptor.automaticMode << EOL
+         << "  Manual mode: " << descriptor.manualMode << EOL
+         << "  Minimume value: " << descriptor.minimum << EOL
+         << "  Maximum value: " << descriptor.maximum << ENDL;
   }
   
   void dumpTriggerFeatureInquery(const String& feature, const Camera1394::TriggerFeatureDescriptor& descriptor) const throw() {
-    fout << MESSAGE("Feature: ") << feature << EOL
-         << MESSAGE("  Available: ") << descriptor.available << EOL
-         << MESSAGE("  Readable: ") << descriptor.readable << EOL
-         << MESSAGE("  Switchable: ") << descriptor.switchable << EOL
-         << MESSAGE("  Polarity: ") << descriptor.polarity << EOL
-         << MESSAGE("  Signals: ") << HEX << setWidth(10) << ZEROPAD << descriptor.availableSignals << ENDL;
+    fout << "Feature: " << feature << EOL
+         << "  Available: " << descriptor.available << EOL
+         << "  Readable: " << descriptor.readable << EOL
+         << "  Switchable: " << descriptor.switchable << EOL
+         << "  Polarity: " << descriptor.polarity << EOL
+         << "  Signals: " << HEX << setWidth(10) << ZEROPAD << descriptor.availableSignals << ENDL;
   }
 
   void dumpCameraMode() throw(Camera1394::Camera1394Exception) {
     dumpCamera();
     
     if (setMode) {
-      assert(camera.isModeSupported(mode), Camera1394::Camera1394Exception("Mode is not supported"));
+      assert(
+        camera.isModeSupported(mode),
+        Camera1394::Camera1394Exception("Mode is not supported")
+      );
       camera.setMode(mode);
     }
     if (setFrameRate) {
-      assert(camera.isFrameRateSupported(rate), Camera1394::Camera1394Exception("Frame rate is not supported"));
+      assert(
+        camera.isFrameRateSupported(rate),
+        Camera1394::Camera1394Exception("Frame rate is not supported")
+      );
       camera.setFrameRate(rate);
     }
     if (setPixelFormat) {
-      assert(camera.getPixelFormats() & (1 << pixelFormat), Camera1394::Camera1394Exception("Pixel format is not supported"));
+      assert(
+        camera.getPixelFormats() & (1 << pixelFormat),
+        Camera1394::Camera1394Exception("Pixel format is not supported")
+      );
       camera.setPixelFormat(pixelFormat);
     }
     
     const Camera1394::IsochronousTransmission& transmission = camera.getTransmission();
     
-    fout << MESSAGE("Current mode: ") << camera.getModeAsString(camera.getMode()) << EOL
-         << MESSAGE("  Frame rate: ") << Camera1394::getFrameRateAsValue(camera.getFrameRate())/65536.0 << MESSAGE(" frames/second") << EOL
-         << MESSAGE("  Pixel format: ") << PIXEL_FORMAT_DESCRIPTION[camera.getPixelFormat()] << EOL
-         << MESSAGE("  Region: ") << EOL
-         << MESSAGE("    Dimension: ") << camera.getRegion().getDimension() << EOL
-         << MESSAGE("    Offset: ") << camera.getRegion().getOffset() << EOL
-         << MESSAGE("  Isochronous transmission: ") << EOL
-         << MESSAGE("    pixelsPerFrame: ") << transmission.pixelsPerFrame << EOL
-         << MESSAGE("    totalBytesPerFrame: ") << transmission.totalBytesPerFrame << EOL
-         << MESSAGE("    unitBytesPerPacket: ") << transmission.unitBytesPerPacket << EOL
-         << MESSAGE("    maximumBytesPerPacket: ") << transmission.maximumBytesPerPacket << EOL
-         << MESSAGE("    bytesPerPacket: ") << transmission.bytesPerPacket << EOL
-         << MESSAGE("    recommendedBytesPerPacket: ") << transmission.recommendedBytesPerPacket << EOL
-         << MESSAGE("    packetsPerFrame: ") << transmission.packetsPerFrame << EOL
+    fout << "Current mode: " << camera.getModeAsString(camera.getMode()) << EOL
+         << "  Frame rate: " << Camera1394::getFrameRateAsValue(camera.getFrameRate())/65536.0 << " frames/second" << EOL
+         << "  Pixel format: " << PIXEL_FORMAT_DESCRIPTION[camera.getPixelFormat()] << EOL
+         << "  Region: " << EOL
+         << "    Dimension: " << camera.getRegion().getDimension() << EOL
+         << "    Offset: " << camera.getRegion().getOffset() << EOL
+         << "  Isochronous transmission: " << EOL
+         << "    pixelsPerFrame: " << transmission.pixelsPerFrame << EOL
+         << "    totalBytesPerFrame: " << transmission.totalBytesPerFrame << EOL
+         << "    unitBytesPerPacket: " << transmission.unitBytesPerPacket << EOL
+         << "    maximumBytesPerPacket: " << transmission.maximumBytesPerPacket << EOL
+         << "    bytesPerPacket: " << transmission.bytesPerPacket << EOL
+         << "    recommendedBytesPerPacket: " << transmission.recommendedBytesPerPacket << EOL
+         << "    packetsPerFrame: " << transmission.packetsPerFrame << EOL
          << ENDL;
     
-    fout << MESSAGE("Isochronous channel: ") << camera.getIsochronousChannel() << EOL
-         << MESSAGE("Isochronous speed: ") << camera.getIsochronousSpeed() << EOL
+    fout << "Isochronous channel: " << camera.getIsochronousChannel() << EOL
+         << "Isochronous speed: " << camera.getIsochronousSpeed() << EOL
          << ENDL;
     
     if (camera.isFeatureSupported(Camera1394::BRIGHTNESS_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("Brightness"), camera.getFeatureDescriptor(Camera1394::BRIGHTNESS_CONTROL));
+      dumpFeatureInquery("Brightness", camera.getFeatureDescriptor(Camera1394::BRIGHTNESS_CONTROL));
     }
     if (camera.isFeatureSupported(Camera1394::AUTO_EXPOSURE_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("Auto exposure"), camera.getFeatureDescriptor(Camera1394::AUTO_EXPOSURE_CONTROL));
+      dumpFeatureInquery("Auto exposure", camera.getFeatureDescriptor(Camera1394::AUTO_EXPOSURE_CONTROL));
     }
     if (camera.isFeatureSupported(Camera1394::SHARPNESS_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("Sharpness"), camera.getFeatureDescriptor(Camera1394::SHARPNESS_CONTROL));
+      dumpFeatureInquery("Sharpness", camera.getFeatureDescriptor(Camera1394::SHARPNESS_CONTROL));
     }
     if (camera.isFeatureSupported(Camera1394::WHITE_BALANCE_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("White balance"), camera.getFeatureDescriptor(Camera1394::WHITE_BALANCE_CONTROL));
+      dumpFeatureInquery("White balance", camera.getFeatureDescriptor(Camera1394::WHITE_BALANCE_CONTROL));
     }
     if (camera.isFeatureSupported(Camera1394::HUE_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("Hue"), camera.getFeatureDescriptor(Camera1394::HUE_CONTROL));
+      dumpFeatureInquery("Hue", camera.getFeatureDescriptor(Camera1394::HUE_CONTROL));
     }
     if (camera.isFeatureSupported(Camera1394::SATURATION_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("Saturation"), camera.getFeatureDescriptor(Camera1394::SATURATION_CONTROL));
+      dumpFeatureInquery("Saturation", camera.getFeatureDescriptor(Camera1394::SATURATION_CONTROL));
     }
     if (camera.isFeatureSupported(Camera1394::GAMMA_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("Gamma"), camera.getFeatureDescriptor(Camera1394::GAMMA_CONTROL));
+      dumpFeatureInquery("Gamma", camera.getFeatureDescriptor(Camera1394::GAMMA_CONTROL));
     }
     if (camera.isFeatureSupported(Camera1394::SHUTTER_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("Shutter"), camera.getFeatureDescriptor(Camera1394::SHUTTER_CONTROL));
+      dumpFeatureInquery("Shutter", camera.getFeatureDescriptor(Camera1394::SHUTTER_CONTROL));
     }
     if (camera.isFeatureSupported(Camera1394::GAIN_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("Gain"), camera.getFeatureDescriptor(Camera1394::GAIN_CONTROL));
+      dumpFeatureInquery(
+        "Gain",
+        camera.getFeatureDescriptor(Camera1394::GAIN_CONTROL)
+      );
     }
     if (camera.isFeatureSupported(Camera1394::IRIS_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("IRIS"), camera.getFeatureDescriptor(Camera1394::IRIS_CONTROL));
+      dumpFeatureInquery(
+        "IRIS",
+        camera.getFeatureDescriptor(Camera1394::IRIS_CONTROL)
+      );
     }
     if (camera.isFeatureSupported(Camera1394::FOCUS_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("Focus"), camera.getFeatureDescriptor(Camera1394::FOCUS_CONTROL));
+      dumpFeatureInquery(
+        "Focus",
+        camera.getFeatureDescriptor(Camera1394::FOCUS_CONTROL)
+      );
     }
     if (camera.isFeatureSupported(Camera1394::TEMPERATURE_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("Temperature"), camera.getFeatureDescriptor(Camera1394::TEMPERATURE_CONTROL));
+      dumpFeatureInquery(
+        "Temperature",
+        camera.getFeatureDescriptor(Camera1394::TEMPERATURE_CONTROL)
+      );
     }
     if (camera.isFeatureSupported(Camera1394::TRIGGER_CONTROL)) {
-      dumpTriggerFeatureInquery(MESSAGE("Trigger"), camera.getTriggerFeatureDescriptor());
+      dumpTriggerFeatureInquery(
+        "Trigger",
+        camera.getTriggerFeatureDescriptor()
+      );
     }
     if (camera.isFeatureSupported(Camera1394::ZOOM_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("Zoom"), camera.getFeatureDescriptor(Camera1394::ZOOM_CONTROL));
+      dumpFeatureInquery(
+        "Zoom",
+        camera.getFeatureDescriptor(Camera1394::ZOOM_CONTROL)
+      );
     }
     if (camera.isFeatureSupported(Camera1394::PAN_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("Pan"), camera.getFeatureDescriptor(Camera1394::PAN_CONTROL));
+      dumpFeatureInquery(
+        "Pan",
+        camera.getFeatureDescriptor(Camera1394::PAN_CONTROL)
+      );
     }
     if (camera.isFeatureSupported(Camera1394::TILT_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("Tilt"), camera.getFeatureDescriptor(Camera1394::TILT_CONTROL));
+      dumpFeatureInquery(
+        "Tilt",
+        camera.getFeatureDescriptor(Camera1394::TILT_CONTROL)
+      );
     }
     if (camera.isFeatureSupported(Camera1394::OPTICAL_FILTER_CONTROL)) {
-      dumpFeatureInquery(MESSAGE("Optical filter"), camera.getFeatureDescriptor(Camera1394::OPTICAL_FILTER_CONTROL));
+      dumpFeatureInquery(
+        "Optical filter",
+        camera.getFeatureDescriptor(Camera1394::OPTICAL_FILTER_CONTROL)
+      );
     }
     if (camera.isFeatureSupported(Camera1394::CAPTURE_SIZE)) {
-      dumpFeatureInquery(MESSAGE("Capture size"), camera.getFeatureDescriptor(Camera1394::CAPTURE_SIZE));
+      dumpFeatureInquery(
+        "Capture size",
+        camera.getFeatureDescriptor(Camera1394::CAPTURE_SIZE)
+      );
     }
     if (camera.isFeatureSupported(Camera1394::CAPTURE_QUALITY)) {
-      dumpFeatureInquery(MESSAGE("Capture quality"), camera.getFeatureDescriptor(Camera1394::CAPTURE_QUALITY));
+      dumpFeatureInquery(
+        "Capture quality",
+        camera.getFeatureDescriptor(Camera1394::CAPTURE_QUALITY)
+      );
     }
     fout << EOL << ENDL;
     
     static const Literal OPERATING_MODES[] = {
-      MESSAGE("disabled"), MESSAGE("automatic"), MESSAGE("automatic adjustment"), MESSAGE("manual")
+      Literal("disabled"),
+      Literal("automatic"),
+      Literal("automatic adjustment"),
+      Literal("manual")
     };
     
     if (camera.isFeatureReadable(Camera1394::BRIGHTNESS_CONTROL)) {
-      fout << MESSAGE("Feature state - Brightness") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::BRIGHTNESS_CONTROL)] << EOL
-           << MESSAGE("  Value: ") << camera.getBrightness() << ENDL;
+      fout << "Feature state - Brightness" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::BRIGHTNESS_CONTROL)] << EOL
+           << "  Value: " << camera.getBrightness() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::AUTO_EXPOSURE_CONTROL)) {
-      fout << MESSAGE("Feature state - Auto exposure") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::AUTO_EXPOSURE_CONTROL)] << EOL
-           << MESSAGE("  Value: ") << camera.getAutoExposure() << ENDL;
+      fout << "Feature state - Auto exposure" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::AUTO_EXPOSURE_CONTROL)] << EOL
+           << "  Value: " << camera.getAutoExposure() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::SHARPNESS_CONTROL)) {
-      fout << MESSAGE("Feature state - Sharpness") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::SHARPNESS_CONTROL)] << EOL
-           << MESSAGE("  Value: ") << camera.getSharpness() << ENDL;
+      fout << "Feature state - Sharpness" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::SHARPNESS_CONTROL)] << EOL
+           << "  Value: " << camera.getSharpness() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::WHITE_BALANCE_CONTROL)) {
-      fout << MESSAGE("Feature state - White balance") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::WHITE_BALANCE_CONTROL)] << EOL
-           << MESSAGE("  Cb/blue ratio: ") << camera.getWhiteBalanceBlueRatio() << EOL
-           << MESSAGE("  Cr/red ratio: ") << camera.getWhiteBalanceRedRatio() << ENDL;
+      fout << "Feature state - White balance" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::WHITE_BALANCE_CONTROL)] << EOL
+           << "  Cb/blue ratio: " << camera.getWhiteBalanceBlueRatio() << EOL
+           << "  Cr/red ratio: " << camera.getWhiteBalanceRedRatio() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::HUE_CONTROL)) {
-      fout << MESSAGE("Feature state - Hue") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::HUE_CONTROL)] << EOL
-           << MESSAGE("  Value: ") << camera.getHue() << ENDL;
+      fout << "Feature state - Hue" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::HUE_CONTROL)] << EOL
+           << "  Value: " << camera.getHue() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::SATURATION_CONTROL)) {
-      fout << MESSAGE("Feature state - Saturation") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::SATURATION_CONTROL)] << EOL
-           << MESSAGE("  Value: ") << camera.getSaturation() << ENDL;
+      fout << "Feature state - Saturation" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::SATURATION_CONTROL)] << EOL
+           << "  Value: " << camera.getSaturation() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::GAMMA_CONTROL)) {
-      fout << MESSAGE("Feature state - Gamma") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::GAMMA_CONTROL)] << EOL
-           << MESSAGE("  Value: ") << camera.getGamma() << ENDL;
+      fout << "Feature state - Gamma" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::GAMMA_CONTROL)] << EOL
+           << "  Value: " << camera.getGamma() << ENDL;
     }
 
     if (camera.isFeatureReadable(Camera1394::SHUTTER_CONTROL)) {
-      fout << MESSAGE("Feature state - Shutter") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::SHUTTER_CONTROL)] << EOL
-           << MESSAGE("  Value: ") << camera.getShutter() << ENDL;
+      fout << "Feature state - Shutter" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::SHUTTER_CONTROL)] << EOL
+           << "  Value: " << camera.getShutter() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::GAIN_CONTROL)) {
-      fout << MESSAGE("Feature state - Gain") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::GAIN_CONTROL)] << EOL
-           << MESSAGE("  Value: ") << camera.getGain() << ENDL;
+      fout << "Feature state - Gain" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::GAIN_CONTROL)] << EOL
+           << "  Value: " << camera.getGain() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::IRIS_CONTROL)) {
-      fout << MESSAGE("Feature state - IRIS") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::IRIS_CONTROL)] << EOL
-           << MESSAGE("  Value: ") << camera.getIRIS() << ENDL;
+      fout << "Feature state - IRIS" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::IRIS_CONTROL)] << EOL
+           << "  Value: " << camera.getIRIS() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::FOCUS_CONTROL)) {
-      fout << MESSAGE("Feature state - Focus") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::FOCUS_CONTROL)] << EOL
-           << MESSAGE("  Value: ") << camera.getFocus() << ENDL;
+      fout << "Feature state - Focus" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::FOCUS_CONTROL)] << EOL
+           << "  Value: " << camera.getFocus() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::TEMPERATURE_CONTROL)) {
-      fout << MESSAGE("Feature state - Temperature") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::TEMPERATURE_CONTROL)] << EOL
-           << MESSAGE("  Target value: ") << camera.getTargetTemperature() << EOL
-           << MESSAGE("  Current value: ") << camera.getTemperature() << ENDL;
+      fout << "Feature state - Temperature" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::TEMPERATURE_CONTROL)] << EOL
+           << "  Target value: " << camera.getTargetTemperature() << EOL
+           << "  Current value: " << camera.getTemperature() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::ZOOM_CONTROL)) {
-      fout << MESSAGE("Feature state - Zoom") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::ZOOM_CONTROL)] << EOL
-           << MESSAGE("  Value: ") << camera.getZoom() << ENDL;
+      fout << "Feature state - Zoom" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::ZOOM_CONTROL)] << EOL
+           << "  Value: " << camera.getZoom() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::PAN_CONTROL)) {
-      fout << MESSAGE("Feature state - Pan") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::PAN_CONTROL)] << EOL
-           << MESSAGE("  Value: ") << camera.getPan() << ENDL;
+      fout << "Feature state - Pan" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::PAN_CONTROL)] << EOL
+           << "  Value: " << camera.getPan() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::TILT_CONTROL)) {
-      fout << MESSAGE("Feature state - Tilt") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::TILT_CONTROL)] << EOL
-           << MESSAGE("  Value: ") << camera.getTilt() << ENDL;
+      fout << "Feature state - Tilt" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::TILT_CONTROL)] << EOL
+           << "  Value: " << camera.getTilt() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::OPTICAL_FILTER_CONTROL)) {
-      fout << MESSAGE("Feature state - Optical filter") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::OPTICAL_FILTER_CONTROL)] << EOL
-           << MESSAGE("  Value: ") << camera.getOpticalFilter() << ENDL;
+      fout << "Feature state - Optical filter" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::OPTICAL_FILTER_CONTROL)] << EOL
+           << "  Value: " << camera.getOpticalFilter() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::CAPTURE_SIZE)) {
-      fout << MESSAGE("Feature state - Capture size") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::CAPTURE_SIZE)] << EOL
-           << MESSAGE("  Value: ") << camera.getCaptureSize() << ENDL;
+      fout << "Feature state - Capture size" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::CAPTURE_SIZE)] << EOL
+           << "  Value: " << camera.getCaptureSize() << ENDL;
     }
     
     if (camera.isFeatureReadable(Camera1394::CAPTURE_QUALITY)) {
-      fout << MESSAGE("Feature state - Capture quality") << EOL
-           << MESSAGE("  Mode: ") << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::CAPTURE_QUALITY)] << EOL
-           << MESSAGE("  Value: ") << camera.getCaptureQuality() << ENDL;
+      fout << "Feature state - Capture quality" << EOL
+           << "  Mode: " << OPERATING_MODES[camera.getFeatureOperatingMode(Camera1394::CAPTURE_QUALITY)] << EOL
+           << "  Value: " << camera.getCaptureQuality() << ENDL;
     }
     fout << ENDL;
   }
@@ -1121,30 +1225,39 @@ public:
       assert(cameras.getSize() == 1, Camera1394::Camera1394Exception("More than one camera available", this));
       cameraGuid = cameras[0];
       if (verbosity >= VERBOSITY_SILENT) {
-        fout << MESSAGE("Opening camera: ") << cameraGuid << EOL << ENDL;
+        fout << "Opening camera: " << cameraGuid << EOL << ENDL;
       }
     }
     // TAG: make sure adapter is open
     camera.open(cameraGuid);
     
     if (setMode) {
-      assert(camera.isModeSupported(mode), Camera1394::Camera1394Exception("Mode is not supported"));
+      assert(
+        camera.isModeSupported(mode),
+        Camera1394::Camera1394Exception("Mode is not supported")
+      );
       if (!fast && (verbosity >= VERBOSITY_NORMAL)) {
-        fout << MESSAGE("Selecting mode: ") << camera.getModeAsString(mode) << ENDL;
+        fout << "Selecting mode: " << camera.getModeAsString(mode) << ENDL;
       }
       camera.setMode(mode);
     }
     if (setFrameRate) {
-      assert(camera.isFrameRateSupported(rate), Camera1394::Camera1394Exception("Frame rate is not supported"));
+      assert(
+        camera.isFrameRateSupported(rate),
+        Camera1394::Camera1394Exception("Frame rate is not supported")
+      );
       if (!fast && (verbosity >= VERBOSITY_NORMAL)) {
-        fout << MESSAGE("Selecting frame rate: ") << Camera1394::getFrameRateAsValue(rate)/65536.0 << MESSAGE(" frames/second") << ENDL;
+        fout << "Selecting frame rate: " << Camera1394::getFrameRateAsValue(rate)/65536.0 << " frames/second" << ENDL;
       }
       camera.setFrameRate(rate);
     }
     if (setPixelFormat) {
-      assert(camera.getPixelFormats() & (1 << pixelFormat), Camera1394::Camera1394Exception("Pixel format is not supported"));
+      assert(
+        camera.getPixelFormats() & (1 << pixelFormat),
+        Camera1394::Camera1394Exception("Pixel format is not supported")
+      );
       if (!fast && (verbosity >= VERBOSITY_NORMAL)) {
-        fout << MESSAGE("Selecting pixel format: ") << PIXEL_FORMAT_DESCRIPTION[camera.getPixelFormat()] << ENDL;
+        fout << "Selecting pixel format: " << PIXEL_FORMAT_DESCRIPTION[camera.getPixelFormat()] << ENDL;
       }
       camera.setPixelFormat(pixelFormat);
     }
@@ -1214,43 +1327,44 @@ public:
     
     unsigned int specification = camera.getSpecification();
     
-    fout << MESSAGE("Vendor: ") << camera.getVendorName() << EOL
-         << MESSAGE("Model: ") << camera.getModelName() << EOL
-         << MESSAGE("Specification: ") << ((specification >> 16) & 0xff) << '.' << ((specification >> 8) & 0xff) << EOL
+    fout << "Vendor: " << camera.getVendorName() << EOL
+         << "Model: " << camera.getModelName() << EOL
+         << "Specification: " << ((specification >> 16) & 0xff) << '.' << ((specification >> 8) & 0xff) << EOL
          << ENDL;
     
-    fout << MESSAGE("Register base address: ") << HEX << camera.getCommandRegisters() << ENDL;
+    fout << "Register base address: " << HEX << camera.getCommandRegisters() << ENDL;
       
     unsigned int capabilities = camera.getCapabilities();
-    fout << MESSAGE("Capabilities:");
+    fout << "Capabilities:";
     if (capabilities == 0) {
-      fout << ' ' << MESSAGE("NONE");
+      fout << SP << "NONE";
     } else {
       if (capabilities & Camera1394::POWER_CONTROL) {
-        fout << ' ' << MESSAGE("POWER");
+        fout << SP << "POWER";
       }
       if (capabilities & Camera1394::SINGLE_ACQUISITION) {
-        fout << ' ' << MESSAGE("SINGLE-SHOT");
+        fout << SP << "SINGLE-SHOT";
       }
       if (capabilities & Camera1394::MULTI_ACQUISITION) {
-        fout << ' ' << MESSAGE("MULTI-SHOT");
+        fout << SP << "MULTI-SHOT";
       }
       if (capabilities & Camera1394::ADVANCED_FEATURES) {
-        fout << ' ' << MESSAGE("ADVANCED");
+        fout << SP << "ADVANCED";
       }
       if (capabilities & Camera1394::MODE_ERROR_STATUS) {
-        fout << ' ' << MESSAGE("MODE-STATUS");
+        fout << SP << "MODE-STATUS";
       }
       if (capabilities & Camera1394::FEATURE_ERROR_STATUS) {
-        fout << ' ' << MESSAGE("FEATURE-STATUS");
+        fout << SP << "FEATURE-STATUS";
       }
     }
     fout << ENDL;
     
-    fout << MESSAGE("Power: ") << camera.isUpAndRunning() << ENDL;
+    fout << "Power: " << camera.isUpAndRunning() << ENDL;
     
     if (capabilities & Camera1394::ADVANCED_FEATURES) {
-      fout << MESSAGE("Advanced feature address: ") << HEX << setWidth(18) << ZEROPAD << camera.getAdvancedFeatureAddress() << ENDL;
+      fout << "Advanced feature address: "
+           << HEX << setWidth(18) << ZEROPAD << camera.getAdvancedFeatureAddress() << ENDL;
     }
 
     fout << ENDL;
@@ -1258,39 +1372,39 @@ public:
     camera.reset();
     Thread::millisleep(500);
     
-    fout << MESSAGE("Supported formats:") << EOL
-         << MESSAGE("  Uncompressed VGA: ") << camera.isFormatSupported(Camera1394::UNCOMPRESSED_VGA) << EOL
-         << MESSAGE("  Uncompressed Super VGA I: ") << camera.isFormatSupported(Camera1394::UNCOMPRESSED_SUPER_VGA_I) << EOL
-         << MESSAGE("  Uncompressed Super VGA II: ") << camera.isFormatSupported(Camera1394::UNCOMPRESSED_SUPER_VGA_II) << EOL
-         << MESSAGE("  Still image: ") << camera.isFormatSupported(Camera1394::STILL_IMAGE) << EOL
-         << MESSAGE("  Partial image: ") << camera.isFormatSupported(Camera1394::PARTIAL_IMAGE) << EOL
+    fout << "Supported formats:" << EOL
+         << "  Uncompressed VGA: " << camera.isFormatSupported(Camera1394::UNCOMPRESSED_VGA) << EOL
+         << "  Uncompressed Super VGA I: " << camera.isFormatSupported(Camera1394::UNCOMPRESSED_SUPER_VGA_I) << EOL
+         << "  Uncompressed Super VGA II: " << camera.isFormatSupported(Camera1394::UNCOMPRESSED_SUPER_VGA_II) << EOL
+         << "  Still image: " << camera.isFormatSupported(Camera1394::STILL_IMAGE) << EOL
+         << "  Partial image: " << camera.isFormatSupported(Camera1394::PARTIAL_IMAGE) << EOL
          << ENDL;
     
-    fout << MESSAGE("Supported modes:") << EOL;
+    fout << "Supported modes:" << EOL;
     for (unsigned int i = 0; i < getArraySize(Camera1394::MODES); ++i) {
       Camera1394::Mode mode = Camera1394::MODES[i];
       if (camera.isModeSupported(mode)) {
-        fout << MESSAGE("Mode ") << i << ' ' << camera.getModeAsString(mode) << EOL
-             << MESSAGE("  maximum dimension: ") << camera.getMaximumDimension(mode) << EOL
-             << MESSAGE("  unit dimension: ") << camera.getUnitDimension(mode) << EOL
-             << MESSAGE("  unit offset: ") << camera.getUnitOffset(mode) << EOL
-             << MESSAGE("  frame rate(s): ");
+        fout << "Mode " << i << ' ' << camera.getModeAsString(mode) << EOL
+             << "  maximum dimension: " << camera.getMaximumDimension(mode) << EOL
+             << "  unit dimension: " << camera.getUnitDimension(mode) << EOL
+             << "  unit offset: " << camera.getUnitOffset(mode) << EOL
+             << "  frame rate(s): ";
         
         unsigned int frameRates = camera.getFrameRates(mode);
         if (frameRates != 0) {
           fout << EOL;
           for (int rate = Camera1394::RATE_1_875; rate <= Camera1394::RATE_60; ++rate) {
             if ((frameRates >> rate) & 1) {
-              fout << MESSAGE("    ")
+              fout << "    "
                    << Camera1394::getFrameRateAsValue(static_cast<Camera1394::FrameRate>(rate))/65536.0
-                   << MESSAGE(" frames/second") << EOL;
+                   << " frames/second" << EOL;
             }
           }
         } else {
-          fout << MESSAGE("unspecified") << EOL;
+          fout << "unspecified" << EOL;
         }
         
-        fout << MESSAGE("  pixel format(s): ");
+        fout << "  pixel format(s): ";
         
         static const Camera1394::PixelFormat PIXEL_FORMAT[] = {
           Camera1394::Y_8BIT,
@@ -1313,45 +1427,45 @@ public:
           fout << EOL;
           for (unsigned int i = 0; i < getArraySize(PIXEL_FORMAT); ++i) {
             if (pixelFormats & (1 << PIXEL_FORMAT[i])) {
-              fout << MESSAGE("    ") << i << '.' << ' ' << PIXEL_FORMAT_DESCRIPTION[i] << EOL;
+              fout << "    " << i << '.' << ' ' << PIXEL_FORMAT_DESCRIPTION[i] << EOL;
             }
           }
         }
         fout << FLUSH;
       } else {
-        fout << MESSAGE("Mode ") << i << ' ' << camera.getModeAsString(mode) << MESSAGE(" (NOT SUPPORTED)") << ENDL;
+        fout << "Mode " << i << ' ' << camera.getModeAsString(mode) << " (NOT SUPPORTED)" << ENDL;
       }
     }
     fout << ENDL;
 
-    fout << MESSAGE("Supported features:") << EOL
-         << MESSAGE("  Brightness: ") << camera.isFeatureSupported(Camera1394::BRIGHTNESS_CONTROL) << EOL
-         << MESSAGE("  Auto exposure: ") << camera.isFeatureSupported(Camera1394::AUTO_EXPOSURE_CONTROL) << EOL
-         << MESSAGE("  White balance: ") << camera.isFeatureSupported(Camera1394::WHITE_BALANCE_CONTROL) << EOL
-         << MESSAGE("  Hue: ") << camera.isFeatureSupported(Camera1394::HUE_CONTROL) << EOL
-         << MESSAGE("  Saturation: ") << camera.isFeatureSupported(Camera1394::SATURATION_CONTROL) << EOL
-         << MESSAGE("  Gamma: ") << camera.isFeatureSupported(Camera1394::GAMMA_CONTROL) << EOL
-         << MESSAGE("  Shutter: ") << camera.isFeatureSupported(Camera1394::SHUTTER_CONTROL) << EOL
-         << MESSAGE("  Gain: ") << camera.isFeatureSupported(Camera1394::GAIN_CONTROL) << EOL
-         << MESSAGE("  IRIS: ") << camera.isFeatureSupported(Camera1394::IRIS_CONTROL) << EOL
-         << MESSAGE("  Focus: ") << camera.isFeatureSupported(Camera1394::FOCUS_CONTROL) << EOL
-         << MESSAGE("  Temperature: ") << camera.isFeatureSupported(Camera1394::TEMPERATURE_CONTROL) << EOL
-         << MESSAGE("  Trigger: ") << camera.isFeatureSupported(Camera1394::TRIGGER_CONTROL) << EOL
-         << MESSAGE("  Zoom: ") << camera.isFeatureSupported(Camera1394::ZOOM_CONTROL) << EOL
-         << MESSAGE("  Pan: ") << camera.isFeatureSupported(Camera1394::PAN_CONTROL) << EOL
-         << MESSAGE("  Tilt: ") << camera.isFeatureSupported(Camera1394::TILT_CONTROL) << EOL
-         << MESSAGE("  Optical filter: ") << camera.isFeatureSupported(Camera1394::OPTICAL_FILTER_CONTROL) << EOL
-         << MESSAGE("  Capture size: ") << camera.isFeatureSupported(Camera1394::CAPTURE_SIZE) << EOL
-         << MESSAGE("  Capture quality: ") << camera.isFeatureSupported(Camera1394::CAPTURE_QUALITY) << EOL
+    fout << "Supported features:" << EOL
+         << "  Brightness: " << camera.isFeatureSupported(Camera1394::BRIGHTNESS_CONTROL) << EOL
+         << "  Auto exposure: " << camera.isFeatureSupported(Camera1394::AUTO_EXPOSURE_CONTROL) << EOL
+         << "  White balance: " << camera.isFeatureSupported(Camera1394::WHITE_BALANCE_CONTROL) << EOL
+         << "  Hue: " << camera.isFeatureSupported(Camera1394::HUE_CONTROL) << EOL
+         << "  Saturation: " << camera.isFeatureSupported(Camera1394::SATURATION_CONTROL) << EOL
+         << "  Gamma: " << camera.isFeatureSupported(Camera1394::GAMMA_CONTROL) << EOL
+         << "  Shutter: " << camera.isFeatureSupported(Camera1394::SHUTTER_CONTROL) << EOL
+         << "  Gain: " << camera.isFeatureSupported(Camera1394::GAIN_CONTROL) << EOL
+         << "  IRIS: " << camera.isFeatureSupported(Camera1394::IRIS_CONTROL) << EOL
+         << "  Focus: " << camera.isFeatureSupported(Camera1394::FOCUS_CONTROL) << EOL
+         << "  Temperature: " << camera.isFeatureSupported(Camera1394::TEMPERATURE_CONTROL) << EOL
+         << "  Trigger: " << camera.isFeatureSupported(Camera1394::TRIGGER_CONTROL) << EOL
+         << "  Zoom: " << camera.isFeatureSupported(Camera1394::ZOOM_CONTROL) << EOL
+         << "  Pan: " << camera.isFeatureSupported(Camera1394::PAN_CONTROL) << EOL
+         << "  Tilt: " << camera.isFeatureSupported(Camera1394::TILT_CONTROL) << EOL
+         << "  Optical filter: " << camera.isFeatureSupported(Camera1394::OPTICAL_FILTER_CONTROL) << EOL
+         << "  Capture size: " << camera.isFeatureSupported(Camera1394::CAPTURE_SIZE) << EOL
+         << "  Capture quality: " << camera.isFeatureSupported(Camera1394::CAPTURE_QUALITY) << EOL
          << ENDL;
   }
 
   bool onAcquisition(unsigned int frame, uint8* buffer) throw() {
     // mark frame for transmission
     ++numberOfFrames;
-    fout << MESSAGE("Frame acquired: index=") << frame
-         << MESSAGE(" frame=") << numberOfFrames
-         << MESSAGE(" time=") << timer.getLiveMicroseconds() << ENDL;
+    fout << "Frame acquired: index=" << frame
+         << " frame=" << numberOfFrames
+         << " time=" << timer.getLiveMicroseconds() << ENDL;
     return numberOfFrames < desiredNumberOfFrames;
   }
 
@@ -1444,7 +1558,7 @@ public:
           while (frame < end) {
             Camera1394::convert(image, Camera1394::YUV_422_8BIT, frame->getElements());
             StringOutputStream stream;
-            stream << MESSAGE("frame") << number++ << '.' << encoder.getDefaultExtension() << FLUSH;
+            stream << "frame" << number++ << '.' << encoder.getDefaultExtension() << FLUSH;
             encoder.write(stream.getString(), &image);
             ++frame;
           }
@@ -1454,16 +1568,16 @@ public:
       break;
     default:
       fout << ENDL;
-      ferr << MESSAGE("Error: Pixel format is not supported") << ENDL;
+      ferr << "Error: Pixel format is not supported" << ENDL;
       setExitCode(EXIT_CODE_ERROR);
       success = false;
     }
 
     if ((success) && (verbosity >= VERBOSITY_NORMAL)) {
-      fout << MESSAGE("Number of acquired frames: ") << numberOfFrames << EOL
-           << MESSAGE("Total elapsed acquisition time: ") << timer.getMicroseconds() << MESSAGE(" microsecond(s)") << EOL
-           << MESSAGE("Average frame rate: ")
-           << FIXED << setPrecision(2) << (numberOfFrames * 1000000.0)/timer.getMicroseconds() << MESSAGE(" frames/second") << ENDL;
+      fout << "Number of acquired frames: " << numberOfFrames << EOL
+           << "Total elapsed acquisition time: " << timer.getMicroseconds() << " microsecond(s)" << EOL
+           << "Average frame rate: "
+           << FIXED << setPrecision(2) << (numberOfFrames * 1000000.0)/timer.getMicroseconds() << " frames/second" << ENDL;
     }
     
   }
@@ -1494,8 +1608,8 @@ public:
       switch (command) {
       case COMMAND_ERROR:
         dumpHeader();
-        ferr << MESSAGE("Error: Invalid argument(s)") << EOL
-             << MESSAGE("For help: ") << getFormalName() << MESSAGE(" --help") << ENDL;
+        ferr << "Error: Invalid argument(s)" << EOL
+             << "For help: " << getFormalName() << " --help" << ENDL;
         setExitCode(EXIT_CODE_ERROR);
         break;
       case COMMAND_DUMP_IDENTIFIER:
@@ -1538,7 +1652,7 @@ public:
         isServer = true;
         connect();
         //dumpHeader();
-        //ferr << MESSAGE("For help: ") << getFormalName() << MESSAGE(" --help") << ENDL;
+        //ferr << "For help: " << getFormalName() << " --help" << ENDL;
         break;
       }
     } catch (Exception& e) {
@@ -1552,13 +1666,13 @@ public:
 };
 
 const Literal VideoPhoneApplication::PIXEL_FORMAT_DESCRIPTION[] = {
-  MESSAGE("Mono 8bit/pixel"),
-  MESSAGE("Mono 16bit/pixel"),
-  MESSAGE("YUV 4:1:1 12bit/pixel"),
-  MESSAGE("YUV 4:2:2 16bit/pixel"),
-  MESSAGE("YUV 4:4:4 24bit/pixel"),
-  MESSAGE("RGB 24bit/pixel"),
-  MESSAGE("RGB 48bit/pixel")
+  Literal("Mono 8bit/pixel"),
+  Literal("Mono 16bit/pixel"),
+  Literal("YUV 4:1:1 12bit/pixel"),
+  Literal("YUV 4:2:2 16bit/pixel"),
+  Literal("YUV 4:4:4 24bit/pixel"),
+  Literal("RGB 24bit/pixel"),
+  Literal("RGB 48bit/pixel")
 };
 
 STUB(VideoPhoneApplication);
