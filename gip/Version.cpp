@@ -18,7 +18,7 @@ using namespace base;
 namespace gip {
 
 const char Version::banner[] =
-"Generic Image Processing (GIP) Framework version "_DK_SDU_MIP__GIP__VERSION"\n"
+"Generic Image Processing (GIP) Framework release "_DK_SDU_MIP__GIP__RELEASE"\n"
 "A framework for developing image processing applications\n"
 "Copyright (C) 2000, 2001, 2002 Rene Moeller Fonseca\n\n"
 "This framework is distributed in the hope that it will be useful,\n"
@@ -42,6 +42,10 @@ unsigned int Version::getMinorVersion() const throw() {
 
 unsigned int Version::getMicroVersion() const throw() {
   return _DK_SDU_MIP__GIP__MICRO_VERSION;
+}
+
+String Version::getRelease() const throw() {
+  return MESSAGE(_DK_SDU_MIP__GIP__RELEASE);
 }
 
 String Version::getVersion() const throw() {
