@@ -74,13 +74,14 @@ namespace gip {
     }
   }
   
-  FormatOutputStream& PGMEncoder::getInfo(FormatOutputStream& stream, const String& filename) throw(IOException) {
-    stream << MESSAGE("PGMEncoder (Portable Graymap Format):") << EOL;
-//            << MESSAGE("  type=") << header.type << EOL
-//            << MESSAGE("  width=") << header.width << EOL
-//            << MESSAGE("  height=") << header.height << EOL
-//            << MESSAGE("  pixel depth=") << header.pixelDepth << EOL;
-    return stream;
+  HashTable<String, AnyValue> PGMEncoder::getInformation(const String& filename) throw(IOException) {
+    HashTable<String, AnyValue> result;
+    result[MESSAGE("encoder")] = Type::getType(*this);
+    result[MESSAGE("description")] = MESSAGE("Portable Graymap Format");
+//     result[MESSAGE("bits per pixel")] = static_cast<unsigned int>(header.pixelDepth);
+//     result[MESSAGE("width")] = static_cast<unsigned int>(header.width);
+//     result[MESSAGE("height")] = static_cast<unsigned int>(header.height);
+    return result;
   }
 
 }; // end of gip namespace

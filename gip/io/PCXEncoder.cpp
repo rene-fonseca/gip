@@ -60,7 +60,7 @@ namespace gip {
 
     {
       File file(filename, File::READ, 0);
-      file.read(getCharAddress(header), sizeof(header));
+      file.read(Cast::getCharAddress(header), sizeof(header));
       size = file.getSize();
     }
 
@@ -79,7 +79,7 @@ namespace gip {
     File file(filename, File::READ, 0);
 
     PCXHeader header;
-    file.read(getCharAddress(header), sizeof(header));
+    file.read(Cast::getCharAddress(header), sizeof(header));
 
     bool valid = (header.manufacturer == 10) &&
       (header.version == 5) &&
@@ -369,31 +369,32 @@ namespace gip {
     file.truncate(file.getPosition());
   }
 
-  FormatOutputStream& PCXEncoder::getInfo(FormatOutputStream& stream, const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> PCXEncoder::getInformation(const String& filename) throw(IOException) {
+    HashTable<String, AnyValue> result;
+    
     PCXHeader header;
     
     {
       File file(filename, File::READ, 0);
-      file.read(getCharAddress(header), sizeof(header));
+      file.read(Cast::getCharAddress(header), sizeof(header));
     }
     
-    stream << "PCXEncoder (Zsoft Corporation PC Paintbrush):" << EOL
-           << "  manufacturer=" << static_cast<unsigned int>(header.manufacturer) << EOL
-           << "  version=" << static_cast<unsigned int>(header.version) << EOL
-           << "  encoding=" << static_cast<unsigned int>(header.encoding) << EOL
-           << "  bitsPerPixel=" << static_cast<unsigned int>(header.bitsPerPixel) << EOL
-           << "  minX=" << header.minX << EOL
-           << "  minY=" << header.minY << EOL
-           << "  maxX=" << header.maxX << EOL
-           << "  maxY=" << header.maxY << EOL
-           << "  horizontalResolution=" << header.horizontalResolution << EOL
-           << "  verticalResolution=" << header.verticalResolution << EOL
-           << "  planes=" << static_cast<unsigned int>(header.planes) << EOL
-           << "  bytesPerLine=" << header.bytesPerLine << EOL
-           << "  paletteType=" << header.paletteType << EOL
-           << "  horizontalScreenSize=" << header.horizontalScreenSize << EOL
-           << "  verticalScreenSize=" << header.verticalScreenSize << EOL;
-    return stream;
+    result[MESSAGE("encoder")] = Type::getType(*this);
+    result[MESSAGE("description")] = MESSAGE("Zsoft Corporation PC Paintbrush");
+    result[MESSAGE("manufacturer")] = static_cast<unsigned int>(header.manufacturer);
+    result[MESSAGE("version")] = static_cast<unsigned int>(header.version);
+    result[MESSAGE("encoding")] = static_cast<unsigned int>(header.encoding);
+    result[MESSAGE("bits per pixel")] = static_cast<unsigned int>(header.bitsPerPixel);
+    result[MESSAGE("min x ")] = static_cast<unsigned int>(header.minX);
+    result[MESSAGE("min y")] = static_cast<unsigned int>(header.minY);
+    result[MESSAGE("max x")] = static_cast<unsigned int>(header.maxX);
+    result[MESSAGE("max y")] = static_cast<unsigned int>(header.maxY);
+    result[MESSAGE("horizontal resolution")] = static_cast<unsigned int>(header.horizontalResolution);
+    result[MESSAGE("vertical resolution")] = static_cast<unsigned int>(header.verticalResolution);
+    result[MESSAGE("planes")] = static_cast<unsigned int>(header.planes);
+    result[MESSAGE("horizontal screen size")] = static_cast<unsigned int>(header.horizontalScreenSize);
+    result[MESSAGE("vertical screen size")] = static_cast<unsigned int>(header.verticalScreenSize);
+    return result;
   }
 
 }; // end of gip namespace

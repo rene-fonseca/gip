@@ -36,19 +36,50 @@ namespace gip {
     */
     PGMEncoder() throw();
     
+    /**
+      Returns a description of the encoder.
+    */
     String getDescription() const throw();
     
+    /**
+      Returns the default extension.
+    */
     String getDefaultExtension() const throw();
     
+    /**
+      Returns true if the file seems to be a valid.
+      
+      @param filename The path of the file.
+    */
     bool isValid(const String& filename) throw(IOException);
     
+    /**
+      Reads a color image from the specified file.
+      
+      @param filename The path of the file.
+    */
     ColorImage* read(const String& filename) throw(InvalidFormat, IOException);
     
+    /**
+      Writes the specified image to the specified file.
+
+      @param filename The path of the file.
+      @param image The image to be written.
+    */
     void write(const String& filename, const ColorImage* image) throw(ImageException, IOException);
     
+    /**
+      Writes the specified image to the specified file.
+
+      @param filename The path of the file.
+      @param image The image to be written.
+    */
     void writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException);
     
-    FormatOutputStream& getInfo(FormatOutputStream& stream, const String& filename) throw(IOException);
+    /**
+      Returns information about the specified image.
+    */
+    HashTable<String, AnyValue> getInformation(const String& filename) throw(IOException);
   };
   
 }; // end of gip namespace

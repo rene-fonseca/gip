@@ -25,7 +25,7 @@ namespace gip {
     @short Windows Bitmap (BMP) format encoder
     @ingroup imageEncoders
     @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
-    @version 1.1
+    @version 1.2
   */
 
   class BMPEncoder : public ImageEncoder {
@@ -39,7 +39,7 @@ namespace gip {
     };
   
     /**
-       Initializes Windows Bitmap encoder.
+      Initializes Windows Bitmap encoder.
     */
     BMPEncoder() throw();
 
@@ -81,14 +81,12 @@ namespace gip {
       @param stream The stream to write the information to.
       @param filename The path of the file.
     */
-    void writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException);
-    
-    FormatOutputStream& getInfo(FormatOutputStream& stream, const String& filename) throw(IOException);
+    void writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException);    
     
     /**
       Returns information about the specified image.
     */
-    //Map<String, AnyValue> getInformation(const String& filename) throw(IOException);
+    HashTable<String, AnyValue> getInformation(const String& filename) throw(IOException);
   };
 
 }; // end of gip namespace

@@ -15,13 +15,14 @@
 #define _DK_SDU_MIP__GIP_IO__IMAGE_ENCODER_H
 
 #include <base/Object.h>
-#include <base/string/String.h>
+#include <base/AnyValue.h>
 #include <base/io/InputStream.h>
 #include <base/io/OutputStream.h>
 #include <base/collection/Array.h>
+#include <base/collection/HashTable.h>
+#include <base/string/InvalidFormat.h>
 #include <gip/ArrayImage.h>
 #include <gip/ImageException.h>
-#include <base/string/InvalidFormat.h>
 
 namespace gip {
 
@@ -92,7 +93,7 @@ namespace gip {
       @param stream The stream to write the information to.
       @param filename The path of the file.
     */
-    virtual FormatOutputStream& getInfo(FormatOutputStream& stream, const String& filename) throw(IOException) = 0;
+    virtual HashTable<String, AnyValue> getInformation(const String& filename) throw(IOException) = 0;
   };
   
 }; // end of gip namespace

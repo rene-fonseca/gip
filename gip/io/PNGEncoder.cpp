@@ -232,9 +232,10 @@ namespace gip {
     throw NotImplemented(this);
   }
 
-  FormatOutputStream& PNGEncoder::getInfo(FormatOutputStream& stream, const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> PNGEncoder::getInformation(const String& filename) throw(IOException) {
+    HashTable<String, AnyValue> result;
     File file(filename, File::READ, 0);
-
+    
     png_structp context = ::png_create_read_struct(
       PNG_LIBPNG_VER_STRING,
       0,
@@ -260,22 +261,33 @@ namespace gip {
       int interlaceType;
       int compressionType;
       int filterType;      
-      ::png_get_IHDR(context, information, &width, &height, &bitDepth, &colorType, &interlaceType, &compressionType, &filterType);
-      
-      stream << MESSAGE("PNGEncoder (Portable Network Graphics):") << EOL
-             << MESSAGE("  width=") << width << EOL
-             << MESSAGE("  height=") << height << EOL
-             << MESSAGE("  bit depth=") << bitDepth << EOL
-             << MESSAGE("  color type=") << HEX << PREFIX << colorType << EOL
-             << MESSAGE("  interlace type=") << HEX << PREFIX << interlaceType << EOL
-             << MESSAGE("  compression type=") << HEX << PREFIX << compressionType << EOL
-             << MESSAGE("  filter type=") << HEX << PREFIX << filterType << EOL;
+      ::png_get_IHDR(
+        context,
+        information,
+        &width,
+        &height,
+        &bitDepth,
+        &colorType,
+        &interlaceType,
+        &compressionType,
+        &filterType
+      );
+
+      result[MESSAGE("encoder")] = Type::getType(*this);
+      result[MESSAGE("description")] = MESSAGE("Portable Network Graphics");
+      result[MESSAGE("width")] = width;
+      result[MESSAGE("height")] = height;
+      result[MESSAGE("bit depth")] = bitDepth;
+      result[MESSAGE("color type")] = colorType;
+      result[MESSAGE("interlaced type")] = interlaceType;
+      result[MESSAGE("compression type")] = compressionType;
+      result[MESSAGE("filter type")] = filterType;
       
       ::png_destroy_read_struct(&context, &information, 0);
     } catch(IOException& e) {
       ::png_destroy_read_struct(&context, &information, 0);
     }
-    return stream;
+    return result;
   }
 
 }; // end of gip namespace

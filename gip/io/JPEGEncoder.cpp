@@ -309,7 +309,10 @@ namespace gip {
   Information getGenralInformation() throw() {
   }
   */
-  FormatOutputStream& JPEGEncoder::getInfo(FormatOutputStream& stream, const String& filename) throw(IOException) {
+
+  HashTable<String, AnyValue> JPEGEncoder::getInformation(const String& filename) throw(IOException) {
+    HashTable<String, AnyValue> result;
+    
     JPEGEncoderImpl::JPEGSource source;
     struct jpeg_decompress_struct cinfo;
     struct jpeg_error_mgr jerr;
@@ -335,23 +338,20 @@ namespace gip {
       cinfo.src = Cast::pointer<struct jpeg_source_mgr*>(&source);
       try {
         ::jpeg_read_header(&cinfo, TRUE);
-      } catch(...) {
-        return stream << MESSAGE("JPEGEncoder (Joint Photographic Experts Group File Format):") << EOL
-                      << MESSAGE("  invalid format") << EOL
-                      << EOL;
+      } catch (...) {
+        throw InvalidFormat(this);
       }
       ::jpeg_destroy_decompress(&cinfo);
-    } catch(...) {
-      return stream << MESSAGE("JPEGEncoder (Joint Photographic Experts Group File Format):") << EOL
-                    << MESSAGE("  invalid format") << EOL
-                    << EOL;
+    } catch (...) {
+      throw InvalidFormat(this);
     }
     
-    return stream << MESSAGE("JPEGEncoder (Joint Photographic Experts Group File Format):") << EOL
-                  << MESSAGE("  width=") << cinfo.image_width << EOL
-                  << MESSAGE("  height=") << cinfo.image_height << EOL
-                  << MESSAGE("  components=") << cinfo.num_components << EOL
-                  << EOL;
+    result[MESSAGE("encoder")] = Type::getType(*this);
+    result[MESSAGE("description")] = MESSAGE("Joint Photographic Experts Group File Format");
+    result[MESSAGE("width")] = cinfo.image_width;
+    result[MESSAGE("height")] = cinfo.image_height;
+    result[MESSAGE("components")] = cinfo.num_components;
+    return result;
   }
 
 }; // end of gip namespace

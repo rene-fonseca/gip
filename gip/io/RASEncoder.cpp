@@ -81,7 +81,7 @@ namespace gip {
     if (file.getSize() < sizeof(header)) {
       return false;
     }
-    file.read(getCharAddress(header), sizeof(header));
+    file.read(Cast::getCharAddress(header), sizeof(header));
 
     if (header.magic != RASEncoderImpl::MAGIC) {
       return false;
@@ -124,7 +124,7 @@ namespace gip {
     RASEncoderImpl::Header header;
 
     File file(filename, File::READ, 0);
-    file.read(getCharAddress(header), sizeof(header));
+    file.read(Cast::getCharAddress(header), sizeof(header));
 
     assert((header.width >= 0) && (header.height >= 0), InvalidFormat(this));
     const Dimension dimension(header.width, header.height);
@@ -427,7 +427,10 @@ namespace gip {
   void RASEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException) {
     assert(image, NullPointer(this));
     const Dimension dimension = image->getDimension();
-    assert(dimension.getSize() * 3 <= PrimitiveTraits<int>::MAXIMUM, ImageException(this)); // make sure length fits in header.length
+    assert(
+      dimension.getSize() * 3 <= static_cast<unsigned int>(PrimitiveTraits<int>::MAXIMUM),
+      ImageException(this)
+    ); // make sure length fits in header.length
 
     RASEncoderImpl::Header header;
     clear(header);
@@ -441,16 +444,18 @@ namespace gip {
 //    header.mapLength = 0;
 
     const unsigned int bytesPerLine = ((dimension.getWidth() * 3 + 1)/2)*2; // 16 bit alignment
-    Allocator<char> buffer((BUFFER_SIZE >= bytesPerLine) ? (BUFFER_SIZE/bytesPerLine)*bytesPerLine : bytesPerLine);
-
+    Allocator<char> buffer(
+      (BUFFER_SIZE >= bytesPerLine) ? (BUFFER_SIZE/bytesPerLine) * bytesPerLine : bytesPerLine
+    );
+    
     File file(filename, File::WRITE, File::CREATE);
-    file.write(getCharAddress(header), sizeof(header));
-
+    file.write(Cast::getCharAddress(header), sizeof(header));
+    
     const ColorImage::ReadableRows::RowIterator endRow = image->getRows().getFirst();
     ColorImage::ReadableRows::RowIterator row = image->getRows().getEnd();
     const Allocator<char>::Iterator endDest = buffer.getEndIterator();
     Allocator<char>::Iterator dest = buffer.getBeginIterator();
-
+    
     while (row != endRow) {
       --row;
       const ColorImage::ReadableRows::RowIterator::ElementIterator endColumn = row.getEnd();
@@ -478,7 +483,10 @@ namespace gip {
   void RASEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
     assert(image, NullPointer(this));
     Dimension dimension = image->getDimension();
-    assert(dimension.getSize() <= PrimitiveTraits<int>::MAXIMUM, ImageException(this)); // make sure length fits in header.length
+    assert(
+      dimension.getSize() <= static_cast<unsigned int>(PrimitiveTraits<int>::MAXIMUM),
+      ImageException(this)
+    ); // make sure length fits in header.length
 
     RASEncoderImpl::Header header;
     clear(header);
@@ -492,10 +500,12 @@ namespace gip {
 //    header.mapLength = 0;
 
     const unsigned int bytesPerLine = ((dimension.getWidth() + 1)/2)*2; // 16 bit alignment
-    Allocator<char> buffer((BUFFER_SIZE >= bytesPerLine) ? (BUFFER_SIZE/bytesPerLine)*bytesPerLine : bytesPerLine);
+    Allocator<char> buffer(
+      (BUFFER_SIZE >= bytesPerLine) ? (BUFFER_SIZE/bytesPerLine)*bytesPerLine : bytesPerLine
+    );
 
     File file(filename, File::WRITE, File::CREATE);
-    file.write(getCharAddress(header), sizeof(header));
+    file.write(Cast::getCharAddress(header), sizeof(header));
 
     const GrayImage::ReadableRows::RowIterator endRow = image->getRows().getFirst();
     GrayImage::ReadableRows::RowIterator row = image->getRows().getEnd();
@@ -523,20 +533,19 @@ namespace gip {
     file.truncate(sizeof(header) + static_cast<unsigned long long>(bytesPerLine) * dimension.getHeight());
   }
 
-  FormatOutputStream& RASEncoder::getInfo(FormatOutputStream& stream, const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> RASEncoder::getInformation(const String& filename) throw(IOException) {
+    HashTable<String, AnyValue> result;
     RASEncoderImpl::Header header;
-    File file(filename, File::READ, 0);
-    file.read(getCharAddress(header), sizeof(header));
-    stream << MESSAGE("RASEncoder (Sun Rasterfile Format):") << EOL
-           << MESSAGE("  magic=") << HEX << header.magic << EOL
-           << MESSAGE("  width=") << header.width << EOL
-           << MESSAGE("  height=") << header.height << EOL
-           << MESSAGE("  depth=") << header.depth << EOL
-           << MESSAGE("  length=") << header.length << EOL
-           << MESSAGE("  type=") << header.type << EOL
-           << MESSAGE("  mapType=") << header.mapType << EOL
-           << MESSAGE("  mapLength=") << header.mapLength << EOL;
-    return stream;
+    {
+      File file(filename, File::READ, 0);
+      file.read(Cast::getCharAddress(header), sizeof(header));
+    }
+    result[MESSAGE("encoder")] = Type::getType(*this);
+    result[MESSAGE("description")] = MESSAGE("Sun Rasterfile Format");
+    result[MESSAGE("width")] = static_cast<unsigned int>(header.width);
+    result[MESSAGE("height")] = static_cast<unsigned int>(header.height);
+    result[MESSAGE("depth")] = static_cast<unsigned int>(header.depth);
+    return result;
   }
 
 }; // end of gip namespace

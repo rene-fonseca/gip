@@ -41,14 +41,15 @@ namespace gip {
     JPEGEncoder() throw();
 
     /**
+      Returns a description of the encoder.
     */
     String getDescription() const throw();
-
+    
     /**
       Returns the default extension.
     */
     String getDefaultExtension() const throw();
-
+    
     /**
       Reads a color image from the specified file.
       
@@ -87,12 +88,9 @@ namespace gip {
     void writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException);
 
     /**
-      Returns a description of the object.
-      
-      @param stream The stream to write the information to.
-      @param filename The path of the file.
+      Returns information about the specified image.
     */
-    FormatOutputStream& JPEGEncoder::getInfo(FormatOutputStream& stream, const String& filename) throw(IOException);
+    HashTable<String, AnyValue> getInformation(const String& filename) throw(IOException);
   };
 
 }; // end of gip namespace

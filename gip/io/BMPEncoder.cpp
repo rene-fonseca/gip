@@ -532,12 +532,16 @@ namespace gip {
 
     unsigned int bytesPerRow = image->getDimension().getWidth();
     unsigned int bytesPerPaddedRow = (bytesPerRow + 3)/4*4;
-    unsigned long long sizeOfFile = sizeof(header) + 256 * sizeof(BMPPaletteEntry) + bytesPerPaddedRow * image->getDimension().getHeight();
+    unsigned long long sizeOfFile = sizeof(header) + 256 * sizeof(BMPPaletteEntry) +
+      bytesPerPaddedRow * image->getDimension().getHeight();
     unsigned int zeroPad = bytesPerPaddedRow - bytesPerRow;
 
     assert(
       sizeOfFile <= 0xffffffff,
-      bindCause(ImageException("Dimension of image exceeds limit supported by encoder", this), ImageEncoder::DIMENSION_NOT_SUPPORTED)
+      bindCause(
+        ImageException("Dimension of image exceeds limit supported by encoder", this),
+        ImageEncoder::DIMENSION_NOT_SUPPORTED
+      )
     );
 
     header.identifier[0] = 'B';
@@ -613,30 +617,28 @@ namespace gip {
     file.truncate(sizeOfFile);
   }
 
-  FormatOutputStream& BMPEncoder::getInfo(FormatOutputStream& stream, const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> BMPEncoder::getInformation(const String& filename) throw(IOException) {
+    HashTable<String, AnyValue> result;
     BMPHeader header;
-
+    
     {
       File file(filename, File::READ, 0);
       file.read(Cast::getCharAddress(header), sizeof(header));
     }
-
-    stream << MESSAGE("BMPEncoder (Windows Bitmap File Format):") << EOL
-           << MESSAGE("  identifier=") << header.identifier[0] << header.identifier[1] << EOL
-           << MESSAGE("  fileSize=") << header.fileSize << EOL
-           << MESSAGE("  bitmapDataOffset=") << header.bitmapDataOffset << EOL
-           << MESSAGE("  bitmapHeaderSize=") << header.bitmapHeaderSize << EOL
-           << MESSAGE("  width=") << header.width << EOL
-           << MESSAGE("  height=") << header.height << EOL
-           << MESSAGE("  planes=") << header.planes << EOL
-           << MESSAGE("  bitsPerPixel=") << header.bitsPerPixel << EOL
-           << MESSAGE("  compression=") << header.compression << EOL
-           << MESSAGE("  bitmapDataSize=") << header.bitmapDataSize << EOL
-           << MESSAGE("  horizontalResolution=") << header.horizontalResolution << EOL
-           << MESSAGE("  verticalResolution=") << header.verticalResolution << EOL
-           << MESSAGE("  colors=") << header.colorsUsed << EOL
-           << MESSAGE("  importantColors=") << header.importantColors << EOL;
-    return stream;
+    
+    result[MESSAGE("encoder")] = Type::getType(*this);
+    result[MESSAGE("description")] = AnyValue(MESSAGE("Windows Bitmap File Format"));
+    result[MESSAGE("width")] = static_cast<unsigned int>(header.width);
+    result[MESSAGE("height")] = static_cast<unsigned int>(header.height);
+    result[MESSAGE("planes")] = static_cast<unsigned int>(header.planes);
+    result[MESSAGE("bits per pixel")] = static_cast<unsigned int>(header.bitsPerPixel);
+    result[MESSAGE("compression")] = static_cast<unsigned int>(header.compression);
+    result[MESSAGE("horizontal resolution")] = static_cast<unsigned int>(header.horizontalResolution);
+    result[MESSAGE("vertical resolution")] = static_cast<unsigned int>(header.verticalResolution);
+    result[MESSAGE("colors")] = static_cast<unsigned int>(header.colorsUsed);
+    result[MESSAGE("important colors")] = static_cast<unsigned int>(header.importantColors);
+    
+    return result;
   }
 
 }; // end of gip namespace
