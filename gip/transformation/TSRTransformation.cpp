@@ -14,9 +14,5 @@
 #include <gip/transformation/TSRTransformation.h>
 
 namespace gip {
-
-  TSRTransformation::TSRTransformation(DestinationImage* destination, const SourceImage* source) throw()
-    : Transformation<ColorImage, ColorImage>(destination, source) {
-  }
-
-}; // end of namespace
+  
+}; // end of gip namespace
