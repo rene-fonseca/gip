@@ -54,12 +54,16 @@ public:
          << MESSAGE("Number of samples: ") << statistic.getNumberOfSamples() << EOL
          << MESSAGE("Minimum value: ") << statistic.getMinimum() << EOL
          << MESSAGE("Maximum value: ") << statistic.getMaximum() << EOL
+         << MESSAGE("Dynamic range: ") << statistic.getDynamicRange() << EOL
          << MESSAGE("Number of used values: ") << statistic.getUsedValues() << EOL
          << MESSAGE("Minimum frequency: ") << statistic.getMinimumFrequency() << EOL
          << MESSAGE("Maximum frequency: ") << statistic.getMaximumFrequency() << EOL
          << MESSAGE("Mean value: ") << setPrecision(3) << statistic.getMean() << EOL
+         << MESSAGE("Median value: ") << statistic.getMedian() << EOL
+         << MESSAGE("Mode value: ") << statistic.getMode() << EOL
          << MESSAGE("Variance: ") << setPrecision(3) << statistic.getVariance() << EOL
          << MESSAGE("Standard deviation: ") << setPrecision(3) << statistic.getDeviation() << EOL
+         << MESSAGE("Coefficient of variation: ") << setPrecision(3) << statistic.getCoefficientOfVariation() << EOL
          << MESSAGE("Entropy: ") << setPrecision(3) << statistic.getEntropy() << EOL
          << ENDL;
   }
@@ -89,9 +93,9 @@ int main(int argc, const char* argv[], const char* env[]) {
   StatApplication application(argc, argv, env);
   try {
     application.main();
-  } catch(Exception& e) {
+  } catch (Exception& e) {
     return Application::getApplication()->exceptionHandler(e);
-  } catch(...) {
+  } catch (...) {
     return Application::getApplication()->exceptionHandler();
   }
   return Application::getApplication()->getExitCode();
