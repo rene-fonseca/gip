@@ -54,7 +54,8 @@ if test "x$ac_base_include" != "x"; then
   CPPFLAGS="-I${ac_base_include}${CPPFLAGS:+ }${CPPFLAGS}"
 fi
 if test "x$ac_base_lib" != "x"; then
-  LIBS="${LIBS}${LIBS:+ }${ac_base_lib}/libbase.la"
+  BASE_LIBADD="${ac_base_lib}/libbase.la"
+  AC_SUBST(BASE_LIBADD)
 fi
 
 AC_GIP_DEFINE(CONFIGURE, [\"]$ac_configure_args[\"])
@@ -63,8 +64,10 @@ AC_GIP_DEFINE(BUILD_HOST, [\"]$ac_gip_build_host[\"])
 AC_GIP_DEFINE(BUILD_SYSTEM, [\"]$ac_cv_build[\"])
 AC_GIP_DEFINE(TARGET_SYSTEM, [\"]$ac_cv_target[\"])
 
+CPPFLAGS='-I${top_srcdir}'"${CPPFLAGS:+ }${CPPFLAGS}"
+
 ac_gip_header=gip/configuration.h
 echo "updating configuration..."
 mv $ac_gip_config $ac_gip_header
 
-AC_OUTPUT(Makefile gip/Makefile gip/docs/Makefile gip/docs/en/Makefile gip/transformation/Makefile gip/io/Makefile gip/analysis/Makefile )
+AC_OUTPUT(Makefile gip/Makefile gip/docs/Makefile gip/docs/en/Makefile gip/transformation/Makefile gip/analysis/Makefile gip/Makefile gip/draw/Makefile gip/io/Makefile gip/media/Makefile )
