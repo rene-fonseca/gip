@@ -1,0 +1,60 @@
+/***************************************************************************
+    Generic Image Processing (GIP) Framework
+    A framework for developing image processing applications
+
+    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+
+    This framework is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+    For the licensing terms refer to the file 'LICENSE'.
+ ***************************************************************************/
+
+#include "features.h"
+#include "winver.h"
+
+#define _DK_SDU_MIP__GIP__MAKE_PRIVATE_BUILD(DATE,USER,HOST,SYSTEM,TARGET) "This application was built at " DATE " by " USER " on host " HOST " a " SYSTEM " system. The application is intended for the target systems " TARGET ".\0"
+
+1 VERSIONINFO
+  FILEVERSION _DK_SDU_MIP__GIP__MAJOR_VERSION,_DK_SDU_MIP__GIP__MINOR_VERSION,0,0
+  PRODUCTVERSION _DK_SDU_MIP__GIP__MAJOR_VERSION,_DK_SDU_MIP__GIP__MINOR_VERSION,0,0
+  FILEFLAGSMASK 0x3fL
+
+  // FILEFLAGS: VS_FF_DEBUG, VS_FF_PATCHED, VS_FF_PRERELEASE, VS_FF_PRIVATEBUILD, and VS_FF_SPECIALBUILD
+
+#if defined(_DK_SDU_MIP__GIP__DEBUG)
+  FILEFLAGS (VS_FF_DEBUG)
+#else
+  FILEFLAGS 0x00
+#endif
+
+  FILEOS (VOS_NT_WINDOWS32)
+  FILETYPE (VFT_APP)
+  FILESUBTYPE (VFT2_UNKNOWN)
+  BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+      BLOCK "040904e4"
+      BEGIN
+        VALUE "Comments", "Written by René Møller Fonseca <fonseca@mip.sdu.dk>. This framework is distributed under the GNU General Public License Version 2, June 1991.\0"
+        VALUE "CompanyName", "René Møller Fonseca <http://www.mip.sdu.dk/~fonseca/gip>\0"
+        VALUE "FileDescription", "A framework for developing image processing applications\0"
+        VALUE "FileVersion",  _DK_SDU_MIP__GIP__VERSION "\0"
+        VALUE "InternalName", "gip\0"
+        VALUE "LegalCopyright", "Copyright © 2000-2001 by René Møller Fonseca\0"
+        VALUE "LegalTrademarks", "Currently not available\0"
+        VALUE "OriginalFilename", "cyggip.dll\0"
+#if defined(_DK_SDU_MIP__GIP__DEBUG)
+        VALUE "PrivateBuild", _DK_SDU_MIP__GIP__MAKE_PRIVATE_BUILD(_DK_SDU_MIP__GIP__BUILD_DATE, _DK_SDU_MIP__GIP__BUILD_USER, _DK_SDU_MIP__GIP__BUILD_HOST, _DK_SDU_MIP__GIP__BUILD_SYSTEM, _DK_SDU_MIP__GIP__TARGET_SYSTEM)
+#endif
+        VALUE "ProductName", "Generic Image Processing (GIP) Framework\0"
+        VALUE "ProductVersion", _DK_SDU_MIP__GIP__VERSION "\0"
+//        VALUE "SpecialBuild", "This is a special build\0"
+      END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+      VALUE "Translation", 0x409, 1252
+    END
+  END
