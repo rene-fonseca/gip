@@ -13,7 +13,6 @@
 
 include $(top_srcdir)/common.am
 
-bin_PROGRAMS = gip
 lib_LTLIBRARIES = libgip.la
 
 libgip_la_SOURCES = Point2D.cpp ImageException.cpp ArrayImage.cpp CoordinateMapper.cpp Region.cpp Segmentor.cpp Pixel.cpp ShadowImage.cpp Subimage.cpp Image.cpp Version.cpp
@@ -33,10 +32,6 @@ winrcver.o: gip.rc
 	cp $< temp.h
 	windres --preprocessor "${CXXCPP} ${INCLUDES} ${CPPFLAGS}" --output-format coff temp.h $@
 	-rm -f temp.h
-
-gip_SOURCES = main.cpp
-gip_LDADD = libgip.la
-gip_LDFLAGS =
 
 EXTRA_DIST =
 
