@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -59,7 +59,22 @@ namespace gip {
   };
 
 
-  
+
+  /**
+    Merges two pixels according to the specified level of opacity.
+
+    @param original The current pixel value.
+    @param value The new pixel value.
+    @param opaque The level indicating a fully opaque pixel.
+    @param opacity The opacity level of the new pixel. This must be in the range [0; opaque].
+  */
+  template<class PIXEL>
+  inline PIXEL merge(PIXEL original, PIXEL value, unsigned int opaque, unsigned int opacity) throw() {
+    return ((opaque - opacity) * static_cast<PixelTraits<PIXEL>::Arithmetic>(original) + opacity * static_cast<PixelTraits<PIXEL>::Arithmetic>(value))/opaque;
+  }
+
+
+
   template<>
   inline Complex::Type mapToOneDimension<Complex, Complex::Type>(const Complex& value) throw() {
     return value.getSqrModulus();

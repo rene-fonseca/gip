@@ -56,7 +56,21 @@ namespace gip {
           static_cast<Arithmetic>(mapToOneDimension(pixel.blue));
       }
     };
-    
+
+    class Clamp : public UnaryOperation<Arithmetic, Arithmetic> {
+    public:
+
+      inline Arithmetic operator()(const Arithmetic& value) const throw() {
+        if (value >= MAXIMUM) {
+          return MAXIMUM;
+        } else if (value < MINIMUM) {
+          return MINIMUM;
+        } else {
+          return value;
+        }
+      }
+    };
+
   };
   
   template<>
@@ -104,6 +118,26 @@ namespace gip {
     result.red = red;
     result.green = green;
     result.blue = blue;
+    return result;
+  }
+
+
+
+  /**
+    Merges two pixels according to the specified level of opacity.
+
+    @param original The current pixel value.
+    @param value The new pixel value.
+    @param opaque The level indicating a fully opaque pixel.
+    @param opacity The opacity level of the new pixel. This must be in the range [0; opaque].
+  */
+  template<class COMPONENT>
+  inline RGBPixel<COMPONENT> merge(RGBPixel<COMPONENT> original, RGBPixel<COMPONENT> value, unsigned int opaque, unsigned int opacity) throw() {
+    RGBPixel<COMPONENT> result;
+    unsigned int transparency = opaque - opacity;
+    result.red = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(original.red) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(value.red))/opaque;
+    result.green = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(original.green) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(value.green))/opaque;
+    result.blue = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(original.blue) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(value.blue))/opaque;
     return result;
   }
 
@@ -205,6 +239,13 @@ namespace gip {
   public:
     enum {HAS_BLUE_COMPONENT = true};
   };
+
+  /** Writes the specified RGB color space pixel to the format stream using the format '(red, green, blue)'. */
+  template<class COMPONENT>
+  FormatOutputStream& operator<<(FormatOutputStream& stream, const RGBPixel<COMPONENT>& value) throw(IOException) {
+    FormatOutputStream::PushContext pushContext(stream); // make current context the default context
+    return stream << '(' << value.red << ',' << value.green << ',' << value.blue << ')';
+  }
 
 }; // end of gip namespace
 

@@ -26,6 +26,7 @@ namespace gip {
     component is given a different meaning it should be explicitly described in
     the documentation.
 
+    @short True color pixel with alpha component
     @see GrayAlphaPixel RGBPixel
     @ingroup pixels
   */
@@ -63,6 +64,21 @@ namespace gip {
           static_cast<Arithmetic>(mapToOneDimension(pixel.alpha)); // TAG: alpha should not be included
       }
     };
+
+    class Clamp : public UnaryOperation<Arithmetic, Arithmetic> {
+    public:
+
+      inline Arithmetic operator()(const Arithmetic& value) const throw() {
+        if (value >= MAXIMUM) {
+          return MAXIMUM;
+        } else if (value < MINIMUM) {
+          return MINIMUM;
+        } else {
+          return value;
+        }
+      }
+    };
+
   };
 
   template<>
@@ -227,6 +243,13 @@ namespace gip {
   public:
     enum {HAS_ALPHA_COMPONENT = true};
   };
+
+  /** Writes the specified RGBA pixel to the format stream using the format '(red, green, blue, alpha)'. */
+  template<class COMPONENT>
+  FormatOutputStream& operator<<(FormatOutputStream& stream, const RGBAPixel<COMPONENT>& value) throw(IOException) {
+    FormatOutputStream::PushContext pushContext(stream); // make current context the default context
+    return stream << '(' << value.red << ',' << value.green << ',' << value.blue << ',' << value.alpha << ')';
+  }
 
 }; // end of gip namespace
 

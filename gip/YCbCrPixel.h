@@ -11,10 +11,11 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP__YUV_PIXEL_H
-#define _DK_SDU_MIP__GIP__YUV_PIXEL_H
+#ifndef _DK_SDU_MIP__GIP__YCBCR_PIXEL_H
+#define _DK_SDU_MIP__GIP__YCBCR_PIXEL_H
 
 #include <gip/PixelTraits.h>
+#include <gip/RGBPixel.h>
 
 namespace gip {
 
@@ -28,7 +29,7 @@ namespace gip {
 */
 
 template<class COMPONENT>
-class YCbCrPixel {
+struct YCbCrPixel {
 
   /** The quantity representative of luminance (luma) component (Y'). This is not the same as the CIE luminance! */
   COMPONENT luma;
@@ -49,6 +50,20 @@ public:
   enum {
     MINIMUM = 0x00,
     MAXIMUM = 0xff // TAG: should be 1.0 if floating-point type
+  };
+
+  class Clamp : public UnaryOperation<Arithmetic, Arithmetic> {
+  public:
+
+    inline Arithmetic operator()(const Arithmetic& value) const throw() {
+      if (value >= MAXIMUM) {
+        return MAXIMUM;
+      } else if (value < MINIMUM) {
+        return MINIMUM;
+      } else {
+        return value;
+      }
+    }
   };
 };
 
@@ -86,10 +101,10 @@ inline YCbCrPixel<COMPONENT> makeYCbCrPixel(COMPONENT luma, COMPONENT cb, COMPON
 /**
   Converts an RGB pixel into the Y'CbCr color space. The components of the RGB pixel must be in the range [0; 1].
 */
-template<COMPONENT>
-inline YCbCrPixel RGBToCbCr<RGBPixel<COMPONENT> >(const RGBPixel<COMPONENT>& pixel) throw() {
-  YCbCrPixel result;
-  typedef PixelTraits<ColorPixel>::Artihmetic Arithmetic;
+template<class COMPONENT>
+inline YCbCrPixel<COMPONENT> RGBToYCbCr(const RGBPixel<COMPONENT>& pixel) throw() {
+  YCbCrPixel<COMPONENT> result;
+  typedef PixelTraits<RGBPixel<COMPONENT> >::Arithmetic Arithmetic;
 
   // see ITU-R recommendation BT (map to range [0; 1])
   result.luma = 0.299 * static_cast<Arithmetic>(pixel.red) + 0.587 * static_cast<Arithmetic>(pixel.green) + 0.114 * static_cast<Arithmetic>(pixel.blue);
@@ -103,9 +118,9 @@ inline YCbCrPixel RGBToCbCr<RGBPixel<COMPONENT> >(const RGBPixel<COMPONENT>& pix
   Converts an RGB pixel into the Y'CbCr color space. The components will be mapped from the range [0; 255] into [0; 255].
 */
 template<>
-inline YCbCrPixel<unsigned char> RGBToCbCr<RGBPixel<unsigned char> >(const RGBPixel<unsigned char>& pixel) throw() {
+inline YCbCrPixel<unsigned char> RGBToYCbCr<unsigned char>(const RGBPixel<unsigned char>& pixel) throw() {
   YCbCrPixel<unsigned char> result;
-  typedef PixelTraits<RGBPixel<unsigned char> >::Artihmetic Arithmetic;
+  typedef PixelTraits<RGBPixel<unsigned char> >::Arithmetic Arithmetic;
   // we know that overflow isn't possible: (299 + 587 + 114) * 255 * 255 <= PrimitiveTraits<PixelTraits<ColorPixel>::Arithmetic>::MAXIMUM
   // see ITU-R recommendation BT (map into range [0; 255])
   Arithmetic temp = 299 * static_cast<Arithmetic>(pixel.red) + 587 * static_cast<Arithmetic>(pixel.green) + 114 * static_cast<Arithmetic>(pixel.blue);
@@ -127,6 +142,13 @@ inline RGBPixel<COMPONENT> YCbCrToRGB(const YCbCrPixel<COMPONENT>& pixel) throw(
   result.green = static_cast<Arithmetic>(pixel.luma) + (-0.114/0.587 * 2 * (1.000-0.114)) * static_cast<Arithmetic>(pixel.cb) + (-0.299/0.587 * 2 * (1.000-0.299)) * static_cast<Arithmetic>(pixel.cr);
   result.blue = static_cast<Arithmetic>(pixel.luma) + 2 * (1.000-0.114) * static_cast<Arithmetic>(pixel.cb);
   return result;
+}
+
+/** Writes the specified Y'CbCR color space pixel to the format stream using the format '(luma, cb, cr)'. */
+template<class COMPONENT>
+FormatOutputStream& operator<<(FormatOutputStream& stream, const YCbCrPixel<COMPONENT>& value) throw(IOException) {
+  FormatOutputStream::PushContext pushContext(stream); // make current context the default context
+  return stream << '(' << value.luma << ',' << value.cb << ',' << value.cr << ')';
 }
 
 }; // end of gip namespace
