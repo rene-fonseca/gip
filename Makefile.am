@@ -12,7 +12,7 @@
 # ***************************************************************************
 
 DEFS =
-AUTOMAKE_OPTIONS = 1.4 foreign nostdinc dist-tarZ dist-bzip2 dist-zip
+AUTOMAKE_OPTIONS = 1.4 foreign nostdinc dist-bzip2 dist-zip
 
 EXTRA_DIST = gip.kdevprj AUTHORS COPYING ChangeLog INSTALL README TODO gip.lsm
 
