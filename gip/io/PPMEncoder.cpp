@@ -75,7 +75,7 @@ namespace gip {
   }
   
   void PPMEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
-    throw NotSupported();
+    throw NotSupported(this);
   }
   
   FormatOutputStream& PPMEncoder::getInfo(FormatOutputStream& stream, const String& filename) throw(IOException) {
@@ -87,4 +87,4 @@ namespace gip {
     return stream;
   }
 
-}; // end of namespace
+}; // end of gip namespace

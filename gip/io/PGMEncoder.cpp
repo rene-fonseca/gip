@@ -41,7 +41,7 @@ namespace gip {
   }
   
   void PGMEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException) {
-    throw NotSupported();
+    throw NotSupported(this);
   }
   
   void PGMEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
@@ -83,4 +83,4 @@ namespace gip {
     return stream;
   }
 
-}; // end of namespace
+}; // end of gip namespace
