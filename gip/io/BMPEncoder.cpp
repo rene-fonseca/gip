@@ -23,7 +23,7 @@
 
 namespace gip {
 
-  class FullPalette : public UnaryOperation<byte, ColorPixel> {
+  class FullPalette : public UnaryOperation<uint8, ColorPixel> {
   private:
     
     ColorPixel* palette;
@@ -37,7 +37,7 @@ namespace gip {
     }
   };
 
-  class PartialPalette : public UnaryOperation<byte, ColorPixel> {
+  class PartialPalette : public UnaryOperation<uint8, ColorPixel> {
   private:
     
     ColorPixel* palette;

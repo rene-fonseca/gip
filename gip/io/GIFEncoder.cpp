@@ -28,13 +28,13 @@ namespace gip {
     } _DK_SDU_MIP__BASE__PACKED;
 
     struct DataSubBlock {
-      byte size; // size of the block in bytes
-      byte data[255]; // the data
+      uint8 size; // size of the block in bytes
+      uint8 data[255]; // the data
     } _DK_SDU_MIP__BASE__PACKED;
 
-    const byte TERMINATOR = 0x00; // terminates stream of data blocks
-    const byte TRAILER = 0x3b; // indicates end of data stream
-    const byte IMAGESEPARATOR = 0x2c; // indicates beginning of image
+    const uint8 TERMINATOR = 0x00; // terminates stream of data blocks
+    const uint8 TRAILER = 0x3b; // indicates end of data stream
+    const uint8 IMAGESEPARATOR = 0x2c; // indicates beginning of image
 
     struct LogicalScreenDescriptor {
       LittleEndian<uint16> width; // logical screen width
@@ -43,12 +43,12 @@ namespace gip {
       bool sortedColorTable: 1; // true if the colors are sorted
       unsigned int colorResolution : 3; //
       bool colorTable : 1; // true if table is present
-      byte backGroundColorIndex; // index to global color table
-      byte aspectRatio; // actual ratio = (aspectRatio + 15) / 64
+      uint8 backGroundColorIndex; // index to global color table
+      uint8 aspectRatio; // actual ratio = (aspectRatio + 15) / 64
     } _DK_SDU_MIP__BASE__PACKED;
 
     struct ImageDescriptor {
-      byte separator; // fixed value of ImageSeperator
+      uint8 separator; // fixed value of ImageSeperator
       LittleEndian<uint16> left; // column in pixels in respect to left edge of logical screen
       LittleEndian<uint16> top; // row in pixels in respect to top of logical screen
       LittleEndian<uint16> width; // width of image in pixels
@@ -61,9 +61,9 @@ namespace gip {
     } _DK_SDU_MIP__BASE__PACKED;
 
     struct ColorEntry {
-      byte red;
-      byte green;
-      byte blue;
+      uint8 red;
+      uint8 green;
+      uint8 blue;
     } _DK_SDU_MIP__BASE__PACKED;
 
 
@@ -76,8 +76,8 @@ namespace gip {
       unsigned int bitsAvailable;
       unsigned int unreadBits;
       unsigned int dataBlockIndex;
-      byte dataBlockSize;
-      byte dataBlockData[255];
+      uint8 dataBlockSize;
+      uint8 dataBlockData[255];
     public:
 
       inline unsigned int getNextCode() throw() {
@@ -92,7 +92,7 @@ namespace gip {
             file.read(Cast::getCharAddress(dataBlockData), dataBlockSize);
             dataBlockIndex = 0;
           }
-          byte temp = dataBlockData[dataBlockIndex++];
+          uint8 temp = dataBlockData[dataBlockIndex++];
           unreadBits |= static_cast<unsigned int>(temp) << bitsAvailable;
           bitsAvailable += 8;
         }
@@ -116,7 +116,7 @@ namespace gip {
         ColorPixel* row = elements + rowIndex * width;
         bool done = false;
 
-        byte LZWCodeSize;
+        uint8 LZWCodeSize;
         file.read(
           Cast::getCharAddress(LZWCodeSize),
           sizeof(LZWCodeSize)
@@ -129,7 +129,7 @@ namespace gip {
         const unsigned int firstSlot = clearCode + 2; //
         const unsigned int initialCodeSize = LZWCodeSize + 1;
 
-        byte decodeStack[4096]; // stack for decoded codes
+        uint8 decodeStack[4096]; // stack for decoded codes
         unsigned int prefix[4096]; // code prefixes
         unsigned int suffix[4096]; // code suffixes
         unsigned int stackIndex = 0;
@@ -320,11 +320,11 @@ namespace gip {
 
     GIFImpl::ReadGIF read(file, image, colorTable, imageDescriptor.interlaced);
 
-    byte terminator;
+    uint8 terminator;
     file.read(Cast::getCharAddress(terminator), sizeof(terminator)); // check terminator
     assert(terminator == GIFImpl::TERMINATOR, InvalidFormat("Invalid GIF format", this));
 
-    byte trailer;
+    uint8 trailer;
     file.read(Cast::getCharAddress(trailer), sizeof(trailer)); // check trailer
     assert(trailer == GIFImpl::TRAILER, InvalidFormat("Invalid GIF format", this));
 
