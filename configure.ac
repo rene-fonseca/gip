@@ -19,7 +19,7 @@ AC_CANONICAL_SYSTEM()
 dnl perform program name transformation
 AC_ARG_PROGRAM()
 
-AM_INIT_AUTOMAKE(gip, 0.1)
+AM_INIT_AUTOMAKE(gip-framework, 0.1.2)
 
 
 
@@ -82,8 +82,14 @@ AC_GIP_DEFINE(BUILD_HOST, [\"]$ac_gip_build_host[\"])
 AC_GIP_DEFINE(BUILD_SYSTEM, [\"]$ac_cv_build[\"])
 AC_GIP_DEFINE(TARGET_SYSTEM, [\"]$ac_cv_target[\"])
 
-dnl The default include paths are not used
-CPPFLAGS='-I${top_srcdir}'"${CPPFLAGS:+ }${CPPFLAGS}"
+dnl Tell the compiler where it should look for the generated and static framework headers
+if (test -f gip/features.h) then
+  dnl We are building directly in the source tree
+  CPPFLAGS='-I${top_srcdir}'"${CPPFLAGS:+ }${CPPFLAGS}"
+else
+  dnl We are building in a separate directory tree
+  CPPFLAGS='-I${top_builddir} -I${top_srcdir}'"${CPPFLAGS:+ }${CPPFLAGS}"
+fi
 
 AC_SUBST(GIP_ADDITIONAL_LIBADD)
 AC_SUBST(GIP_ADDITIONAL_LDFLAGS)
@@ -92,6 +98,7 @@ AC_SUBST(GIP_ADDITIONAL_DEPENDENCIES)
 dnl Store the symbols
 ac_gip_header=gip/configuration.h
 echo "updating configuration..."
+mkdir -p gip
 mv $ac_gip_config $ac_gip_header
 
 AC_OUTPUT(Makefile gip/Makefile gip/docs/Makefile gip/docs/en/Makefile gip/transformation/Makefile gip/analysis/Makefile gip/Makefile gip/draw/Makefile gip/io/Makefile gip/media/Makefile)
