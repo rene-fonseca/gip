@@ -18,6 +18,6 @@ noinst_LTLIBRARIES = liboperation.la
 liboperation_la_SOURCES =
 
 sectiondir = $(includedir)/gip/operation
-section_HEADERS = BlueColorMap.h ColdHotColorMap.h CometColorMap.h GrayColorMap.h GreenColorMap.h HeatColorMap.h RedColorMap.h
+section_HEADERS = Blend.h BlueColorMap.h ColdHotColorMap.h CometColorMap.h GrayColorMap.h GreenColorMap.h HeatColorMap.h Interpolate.h RedColorMap.h Slice.h
 
 EXTRA_DIST =
