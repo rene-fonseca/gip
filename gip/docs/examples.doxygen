@@ -1,0 +1,107 @@
+/**
+  @example testsuite/tests/bmpio.cpp
+*/
+
+/**
+  @example testsuite/tests/BresenhamScale.cpp
+*/
+
+/**
+  @example testsuite/tests/Camera1394.cpp
+*/
+
+/**
+  @example testsuite/tests/Canvas.cpp
+*/
+
+/**
+  @example testsuite/tests/ContrastStretch.cpp
+*/
+
+/**
+  @example testsuite/tests/Convolution.cpp
+*/
+
+/**
+  @example testsuite/tests/Dilate.cpp
+*/
+
+/**
+  @example testsuite/tests/EqualizeHistogram.cpp
+*/
+
+/**
+  @example testsuite/tests/Erode.cpp
+*/
+
+/**
+  @example testsuite/tests/Flip.cpp
+*/
+
+/**
+  @example testsuite/tests/FourierTransformation.cpp
+*/
+
+/**
+  @example testsuite/tests/GaussianBlur.cpp
+*/
+
+/**
+  @example testsuite/tests/gifio.cpp
+*/
+
+/**
+  @example testsuite/tests/gip.cpp
+*/
+
+/**
+  @example testsuite/tests/HaarTransformation.cpp
+*/
+
+/**
+  @example testsuite/tests/jpeg2bmp.cpp
+*/
+
+/**
+  @example testsuite/tests/MedianFilter3x3.cpp
+*/
+
+/**
+  @example testsuite/tests/Mirror.cpp
+*/
+
+/**
+  @example testsuite/tests/RASEncoder.cpp
+*/
+
+/**
+  @example testsuite/tests/Rotate.cpp
+*/
+
+/**
+  @example testsuite/tests/Scale.cpp
+*/
+
+/**
+  @example testsuite/tests/Stat.cpp
+*/
+
+/**
+  @example testsuite/tests/StraightLineHoughTransformation.cpp
+*/
+
+/**
+  @example testsuite/tests/Tile.cpp
+*/
+
+/**
+  @example testsuite/tests/Transpose.cpp
+*/
+
+/**
+  @example testsuite/tests/types.cpp
+*/
+
+/**
+  @example testsuite/tests/viewer.cpp
+*/
