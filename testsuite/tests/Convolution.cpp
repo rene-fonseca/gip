@@ -48,7 +48,7 @@ public:
 
     GrayImage finalImage(grayOriginalImage.getDimension());
     {
-      Convolution3x3<GrayImage, GrayImage, SmoothUniformRectangular3x3> transform(&finalImage, &grayOriginalImage);
+      Convolution3x3<GrayImage, GrayImage, VerticalSobel> transform(&finalImage, &grayOriginalImage);
       fout << MESSAGE("Transforming image: ") << ' ' << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
       Timer timer;
       transform();
@@ -60,7 +60,7 @@ public:
   }
   
   void main() throw() {
-    fout << MESSAGE("Convolution3x3 version 1.0") << EOL
+    fout << MESSAGE("Convolution version 1.0") << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("http://www.mip.sdu.dk/~fonseca/gip") << EOL
          << MESSAGE("Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>") << EOL << ENDL;
