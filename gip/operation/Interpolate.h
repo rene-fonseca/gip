@@ -104,12 +104,12 @@ namespace gip {
 
       const Pixel* p = elements + y0 * dimension.getWidth() + x0;
       
-      if ((x0 >= 0) && (x0 < dimension.getWidth())) {
-        if ((y0 >= 0) && (y0 < dimension.getHeight())) {
+      if ((x0 >= 0) && (static_cast<unsigned int>(x0) < dimension.getWidth())) {
+        if ((y0 >= 0) && (static_cast<unsigned int>(y0) < dimension.getHeight())) {
           const long double w0 = (1 - xFraction) * (1 - yFraction);
           result += w0 * p[0];
         }
-        if (((y0 + 1) >= 0) && ((y0 + 1) < dimension.getHeight())) {
+        if (((y0 + 1) >= 0) && (static_cast<unsigned int>(y0 + 1) < dimension.getHeight())) {
           const long double w2 = (1 - xFraction) * yFraction;
           result += w2 * p[dimension.getWidth()];
         }
@@ -117,12 +117,12 @@ namespace gip {
       
       ++p;
       
-      if (((x0 + 1) >= 0) && ((x0 + 1) < dimension.getWidth())) {
-        if ((y0 >= 0) && (y0 < dimension.getHeight())) {
+      if (((x0 + 1) >= 0) && (static_cast<unsigned int>(x0 + 1) < dimension.getWidth())) {
+        if ((y0 >= 0) && (static_cast<unsigned int>(y0) < dimension.getHeight())) {
           const long double w1 = xFraction * (1 - yFraction);
           result += w1 * p[0];
         }
-        if (((y0 + 1) >= 0) && ((y0 + 1) < dimension.getHeight())) {
+        if (((y0 + 1) >= 0) && (static_cast<unsigned int>(y0 + 1) < dimension.getHeight())) {
           const long double w3 = xFraction * yFraction;
           result += w3 * p[dimension.getWidth()];
         }
