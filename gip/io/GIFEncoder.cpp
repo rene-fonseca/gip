@@ -24,21 +24,21 @@ namespace gip {
 
 namespace GIF {
 
-typedef struct {
+struct Header {
   char signature[3]; // 'GIF'
   char version[3]; // '87a' or '89a'
-} __attribute__ ((packed)) Header;
+} __attribute__ ((packed));
 
-typedef struct {
+struct DataSubBlock {
   byte size; // size of the block in bytes
   byte data[255]; // the data
-} __attribute__ ((packed)) DataSubBlock;
+} __attribute__ ((packed));
 
 const byte TERMINATOR = 0x00; // terminates stream of data blocks
 const byte TRAILER = 0x3b; // indicates end of data stream
 const byte IMAGESEPARATOR = 0x2c; // indicates beginning of image
 
-typedef struct {
+struct LogicalScreenDescriptor {
   LittleEndian::UnsignedShort width; // logical screen width
   LittleEndian::UnsignedShort height; // logical screen height
   unsigned int entriesOfColorTable : 3; // number of entries is 2^(value + 1)
@@ -47,9 +47,9 @@ typedef struct {
   bool colorTable : 1; // true if table is present
   byte backGroundColorIndex; // index to global color table
   byte aspectRatio; // actual ratio = (aspectRatio + 15) / 64
-} __attribute__ ((packed)) LogicalScreenDescriptor;
+} __attribute__ ((packed));
 
-typedef struct {
+struct ImageDescriptor {
   byte separator; // fixed value of ImageSeperator
   LittleEndian::UnsignedShort left; // column in pixels in respect to left edge of logical screen
   LittleEndian::UnsignedShort top; // row in pixels in respect to top of logical screen
@@ -60,13 +60,13 @@ typedef struct {
   bool sortedColorTable : 1; // true if the colors are sorted after importance
   bool interlaced : 1; // true if image is interlaced
   bool colorTable : 1; // true if color table is present
-} __attribute__ ((packed)) ImageDescriptor;
+} __attribute__ ((packed));
 
-typedef struct {
+struct ColorEntry {
   byte red;
   byte green;
   byte blue;
-} __attribute__ ((packed)) ColorEntry;
+} __attribute__ ((packed));
 
 
 
@@ -82,7 +82,7 @@ private:
   byte dataBlockData[255];
 public:
 
-  inline unsigned int getNextCode() {
+  inline unsigned int getNextCode() throw() {
     static const unsigned int mask[13] = {0x000, 0x001, 0x003, 0x007, 0x00f, 0x01f, 0x03f, 0x07f, 0x0ff, 0x1ff, 0x3ff, 0x7ff, 0xfff};
 
     while (bitsAvailable < currentCodeSize) {
@@ -101,7 +101,7 @@ public:
     return code;
   }
 
-  void readImage(ColorImage& image, const ColorPixel* colorTable, bool interlaced) {
+  void readImage(ColorImage& image, const ColorPixel* colorTable, bool interlaced) throw(InvalidFormat, IOException) {
     static const unsigned int lookupRowIndex[4] = {0, 4, 2, 1};
     static const unsigned int lookupRowStep[4] = {8, 8, 4, 2};
     unsigned int width = image.getWidth();
@@ -117,7 +117,7 @@ public:
 
     byte LZWCodeSize;
     file.read((char*)&LZWCodeSize, sizeof(LZWCodeSize)); // get LZW minimum code size
-    assert((LZWCodeSize >= 2) && (LZWCodeSize <= 9), Exception("Invalid format"));
+    assert((LZWCodeSize >= 2) && (LZWCodeSize <= 9), InvalidFormat("Invalid GIF format"));
 
     const unsigned int clearCode = 1 << LZWCodeSize; // the clear code
     const unsigned int highCode = clearCode - 1; // set the highest code not needing decoding
@@ -144,7 +144,7 @@ public:
 
     while (!done) {
       code = getNextCode();
-      assert(!limitReached || (code == clearCode), Exception("Invalid format"));
+      assert(!limitReached || (code == clearCode), InvalidFormat("Invalid GIF format"));
       limitReached = false;
       if (code == endCode) { // stop on end code
         break;
@@ -155,7 +155,7 @@ public:
         do { // remove all clear codes
           code = getNextCode();
         } while (code == clearCode);
-        assert(code != endCode, Exception("Invalid format")); // ending code after a clear code
+        assert(code != endCode, InvalidFormat("Invalid GIF format")); // ending code after a clear code
 //        if (code >= slot) { // if beyond preset codes then set to zero
 //          code = 0;
 //        }
@@ -176,7 +176,7 @@ public:
             oldCode = code;
           }
         } else { // the code is not in the table
-          assert(C == slot, Exception("Invalid format"));
+          assert(C == slot, InvalidFormat("Invalid GIF format"));
           unsigned int tempCode = oldCode;
           while (oldCode > highCode) { // translate the old code
             decodeStack[stackIndex] = suffix[oldCode];
@@ -262,7 +262,7 @@ bool GIFEncoder::isValid() throw(IOException) {
          (header.version[0] == '8') && (header.version[1] == '9') && (header.version[2] == 'a'));
 }
 
-ColorImage* GIFEncoder::read() throw(IOException) {
+ColorImage* GIFEncoder::read() throw(InvalidFormat, IOException) {
 
   File file(filename, File::READ, 0);
 
@@ -272,7 +272,7 @@ ColorImage* GIFEncoder::read() throw(IOException) {
   bool value = (header.signature[0] == 'G') && (header.signature[1] == 'I') && (header.signature[2] == 'F') &&
          ((header.version[0] == '8') && (header.version[1] == '7') && (header.version[2] == 'a') ||
          (header.version[0] == '8') && (header.version[1] == '9') && (header.version[2] == 'a'));
-  assert(value, Exception("Invalid format"));
+  assert(value, InvalidFormat("Invalid GIF format"));
 
   GIF::LogicalScreenDescriptor globalDescriptor;
   file.read((char*)&globalDescriptor, sizeof(globalDescriptor));
@@ -294,7 +294,7 @@ ColorImage* GIFEncoder::read() throw(IOException) {
 
   GIF::ImageDescriptor imageDescriptor;
   file.read((char*)&imageDescriptor, sizeof(imageDescriptor));
-  assert(imageDescriptor.separator == GIF::IMAGESEPARATOR, Exception("Invalid format"));
+  assert(imageDescriptor.separator == GIF::IMAGESEPARATOR, InvalidFormat("Invalid GIF format"));
 
   ColorPixel localColorTable[256];
   unsigned int localColors = 1 << (imageDescriptor.entriesOfColorTable + 1);
@@ -318,11 +318,11 @@ ColorImage* GIFEncoder::read() throw(IOException) {
 
   byte terminator;
   file.read((char*)&terminator, sizeof(terminator)); // check terminator
-  assert(terminator == GIF::TERMINATOR, Exception("Invalid format"));
+  assert(terminator == GIF::TERMINATOR, InvalidFormat("Invalid GIF format"));
 
   byte trailer;
   file.read((char*)&trailer, sizeof(trailer)); // check trailer
-  assert(trailer == GIF::TRAILER, Exception("Invalid format"));
+  assert(trailer == GIF::TRAILER, InvalidFormat("Invalid GIF format"));
 
   return new ColorImage(image);
 }

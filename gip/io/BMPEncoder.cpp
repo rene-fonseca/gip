@@ -143,7 +143,7 @@ bool BMPEncoder::isValid() throw(IOException) {
   return result;
 }
 
-ColorImage* BMPEncoder::read() throw(IOException) {
+ColorImage* BMPEncoder::read() throw(InvalidFormat, IOException) {
   File file(filename, File::READ, 0);
 
   BMPHeader header;

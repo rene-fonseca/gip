@@ -43,7 +43,7 @@ public:
 
   bool isValid() throw(IOException);
 
-  ColorImage* read() throw(IOException);
+  ColorImage* read() throw(InvalidFormat, IOException);
 
   void write(const ColorImage* image) throw(IOException);
 

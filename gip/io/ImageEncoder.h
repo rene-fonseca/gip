@@ -53,7 +53,7 @@ public:
 
     @param stream The input stream.
   */
-  virtual ArrayImage<ColorPixel>* read() throw(IOException) = 0;
+  virtual ArrayImage<ColorPixel>* read() throw(InvalidFormat, IOException) = 0;
 
   /**
     Writes the specified image to the stream.
