@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,55 +18,76 @@
 #include <base/string/String.h>
 #include <base/io/InputStream.h>
 #include <base/io/OutputStream.h>
+#include <base/collection/Array.h>
 #include <gip/ArrayImage.h>
+#include <gip/ImageException.h>
 #include <gip/io/InvalidFormat.h>
 
 namespace gip {
 
-/**
-  @short Interface implemented by image encoders/decoders.
-  @author René Møller Fonseca
-*/
-
-class ImageEncoder : public Object {
-public:
+  /**
+    @defgroup imageEncoders Image Encoders
+  */
 
   /**
-    Returns a description of the encoder.
+    Image encoding and decoding interface.
+  
+    @short Interface implemented by image encoders/decoders.
+    @ingroup imageEncoders
+    @author Rene Moeller Fonseca
+    @version 1.1
   */
-  virtual String getDescription() const throw() = 0;
+  
+  class ImageEncoder : public Object {
+  public:
+    
+    /**
+      Returns a description of the encoder.
+    */
+    virtual String getDescription() const throw() = 0;
+    
+    /**
+      Returns the default extension.
+    */
+    virtual String getDefaultExtension() const throw() = 0;
+    
+    /**
+      Returns an array of extensions. The default is to return the default
+      extension.
+    */
+    virtual Array<String> getExtensions() const throw();
+    
+    /**
+      Returns true if the format is valid.
+      
+      @param filename The path of the file.
+    */
+    virtual bool isValid(const String& filename) throw(IOException) = 0;
+    
+    /**
+      Reads a color image from the specified file.
+      
+      @param filename The path of the file.
+    */
+    virtual ArrayImage<ColorPixel>* read(const String& filename) throw(InvalidFormat, IOException) = 0;
+    
+    /**
+      Writes the specified image to the specified file.
 
-  /**
-    Returns the default extension.
-  */
-  virtual String getDefaultExtension() const throw() = 0;
+      @param filename The path of the file.
+      @param image The image to be written.
+    */
+    virtual void write(const String& filename, const ArrayImage<ColorPixel>* image) throw(ImageException, IOException) = 0;
+    
+    /**
+      Returns a description of the object.
 
-  /**
-    Returns true if the format is valid.
-  */
-  virtual bool isValid() throw(IOException) = 0;
-
-  /**
-    Reads a color image from the stream.
-
-    @param stream The input stream.
-  */
-  virtual ArrayImage<ColorPixel>* read() throw(InvalidFormat, IOException) = 0;
-
-  /**
-    Writes the specified image to the stream.
-
-    @param stream The output stream.
-    @param image The image to be written.
-  */
-  virtual void write(const ArrayImage<ColorPixel>* image) throw(IOException) = 0;
-
-  /**
-    Returns a description of the object.
-  */
-  virtual FormatOutputStream& getInfo(FormatOutputStream& stream) throw(IOException) = 0;
-};
-
+      @param stream The stream to write the information to.
+      @param filename The path of the file.
+    */
+    virtual FormatOutputStream& getInfo(FormatOutputStream& stream, const String& filename) throw(IOException) = 0;
+  };
+  
 }; // end of namespace
 
 #endif
