@@ -19,6 +19,38 @@
 
 namespace gip {
 
+  template<class PIXEL>
+  class Histogram : public UnaryOperation<PIXEL, void> {
+  };
+
+  template<>
+  class Histogram<GrayPixel> : public UnaryOperation<GrayPixel, void> {
+  private:
+
+    /** The gray histogram. */
+    Array<unsigned int> histogram;
+    /** The histogram elements. */
+    unsigned int* elements;
+  public:
+
+    Histogram() throw(MemoryException)
+      : histogram(PixelTraits<GrayPixel>::MAXIMUM + 1, 0), elements(histogram.getElements()) {
+      reset();
+    }
+
+    inline void operator()(const GrayPixel& value) throw() {
+      ++elements[value];
+    }
+
+    void reset() throw() {
+      fill<unsigned int>(histogram.getElements(), histogram.getSize(), 0);
+    }
+
+    Array<unsigned int> getHistogram() const throw() {
+      return histogram;
+    }
+  };
+
   /**
     Gray level histogram operation.
     
