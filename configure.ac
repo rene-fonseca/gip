@@ -16,7 +16,7 @@ dnl Process this file with autoconf to produce a configure script
 AC_INIT(Makefile.am)
 AC_CONFIG_SRCDIR(gip/features.h)
 
-ac_gip_build_date=$(date -u +"%D %T UTC")
+ac_gip_build_date=$(date --iso-8601=seconds)
 ac_gip_build_user=$(whoami)
 ac_gip_build_host=$(uname -n)
 
@@ -129,5 +129,6 @@ AC_CONFIG_FILES(gip/analysis/Makefile)
 AC_CONFIG_FILES(gip/canvas/Makefile)
 AC_CONFIG_FILES(gip/io/Makefile)
 AC_CONFIG_FILES(gip/media/Makefile)
+AC_CONFIG_FILES(gip/video/Makefile)
 
 AC_OUTPUT()
