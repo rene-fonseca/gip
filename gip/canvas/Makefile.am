@@ -17,7 +17,7 @@ noinst_LTLIBRARIES = libcanvas.la
 
 libcanvas_la_SOURCES = Canvas.cpp
 
-sectiondir = $(includedir)/gip
+sectiondir = $(includedir)/gip/canvas
 section_HEADERS = Canvas.h
 
 EXTRA_DIST =

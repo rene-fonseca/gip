@@ -17,7 +17,7 @@ noinst_LTLIBRARIES = libtransformation.la
 
 libtransformation_la_SOURCES = WalshTransformation.cpp IntensityMapper.cpp Mirror.cpp Flip.cpp MinMax.cpp Convert.cpp Gradient.cpp FourierTransformation.cpp Test.cpp TSRTransformation.cpp LinearScale.cpp UnaryTransformation.cpp Noise.cpp Transformation.cpp Duplicate.cpp Scale.cpp StraightLineHoughTransformation.cpp Convolution3x3.cpp MedianFilter3x3.cpp ContrastStretch.cpp EqualizeHistogram.cpp Erode.cpp Dilate.cpp
 
-sectiondir = $(includedir)/gip
+sectiondir = $(includedir)/gip/transformation
 section_HEADERS = Scale.h Crop.h Duplicate.h FourierExchange.h Tile.h Transformation.h Noise.h UnaryTransformation.h LinearScale.h TSRTransformation.h Test.h FourierTransformation.h Gradient.h Convert.h MinMax.h Flip.h Mirror.h IntensityMapper.h WalshTransformation.h StraightLineHoughTransformation.h Convolution3x3.h MedianFilter3x3.h ContrastStretch.h EqualizeHistogram.h Erode.h Dilate.h
 
 EXTRA_DIST =

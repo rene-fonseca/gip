@@ -17,7 +17,7 @@ noinst_LTLIBRARIES = libmedia.la
 
 libmedia_la_SOURCES = AVIEncoder.cpp
 
-sectiondir = $(includedir)/gip
+sectiondir = $(includedir)/gip/media
 section_HEADERS = AVIEncoder.h
 
 EXTRA_DIST =

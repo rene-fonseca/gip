@@ -17,7 +17,7 @@ noinst_LTLIBRARIES = libio.la
 
 libio_la_SOURCES = InvalidFormat.cpp ImageEncoder.cpp BMPEncoder.cpp GIFEncoder.cpp JPEGEncoder.cpp PCXEncoder.cpp PGMEncoder.cpp PNGEncoder.cpp PPMEncoder.cpp RASEncoder.cpp TGAEncoder.cpp TIFFEncoder.cpp YUVEncoder.cpp
 
-sectiondir = $(includedir)/gip
+sectiondir = $(includedir)/gip/io
 section_HEADERS = InvalidFormat.h ImageEncoder.h BMPEncoder.h GIFEncoder.h JPEGEncoder.h PCXEncoder.h PGMEncoder.h PNGEncoder.h PPMEncoder.h RASEncoder.h TGAEncoder.h TIFFEncoder.h YUVEncoder.h
 
 EXTRA_DIST =
