@@ -26,6 +26,10 @@ using namespace gip;
 using namespace base;
 
 class CanvasApplication : public Application {
+private:
+
+  static const unsigned int MAJOR_VERSION = 1;
+  static const unsigned int MINOR_VERSION = 0;
 public:
 
   CanvasApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
@@ -33,13 +37,17 @@ public:
   }
 
   Point getPoint(const Dimension& dimension) throw() {
-    return Point(Random::getInteger()%dimension.getWidth(),
-      Random::getInteger()%dimension.getHeight());
+    return Point(
+      Random::getInteger() % dimension.getWidth(),
+      Random::getInteger() % dimension.getHeight()
+    );
   }
 
   Point getPoint2(const Dimension& dimension) throw() {
-    return Point(Random::getInteger()%10000-5000,
-      Random::getInteger()%10000-5000);
+    return Point(
+      Random::getInteger() % 10000 - 5000,
+      Random::getInteger() % 10000 - 5000
+    );
   }
 
   void canvasTransformation(const String& inputFile, const String& outputFile) throw() {
@@ -112,7 +120,7 @@ public:
       );
       canvas.line(p1, p2, makeColorPixel((i * 255 + 15)/60, 128, 128 - i * 3), Canvas::ANTIALIASING);
     }
-
+    
     // test ring
     for (int radius = 4; radius < 15; ++radius) {
       canvas.ring(
@@ -122,7 +130,7 @@ public:
         Canvas::ANTIALIASING
       );
     }
-
+    
     for (int i = 0; i < canvas.getDimension().getWidth() + 45; i += 5) {
       canvas.line(Point(-45 + i, 0), Point(i, 45), makeColorPixel(255, 0, 0), Canvas::ANTIALIASING);
       canvas.line(Point(-45 + i, 45), Point(i, 0), makeColorPixel(0, 0, 255), Canvas::ANTIALIASING);
@@ -150,7 +158,7 @@ public:
       );
     }
 
-fout << MESSAGE("Dimension of test: ") << canvas.getDimensionOfText(MESSAGE("Hello, World!")) << ENDL;
+    fout << MESSAGE("Dimension of test: ") << canvas.getDimensionOfText(MESSAGE("Hello, World!")) << ENDL;
     canvas.write(Point(150, 200), MESSAGE("Hello, World!"));
 
     fout << MESSAGE("Exporting image with encoder: ") << encoder.getDescription() << ENDL;
@@ -159,7 +167,7 @@ fout << MESSAGE("Dimension of test: ") << canvas.getDimensionOfText(MESSAGE("Hel
   }
   
   void main() throw() {
-    fout << MESSAGE("Canvas version 1.0") << EOL
+    fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("http://www.mip.sdu.dk/~fonseca/gip") << EOL
          << MESSAGE("Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>") << EOL << ENDL;
@@ -174,7 +182,7 @@ fout << MESSAGE("Dimension of test: ") << canvas.getDimensionOfText(MESSAGE("Hel
       outputFile = arguments[1]; // the file name of the destination image
       break;
     default:
-      fout << MESSAGE("USAGE: ") << getFormalName() << MESSAGE(" input output") << ENDL;
+      fout << MESSAGE("Usage: ") << getFormalName() << MESSAGE(" input output") << ENDL;
       return; // stop
     }
     
@@ -182,14 +190,4 @@ fout << MESSAGE("Dimension of test: ") << canvas.getDimensionOfText(MESSAGE("Hel
   }
 };
 
-int main(int argc, const char* argv[], const char* env[]) {
-  CanvasApplication application(argc, argv, env);
-  try {
-    application.main();
-  } catch(Exception& e) {
-    return Application::getApplication()->exceptionHandler(e);
-  } catch(...) {
-    return Application::getApplication()->exceptionHandler();
-  }
-  return Application::getApplication()->getExitCode();
-}
+STUB(CanvasApplication);

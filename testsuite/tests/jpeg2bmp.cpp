@@ -12,7 +12,7 @@
  ***************************************************************************/
 
 #include <gip/Pixel.h>
-#include <gip/io/RASEncoder.h>
+#include <gip/io/JPEGEncoder.h>
 #include <gip/io/BMPEncoder.h>
 #include <base/Application.h>
 #include <base/string/FormatOutputStream.h>
@@ -20,22 +20,22 @@
 using namespace base;
 using namespace gip;
 
-class RASEncoderApplication : public Application {
+class JPEG2BMP : public Application {
 private:
 
   static const unsigned int MAJOR_VERSION = 1;
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  RASEncoderApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("RASEncoder"), numberOfArguments, arguments, environment) {
+  JPEG2BMP(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
+    : Application(MESSAGE("jpeg2bmp"), numberOfArguments, arguments, environment) {
   }
 
   void main() throw() {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
-         << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
-         << MESSAGE("http://www.mip.sdu.dk/~fonseca/gip") << EOL
-         << MESSAGE("Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>") << EOL << ENDL;
+          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
+          << MESSAGE("http://www.mip.sdu.dk/~fonseca/gip") << EOL
+          << MESSAGE("Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>") << EOL << ENDL;
     
     String inputFile;
     String outputFile;
@@ -51,7 +51,7 @@ public:
       return; // stop
     }
 
-    RASEncoder readEncoder;
+    JPEGEncoder readEncoder;
     
     fout << MESSAGE("Information:") << ENDL;
     readEncoder.getInfo(fout, inputFile);
@@ -82,4 +82,4 @@ public:
   }
 };
 
-STUB(RASEncoderApplication);
+STUB(JPEG2BMP);

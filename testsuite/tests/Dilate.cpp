@@ -24,6 +24,10 @@ using namespace gip;
 using namespace base;
 
 class DilateApplication : public Application {
+private:
+
+  static const unsigned int MAJOR_VERSION = 1;
+  static const unsigned int MINOR_VERSION = 0;
 public:
 
   class Kernel {
@@ -70,10 +74,10 @@ public:
   }
   
   void main() throw() {
-    fout << MESSAGE("Dilate version 1.0") << EOL
+    fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("http://www.mip.sdu.dk/~fonseca/gip") << EOL
-         << MESSAGE("Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>") << EOL << ENDL;
+         << MESSAGE("Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>") << EOL << ENDL;
     
     String inputFile;
     String outputFile;
@@ -85,7 +89,7 @@ public:
       outputFile = arguments[1]; // the file name of the destination image
       break;
     default:
-      fout << MESSAGE("USAGE: ") << getFormalName() << MESSAGE(" input output") << ENDL;
+      fout << MESSAGE("Usage: ") << getFormalName() << MESSAGE(" input output") << ENDL;
       return; // stop
     }
     
@@ -93,14 +97,4 @@ public:
   }
 };
 
-int main(int argc, const char* argv[], const char* env[]) {
-  DilateApplication application(argc, argv, env);
-  try {
-    application.main();
-  } catch(Exception& e) {
-    return Application::getApplication()->exceptionHandler(e);
-  } catch(...) {
-    return Application::getApplication()->exceptionHandler();
-  }
-  return Application::getApplication()->getExitCode();
-}
+STUB(DilateApplication);

@@ -33,7 +33,9 @@ private:
    long double scale;
 public:
 
-  inline WalshToGray(const Dimension& dimension) throw() : scale(1.0/dimension.getSize()) {}
+  inline WalshToGray(const Dimension& dimension) throw()
+    : scale(1.0/dimension.getSize()) {
+  }
 
   inline GrayPixel operator()(const float& value) const throw() {
     long double temp = 0xff * Math::log(1 + value * scale);
@@ -48,6 +50,10 @@ public:
 };
 
 class WalshApplication : public Application {
+private:
+
+  static const unsigned int MAJOR_VERSION = 1;
+  static const unsigned int MINOR_VERSION = 0;
 public:
 
   WalshApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
@@ -105,10 +111,10 @@ public:
   }
   
   void main() throw() {
-    fout << MESSAGE("WalshTransformation version 1.0") << EOL
+    fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("http://www.mip.sdu.dk/~fonseca/gip") << EOL
-         << MESSAGE("Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>") << EOL << ENDL;
+         << MESSAGE("Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>") << EOL << ENDL;
     
     String inputFile;
     String outputFile;
@@ -120,7 +126,7 @@ public:
       outputFile = arguments[1]; // the file name of the destination image
       break;
     default:
-      fout << MESSAGE("USAGE: ") << getFormalName() << MESSAGE(" input output") << ENDL;
+      fout << MESSAGE("Usage: ") << getFormalName() << MESSAGE(" input output") << ENDL;
       return; // stop
     }
     
@@ -128,14 +134,4 @@ public:
   }
 };
 
-int main(int argc, const char* argv[], const char* env[]) {
-  WalshApplication application(argc, argv, env);
-  try {
-    application.main();
-  } catch(Exception& e) {
-    return Application::getApplication()->exceptionHandler(e);
-  } catch(...) {
-    return Application::getApplication()->exceptionHandler();
-  }
-  return Application::getApplication()->getExitCode();
-}
+STUB(WalshApplication);

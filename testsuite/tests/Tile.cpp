@@ -25,6 +25,10 @@ using namespace gip;
 using namespace base;
 
 class TileApplication : public Application {
+private:
+
+  static const unsigned int MAJOR_VERSION = 1;
+  static const unsigned int MINOR_VERSION = 0;
 public:
 
   TileApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
@@ -67,7 +71,7 @@ public:
   }
   
   void main() throw() {
-    fout << MESSAGE("Tile version 1.0") << EOL
+    fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("http://www.mip.sdu.dk/~fonseca/gip") << EOL
          << MESSAGE("Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>") << EOL << ENDL;
@@ -84,7 +88,7 @@ public:
       outputFile = arguments[2]; // the file name of the destination image
       break;
     default:
-      fout << MESSAGE("USAGE: ") << getFormalName() << MESSAGE(" dimension input output") << ENDL;
+      fout << MESSAGE("Usage: ") << getFormalName() << MESSAGE(" dimension input output") << ENDL;
       return; // stop
     }
 
@@ -92,14 +96,4 @@ public:
   }
 };
 
-int main(int argc, const char* argv[], const char* env[]) {
-  TileApplication application(argc, argv, env);
-  try {
-    application.main();
-  } catch(Exception& e) {
-    return Application::getApplication()->exceptionHandler(e);
-  } catch(...) {
-    return Application::getApplication()->exceptionHandler();
-  }
-  return Application::getApplication()->getExitCode();
-}
+STUB(TileApplication);

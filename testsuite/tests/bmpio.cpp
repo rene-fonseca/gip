@@ -11,6 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
+#include <base/Application.h>
 #include <base/string/FormatOutputStream.h>
 #include <gip/Pixel.h>
 #include <gip/io/BMPEncoder.h>
@@ -18,27 +19,26 @@
 using namespace base;
 using namespace gip;
 
-#include <base/Application.h>
-#include <base/string/FormatOutputStream.h>
-#include <gip/Pixel.h>
-#include <gip/io/GIFEncoder.h>
+class BMPEncoderApplication : public Application {
+private:
 
-using namespace base;
-using namespace gip;
-
-class TestBMPEncoder : public Application {
+  static const unsigned int MAJOR_VERSION = 1;
+  static const unsigned int MINOR_VERSION = 0;
 public:
 
-  TestBMPEncoder(int numberOfArguments, const char* arguments[], const char* environment[]) throw() :
-          Application(MESSAGE("bmpio"), numberOfArguments, arguments, environment) {
+  BMPEncoderApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
+    : Application(MESSAGE("bmpio"), numberOfArguments, arguments, environment) {
   }
 
-  static void main() throw() {
-    fout << "Testing BMPEncoder..." << ENDL;
+  void main() throw() {
+    fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
+         << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
+         << MESSAGE("http://www.mip.sdu.dk/~fonseca/gip") << EOL
+         << MESSAGE("Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>") << EOL << ENDL;
     
     String filename = MESSAGE("graphics\\image.bmp");
 
-    Array<String> arguments = Application::getApplication()->getArguments();
+    Array<String> arguments = getArguments();
     switch (arguments.getSize()) {
     case 0: // use default
       break;
@@ -46,8 +46,8 @@ public:
       filename = arguments[0];
       break;
     default:
-      fout << MESSAGE("usage: ") << Application::getApplication()->getName() << MESSAGE(" file") << ENDL;
-      Application::getApplication()->setExitCode(EXIT_CODE_ERROR);
+      fout << MESSAGE("Usage: ") << getFormalName() << MESSAGE(" file") << ENDL;
+      setExitCode(EXIT_CODE_ERROR);
       return;
     }
 
@@ -62,9 +62,9 @@ public:
       ColorImage* orig;
       try {
         orig = readEncoder.read(filename);
-      } catch(gip::InvalidFormat& e) {
+      } catch (gip::InvalidFormat& e) {
         ferr << MESSAGE("Invalid or unsupported BMP format") << ENDL;
-        Application::getApplication()->setExitCode(EXIT_CODE_ERROR);
+        setExitCode(EXIT_CODE_ERROR);
         return;
       }
 
@@ -83,20 +83,10 @@ public:
       writeEncoder.write(MESSAGE("output.bmp"), orig);
     } else {
       ferr << MESSAGE("File is not valid") << ENDL;
-      Application::getApplication()->setExitCode(EXIT_CODE_ERROR);
+      setExitCode(EXIT_CODE_ERROR);
       return;
     }
   }
 };
 
-int main(int argc, const char* argv[], const char* envp[]) {
-  TestBMPEncoder application(argc, argv, envp);
-  try {
-    TestBMPEncoder::main();
-  } catch(Exception& e) {
-    return Application::getApplication()->exceptionHandler(e);
-  } catch(...) {
-    return Application::getApplication()->exceptionHandler();
-  }
-  return Application::EXIT_CODE_NORMAL;
-}
+STUB(BMPEncoderApplication);

@@ -89,14 +89,4 @@ public:
   }
 };
 
-int main(int argc, const char* argv[], const char* env[]) {
-  StatApplication application(argc, argv, env);
-  try {
-    application.main();
-  } catch (Exception& e) {
-    return Application::getApplication()->exceptionHandler(e);
-  } catch (...) {
-    return Application::getApplication()->exceptionHandler();
-  }
-  return Application::getApplication()->getExitCode();
-}
+STUB(StatApplication);
