@@ -24,7 +24,7 @@ public:
 
   inline RGBToFloat() throw() {}
 
-  inline Result operator()(const Argument& value) {
+  inline Result operator()(const Argument& value) const throw() {
     return FloatPixel((static_cast<unsigned int>(value.blue) + value.green + value.red)/3);
   }
 };
@@ -34,7 +34,7 @@ public:
 
   inline RGBToGray() throw() {}
 
-  inline Result operator()(const Argument& value) {
+  inline Result operator()(const Argument& value) const throw() {
     unsigned int temp = static_cast<unsigned int>(value.blue) + value.green + value.red;
     if (temp % 3 == 2) {
       ++temp;
@@ -48,7 +48,7 @@ public:
 
   inline FloatToGray() throw() {}
 
-  inline Result operator()(const Argument& value) {
+  inline Result operator()(const Argument& value) const throw() {
     return GrayPixel(static_cast<Intensity>(value));
   }
 };
@@ -61,8 +61,8 @@ public:
 
   inline FloatToGrayWithScale(long double s) throw() : scale(s) {}
 
-  inline Result operator()(const Argument& value) {
-    double temp = scale * value;
+  inline Result operator()(const Argument& value) const throw() {
+    long double temp = scale * value;
     if (temp < MINIMUM_INTENSITY) {
       return MINIMUM_INTENSITY;
     } else if (temp > MAXIMUM_INTENSITY) {
@@ -78,7 +78,7 @@ public:
 
   inline GrayToFloat() throw() {}
 
-  inline Result operator()(const Argument& value) {
+  inline Result operator()(const Argument& value) const throw() {
     return FloatPixel(value);
   }
 };
@@ -86,113 +86,118 @@ public:
 class RGBToComplex : public UnaryOperation<ColorPixel, ComplexPixel> {
 private:
 
-  double scale;
+  long double scale;
 public:
 
-  inline RGBToComplex(double s) throw() : scale(s) {}
+  inline RGBToComplex(long double _scale) throw() : scale(_scale) {}
 
-  inline Result operator()(Argument value) {
+  inline Result operator()(const Argument& value) const throw() {
     RGBToGray opr;
     return ComplexPixel(scale * opr(value), 0);
   }
 };
 
-class ComplexToRGB : public UnaryOperation<ComplexPixel, ColorPixel> {
+class ComplexToRGB : public UnaryOperation<ComplexPixel, RGBPixel> {
 private:
 
-  double scale;
+  const long double scale;
 public:
 
-  inline ComplexToRGB(double s) throw() : scale(s) {}
+  inline ComplexToRGB(long double _scale) throw() : scale(_scale) {}
 
-  inline Result operator()(const Argument& value) {
-    double temp = scale * value.getReal();
+  inline Result operator()(const Argument& value) const throw() {
+    long double temp = scale * value.getReal();
     if (temp < 0) {
       return RGB_PIXEL_BLACK;
     } else if (temp > MAXIMUM_INTENSITY) {
       return RGB_PIXEL_WHITE;
     } else {
-      return GrayToRGB(static_cast<Intensity>(temp));
+      ConvertPixel<RGBPixel, Intensity> convertPixel;
+      return convertPixel(static_cast<Intensity>(temp));
     }
   }
 };
 
-class ComplexToRGBImaginary : public UnaryOperation<ComplexPixel, ColorPixel> {
+class ComplexToRGBImaginary : public UnaryOperation<ComplexPixel, RGBPixel> {
 private:
 
-  double scale;
+  long double scale;
 public:
 
-  inline ComplexToRGBImaginary(double s) throw() : scale(s) {}
+  inline ComplexToRGBImaginary(long double _scale) throw() : scale(_scale) {}
 
-  inline Result operator()(const Argument& value) {
-    double temp = scale * value.getImaginary();
+  inline Result operator()(const Argument& value) const throw() {
+    long double temp = scale * value.getImaginary();
     if (temp < 0) {
       return RGB_PIXEL_BLACK;
     } else if (temp > MAXIMUM_INTENSITY) {
       return RGB_PIXEL_WHITE;
     } else {
-      return GrayToRGB(static_cast<Intensity>(temp));
+      ConvertPixel<RGBPixel, Intensity> convertPixel;
+      return convertPixel(static_cast<Intensity>(temp));
     }
   }
 };
 
-class ComplexToRGBSqrModulus : public UnaryOperation<ComplexPixel, ColorPixel> {
+class ComplexToRGBSqrModulus : public UnaryOperation<ComplexPixel, RGBPixel> {
 private:
 
-  double scale;
+  long double scale;
 public:
 
-  inline ComplexToRGBSqrModulus(double s) throw() : scale(s) {}
+  inline ComplexToRGBSqrModulus(long double _scale) throw() : scale(_scale) {}
 
-  inline Result operator()(const Argument& value) {
-    double temp = scale * value.getSqrModulus();
+  inline Result operator()(const Argument& value) const throw() {
+    long double temp = scale * value.getSqrModulus();
     if (temp < 0) {
       return RGB_PIXEL_BLACK;
     } else if (temp > MAXIMUM_INTENSITY) {
       return RGB_PIXEL_WHITE;
     } else {
-      return GrayToRGB(static_cast<Intensity>(temp));
+      ConvertPixel<RGBPixel, Intensity> convertPixel;
+      return convertPixel(static_cast<Intensity>(temp));
     }
   }
 };
 
-class ComplexToRGBModulus : public UnaryOperation<ComplexPixel, ColorPixel> {
+class ComplexToRGBModulus : public UnaryOperation<ComplexPixel, RGBPixel> {
 private:
 
-  double scale;
+  long double scale;
 public:
 
-  inline ComplexToRGBModulus(double s) throw() : scale(s) {}
+  inline ComplexToRGBModulus(long double _scale) throw() : scale(_scale) {}
 
-  inline Result operator()(const Argument& value) {
-    double temp = scale * value.getModulus();
+  inline Result operator()(const Argument& value) const throw() {
+    long double temp = scale * value.getModulus();
     if (temp < 0) {
       return RGB_PIXEL_BLACK;
     } else if (temp > MAXIMUM_INTENSITY) {
       return RGB_PIXEL_WHITE;
     } else {
-      return GrayToRGB(static_cast<Intensity>(temp));
+      ConvertPixel<RGBPixel, Intensity> convertPixel;
+      return convertPixel(static_cast<Intensity>(temp));
     }
   }
 };
 
-class ComplexToRGBLogModulus : public UnaryOperation<ComplexPixel, ColorPixel> {
+class ComplexToRGBLogModulus : public UnaryOperation<ComplexPixel, RGBPixel> {
 private:
 
-  double scale;
+  long double scale;
 public:
 
-  inline ComplexToRGBLogModulus(double s) throw() : scale(s) {}
+  inline ComplexToRGBLogModulus(double _scale) throw() : scale(_scale) {}
 
-  inline Result operator()(const Argument& value) {
-    double temp = scale * log(1 + value.getModulus());
+  inline Result operator()(const Argument& value) const throw() {
+    long double temp = scale * log(1 + value.getModulus());
     if (temp < 0) {
       return RGB_PIXEL_BLACK;
     } else if (temp > MAXIMUM_INTENSITY) {
       return RGB_PIXEL_WHITE;
     } else {
-      return GrayToRGB(static_cast<Intensity>(temp));
+      ConvertPixel<RGBPixel, Intensity> convertPixel;
+      return convertPixel(static_cast<Intensity>(temp));
     }
   }
 };
@@ -200,7 +205,7 @@ public:
 /**
   Duplicates the contents of an image.
 
-  @author René Møller Fonseca
+  @author Rene Moeller Fonseca
 */
 template<class DEST, class SRC, class UNARY>
 class Convert : public Transformation<DEST, SRC> {
