@@ -46,7 +46,8 @@ namespace gip {
       typedef typename UnaryOperation<typename UNOPRARG::Argument, typename UNOPRRES::Result>::Result Result;
       
       inline NestOperations(UNOPRARG inner, UNOPRRES outer) throw()
-        : innerOperation(inner), outerOperation(outer) {}
+        : innerOperation(inner), outerOperation(outer) {
+      }
 
       inline void operator()(const Argument& value) throw() {
         outerOperation(innerOperation(value));
@@ -66,7 +67,8 @@ namespace gip {
     class ComplexToSqrModulus : public UnaryOperation<Complex, long double> {
     public:
 
-      inline ComplexToSqrModulus() throw() {}
+      inline ComplexToSqrModulus() throw() {
+      }
 
       inline Result operator()(const Argument& value) throw() {
         return value.getSqrModulus();
@@ -79,9 +81,12 @@ namespace gip {
 
     long double operator()() throw() { // DestinationImage::Pixel
       ComplexToSqrModulus innerOperation;
-      NestOperations<ComplexToSqrModulus, Maximum<long double> > opr(innerOperation, Maximum<long double>(0));
-      forEach(*destination, opr);
-      return opr.getResult();
+      NestOperations<ComplexToSqrModulus, Maximum<long double> > operation(
+        innerOperation,
+        Maximum<long double>(0)
+      );
+      forEach(*destination, operation);
+      return operation.getResult();
     }
   };
 

@@ -25,19 +25,29 @@ namespace gip {
 
   class FullPalette : public UnaryOperation<byte, ColorPixel> {
   private:
+    
     ColorPixel* palette;
   public:
-    inline FullPalette(ColorPixel* _palette) : palette(_palette) {}
-    inline Result operator()(Argument value) const throw() {return palette[value];}
+    
+    inline FullPalette(ColorPixel* _palette) : palette(_palette) {
+    }
+    
+    inline Result operator()(Argument value) const throw() {
+      return palette[value];
+    }
   };
 
   class PartialPalette : public UnaryOperation<byte, ColorPixel> {
   private:
+    
     ColorPixel* palette;
     unsigned int maxIndex;
   public:
+    
     inline PartialPalette(ColorPixel* _palette, unsigned int _maxIndex)
-      : palette(_palette), maxIndex(_maxIndex) {}
+      : palette(_palette), maxIndex(_maxIndex) {
+    }
+    
     inline Result operator()(Argument value) const throw() {
       assert(
         value < maxIndex,

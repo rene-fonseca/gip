@@ -83,7 +83,9 @@ namespace gip {
 
 
   template<class DEST, class SRC>
-  inline DEST convertPixel(const SRC& value) throw() {return value;}
+  inline DEST convertPixel(const SRC& value) throw() {
+    return value;
+  }
 
   template<>
   inline Complex convertPixel<Complex, float>(const float& value) throw() {

@@ -39,7 +39,8 @@ namespace gip {
     /**
       Initializes region with offset (0, 0) and dimension (0, 0).
     */
-    inline Region() throw() : offset(0, 0), dimension(0, 0) {}
+    inline Region() throw() : offset(0, 0), dimension(0, 0) {
+    }
 
     /**
       Initializes the region with the specified offset and dimension.
@@ -52,8 +53,10 @@ namespace gip {
     /**
        Initializes region from other region.
     */
-    inline Region(const Region& copy) throw() : offset(copy.offset), dimension(copy.dimension) {}
-
+    inline Region(const Region& copy) throw()
+      : offset(copy.offset), dimension(copy.dimension) {
+    }
+    
     /**
       Assignment of region by region.
     */
@@ -66,12 +69,16 @@ namespace gip {
     /**
       Returns the offset of the region.
     */
-    inline const Point2D& getOffset() const throw() {return offset;}
+    inline const Point2D& getOffset() const throw() {
+      return offset;
+    }
 
     /**
       Returns the dimension of the region.
     */
-    inline const Dimension& getDimension() const throw() {return dimension;}
+    inline const Dimension& getDimension() const throw() {
+      return dimension;
+    }
 
     /**
       Sets the offset of the region.
@@ -90,10 +97,14 @@ namespace gip {
     /**
       Returns true if the region spans elements (i.e. the dimension is proper).
     */
-    inline bool isProper() const throw() {return dimension.isProper();}
+    inline bool isProper() const throw() {
+      return dimension.isProper();
+    }
   };
 
-  inline Region::Region(const Point2D& o, const Dimension& d) throw() : offset(o), dimension(d) {}
+  inline Region::Region(const Point2D& _offset, const Dimension& _dimension) throw()
+    : offset(_offset), dimension(_dimension) {
+  }
 
 }; // end of gip namespace
 

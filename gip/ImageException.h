@@ -38,29 +38,34 @@ namespace gip {
     /**
       Initializes the exception object without an associated message.
     */
-    ImageException() throw();
-
+    inline ImageException() throw() {
+    }
+    
     /**
       Initializes the exception object with the specified message.
 
       @param message The message.
     */
-    ImageException(const char* message) throw();
-
+    inline ImageException(const char* message) throw() : Exception(message) {
+    }
+    
     /**
       Initializes the exception object without an associated message.
       
       @param type The identity of the type.
     */
-    ImageException(Type type) throw() : Exception(type) {}
-
+    inline ImageException(Type type) throw() : Exception(type) {
+    }
+    
     /**
       Initializes the exception object.
       
       @param message An NULL-terminated string (ASCII).
       @param type The identity of the type.
     */
-    ImageException(const char* message, Type type) throw() : Exception(message, type) {}
+    inline ImageException(const char* message, Type type) throw()
+      : Exception(message, type) {
+    }
   };
 
 }; // end of gip namespace

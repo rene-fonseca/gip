@@ -47,25 +47,21 @@ public:
   /**
     Returns the offset of the image.
   */
-  const Point2D& getOffset() const throw();
+  inline const Point2D& getOffset() const throw() {
+    return offset;
+  }
 
   /**
     Returns the region associated with the image.
   */
-  Region getRegion() const throw();
+  Region getRegion() const throw() {
+    return Region(offset, getDimension());
+  }
 };
 
 template<class PIXEL>
-inline Subimage<PIXEL>::Subimage(Image<PIXEL>* image, const Point2D& o) throw() :
-  ShadowImage<PIXEL>(image), offset(o) {
-}
-
-template<class PIXEL>
-inline const Point2D& Subimage<PIXEL>::getOffset() const throw() {return offset;}
-
-template<class PIXEL>
-inline Region Subimage<PIXEL>::getRegion() const throw() {
-  return Region(offset, getDimension());
+inline Subimage<PIXEL>::Subimage(Image<PIXEL>* image, const Point2D& _offset) throw() :
+  ShadowImage<PIXEL>(image), offset(_offset) {
 }
 
 }; // end of gip namespace

@@ -39,7 +39,9 @@ public:
 
     @param image The image.
   */
-  ShadowImage(Image<PIXEL>* i) throw() : Image<PIXEL>(i->getDimension()), image(i) {}
+  ShadowImage(Image<PIXEL>* i) throw()
+    : Image<PIXEL>(i->getDimension()), image(i) {
+  }
 
   /**
     Returns the dimension of the image.

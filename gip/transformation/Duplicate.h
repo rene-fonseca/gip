@@ -28,7 +28,9 @@ namespace gip {
     typedef typename UnaryOperation<TYPE, TYPE>::Argument Argument;
     typedef typename UnaryOperation<TYPE, TYPE>::Result Result;
     
-    inline Result operator()(const Argument& value) const throw() {return value;}
+    inline Result operator()(const Argument& value) const throw() {
+      return value;
+    }
   };
 
   /**

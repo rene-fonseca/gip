@@ -39,7 +39,8 @@ namespace gip {
     /**
       Initializes point as origin (0, 0).
     */
-    Point() throw() : x(0), y(0) {}
+    inline Point() throw() : x(0), y(0) {
+    }
 
     /**
       Initializes point.
@@ -52,8 +53,9 @@ namespace gip {
     /**
       Initializes point from other point.
     */
-    inline Point(const Point& copy) throw() : x(copy.x), y(copy.y) {}
-
+    inline Point(const Point& copy) throw() : x(copy.x), y(copy.y) {
+    }
+    
     /**
       Assignment of point by point.
     */
@@ -92,8 +94,9 @@ namespace gip {
     }
   };
 
-  inline Point::Point(int _x, int _y) throw() : x(_x), y(_y) {}
-
+  inline Point::Point(int _x, int _y) throw() : x(_x), y(_y) {
+  }
+  
   inline Point operator+(const Point& left, const Point& right) throw() {
     return Point(left.getX() + right.getX(), left.getY() + right.getY());
   }

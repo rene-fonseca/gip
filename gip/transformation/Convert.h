@@ -23,7 +23,8 @@ namespace gip {
   class RGBToFloat : public UnaryOperation<ColorPixel, float> {
   public:
 
-    inline RGBToFloat() throw() {}
+    inline RGBToFloat() throw() {
+    }
 
     inline Result operator()(const Argument& value) const throw() {
       return float((static_cast<unsigned int>(value.blue) + value.green + value.red)/3);
@@ -33,7 +34,8 @@ namespace gip {
   class RGBToGray : public UnaryOperation<ColorPixel, GrayPixel> {
   public:
 
-    inline RGBToGray() throw() {}
+    inline RGBToGray() throw() {
+    }
 
     inline Result operator()(const Argument& value) const throw() {
       unsigned int temp = static_cast<unsigned int>(value.blue) + value.green + value.red;
@@ -47,7 +49,8 @@ namespace gip {
   class FloatToGray : public UnaryOperation<float, GrayPixel> {
   public:
 
-    inline FloatToGray() throw() {}
+    inline FloatToGray() throw() {
+    }
 
     inline Result operator()(const Argument& value) const throw() {
       return GrayPixel(static_cast<unsigned char>(value));
@@ -60,7 +63,8 @@ namespace gip {
     long double scale;
   public:
 
-    inline FloatToGrayWithScale(long double _scale) throw() : scale(_scale) {}
+    inline FloatToGrayWithScale(long double _scale) throw() : scale(_scale) {
+    }
 
     inline GrayPixel operator()(const float& value) const throw() {
       long double temp = scale * value;
@@ -77,7 +81,8 @@ namespace gip {
   class GrayToFloat : public UnaryOperation<GrayPixel, float> {
   public:
 
-    inline GrayToFloat() throw() {}
+    inline GrayToFloat() throw() {
+    }
 
     inline float operator()(const GrayPixel& value) const throw() {
       return value;
@@ -90,7 +95,8 @@ namespace gip {
     long double scale;
   public:
 
-    inline RGBToComplex(long double _scale) throw() : scale(_scale) {}
+    inline RGBToComplex(long double _scale) throw() : scale(_scale) {
+    }
 
     inline Complex operator()(const ColorPixel& value) const throw() {
       RGBToGray opr;
@@ -104,7 +110,8 @@ namespace gip {
     const long double scale;
   public:
 
-    inline ComplexToRGB(long double _scale) throw() : scale(_scale) {}
+    inline ComplexToRGB(long double _scale) throw() : scale(_scale) {
+    }
 
     inline Result operator()(const Argument& value) const throw() {
       long double temp = scale * value.getReal();
@@ -125,7 +132,8 @@ namespace gip {
     long double scale;
   public:
 
-    inline ComplexToRGBImaginary(long double _scale) throw() : scale(_scale) {}
+    inline ComplexToRGBImaginary(long double _scale) throw() : scale(_scale) {
+    }
 
     inline Result operator()(const Argument& value) const throw() {
       long double temp = scale * value.getImaginary();
@@ -146,7 +154,8 @@ namespace gip {
     long double scale;
   public:
 
-    inline ComplexToRGBSqrModulus(long double _scale) throw() : scale(_scale) {}
+    inline ComplexToRGBSqrModulus(long double _scale) throw() : scale(_scale) {
+    }
 
     inline Result operator()(const Argument& value) const throw() {
       long double temp = scale * value.getSqrModulus();
@@ -167,7 +176,8 @@ namespace gip {
     long double scale;
   public:
 
-    inline ComplexToRGBModulus(long double _scale) throw() : scale(_scale) {}
+    inline ComplexToRGBModulus(long double _scale) throw() : scale(_scale) {
+    }
 
     inline Result operator()(const Argument& value) const throw() {
       long double temp = scale * value.getModulus();
@@ -188,7 +198,8 @@ namespace gip {
     long double scale;
   public:
 
-    inline ComplexToRGBLogModulus(double _scale) throw() : scale(_scale) {}
+    inline ComplexToRGBLogModulus(double _scale) throw() : scale(_scale) {
+    }
 
     inline Result operator()(const Argument& value) const throw() {
       long double temp = scale * Math::ln(1 + value.getModulus());

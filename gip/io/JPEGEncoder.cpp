@@ -289,21 +289,37 @@ namespace gip {
     unsigned int bitsPerComponent;
   public:
 
-    Dimension getDimension() const throw() {return dimension;}
+    Dimension getDimension() const throw() {
+      return dimension;
+    }
     
-    Type getType() const throw() {return type;}
+    Type getType() const throw() {
+      return type;
+    }
 
-    unsigned int getPlanes() const throw() {return numberOfComponents;}
+    unsigned int getPlanes() const throw() {
+      return numberOfComponents;
+    }
     
-    unsigned int getComponents() const throw() {return components;}
+    unsigned int getComponents() const throw() {
+      return components;
+    }
 
-    bool isCompatibleWith(Type type) const throw() {return false;}
+    bool isCompatibleWith(Type type) const throw() {
+      return false;
+    }
 
-    unsigned int bitsPerComponents() const throw() {return bitsPerComponent;}
+    unsigned int bitsPerComponents() const throw() {
+      return bitsPerComponent;
+    }
 
-    unsigned int bitsPerSample() const throw() {return 0;}
+    unsigned int bitsPerSample() const throw() {
+      return 0;
+    }
     
-    unsigned int getNumberOfImages() const throw() {return numberOfImages;}
+    unsigned int getNumberOfImages() const throw() {
+      return numberOfImages;
+    }
   };
   
   Information getGenralInformation() throw() {

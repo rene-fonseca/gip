@@ -135,7 +135,7 @@ namespace gip {
       unsigned int paddingGranularity;
       /** Specifies that the AVI file has an index at the end. */
       bool hasIndex;
-      /** . */
+      /** Must use index. */
       bool mustUseIndex;
       /** Specifies htat the streams are interleaved. */
       bool isInterleaved;
@@ -151,13 +151,13 @@ namespace gip {
       unsigned int initialFrames;
       /** The number of streams within the object. */
       unsigned int streams;
-      /** . */
+      /** Suggested buffer size. */
       unsigned int suggestedBufferSize;
       /** Specifies the dimension of the AVI file. */
       Dimension dimension;
-      /** . */
+      /** Scale. */
       unsigned int scale;
-      /** . */
+      /** Rate. */
       unsigned int rate;
       /** The starting time of the AVI file. */
       unsigned int start;
@@ -165,7 +165,9 @@ namespace gip {
       unsigned int length;
     public:
 
-      inline unsigned int getTotalNumberOfFrames() const throw() {return totalFrames;}
+      inline unsigned int getTotalNumberOfFrames() const throw() {
+        return totalFrames;
+      }
     };
 
     /**
@@ -237,7 +239,7 @@ namespace gip {
 
     /** The AVI file. */
     File file;
-    /** . */
+    /** Valid. */
     bool valid;
     unsigned int frameIndex;
     GlobalDescriptor globalDescriptor;
@@ -282,22 +284,33 @@ namespace gip {
     /**
       Returns the dimension of the video stream.
     */
-    Dimension getDimension() const throw() {return Dimension(videoStreamDescriptor.width, videoStreamDescriptor.height);}
+    Dimension getDimension() const throw() {
+      return Dimension(
+        videoStreamDescriptor.width,
+        videoStreamDescriptor.height
+      );
+    }
 
     /**
       Returns the total number of frames within the stream.
     */
-    unsigned int getNumberOfFrames() const throw() {return globalDescriptor.totalFrames;}
+    inline unsigned int getNumberOfFrames() const throw() {
+      return globalDescriptor.totalFrames;
+    }
 
     /**
       Returns the current frame index.
     */
-    unsigned int getPosition() const throw() {return frameIndex;}
+    inline unsigned int getPosition() const throw() {
+      return frameIndex;
+    }
 
     /**
       Returns true if the AVI file is valid.
     */
-    bool isValid() const throw() {return valid;}
+    inline bool isValid() const throw() {
+      return valid;
+    }
   };
 
 }; // end of gip namespace

@@ -60,13 +60,15 @@ public:
     inline RowsImpl(Pointer value, const Dimension& dimension) throw() :
       first(value, dimension.getWidth()), rows(dimension.getHeight()) {
     }
-
-    inline RowsImpl(const RowsImpl& copy) throw() : first(copy.first), rows(copy.rows) {}
-
+    
+    inline RowsImpl(const RowsImpl& copy) throw()
+      : first(copy.first), rows(copy.rows) {
+    }
+    
     inline RowIterator getFirst() const throw() {
       return first;
     }
-
+    
     inline RowIterator getEnd() const throw() {
       RowIterator result(first);
       result += rows;
@@ -97,13 +99,15 @@ public:
     ColumnIterator first;
     unsigned int columns;
   public:
-
+    
     inline ColumnsImpl(Pointer value, const Dimension& dimension) throw() :
       first(value, dimension), columns(dimension.getWidth()) {
     }
-
-    inline ColumnsImpl(const ColumnsImpl& copy) throw() : first(copy.first), columns(copy.columns) {}
-
+    
+    inline ColumnsImpl(const ColumnsImpl& copy) throw()
+      : first(copy.first), columns(copy.columns) {
+    }
+    
     inline ColumnIterator getFirst() const throw() {
       return first;
     }

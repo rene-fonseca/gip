@@ -44,7 +44,7 @@ namespace gip {
     /**
       Exception raised by the Camera1394 class.
       
-      @short Camera exception
+      @short Camera exception.
       @ingroup exceptions video
       @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
       @version 1.0
@@ -56,21 +56,25 @@ namespace gip {
       /**
         Initializes the exception object with no message.
       */
-      Camera1394Exception() throw() {}
+      inline Camera1394Exception() throw() {
+      }
       
       /**
         Initializes the exception object.
         
         @param message The message.
       */
-      Camera1394Exception(const char* message) throw() : Exception(message) {}
+      inline Camera1394Exception(const char* message) throw()
+        : Exception(message) {
+      }
       
       /**
         Initializes the exception object without an associated message.
         
         @param type The identity of the type.
       */
-      Camera1394Exception(Type type) throw() : Exception(type) {}
+      inline Camera1394Exception(Type type) throw() : Exception(type) {
+      }
       
       /**
         Initializes the exception object.
@@ -78,7 +82,9 @@ namespace gip {
         @param message An NULL-terminated string (ASCII).
         @param type The identity of the type.
       */
-      Camera1394Exception(const char* message, Type type) throw() : Exception(message, type) {}
+      inline Camera1394Exception(const char* message, Type type) throw()
+        : Exception(message, type) {
+      }
     };
 
 
@@ -1013,9 +1019,10 @@ namespace gip {
         @param buffer The buffer.
         @param size The number of bytes in the buffer.
       */
-      inline FrameBuffer(uint8* _buffer, unsigned int _size) throw() : buffer(_buffer), size(_size) {
+      inline FrameBuffer(uint8* _buffer, unsigned int _size) throw()
+        : buffer(_buffer), size(_size) {
       }
-
+      
       /**
         Returns the buffer.
       */

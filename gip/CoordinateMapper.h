@@ -61,8 +61,9 @@ namespace gip {
     virtual unsigned int translate(const Point2D& coordinate) throw(OutOfRange) = 0;
   };
 
-  inline CoordinateMapper::CoordinateMapper(const Dimension& _dimension) throw() :
-    dimension(_dimension) {}
+  inline CoordinateMapper::CoordinateMapper(const Dimension& _dimension) throw()
+    : dimension(_dimension) {
+  }
 
 }; // end of gip namespace
 

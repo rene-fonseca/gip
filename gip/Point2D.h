@@ -39,7 +39,8 @@ namespace gip {
     /**
       Initializes point as origin (0, 0).
     */
-    Point2D() throw() : row(0), column(0) {}
+    inline Point2D() throw() : row(0), column(0) {
+    }
 
     /**
       Initializes point.
@@ -52,8 +53,10 @@ namespace gip {
     /**
       Initializes point from other point.
     */
-    inline Point2D(const Point2D& copy) throw() : row(copy.row), column(copy.column) {}
-
+    inline Point2D(const Point2D& copy) throw()
+      : row(copy.row), column(copy.column) {
+    }
+    
     /**
       Assignment of point by point.
     */
@@ -99,7 +102,9 @@ namespace gip {
     }
   };
 
-  inline Point2D::Point2D(unsigned int _row, unsigned int _column) throw() : row(_row), column(_column) {}
+  inline Point2D::Point2D(unsigned int _row, unsigned int _column) throw()
+    : row(_row), column(_column) {
+  }
 
   /**
     Writes the specified point to the stream (e.g. "(row, column)").

@@ -150,10 +150,13 @@ namespace gip {
 //
 //    typedef ArrayIteratorImpl<TRAITS> ElementIterator;
 //
-//    inline RowIteratorImpl(Pointer value, unsigned int columns) throw() :
-//      InterleavedIteratorImpl<TRAITS>(value, columns) {}
+//    inline RowIteratorImpl(Pointer value, unsigned int columns) throw()
+//      : InterleavedIteratorImpl<TRAITS>(value, columns) {
+//    }
 //
-//    inline RowIteratorImpl(const RowIteratorImpl& copy) throw() : InterleavedIteratorImpl<TRAITS>(copy) {}
+//    inline RowIteratorImpl(const RowIteratorImpl& copy) throw()
+//      : InterleavedIteratorImpl<TRAITS>(copy) {
+//    }
 //
 //    inline ElementIterator getFirst() const throw() {
 //      return ElementIterator(current);
