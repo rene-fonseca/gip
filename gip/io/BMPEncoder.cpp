@@ -16,7 +16,7 @@
 #include <base/io/File.h>
 #include <base/io/FileReader.h>
 #include <base/concurrency/Thread.h>
-#include <base/Type.h>
+#include <base/Primitives.h>
 #include <base/ByteOrder.h>
 
 using namespace base;
@@ -114,7 +114,7 @@ bool BMPEncoder::isValid() throw(IOException) {
                  (header.width > 0) && (header.height > 0));
 
   switch (header.compression) {
-  case BI_RGB:
+  case BMPEncoder::RGB:
     if (
       (header.planes == 1) && (header.bitsPerPixel == 1) ||
       (header.planes == 1) && (header.bitsPerPixel == 4) ||
@@ -126,12 +126,12 @@ bool BMPEncoder::isValid() throw(IOException) {
       break;
     }
     result = false;
-  case BI_RLE8:
+  case BMPEncoder::RLE8:
     if ((header.planes == 1) && (header.bitsPerPixel == 8)) {
       break;
     }
     result = false;
-  case BI_RLE4:
+  case BMPEncoder::RLE4:
     if ((header.planes == 1) && (header.bitsPerPixel == 4)) {
       break;
     }
@@ -156,7 +156,7 @@ ColorImage* BMPEncoder::read() throw(InvalidFormat, IOException) {
   ) {
 
     switch (header.compression) {
-    case BI_RGB:
+    case BMPEncoder::RGB:
       if (
         (header.planes == 1) && (header.bitsPerPixel == 1) ||
         (header.planes == 1) && (header.bitsPerPixel == 4) ||
@@ -168,12 +168,12 @@ ColorImage* BMPEncoder::read() throw(InvalidFormat, IOException) {
         break;
       }
       return 0;
-    case BI_RLE8:
+    case BMPEncoder::RLE8:
       if ((header.planes == 1) && (header.bitsPerPixel == 8)) {
         break;
       }
       return 0;
-    case BI_RLE4:
+    case BMPEncoder::RLE4:
       if ((header.planes == 1) && (header.bitsPerPixel == 4)) {
         break;
       }
@@ -219,7 +219,7 @@ ColorImage* BMPEncoder::read() throw(InvalidFormat, IOException) {
     ColorPixel* dest = image->getElements();
 
     switch (header.compression) {
-    case BI_RGB: // no compression
+    case BMPEncoder::RGB: // no compression
       {
         switch (header.bitsPerPixel) {
         case 1:
@@ -315,7 +315,7 @@ ColorImage* BMPEncoder::read() throw(InvalidFormat, IOException) {
         }
       }
       break;
-    case BI_RLE8: // 8 bit run-length encoding
+    case BMPEncoder::RLE8: // 8 bit run-length encoding
       {
         Allocator<byte> buffer(header.bitmapDataSize); // all image data
         file.read((char*)buffer.getElements(), header.bitmapDataSize); // read all image data
@@ -363,7 +363,7 @@ ColorImage* BMPEncoder::read() throw(InvalidFormat, IOException) {
         }
       }
       break;
-    case BI_RLE4: // 4 bit run-length encoding
+    case BMPEncoder::RLE4: // 4 bit run-length encoding
       {
         Allocator<byte> buffer(header.bitmapDataSize); // all image data
         file.read((char*)buffer.getElements(), header.bitmapDataSize); // read all image data

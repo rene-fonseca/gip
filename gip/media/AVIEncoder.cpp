@@ -548,7 +548,7 @@ void AVIReader::analyse() throw(IOException) {
       videoStreamDescriptor.colorImportant = header->colorImportant;
 
       switch (header->compression) {
-      case BI_RGB:
+      case AVIEncoder::Compression::RGB:
         videoStreamDescriptor.compression = RGB;
         assert(
           (videoStreamDescriptor.planes == 1) && (videoStreamDescriptor.bitsPerPixel == 4) ||
@@ -558,14 +558,14 @@ void AVIReader::analyse() throw(IOException) {
           Exception("Frame format not supported")
         );
         break;
-      case BI_RLE8:
+      case AVIEncoder::Compression::RLE8:
         videoStreamDescriptor.compression = RLE8;
         assert(
           (videoStreamDescriptor.planes == 1) && (videoStreamDescriptor.bitsPerPixel == 8),
           Exception("Frame format not supported")
         );
         break;
-      case BI_RLE4:
+      case AVIEncoder::Compression::RLE4:
         videoStreamDescriptor.compression = RLE4;
         assert(
           (videoStreamDescriptor.planes == 1) && (videoStreamDescriptor.bitsPerPixel == 4),

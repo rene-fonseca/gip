@@ -32,6 +32,13 @@ private:
   const String filename;
 public:
 
+  /** Compression. */
+  enum Compression {
+    RGB = 0, /**< Uncompressed image. */
+    RLE8 = 1, /**< Run-length encoded (RLE) 8-bit format. */
+    RLE4 = 2 /**< Run-length encoded (RLE) 4-bit format. */
+  };
+  
   /**
     Initializes Windows Bitmap encoder.
   */

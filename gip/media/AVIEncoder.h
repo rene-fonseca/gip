@@ -18,7 +18,7 @@
 #include <base/Object.h>
 #include <base/string/String.h>
 #include <base/io/File.h>
-#include <base/Type.h>
+#include <base/Primitives.h>
 #include <base/mem/Allocator.h>
 #include <base/mem/ReferenceCountedAllocator.h>
 
@@ -51,6 +51,18 @@ private:
 
   String filename;
 public:
+
+  /** Compression formats. */
+  class Compression {
+  public:
+
+    /** Uncompressed image. */
+    static const unsigned int RGB = 0;
+    /** Run-length encoded (RLE) 8-bit format. */
+    static const unsigned int RLE8 = 1;
+    /** Run-length encoded (RLE) 4-bit format. */
+    static const unsigned int RLE4 = 2;
+  };
 
   AVIEncoder(const String& filename) throw(IOException);
 
