@@ -310,15 +310,10 @@ namespace gip {
     bool newFormat = false;
     TGAEncoderImpl::Header header;
     TGAEncoderImpl::Footer footer;
-    
-    fout << "sizeof(header)=" << sizeof(header) << ENDL;
-    fout << "sizeof(footer)=" << sizeof(footer) << ENDL;
-    
+
     File file(filename, File::READ, 0);
     if (file.getSize() >= sizeof(footer)) {
       file.setPosition(-sizeof(footer), File::END);
-      fout << "size=" << file.getSize() << ENDL;
-      fout << "position=" << file.getPosition() << ENDL;
       file.read(getCharAddress(footer), sizeof(footer) - 1);
       if ((compare<char>(footer.signature, signature, signature.getLength()) == 0) &&
           (footer.dot == '.') &&
@@ -326,7 +321,6 @@ namespace gip {
         newFormat = true;
       }
       file.setPosition(0, File::BEGIN);
-      fout << "position=" << file.getPosition() << ENDL;
     }
     file.read(getCharAddress(header), sizeof(header));
 
@@ -355,4 +349,4 @@ namespace gip {
     return stream;
   }
 
-}; // end of namespace
+}; // end of gip namespace
