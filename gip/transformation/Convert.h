@@ -204,8 +204,11 @@ namespace gip {
 
   /**
     Duplicates the contents of an image.
-    
-    @author Rene Moeller Fonseca
+
+    @short Image convertion
+    @ingroup transformation
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    @version 1.0
   */
   template<class DEST, class SRC, class UNARY>
   class Convert : public Transformation<DEST, SRC> {
@@ -215,16 +218,17 @@ namespace gip {
   public:
 
     /**
-      Initializes duplication object.
+      Initializes convert transformation.
 
       @param destination The destination image.
       @param source The source image.
+      @param convert The convertion operation.
     */
-    Convert(DestinationImage* destination, const SourceImage* source, const UNARY& opr) throw() :
-            Transformation<DestinationImage, SourceImage>(destination, source), convert(opr) {
+    Convert(DestinationImage* destination, const SourceImage* source, const UNARY& _convert) throw() :
+            Transformation<DestinationImage, SourceImage>(destination, source), convert(_convert) {
       assert(
         destination->getDimension() == source->getDimension(),
-        Exception("Images must have identical dimensions")
+        Exception("Images must have identical dimensions", this)
       );
     }
 
@@ -233,6 +237,10 @@ namespace gip {
     */
     void operator()() throw() {
       fillWithUnary(*destination, *source, convert);
+    }
+
+    UNARY getResult() const throw() {
+      return convert;
     }
   };
 
