@@ -672,7 +672,10 @@ void AVIReader::decodeFrame(ColorImage& frame, const byte* src, unsigned int siz
           --dest;
           --src;
           while (src < end) {
-            *++dest = makeRGBPixel(*++src, *++src, *++src); // order of args is blue, green, and red
+            unsigned char blue = *++src;
+            unsigned char green = *++src;
+            unsigned char red = *++src;
+            *++dest = makeColorPixel(red, green, blue);
           }
         }
         break;
@@ -683,7 +686,10 @@ void AVIReader::decodeFrame(ColorImage& frame, const byte* src, unsigned int siz
           --dest;
           --src;
           while (src < end) {
-            *++dest = makeRGBPixel(*++src, *++src, *++src); // order of args is blue, green, and red
+            unsigned char blue = *++src;
+            unsigned char green = *++src;
+            unsigned char red = *++src;
+            *++dest = makeColorPixel(red, green, blue);
             ++src; // skip
           }
         }
