@@ -53,7 +53,7 @@ namespace gip {
           lookup = allocatorLookup.getElements();
           lookup += minimum;
           Arithmetic range = maximum - minimum;
-          for (unsigned int i = 0; i <= range; ++i) {
+          for (int i = 0; i <= range; ++i) {
             *lookup++ = (2 * i * static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + range)/(2 * range);
           }
           lookup = allocatorLookup.getElements();
@@ -113,7 +113,7 @@ namespace gip {
           redLookup = redAllocatorLookup.getElements();
           redLookup += minimum.red;
           range = maximum.red - minimum.red;
-          for (unsigned int i = 0; i <= range; ++i) {
+          for (int i = 0; i <= range; ++i) {
             *redLookup++ = (2 * i * static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + range)/(2 * range);
           }
           redLookup = redAllocatorLookup.getElements();
@@ -121,7 +121,7 @@ namespace gip {
           greenLookup = greenAllocatorLookup.getElements();
           greenLookup += minimum.green;
           range = maximum.green - minimum.green;
-          for (unsigned int i = 0; i <= range; ++i) {
+          for (int i = 0; i <= range; ++i) {
             *greenLookup++ = (2 * i * static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + range)/(2 * range);
           }
           greenLookup = greenAllocatorLookup.getElements();
@@ -129,7 +129,7 @@ namespace gip {
           blueLookup = blueAllocatorLookup.getElements();
           blueLookup += minimum.blue;
           range = maximum.blue - minimum.blue;
-          for (unsigned int i = 0; i <= range; ++i) {
+          for (int i = 0; i <= range; ++i) {
             *blueLookup++ = (2 * i * static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + range)/(2 * range);
           }
           blueLookup = blueAllocatorLookup.getElements();
