@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework (Test Suite)
     A framework for developing image processing applications
 
-    Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2002-2003 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -1232,7 +1232,7 @@ public:
     
     struct Flag {
       unsigned int mask;
-      StringLiteral literal;
+      Literal literal;
     };
     
     void onMouseMove(const Position& position, unsigned int state) throw() {
@@ -1321,7 +1321,7 @@ public:
         {Key::INSERT_TOGGLED, MESSAGE("INSERT")}
       };
       
-      static const StringLiteral EVENT_STRING[] = {
+      static const Literal EVENT_STRING[] = {
         MESSAGE("PRESSED"),
         MESSAGE("RELEASED"),
         MESSAGE("DOUBLE CLICKED"),
@@ -1679,7 +1679,7 @@ public:
       }
     }
     
-    void dumpCommand(const StringLiteral& description) throw() {
+    void dumpCommand(const Literal& description) throw() {
       if (verbosity >= Verbosity::COMMANDS) {
         fout << MESSAGE("Command: ") << description << ENDL;
       }

@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework (Test Suite)
     A framework for developing image processing applications
 
-    Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2002-2003 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -164,7 +164,7 @@ public:
   }
   
   void dump() throw() {
-    static const StringLiteral PIXEL_FORMAT_DESCRIPTION[] = {
+    static const Literal PIXEL_FORMAT_DESCRIPTION[] = {
       MESSAGE("Mono 8bit/pixel"),
       MESSAGE("Mono 16bit/pixel"),
       MESSAGE("YUV 4:1:1 12bit/pixel"),
@@ -428,7 +428,7 @@ public:
       }
       fout << EOL << ENDL;
 
-      static const StringLiteral OPERATING_MODES[] = {
+      static const Literal OPERATING_MODES[] = {
         MESSAGE("disabled"), MESSAGE("automatic"), MESSAGE("automatic adjustment"), MESSAGE("manual")
       };
 
