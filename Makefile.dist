@@ -20,5 +20,9 @@ all:
 	automake
 	autoconf
 
-klampenborg-gcc: all
-	CC="gcc -mno-cygwin -mthreads" LTCC='"gcc -mno-cygwin -mthreads"' CXX="gcc -mno-cygwin -mthreads" CXXFLAGS="-O0 -g3" ./configure --target=mingw32 --prefix=/usr/local/gip --with-base-include=//d/projects/base/base --with-base-lib=//d/projects/base/base/base
+# LDFLAGS="-Wl,--enable-auto-import"
+klampenborg-gcc-3.0.4: all
+	CC="gcc" CFLAGS="-pipe -mno-cygwin -mthreads -x c -ansi" CXX="gcc" CPPFLAGS="-I/usr/include/mingw/g++-3/i386-pc-mingw32 -I/usr/include/mingw/g++-3/backward -I/usr/include/mingw/g++-3" CXXFLAGS="-pipe -mno-cygwin -mthreads -x c++ -ansi -O0 -g3" LDFLAGS="-x none" ./configure --target=i386-pc-mingw32 --prefix=/usr/local/gip --disable-shared --with-base-include=/d/projects/base/base --with-base-lib=/d/projects/base/base/base
+
+klampenborg-gcc-3.0.4-release: all
+	CC="gcc" CFLAGS="-pipe -mno-cygwin -mthreads -x c -ansi" CXX="gcc" CPPFLAGS="-I/usr/include/mingw/g++-3/i386-pc-mingw32 -I/usr/include/mingw/g++-3/backward -I/usr/include/mingw/g++-3" CXXFLAGS="-pipe -mno-cygwin -mthreads -x c++ -ansi -O0 -g3 -march=i686 -malign-double" LDFLAGS="-x none" ./configure --target=i686-pc-mingw32 --prefix=/usr/local/gip --disable-shared --with-base-include=/d/projects/base/release/base --with-base-lib=/d/projects/base/release/base/base
