@@ -43,7 +43,7 @@ public:
 
   inline Result operator()(const Argument& value) throw() {
     GrayPixel result;
-    result = MAXIMUM_INTENSITY - value;
+    result = 0xff - value;
     return result;
   }
 };
@@ -53,9 +53,9 @@ public:
 
   inline Result operator()(const Argument& value) throw() {
     ColorPixel result;
-    result.blue = MAXIMUM_INTENSITY - value.blue;
-    result.green = MAXIMUM_INTENSITY - value.green;
-    result.red = MAXIMUM_INTENSITY - value.red;
+    result.blue = 0xff - value.blue;
+    result.green = 0xff - value.green;
+    result.red = 0xff - value.red;
     return result;
   }
 };
@@ -101,7 +101,7 @@ public:
   inline double getResult() const throw() {return result;}
 };
 
-class SumReal : public UnaryOperation<ComplexPixel, void> {
+class SumReal : public UnaryOperation<Complex, void> {
 protected:
   double result;
 public:
@@ -148,7 +148,7 @@ void testFourierTransfomation(ColorImage* image) {
 
 
 
-class WalshToGray : public UnaryOperation<FloatPixel, GrayPixel> {
+class WalshToGray : public UnaryOperation<float, GrayPixel> {
 private:
 
   long double scale;
@@ -157,13 +157,13 @@ public:
   inline WalshToGray(const Dimension& dimension) throw() : scale(1./dimension.getSize()) {}
 
   inline Result operator()(const Argument& value) {
-    long double temp = MAXIMUM_INTENSITY * log(1 + value * scale);
-    if (temp < MINIMUM_INTENSITY) {
-      return MINIMUM_INTENSITY;
-    } else if (temp > MAXIMUM_INTENSITY) {
-      return MAXIMUM_INTENSITY;
+    long double temp = 0xff * log(1 + value * scale);
+    if (temp < 0x00) {
+      return 0x00;
+    } else if (temp > 0xff) {
+      return 0xff;
     } else {
-      return GrayPixel(static_cast<Intensity>(temp));
+      return GrayPixel(static_cast<unsigned char>(temp));
     }
   }
 };
@@ -189,7 +189,7 @@ void testWalshTransformation(ColorImage* image) {
 
   {
     fout << MESSAGE("Filtering...") << ENDL;
-    FloatPixel* elements = walshImage.getElements();
+    float* elements = walshImage.getElements();
     unsigned int rows = walshImage.getDimension().getHeight();
     unsigned int columns = walshImage.getDimension().getWidth();
     for (unsigned int row = 0; row < rows; ++row) {
@@ -299,7 +299,7 @@ void test(const String& input, const String& output) {
 //    {
 //      FindMaximum analysis(frequencyImage);
 //      fout << MESSAGE("Analysing image... ") << '(' << TypeInfo::getTypename(analysis) << ')' << ENDL;
-//      scale = MAXIMUM_INTENSITY/analysis();
+//      scale = 0xff/analysis();
 //      fout << MESSAGE("  scale=") << scale << ENDL;
 //    }
 
@@ -354,14 +354,14 @@ void test(const String& input, const String& output) {
 void pixelInformation() {
   GrayPixel grayArray[1024];
   ColorPixel colorArray[1024];
-  FloatPixel floatArray[1024];
-  ComplexPixel complexArray[1024];
+  float floatArray[1024];
+  Complex complexArray[1024];
 
   fout << MESSAGE("Pixel Information") << EOL
        << MESSAGE("  GrayPixel: pixel=") << sizeof(GrayPixel) << MESSAGE(" array=") << sizeof(grayArray) << EOL
        << MESSAGE("  ColorPixel: pixel=") << sizeof(ColorPixel) << MESSAGE(" array=") << sizeof(colorArray) << EOL
-       << MESSAGE("  FloatPixel: pixel=") << sizeof(FloatPixel) << MESSAGE(" array=") << sizeof(floatArray) << EOL
-       << MESSAGE("  ComplexPixel: pixel=") << sizeof(ComplexPixel) << MESSAGE(" array=") << sizeof(complexArray)<< EOL
+       << MESSAGE("  float: pixel=") << sizeof(float) << MESSAGE(" array=") << sizeof(floatArray) << EOL
+       << MESSAGE("  Complex: pixel=") << sizeof(Complex) << MESSAGE(" array=") << sizeof(complexArray)<< EOL
        << EOL;
 }
 
