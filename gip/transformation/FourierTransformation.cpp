@@ -17,8 +17,8 @@
 
 namespace gip {
 
-FourierTransformation::FourierTransformation(DestinationImage* destination, const SourceImage* source, bool f) throw(ImageException) :
-  Transformation<DestinationImage, SourceImage>(destination, source), forward(f) {
+FourierTransformation::FourierTransformation(DestinationImage* destination, const SourceImage* source, bool _forward) throw(ImageException) :
+  Transformation<DestinationImage, SourceImage>(destination, source), forward(_forward) {
 
   assert(
     source->getDimension().isProper(),
