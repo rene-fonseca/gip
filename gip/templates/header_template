@@ -3,3 +3,16 @@
     copyright            : (C) |YEAR| by |AUTHOR|
     email                : |EMAIL|
  ***************************************************************************/
+
+#ifndef _DK_SDU_MIP__GIP__ _H
+#define _DK_SDU_MIP__GIP__ _H
+
+namespace gip {
+
+/**
+  @author |AUTHOR|
+*/
+
+}; // end of namespace
+
+#endif
