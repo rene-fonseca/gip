@@ -149,6 +149,25 @@ namespace gip {
     return result;
   }
 
+
+
+  /**
+    Blends two pixels according to the specified level of opacity.
+
+    @param back The pixel in the background.
+    @param front The pixel in the foreground.
+    @param opaque The level indicating a fully opaque pixel.
+    @param opacity The opacity level of the new pixel. This must be in the range [0; opaque].
+  */
+  template<class COMPONENT>
+  inline GrayAlphaPixel<COMPONENT> blend(GrayAlphaPixel<COMPONENT> back, GrayAlphaPixel<COMPONENT> front, unsigned int opaque, unsigned int opacity) throw() {
+    GrayAlphaPixel<COMPONENT> result;
+    unsigned int transparency = opaque - opacity;
+    result.gray = (transparency * static_cast<PixelTraits<GrayAlphaPixel<COMPONENT> >::Arithmetic>(back.gray) + opacity * static_cast<PixelTraits<GrayAlphaPixel<COMPONENT> >::Arithmetic>(front.red))/opaque;
+    result.alpha = (transparency * static_cast<PixelTraits<GrayAlphaPixel<COMPONENT> >::Arithmetic>(back.alpha) + opacity * static_cast<PixelTraits<GrayAlphaPixel<COMPONENT> >::Arithmetic>(front.green))/opaque;
+    return result;
+  }
+
   
 
   template<class COMPONENT>

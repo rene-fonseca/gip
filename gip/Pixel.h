@@ -61,16 +61,16 @@ namespace gip {
 
 
   /**
-    Merges two pixels according to the specified level of opacity.
+    Blends two pixels according to the specified level of opacity.
 
-    @param original The current pixel value.
-    @param value The new pixel value.
+    @param back The pixel in the background.
+    @param front The pixel in the foreground.
     @param opaque The level indicating a fully opaque pixel.
     @param opacity The opacity level of the new pixel. This must be in the range [0; opaque].
   */
   template<class PIXEL>
-  inline PIXEL merge(PIXEL original, PIXEL value, unsigned int opaque, unsigned int opacity) throw() {
-    return ((opaque - opacity) * static_cast<PixelTraits<PIXEL>::Arithmetic>(original) + opacity * static_cast<PixelTraits<PIXEL>::Arithmetic>(value))/opaque;
+  inline PIXEL blend(PIXEL back, PIXEL front, unsigned int opaque, unsigned int opacity) throw() {
+    return ((opaque - opacity) * static_cast<PixelTraits<PIXEL>::Arithmetic>(back.blue) + opacity * static_cast<PixelTraits<PIXEL>::Arithmetic>(front.blue))/opaque;
   }
 
 

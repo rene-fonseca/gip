@@ -124,20 +124,20 @@ namespace gip {
 
 
   /**
-    Merges two pixels according to the specified level of opacity.
+    Blends two pixels according to the specified level of opacity.
 
-    @param original The current pixel value.
-    @param value The new pixel value.
+    @param back The pixel in the background.
+    @param front The pixel in the foreground.
     @param opaque The level indicating a fully opaque pixel.
     @param opacity The opacity level of the new pixel. This must be in the range [0; opaque].
   */
   template<class COMPONENT>
-  inline RGBPixel<COMPONENT> merge(RGBPixel<COMPONENT> original, RGBPixel<COMPONENT> value, unsigned int opaque, unsigned int opacity) throw() {
+  inline RGBPixel<COMPONENT> blend(RGBPixel<COMPONENT> back, RGBPixel<COMPONENT> front, unsigned int opaque, unsigned int opacity) throw() {
     RGBPixel<COMPONENT> result;
     unsigned int transparency = opaque - opacity;
-    result.red = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(original.red) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(value.red))/opaque;
-    result.green = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(original.green) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(value.green))/opaque;
-    result.blue = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(original.blue) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(value.blue))/opaque;
+    result.red = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.red) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.red))/opaque;
+    result.green = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.green) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.green))/opaque;
+    result.blue = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.blue) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.blue))/opaque;
     return result;
   }
 

@@ -134,6 +134,27 @@ namespace gip {
 
 
 
+  /**
+    Blends two pixels according to the specified level of opacity.
+
+    @param back The pixel in the background.
+    @param front The pixel in the foreground.
+    @param opaque The level indicating a fully opaque pixel.
+    @param opacity The opacity level of the new pixel. This must be in the range [0; opaque].
+  */
+  template<class COMPONENT>
+  inline RGBAPixel<COMPONENT> blend(RGBAPixel<COMPONENT> back, RGBAPixel<COMPONENT> front, unsigned int opaque, unsigned int opacity) throw() {
+    RGBAPixel<COMPONENT> result;
+    unsigned int transparency = opaque - opacity;
+    result.red = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.red) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.red))/opaque;
+    result.green = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.green) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.green))/opaque;
+    result.blue = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.blue) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.blue))/opaque;
+    result.alpha = (transparency * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.blue) + opacity * static_cast<PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.alpha))/opaque;
+    return result;
+  }
+
+
+
   template<class COMPONENT>
   inline RGBAPixel<COMPONENT> operator*(RGBAPixel<COMPONENT> pixel, int factor) throw() {
     pixel.red *= factor;
