@@ -26,7 +26,7 @@ namespace gip {
 
     @short Straight line Hough transformation
     @ingroup transformations
-    @author Rene Moeller Fonseca
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 

@@ -25,7 +25,7 @@ namespace gip {
 
     @short Scaling operation
     @ingroup transformations
-    @author Rene Moeller Fonseca
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 

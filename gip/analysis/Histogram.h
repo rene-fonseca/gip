@@ -56,7 +56,7 @@ namespace gip {
     
     @short Gray level histogram operation
     @ingroup analysis
-    @author Rene Moeller Fonseca
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 

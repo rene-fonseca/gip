@@ -34,7 +34,7 @@ namespace gip {
   
     @short Interface implemented by image encoders/decoders
     @ingroup imageEncoders
-    @author Rene Moeller Fonseca
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.1
   */
   

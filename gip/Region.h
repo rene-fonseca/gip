@@ -23,7 +23,7 @@ namespace gip {
     A region of an image.
 
     @short A region of an image.
-    @author Rene Moeller Fonseca
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 
