@@ -25,11 +25,12 @@
 
 #define _DK_SDU_MIP__GIP__REQUIRE(major, minor, micro) \
   ((major <= _DK_SDU_MIP__GIP__MAJOR_VERSION) && \
-  (minor <= _DK_SDU_MIP__GIP__MINOR_VERSION) && \
-  (micro <= _DK_SDU_MIP__GIP__MICRO_VERSION))
+   (minor <= _DK_SDU_MIP__GIP__MINOR_VERSION) && \
+   (micro <= _DK_SDU_MIP__GIP__MICRO_VERSION))
 
-#if (!((_DK_SDU_MIP__BASE__MAJOR_VERSION >= 0) && (_DK_SDU_MIP__BASE__MINOR_VERSION >= 9)))
-  #error The Base Framework is too old
+#if (!((_DK_SDU_MIP__BASE__MAJOR_VERSION >= 0) && \
+       (_DK_SDU_MIP__BASE__MINOR_VERSION >= 9)))
+#  error The Base Framework is too old
 #endif
 
 /**
@@ -49,6 +50,16 @@ namespace gip {
   
   // this framework depends on the base framework
   using namespace base;
+};
+
+namespace dk {
+  namespace sdu {
+    namespace mip {
+      namespace gip {
+        using namespace ::gip;
+      };
+    };
+  };
 };
 
 #endif
