@@ -46,6 +46,6 @@ namespace gip {
     : destination(dest) {
   }
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif
