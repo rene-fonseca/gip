@@ -17,6 +17,7 @@
 #include <base/Object.h>
 #include <base/Dimension.h>
 #include <gip/Pixel.h>
+#include <gip/ImageException.h>
 
 namespace gip {
 
@@ -56,7 +57,7 @@ namespace gip {
 
       @param dimension The dimension of the image.
     */
-    Image(const Dimension& dimension) throw();
+    Image(const Dimension& dimension) throw(ImageException);
 
     /**
       Initializes image from other image.
@@ -92,7 +93,11 @@ namespace gip {
   };
 
   template<class PIXEL>
-  inline Image<PIXEL>::Image(const Dimension& _dimension) throw() : dimension(_dimension) {
+  inline Image<PIXEL>::Image(const Dimension& _dimension) throw(ImageException) : dimension(_dimension) {
+    assert(
+      (dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff),
+      ImageException("Image dimension limit exceeded", this)
+    );
   }
 
 }; // end of gip namespace
