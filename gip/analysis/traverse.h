@@ -18,96 +18,98 @@
 
 namespace gip {
 
-/**
-  Invocates the specified unary operation (non-modifying) for each element of the specified image.
+  /**
+    Invocates the specified unary operation (non-modifying) for each element of the specified image.
 
-  @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
-  @version 1.0
-*/
-template<class IMAGE, class UNOPR>
-inline void forEach(const IMAGE& image, UNOPR& function) throw() {
-  typename IMAGE::ReadableRows rows = image.getRows();
-  typename IMAGE::ReadableRows::RowIterator row = rows.getFirst();
-  for (; row != rows.getEnd(); ++row) {
-    typename IMAGE::ReadableRows::RowIterator::ElementIterator column = row.getFirst();
-    for (; column != row.getEnd(); ++column) {
-      function(*column);
+    @short Invokes the operation for each element of the image
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    @version 1.0
+  */
+  template<class IMAGE, class UNOPR>
+  inline void forEach(const IMAGE& image, UNOPR& function) throw() {
+    typename IMAGE::ReadableRows rows = image.getRows();
+    typename IMAGE::ReadableRows::RowIterator row = rows.getFirst();
+    for (; row != rows.getEnd(); ++row) {
+      typename IMAGE::ReadableRows::RowIterator::ElementIterator column = row.getFirst();
+      for (; column != row.getEnd(); ++column) {
+        function(*column);
+      }
     }
   }
-}
 
-/**
-  Applies the specified operation on every element of the specified image.
-
-  @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
-  @version 1.0
-*/
-template<class IMAGE, class UNOPR>
-inline void transform(IMAGE& image, UNOPR& function) {
-  typename IMAGE::Rows rows = image.getRows();
-  typename IMAGE::Rows::RowIterator row = rows.getFirst();
-  for (; row != rows.getEnd(); ++row) {
-    typename IMAGE::Rows::RowIterator::ElementIterator column = row.getFirst();
-    for (; column != row.getEnd(); ++column) {
-      *column = function(*column);
+  /**
+    Applies the specified operation on every element of the specified image.
+    
+    @short Modifies each element of the image
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    @version 1.0
+  */
+  template<class IMAGE, class UNOPR>
+  inline void transform(IMAGE& image, UNOPR& function) {
+    typename IMAGE::Rows rows = image.getRows();
+    typename IMAGE::Rows::RowIterator row = rows.getFirst();
+    for (; row != rows.getEnd(); ++row) {
+      typename IMAGE::Rows::RowIterator::ElementIterator column = row.getFirst();
+      for (; column != row.getEnd(); ++column) {
+        *column = function(*column);
+      }
     }
   }
-}
 
-template<class LEFT, class RIGHT, class BINOPR>
-inline void transform(LEFT& left, const RIGHT& right, BINOPR& function) throw(ImageException) {
-  // check if function is binary and write nice error if not???
-  assert(
-    left.getDimension() == right.getDimension(),
-    ImageException("Images must have identical dimension")
-  );
-  typename LEFT::Rows rows = left.getRows();
-  typename LEFT::Rows::RowIterator row = rows.getFirst();
-  typename RIGHT::ReadableRows::RowIterator rightRow = right.getRows().getFirst();
-  while (row != rows.getEnd()) {
-    typename LEFT::Rows::RowIterator::ElementIterator column = row.getFirst();
-    typename RIGHT::ReadableRows::RowIterator::ElementIterator rightColumn = rightRow.getFirst();
-    while (column != row.getEnd()) {
-      *column = function(*column, *rightColumn);
-      ++column;
-      ++rightColumn;
+  template<class LEFT, class RIGHT, class BINOPR>
+  inline void transform(LEFT& left, const RIGHT& right, BINOPR& function) throw(ImageException) {
+    // check if function is binary and write nice error if not???
+    assert(
+      left.getDimension() == right.getDimension(),
+      ImageException("Images must have identical dimension")
+    );
+    typename LEFT::Rows rows = left.getRows();
+    typename LEFT::Rows::RowIterator row = rows.getFirst();
+    typename RIGHT::ReadableRows::RowIterator rightRow = right.getRows().getFirst();
+    while (row != rows.getEnd()) {
+      typename LEFT::Rows::RowIterator::ElementIterator column = row.getFirst();
+      typename RIGHT::ReadableRows::RowIterator::ElementIterator rightColumn = rightRow.getFirst();
+      while (column != row.getEnd()) {
+        *column = function(*column, *rightColumn);
+        ++column;
+        ++rightColumn;
+      }
+      ++row;
+      ++rightRow;
     }
-    ++row;
-    ++rightRow;
   }
-}
 
-/**
-  Applies the specified operation on every element of the specified image.
+  /**
+    Applies the specified operation on every element of the specified image.
 
-  @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
-  @version 1.0
-*/
-template<class DEST, class SRC, class UNOPR>
-inline void fillWithUnary(DEST& destination, const SRC& source, UNOPR& function) throw(ImageException) {
-  assert(
-    destination.getDimension() == source.getDimension(),
-    ImageException("Images must have identical dimension")
-  );
-  typename DEST::Rows rows = destination.getRows();
-  typename DEST::Rows::RowIterator row = rows.getFirst();
-  typename SRC::ReadableRows::RowIterator srcRow = source.getRows().getFirst();
-  while (row != rows.getEnd()) {
-    typename DEST::Rows::RowIterator::ElementIterator column = row.getFirst();
-    typename SRC::ReadableRows::RowIterator::ElementIterator srcColumn = srcRow.getFirst();
-    while (column != row.getEnd()) {
-      *column = function(*srcColumn);
-      ++column;
-      ++srcColumn;
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    @version 1.0
+  */
+  template<class DEST, class SRC, class UNOPR>
+  inline void fillWithUnary(DEST& destination, const SRC& source, UNOPR& function) throw(ImageException) {
+    assert(
+      destination.getDimension() == source.getDimension(),
+      ImageException("Images must have identical dimension")
+    );
+    typename DEST::Rows rows = destination.getRows();
+    typename DEST::Rows::RowIterator row = rows.getFirst();
+    typename SRC::ReadableRows::RowIterator srcRow = source.getRows().getFirst();
+    while (row != rows.getEnd()) {
+      typename DEST::Rows::RowIterator::ElementIterator column = row.getFirst();
+      typename SRC::ReadableRows::RowIterator::ElementIterator srcColumn = srcRow.getFirst();
+      while (column != row.getEnd()) {
+        *column = function(*srcColumn);
+        ++column;
+        ++srcColumn;
+      }
+      ++row;
+      ++srcRow;
     }
-    ++row;
-    ++srcRow;
   }
-}
 
-/**
-  @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
-*/
+  /**
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+  */
 //template<class DEST, class LEFT, class RIGHT, class BINOPR>
 //inline void fillWithBinary(DEST& destination, const LSRC& left, const RSRC& right, BINOPR& function) throw(ImageException) {
 //  // check if function is binary and write nice error if not???
@@ -178,6 +180,6 @@ inline void fillWithUnary(DEST& destination, const SRC& source, UNOPR& function)
 //
 //};
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif
