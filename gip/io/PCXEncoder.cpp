@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001-2003 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -45,11 +45,11 @@ namespace gip {
   }
 
   String PCXEncoder::getDescription() const throw() {
-    return MESSAGE("Zsoft Corporation PC Paintbrush");
+    return Literal("Zsoft Corporation PC Paintbrush");
   }
 
   String PCXEncoder::getDefaultExtension() const throw() {
-    return MESSAGE("pcx");
+    return Literal("pcx");
   }
 
   bool PCXEncoder::isValid(const String& filename) throw(IOException) {
@@ -58,7 +58,7 @@ namespace gip {
 
     {
       File file(filename, File::READ, 0);
-      file.read(Cast::getCharAddress(header), sizeof(header));
+      file.read(Cast::getAddress(header), sizeof(header));
       size = file.getSize();
     }
 
@@ -77,7 +77,7 @@ namespace gip {
     File file(filename, File::READ, 0);
 
     PCXHeader header;
-    file.read(Cast::getCharAddress(header), sizeof(header));
+    file.read(Cast::getAddress(header), sizeof(header));
 
     bool valid = (header.manufacturer == 10) &&
       (header.version == 5) &&
@@ -98,15 +98,15 @@ namespace gip {
 
     ColorImage image = ColorImage(Dimension(width, height));
     ColorPixel* imageElement = image.getElements();
-    Allocator<unsigned char> encoded(maximum(bytesPerRow * 2, (unsigned int)256 * 3 + 1));
-    Allocator<unsigned char> decoded(bytesPerRow);
+    Allocator<uint8> encoded(maximum(bytesPerRow * 2, (unsigned int)256 * 3 + 1));
+    Allocator<uint8> decoded(bytesPerRow);
     Allocator<ColorPixel> palette256(256);
     bool palettePresent = false;
 
     if (header.version == 5) { // do we need to look for palette
       file.setPosition(-(256 * 3 + 1), File::END);
-      file.read(Cast::pointer<char*>(encoded.getElements()), 256 * 3 + 1);
-      const unsigned char* current = encoded.getElements();
+      file.read(encoded.getElements(), 256 * 3 + 1);
+      const uint8* current = encoded.getElements();
       if (*current++ == 12) {
         palettePresent = true;
         ColorPixel* color = palette256.getElements();
@@ -130,36 +130,44 @@ namespace gip {
       }
     }
 
-    unsigned char* src = 0;
-    unsigned char* endOfBuffer = 0;
+    uint8* src = 0;
+    uint8* endOfBuffer = 0;
     unsigned int offset = sizeof(header);
 
     for (unsigned int row = 0; row < height; ++row) { // read all rows of image
       switch (header.encoding) {
       case 0: // scan line is not encoded
-        file.read(Cast::pointer<char*>(decoded.getElements()), decoded.getSize());
+        file.read(decoded.getElements(), decoded.getSize());
         break;
 
       case 1: // scan line is run length encoded
 
-        unsigned char* dest = decoded.getElements();
+        uint8* dest = decoded.getElements();
 
         for (unsigned int bytesToRead = bytesPerRow; bytesToRead > 0; ) {
           if (src >= endOfBuffer) { // if empty buffer then refill
-            unsigned int count = file.read(Cast::pointer<char*>(encoded.getElements()), encoded.getSize(), true);
+            unsigned int count = file.read(
+              encoded.getElements(),
+              encoded.getSize(),
+              true
+            );
             assert(count > 0, InvalidFormat(this));
             src = encoded.getElements();
             endOfBuffer = src + count;
           }
 
-          unsigned char value = *src++; // get next byte
+          uint8 value = *src++; // get next byte
           ++offset;
           if ((0xc0 & value) == 0xc0) {
             unsigned int count = 0x3f & value;
             assert(count <= bytesToRead, InvalidFormat(this));
 
             if (src >= endOfBuffer) { // if empty buffer then refill
-              unsigned int count = file.read(Cast::pointer<char*>(encoded.getElements()), encoded.getSize(), true);
+              unsigned int count = file.read(
+                encoded.getElements(),
+                encoded.getSize(),
+                true
+              );
               assert(count > 0, InvalidFormat(this));
               src = encoded.getElements();
               endOfBuffer = src + count;
@@ -188,7 +196,7 @@ namespace gip {
         switch (header.planes) {
         case 1:
           {
-            const unsigned char* color = decoded.getElements();
+            const uint8* color = decoded.getElements();
             //fout << "  F: " << (unsigned int)*color;
             const ColorPixel* palette = palette256.getElements();
             for (unsigned int count = width; count > 0; --count) {
@@ -199,9 +207,9 @@ namespace gip {
           break;
         case 3:
           {
-            const unsigned char* red = decoded.getElements();
-            const unsigned char* green = red + header.bytesPerLine;
-            const unsigned char* blue = green + header.bytesPerLine;
+            const uint8* red = decoded.getElements();
+            const uint8* green = red + header.bytesPerLine;
+            const uint8* blue = green + header.bytesPerLine;
             //fout << "  F: " << (unsigned int)*red << " " << (unsigned int)*green << " " << (unsigned int)*blue;
             for (unsigned int count = width; count > 0; --count) {
               imageElement->blue = *blue++;
@@ -242,17 +250,17 @@ namespace gip {
     header.bytesPerLine = bytesPerLine;
     header.paletteType = 1;
 
-    file.write((const char*)&header, sizeof(header));
+    file.write(Cast::getAddress(header), sizeof(header));
 
-    Allocator<unsigned char> reordered(bytesPerLine * 3);
-    Allocator<unsigned char> encoded(bytesPerLine * 3 * 2); // encoded data cannot exceed double size
+    Allocator<uint8> reordered(bytesPerLine * 3);
+    Allocator<uint8> encoded(bytesPerLine * 3 * 2); // encoded data cannot exceed double size
     const ColorPixel* imageElement = image->getElements();
 
     for (unsigned int row = 0; row < height; ++row) {
 
-      unsigned char* red = reordered.getElements();
-      unsigned char* green = red + bytesPerLine;
-      unsigned char* blue = green + bytesPerLine;
+      uint8* red = reordered.getElements();
+      uint8* green = red + bytesPerLine;
+      uint8* blue = green + bytesPerLine;
       for (unsigned int column = 0; column < width; ++column) {
         *red++ = imageElement->red;
         *green++ = imageElement->green;
@@ -262,15 +270,15 @@ namespace gip {
 
       switch (header.encoding) {
       case 0: // no encoding
-        file.write((char*)reordered.getElements(), reordered.getSize());
+        file.write(reordered.getElements(), reordered.getSize());
         break;
       case 1: // run length encoding
         {
-          unsigned char* dest = encoded.getElements();
-          const unsigned char* src = reordered.getElements();
-          const unsigned char* end = src + reordered.getSize();
+          uint8* dest = encoded.getElements();
+          const uint8* src = reordered.getElements();
+          const uint8* end = src + reordered.getSize();
           while (src < end) {
-            const unsigned char first = *src++;
+            const uint8 first = *src++;
             unsigned int count = 1;
             while ((src < end) && (first == *src) && (count < 0x3f)) {
               ++src;
@@ -283,7 +291,7 @@ namespace gip {
             }
             *dest++ = first;
           }
-          file.write((char*)encoded.getElements(), dest - encoded.getElements());
+          file.write(encoded.getElements(), dest - encoded.getElements());
           break;
         }
       }
@@ -298,8 +306,11 @@ namespace gip {
     unsigned int width = image->getDimension().getWidth();
     unsigned int height = image->getDimension().getHeight();
     unsigned int bytesPerLine = (width + 1)/2*2;
-    assert((width > 0) && (height > 0), ImageException("Dimension of image not supported by encoder", this));
-
+    assert(
+      (width > 0) && (height > 0),
+      ImageException("Dimension of image not supported by encoder", this)
+    );
+    
     clear(header);
     header.manufacturer = 10;
     header.version = 5;
@@ -313,9 +324,9 @@ namespace gip {
     header.bytesPerLine = bytesPerLine;
     header.paletteType = 1;
 
-    file.write((const char*)&header, sizeof(header));
+    file.write(Cast::getAddress(header), sizeof(header));
 
-    Allocator<unsigned char> encoded(maximum(bytesPerLine * 2, 256U * 3 + 1));
+    Allocator<uint8> encoded(maximum(bytesPerLine * 2, 256U * 3 + 1));
     const GrayPixel* imageElement = image->getElements();
 
     for (unsigned int row = 0; row < height; ++row) {
@@ -323,17 +334,17 @@ namespace gip {
       switch (header.encoding) {
       case 0: // no encoding
         {
-          unsigned char* dest = encoded.getElements();
+          uint8* dest = encoded.getElements();
           for (unsigned int column = 0; column < width; ++column) {
             *dest++ = *imageElement;
             ++imageElement;
           }
-          file.write((char*)encoded.getElements(), bytesPerLine);
+          file.write(encoded.getElements(), bytesPerLine);
           break;
         }
       case 1: // run length encoding
         {
-          unsigned char* dest = encoded.getElements();
+          uint8* dest = encoded.getElements();
           const GrayPixel* end = imageElement + width;
           while (imageElement < end) {
             const GrayPixel first = *imageElement++;
@@ -349,49 +360,50 @@ namespace gip {
             }
             *dest++ = first;
           }
-          file.write((char*)encoded.getElements(), dest - encoded.getElements());
+          file.write(encoded.getElements(), dest - encoded.getElements());
           break;
         }
       }
     }
 
     // write palette
-    unsigned char* palette = encoded.getElements();
+    uint8* palette = encoded.getElements();
     *palette++ = 12;
     for (unsigned int i = 0; i < 256; ++i) {
       *palette++ = i;
       *palette++ = i;
       *palette++ = i;
     }
-    file.write((char*)encoded.getElements(), 256 * 3 + 1);
+    file.write(encoded.getElements(), 256 * 3 + 1);
     file.truncate(file.getPosition());
   }
 
-  HashTable<String, AnyValue> PCXEncoder::getInformation(const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> PCXEncoder::getInformation(
+    const String& filename) throw(IOException) {
     HashTable<String, AnyValue> result;
     
     PCXHeader header;
     
     {
       File file(filename, File::READ, 0);
-      file.read(Cast::getCharAddress(header), sizeof(header));
+      file.read(Cast::getAddress(header), sizeof(header));
     }
     
-    result[MESSAGE("encoder")] = Type::getType(*this);
-    result[MESSAGE("description")] = MESSAGE("Zsoft Corporation PC Paintbrush");
-    result[MESSAGE("manufacturer")] = static_cast<unsigned int>(header.manufacturer);
-    result[MESSAGE("version")] = static_cast<unsigned int>(header.version);
-    result[MESSAGE("encoding")] = static_cast<unsigned int>(header.encoding);
-    result[MESSAGE("bits per pixel")] = static_cast<unsigned int>(header.bitsPerPixel);
-    result[MESSAGE("min x ")] = static_cast<unsigned int>(header.minX);
-    result[MESSAGE("min y")] = static_cast<unsigned int>(header.minY);
-    result[MESSAGE("max x")] = static_cast<unsigned int>(header.maxX);
-    result[MESSAGE("max y")] = static_cast<unsigned int>(header.maxY);
-    result[MESSAGE("horizontal resolution")] = static_cast<unsigned int>(header.horizontalResolution);
-    result[MESSAGE("vertical resolution")] = static_cast<unsigned int>(header.verticalResolution);
-    result[MESSAGE("planes")] = static_cast<unsigned int>(header.planes);
-    result[MESSAGE("horizontal screen size")] = static_cast<unsigned int>(header.horizontalScreenSize);
-    result[MESSAGE("vertical screen size")] = static_cast<unsigned int>(header.verticalScreenSize);
+    result["encoder"] = Type::getType(*this);
+    result["description"] = "Zsoft Corporation PC Paintbrush";
+    result["manufacturer"] = static_cast<unsigned int>(header.manufacturer);
+    result["version"] = static_cast<unsigned int>(header.version);
+    result["encoding"] = static_cast<unsigned int>(header.encoding);
+    result["bits per pixel"] = static_cast<unsigned int>(header.bitsPerPixel);
+    result["min x"] = static_cast<unsigned int>(header.minX);
+    result["min y"] = static_cast<unsigned int>(header.minY);
+    result["max x"] = static_cast<unsigned int>(header.maxX);
+    result["max y"] = static_cast<unsigned int>(header.maxY);
+    result["horizontal resolution"] = static_cast<unsigned int>(header.horizontalResolution);
+    result["vertical resolution"] = static_cast<unsigned int>(header.verticalResolution);
+    result["planes"] = static_cast<unsigned int>(header.planes);
+    result["horizontal screen size"] = static_cast<unsigned int>(header.horizontalScreenSize);
+    result["vertical screen size"] = static_cast<unsigned int>(header.verticalScreenSize);
     return result;
   }
 

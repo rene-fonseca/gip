@@ -93,7 +93,7 @@ namespace gip {
     File file(filename, File::READ, 0);
     if (file.getSize() >= sizeof(footer)) {
       file.setPosition(-sizeof(footer), File::END);
-      file.read(Cast::getCharAddress(footer), sizeof(footer));
+      file.read(Cast::getAddress(footer), sizeof(footer));
       if ((compare<char>(
              footer.signature,
              TGAEncoderImpl::signature.getValue(),
@@ -104,7 +104,7 @@ namespace gip {
       }
       file.setPosition(0);
     }
-    file.read(Cast::getCharAddress(header), sizeof(header));
+    file.read(Cast::getAddress(header), sizeof(header));
     
     switch (header.type) {
     case TGAEncoderImpl::TYPE_UNCOMPRESSED_COLOR_MAPPED:
@@ -130,7 +130,7 @@ namespace gip {
     File file(filename, File::READ, 0);
     if (file.getSize() >= sizeof(footer)) {
       file.setPosition(-sizeof(footer), File::END);
-      file.read(Cast::getCharAddress(footer), sizeof(footer));
+      file.read(Cast::getAddress(footer), sizeof(footer));
       if ((compare<char>(
              footer.signature,
              TGAEncoderImpl::signature.getValue(),
@@ -142,7 +142,7 @@ namespace gip {
       }
       file.setPosition(0);
     }
-    file.read(Cast::getCharAddress(header), sizeof(header));
+    file.read(Cast::getAddress(header), sizeof(header));
 
     if (header.type != TGAEncoderImpl::TYPE_UNCOMPRESSED_TRUE_COLOR) {
       return 0;
@@ -167,9 +167,9 @@ namespace gip {
     for (unsigned int row = dimension.getHeight(); row > 0; --row) {
       FileReader::ReadIterator src = reader.peek(dimension.getWidth() * 3);
       for (unsigned int column = dimension.getWidth(); column > 0; --column) {
-        unsigned char blue = *src++;
-        unsigned char green = *src++;
-        unsigned char red = *src++;
+        uint8 blue = *src++;
+        uint8 green = *src++;
+        uint8 red = *src++;
         *dest++ = makeColorPixel(red, green, blue); // order of args is red, green, and blue
       }
       reader.skip(dimension.getWidth() * 3);
@@ -206,15 +206,15 @@ namespace gip {
     footer.dot = '.';
     footer.zero = '\0';
     
-    Allocator<char> buffer(BUFFER_SIZE);
+    Allocator<uint8> buffer(BUFFER_SIZE);
     File file(filename, File::WRITE, File::CREATE | File::EXCLUSIVE);
-    file.write(Cast::getCharAddress(header), sizeof(header));
+    file.write(Cast::getAddress(header), sizeof(header));
     
     unsigned int count = dimension.getSize(); // max is 0xffff * 0xffff
     const ColorPixel* src = image->getElements();
     while (count > 0) {
       unsigned int elementsToCopy = minimum(BUFFER_SIZE/3, count);
-      char* dest = buffer.getElements();
+      uint8* dest = buffer.getElements();
       const ColorPixel* end = src + elementsToCopy;
       while (src < end) {
         *dest++ = src->blue;
@@ -226,7 +226,7 @@ namespace gip {
       count -= elementsToCopy;
     }
     
-    file.write(Cast::getCharAddress(footer), sizeof(footer));
+    file.write(Cast::getAddress(footer), sizeof(footer));
     file.truncate(
       sizeof(header) +
       static_cast<unsigned long long>(dimension.getSize()) * 3 + sizeof(footer)
@@ -263,15 +263,15 @@ namespace gip {
     footer.dot = '.';
     footer.zero = '\0';
     
-    Allocator<char> buffer(BUFFER_SIZE);
+    Allocator<uint8> buffer(BUFFER_SIZE);
     File file(filename, File::WRITE, File::CREATE | File::EXCLUSIVE);
-    file.write(Cast::getCharAddress(header), sizeof(header));
+    file.write(Cast::getAddress(header), sizeof(header));
     
     unsigned int count = dimension.getSize(); // max is 0xffff * 0xffff
     const ColorAlphaPixel* src = image->getElements();
     while (count > 0) {
       unsigned int elementsToCopy = minimum(BUFFER_SIZE/4, count);
-      char* dest = buffer.getElements();
+      uint8* dest = buffer.getElements();
       const ColorAlphaPixel* end = src + elementsToCopy;
       while (src < end) {
         *dest++ = src->blue;
@@ -284,7 +284,7 @@ namespace gip {
       count -= elementsToCopy;
     }
 
-    file.write(Cast::getCharAddress(footer), sizeof(footer));
+    file.write(Cast::getAddress(footer), sizeof(footer));
     file.truncate(
       sizeof(header) +
       static_cast<unsigned long long>(dimension.getSize()) * 4 + sizeof(footer)
@@ -325,14 +325,14 @@ namespace gip {
     unsigned int count = dimension.getSize(); // max is 0xffff * 0xffff
     const GrayPixel* src = image->getElements();
     if (sizeof(GrayPixel) == 1) {
-      file.write(Cast::getCharAddress(header), sizeof(header));
-      file.write(Cast::pointer<const char*>(src), count);
+      file.write(Cast::getAddress(header), sizeof(header));
+      file.write(Cast::pointer<const uint8*>(src), count);
     } else {
-      Allocator<char> buffer(BUFFER_SIZE);
-      file.write(Cast::getCharAddress(header), sizeof(header));
+      Allocator<uint8> buffer(BUFFER_SIZE);
+      file.write(Cast::getAddress(header), sizeof(header));
       while (count > 0) {
         unsigned int bytesToCopy = minimum(BUFFER_SIZE, count);
-        char* dest = buffer.getElements();
+        uint8* dest = buffer.getElements();
         const GrayPixel* end = src + bytesToCopy;
         while (src < end) {
           *dest++ = *src++;
@@ -342,7 +342,7 @@ namespace gip {
       }
     }
     
-    file.write(Cast::getCharAddress(footer), sizeof(footer));
+    file.write(Cast::getAddress(footer), sizeof(footer));
     file.truncate(sizeof(header) + dimension.getSize() * 1 + sizeof(footer));
   }
 
@@ -358,7 +358,7 @@ namespace gip {
     File file(filename, File::READ, 0);
     if (file.getSize() >= sizeof(footer)) {
       file.setPosition(-sizeof(footer), File::END);
-      file.read(Cast::getCharAddress(footer), sizeof(footer) - 1);
+      file.read(Cast::getAddress(footer), sizeof(footer) - 1);
       if ((compare<char>(
              footer.signature,
              signature.getValue(),
@@ -370,7 +370,7 @@ namespace gip {
       }
       file.setPosition(0, File::BEGIN);
     }
-    file.read(Cast::getCharAddress(header), sizeof(header));
+    file.read(Cast::getAddress(header), sizeof(header));
     
     switch (header.type) {
     case TGAEncoderImpl::TYPE_NO_IMAGE_DATA:

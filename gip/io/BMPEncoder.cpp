@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001-2003 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -116,7 +116,7 @@ namespace gip {
 
     {
       File file(filename, File::READ, 0);
-      file.read(Cast::getCharAddress(header), sizeof(header));
+      file.read(Cast::getAddress(header), sizeof(header));
       size = file.getSize();
     }
 
@@ -215,7 +215,10 @@ namespace gip {
             numberOfColors = maximumNumberOfColors;
           }
           BMPPaletteEntry srcPalette[256];
-          file.read(Cast::getCharAddress(srcPalette), sizeof(BMPPaletteEntry) * numberOfColors); // get palette
+          file.read(
+            Cast::getAddress(srcPalette),
+            sizeof(BMPPaletteEntry) * numberOfColors
+          ); // get palette
           for (unsigned int i = 0; i < numberOfColors; ++i) {
             palette[i].blue = srcPalette[i].blue;
             palette[i].green = srcPalette[i].green;
@@ -300,9 +303,9 @@ namespace gip {
               for (unsigned int row = dimension.getHeight(); row > 0; --row) {
                 FileReader::ReadIterator src = reader.peek(bytesPerLine);
                 for (unsigned int column = dimension.getWidth(); column > 0; --column) {
-                  unsigned char blue = *src++;
-                  unsigned char green = *src++;
-                  unsigned char red = *src++;
+                  uint8 blue = *src++;
+                  uint8 green = *src++;
+                  uint8 red = *src++;
                   *dest++ = makeColorPixel(red, green, blue);
                 }
                 reader.skip(bytesPerLine);
@@ -315,9 +318,9 @@ namespace gip {
               for (unsigned int row = dimension.getHeight(); row > 0; --row) {
                 FileReader::ReadIterator src = reader.peek(bytesPerLine);
                 for (unsigned int column = dimension.getWidth(); column > 0; --column) {
-                  unsigned char blue = *src++;
-                  unsigned char green = *src++;
-                  unsigned char red = *src++;
+                  uint8 blue = *src++;
+                  uint8 green = *src++;
+                  uint8 red = *src++;
                   ++src;
                   *dest++ = makeColorPixel(red, green, blue);
                 }
@@ -330,10 +333,10 @@ namespace gip {
         break;
       case BMPEncoder::RLE8: // 8 bit run-length encoding
         {
-          Allocator<char> buffer(header.bitmapDataSize); // all image data
+          Allocator<uint8> buffer(header.bitmapDataSize); // all image data
           file.read(buffer.getElements(), header.bitmapDataSize); // read all image data
-          const unsigned char* src = Cast::pointer<const unsigned char*>(buffer.getElements());
-          const unsigned char* srcEnd = Cast::pointer<const unsigned char*>(src + header.bitmapDataSize);
+          const uint8* src = buffer.getElements();
+          const uint8* srcEnd = src + header.bitmapDataSize;
           ColorPixel* elements = image->getElements();
           unsigned int row = 0;
           unsigned int column = 0;
@@ -384,10 +387,10 @@ namespace gip {
         break;
       case BMPEncoder::RLE4: // 4 bit run-length encoding
         {
-          Allocator<char> buffer(header.bitmapDataSize); // all image data
+          Allocator<uint8> buffer(header.bitmapDataSize); // all image data
           file.read(buffer.getElements(), header.bitmapDataSize); // read all image data
-          const unsigned char* src = Cast::pointer<const unsigned char*>(buffer.getElements());
-          const unsigned char* srcEnd = Cast::pointer<const unsigned char*>(src + header.bitmapDataSize);
+          const uint8* src = buffer.getElements();
+          const uint8* srcEnd = src + header.bitmapDataSize;
           ColorPixel* elements = image->getElements();
           unsigned int row = 0;
           unsigned int column = 0;
@@ -488,13 +491,13 @@ namespace gip {
     header.colorsUsed = 0;
     header.importantColors = 0;
 
-    file.write(Cast::getCharAddress(header), sizeof(header));
+    file.write(Cast::getAddress(header), sizeof(header));
 
     const ColorPixel* sourceElement = image->getElements();
-    Allocator<char>* buffer = Thread::getLocalStorage();
-    char* beginOfBuffer = buffer->getElements();
-    char* endOfBuffer = beginOfBuffer + buffer->getSize();
-    char* p = beginOfBuffer;
+    Allocator<uint8>* buffer = Thread::getLocalStorage();
+    uint8* beginOfBuffer = buffer->getElements();
+    uint8* endOfBuffer = beginOfBuffer + buffer->getSize();
+    uint8* p = beginOfBuffer;
 
     for (unsigned int row = 0; row < header.height; ++row) {
       const ColorPixel* endOfSourceRow = sourceElement + header.width;
@@ -571,9 +574,9 @@ namespace gip {
     header.colorsUsed = 256;
     header.importantColors = 256;
 
-    file.write(Cast::getCharAddress(header), sizeof(header));
+    file.write(Cast::getAddress(header), sizeof(header));
     
-    Allocator<unsigned char> buffer(image->getDimension().getWidth() * 16);
+    Allocator<uint8> buffer(image->getDimension().getWidth() * 16);
     
     // make gray palette
     BMPPaletteEntry palette[256];
@@ -583,12 +586,12 @@ namespace gip {
       palette[i].red = i;
       palette[i].reserved = 0;
     }
-    file.write(Cast::getCharAddress(palette), sizeof(palette)); // store palette
+    file.write(Cast::getAddress(palette), sizeof(palette)); // store palette
 
     const GrayPixel* sourceElement = image->getElements();
-    unsigned char* beginOfBuffer = buffer.getElements();
-    unsigned char* endOfBuffer = beginOfBuffer + buffer.getSize();
-    unsigned char* p = beginOfBuffer;
+    uint8* beginOfBuffer = buffer.getElements();
+    uint8* endOfBuffer = beginOfBuffer + buffer.getSize();
+    uint8* p = beginOfBuffer;
 
     for (unsigned int row = 0; row < header.height; ++row) {
 
@@ -597,7 +600,7 @@ namespace gip {
 
         unsigned int pixelCount = endOfBuffer - p;
         if (pixelCount == 0) {
-          file.write(Cast::pointer<const char*>(beginOfBuffer), p - beginOfBuffer); // empty buffer
+          file.write(beginOfBuffer, p - beginOfBuffer); // empty buffer
           p = beginOfBuffer;
           pixelCount = endOfBuffer - p;
         }
@@ -609,7 +612,7 @@ namespace gip {
       }
 
       if (endOfBuffer - p == 0) {
-        file.write(Cast::pointer<const char*>(beginOfBuffer), p - beginOfBuffer); // empty buffer
+        file.write(beginOfBuffer, p - beginOfBuffer); // empty buffer
         p = beginOfBuffer;
       }
 
@@ -623,17 +626,18 @@ namespace gip {
       }
     }
 
-    file.write(Cast::pointer<const char*>(beginOfBuffer), p - beginOfBuffer); // empty buffer
+    file.write(beginOfBuffer, p - beginOfBuffer); // empty buffer
     file.truncate(sizeOfFile);
   }
 
-  HashTable<String, AnyValue> BMPEncoder::getInformation(const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> BMPEncoder::getInformation(
+    const String& filename) throw(IOException) {
     HashTable<String, AnyValue> result;
     BMPHeader header;
     
     {
       File file(filename, File::READ, 0);
-      file.read(Cast::getCharAddress(header), sizeof(header));
+      file.read(Cast::getAddress(header), sizeof(header));
     }
     
     result[MESSAGE("encoder")] = Type::getType(*this);

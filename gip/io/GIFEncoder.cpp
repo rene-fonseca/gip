@@ -86,10 +86,10 @@ namespace gip {
         while (bitsAvailable < currentCodeSize) {
           while (dataBlockIndex == dataBlockSize) { // data block is allowed to be empty
             file.read(
-              Cast::getCharAddress(dataBlockSize),
+              Cast::getAddress(dataBlockSize),
               sizeof(dataBlockSize)
             ); // get size of data block
-            file.read(Cast::getCharAddress(dataBlockData), dataBlockSize);
+            file.read(Cast::getAddress(dataBlockData), dataBlockSize);
             dataBlockIndex = 0;
           }
           uint8 temp = dataBlockData[dataBlockIndex++];
@@ -118,7 +118,7 @@ namespace gip {
 
         uint8 LZWCodeSize;
         file.read(
-          Cast::getCharAddress(LZWCodeSize),
+          Cast::getAddress(LZWCodeSize),
           sizeof(LZWCodeSize)
         ); // get LZW minimum code size
         assert((LZWCodeSize >= 2) && (LZWCodeSize <= 9), InvalidFormat("Invalid GIF format", this));
@@ -257,7 +257,7 @@ namespace gip {
 
     {
       File file(filename, File::READ, 0);
-      file.read(Cast::getCharAddress(header), sizeof(header));
+      file.read(Cast::getAddress(header), sizeof(header));
       size = file.getSize();
     }
 
@@ -271,7 +271,7 @@ namespace gip {
     File file(filename, File::READ, 0);
 
     GIFImpl::Header header;
-    file.read(Cast::getCharAddress(header), sizeof(header));
+    file.read(Cast::getAddress(header), sizeof(header));
 
     bool value = (header.signature[0] == 'G') && (header.signature[1] == 'I') && (header.signature[2] == 'F') &&
       ((header.version[0] == '8') && (header.version[1] == '7') && (header.version[2] == 'a') ||
@@ -279,13 +279,13 @@ namespace gip {
     assert(value, InvalidFormat("Invalid GIF format", this));
 
     GIFImpl::LogicalScreenDescriptor globalDescriptor;
-    file.read(Cast::getCharAddress(globalDescriptor), sizeof(globalDescriptor));
+    file.read(Cast::getAddress(globalDescriptor), sizeof(globalDescriptor));
 
     ColorPixel globalColorTable[256];
     unsigned int globalColors = 1 << (globalDescriptor.entriesOfColorTable + 1);
     if (globalDescriptor.colorTable) {
       GIFImpl::ColorEntry tempTable[256]; // number of entries cannot exceed 256
-      file.read(Cast::getCharAddress(tempTable), sizeof(GIFImpl::ColorEntry) * globalColors);
+      file.read(Cast::getAddress(tempTable), sizeof(GIFImpl::ColorEntry) * globalColors);
       for (unsigned int i = 0; i < globalColors; ++i) {
         GIFImpl::ColorEntry src = tempTable[i];
         ColorPixel dest;
@@ -297,14 +297,14 @@ namespace gip {
     }
 
     GIFImpl::ImageDescriptor imageDescriptor;
-    file.read(Cast::getCharAddress(imageDescriptor), sizeof(imageDescriptor));
+    file.read(Cast::getAddress(imageDescriptor), sizeof(imageDescriptor));
     assert(imageDescriptor.separator == GIFImpl::IMAGESEPARATOR, InvalidFormat("Invalid GIF format", this));
 
     ColorPixel localColorTable[256];
     unsigned int localColors = 1 << (imageDescriptor.entriesOfColorTable + 1);
     if (imageDescriptor.colorTable) {
       GIFImpl::ColorEntry tempTable[256]; // number of entries cannot exceed 256
-      file.read(Cast::getCharAddress(tempTable), sizeof(GIFImpl::ColorEntry) * localColors);
+      file.read(Cast::getAddress(tempTable), sizeof(GIFImpl::ColorEntry) * localColors);
       for (unsigned int i = 0; i < localColors; ++i) {
         GIFImpl::ColorEntry src = tempTable[i];
         ColorPixel dest;
@@ -321,11 +321,11 @@ namespace gip {
     GIFImpl::ReadGIF read(file, image, colorTable, imageDescriptor.interlaced);
 
     uint8 terminator;
-    file.read(Cast::getCharAddress(terminator), sizeof(terminator)); // check terminator
+    file.read(Cast::getAddress(terminator), sizeof(terminator)); // check terminator
     assert(terminator == GIFImpl::TERMINATOR, InvalidFormat("Invalid GIF format", this));
 
     uint8 trailer;
-    file.read(Cast::getCharAddress(trailer), sizeof(trailer)); // check trailer
+    file.read(Cast::getAddress(trailer), sizeof(trailer)); // check trailer
     assert(trailer == GIFImpl::TRAILER, InvalidFormat("Invalid GIF format", this));
 
     return new ColorImage(image);
@@ -343,7 +343,7 @@ namespace gip {
     header.version[1] = '7';
     header.version[2] = 'a';
 
-    file.write(Cast::getCharAddress(header), sizeof(header));
+    file.write(Cast::getAddress(header), sizeof(header));
     file.truncate(sizeof(header));
   }
 
@@ -353,7 +353,7 @@ namespace gip {
 
     {
       File file(filename, File::READ, 0);
-      file.read(Cast::getCharAddress(header), sizeof(header));
+      file.read(Cast::getAddress(header), sizeof(header));
     }
 
     String version;

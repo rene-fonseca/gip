@@ -40,7 +40,10 @@ namespace gip {
 
     static boolean empty(j_compress_ptr cinfo) {
       JPEGDestination* dest = Cast::pointer<JPEGDestination*>(cinfo->dest);
-      dest->file->write(dest->buffer, JPEGEncoder::BUFFER_SIZE);
+      dest->file->write(
+        Cast::pointer<const uint8*>(dest->buffer),
+        JPEGEncoder::BUFFER_SIZE
+      );
       dest->pub.next_output_byte = Cast::pointer<JOCTET*>(dest->buffer);
       dest->pub.free_in_buffer = JPEGEncoder::BUFFER_SIZE;
       return TRUE;
@@ -48,7 +51,10 @@ namespace gip {
     
     static void flush(j_compress_ptr cinfo) {
       JPEGDestination* dest = Cast::pointer<JPEGDestination*>(cinfo->dest);
-      dest->file->write(dest->buffer, JPEGEncoder::BUFFER_SIZE - dest->pub.free_in_buffer);
+      dest->file->write(
+        Cast::pointer<const uint8*>(dest->buffer),
+        JPEGEncoder::BUFFER_SIZE - dest->pub.free_in_buffer
+      );
     }
     
     struct JPEGSource {
@@ -65,9 +71,17 @@ namespace gip {
 
     static boolean fill(j_decompress_ptr cinfo) {
       JPEGSource* source = (JPEGSource*)cinfo->src;
-      unsigned int bytesRead = source->file->read(source->buffer, JPEGEncoder::BUFFER_SIZE, true); // non-blocking
+      unsigned int bytesRead = source->file->read(
+        Cast::pointer<uint8*>(source->buffer),
+        JPEGEncoder::BUFFER_SIZE,
+        true
+      ); // non-blocking
       if (bytesRead == 0) {
-        bytesRead = source->file->read(source->buffer, JPEGEncoder::BUFFER_SIZE, 1); // blocking
+        bytesRead = source->file->read(
+          Cast::pointer<uint8*>(source->buffer),
+          JPEGEncoder::BUFFER_SIZE,
+          true
+        ); // blocking
       }
       source->pub.next_input_byte = Cast::pointer<JOCTET*>(source->buffer);
       source->pub.bytes_in_buffer = bytesRead;
@@ -120,7 +134,7 @@ namespace gip {
     struct jpeg_decompress_struct cinfo;
     struct jpeg_error_mgr jerr;
     
-    Allocator<char> buffer(BUFFER_SIZE);
+    Allocator<uint8> buffer(BUFFER_SIZE);
     File file(filename, File::READ, 0);
     
     source.pub.init_source = JPEGEncoderImpl::initialize;
@@ -131,7 +145,7 @@ namespace gip {
     source.pub.bytes_in_buffer = 0;
     source.pub.next_input_byte = 0;
     source.file = &file;
-    source.buffer = buffer.getElements();
+    source.buffer = Cast::pointer<char*>(buffer.getElements());
     
     cinfo.err = ::jpeg_std_error(&jerr);
     jerr.error_exit = JPEGEncoderImpl::errorHandler;
@@ -151,12 +165,13 @@ namespace gip {
     return true;
   }
 
-  ColorImage* JPEGEncoder::read(const String& filename) throw(InvalidFormat, IOException) {
+  ColorImage* JPEGEncoder::read(
+    const String& filename) throw(InvalidFormat, IOException) {
     JPEGEncoderImpl::JPEGSource source;
     struct jpeg_decompress_struct cinfo;
     struct jpeg_error_mgr jerr;
     
-    Allocator<char> buffer(BUFFER_SIZE);
+    Allocator<uint8> buffer(BUFFER_SIZE);
     File file(filename, File::READ, 0);
     
     source.pub.init_source = JPEGEncoderImpl::initialize;
@@ -167,7 +182,7 @@ namespace gip {
     source.pub.bytes_in_buffer = 0;
     source.pub.next_input_byte = 0;
     source.file = &file;
-    source.buffer = buffer.getElements();
+    source.buffer = Cast::pointer<char*>(buffer.getElements());
     
     cinfo.err = ::jpeg_std_error(&jerr);
     jerr.error_exit = JPEGEncoderImpl::errorHandler;
@@ -216,7 +231,9 @@ namespace gip {
     return image;
   }
   
-  void JPEGEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException) {
+  void JPEGEncoder::write(
+    const String& filename,
+    const ColorImage* image) throw(ImageException, IOException) {
     struct JPEGEncoderImpl::JPEGDestination dest;
     struct jpeg_compress_struct cinfo;
     struct jpeg_error_mgr jerr;
@@ -224,7 +241,7 @@ namespace gip {
     //assert(image->getDimension().getWidth() < 0xffff, ImageException(this));
     //assert(image->getDimension().getHeight() < 0xffff, ImageException(this));
 
-    Allocator<char> buffer(BUFFER_SIZE);
+    Allocator<uint8> buffer(BUFFER_SIZE);
     File file(filename, File::WRITE, File::CREATE | File::EXCLUSIVE);
 
     dest.pub.init_destination = JPEGEncoderImpl::initializeDestination;
@@ -233,7 +250,7 @@ namespace gip {
     dest.pub.next_output_byte = Cast::pointer<JOCTET*>(buffer.getElements());
     dest.pub.free_in_buffer = BUFFER_SIZE;
     dest.file = &file;
-    dest.buffer = buffer.getElements();
+    dest.buffer = Cast::pointer<char*>(buffer.getElements());
     
     cinfo.err = ::jpeg_std_error(&jerr);
 
@@ -326,14 +343,15 @@ namespace gip {
   }
   */
 
-  HashTable<String, AnyValue> JPEGEncoder::getInformation(const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> JPEGEncoder::getInformation(
+    const String& filename) throw(IOException) {
     HashTable<String, AnyValue> result;
     
     JPEGEncoderImpl::JPEGSource source;
     struct jpeg_decompress_struct cinfo;
     struct jpeg_error_mgr jerr;
     
-    Allocator<char> buffer(BUFFER_SIZE);
+    Allocator<uint8> buffer(BUFFER_SIZE);
     File file(filename, File::READ, 0);
     
     source.pub.init_source = JPEGEncoderImpl::initialize;
@@ -344,7 +362,7 @@ namespace gip {
     source.pub.bytes_in_buffer = 0;
     source.pub.next_input_byte = 0;
     source.file = &file;
-    source.buffer = buffer.getElements();
+    source.buffer = Cast::pointer<char*>(buffer.getElements());
     
     cinfo.err = ::jpeg_std_error(&jerr);
     jerr.error_exit = JPEGEncoderImpl::errorHandler;

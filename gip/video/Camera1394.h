@@ -373,12 +373,13 @@ namespace gip {
 
       @param offset The offset of the register.
     */
-    inline uint32 getCommandRegister(uint32 offset) const throw(IEEE1394Exception) {
+    inline uint32 getCommandRegister(
+      uint32 offset) const throw(IEEE1394Exception) {
       IEEE1394::Quadlet quadlet;
       adapter.read(
         camera,
         commandRegisters + offset,
-        Cast::getCharAddress(quadlet),
+        Cast::getAddress(quadlet),
         sizeof(quadlet)
       );
       return quadlet;
@@ -390,12 +391,13 @@ namespace gip {
       @param offset The offset of the register.
       @param value The desired value of the register.
     */
-    inline void setCommandRegister(uint32 offset, uint32 value) throw(IEEE1394Exception) {
+    inline void setCommandRegister(
+      uint32 offset, uint32 value) throw(IEEE1394Exception) {
       IEEE1394::Quadlet quadlet = value;
       adapter.write(
         camera,
         commandRegisters + offset,
-        Cast::getCharAddress(quadlet),
+        Cast::getAddress(quadlet),
         sizeof(quadlet)
       );
     }

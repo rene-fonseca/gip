@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001-2003 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -48,9 +48,13 @@ inline ChunkId makeChunkId(char a, char b, char c, char d) throw() {
   return result;
 }
 
-FormatOutputStream& operator<<(FormatOutputStream& stream, const ChunkId& value) {
+FormatOutputStream& operator<<(
+  FormatOutputStream& stream, const ChunkId& value) throw(IOException) {
   unsigned int temp = value.id;
-  stream << static_cast<char>(temp) << static_cast<char>(temp >> 8) << static_cast<char>(temp >> 16) << static_cast<char>(temp >> 24);
+  stream << static_cast<char>(temp)
+         << static_cast<char>(temp >> 8)
+         << static_cast<char>(temp >> 16)
+         << static_cast<char>(temp >> 24);
 //  stream << value.chars[0] << value.chars[1] << value.chars[2] << value.chars[3];
   return stream;
 }
@@ -174,15 +178,16 @@ struct AVIPaletteChange {
 
 enum {BMP_RGB = 0, BMP_RLE8 = 1, BMP_RLE4 = 2, BMP_BITFIELDS = 3};
 
-AVIEncoder::AVIEncoder(const String& _filename) throw(IOException) : filename(_filename) {
+AVIEncoder::AVIEncoder(const String& _filename) throw(IOException)
+  : filename(_filename) {
 }
 
 String AVIEncoder::getDescription() const throw() {
-  return MESSAGE("Microsoft Audio/Video Interleaved format");
+  return Literal("Microsoft Audio/Video Interleaved format");
 }
 
 String AVIEncoder::getDefaultExtension() const throw() {
-  return MESSAGE("avi");
+  return Literal("avi");
 }
 
 bool AVIEncoder::isValid() throw(IOException) {
@@ -196,22 +201,23 @@ ArrayImage<ColorPixel>* AVIEncoder::read() throw(IOException) {
 void AVIEncoder::write(const ArrayImage<ColorPixel>* image) throw(IOException) {
 }
 
-FormatOutputStream& AVIEncoder::getInfo(FormatOutputStream& stream) throw(IOException) {
-  stream << MESSAGE("AVIEncoder (Microsoft Audio/Video Interleaved format):") << EOL;
+FormatOutputStream& AVIEncoder::getInfo(
+  FormatOutputStream& stream) throw(IOException) {
+  stream << "AVIEncoder (Microsoft Audio/Video Interleaved format):" << EOL;
 
   {
     File file(filename, File::READ, 0);
 
     {
       Chunk chunk;
-      file.read(Cast::getCharAddress(chunk), sizeof(chunk));
+      file.read(Cast::getAddress(chunk), sizeof(chunk));
       ChunkId name;
-      file.read(Cast::getCharAddress(name), sizeof(name));
+      file.read(Cast::getAddress(name), sizeof(name));
       stream << indent(2) << chunk.id
-             << MESSAGE("('") << name
-             << MESSAGE("' chunk of size ") << chunk.size << EOL;
+             << "('" << name
+             << "' chunk of size " << chunk.size << EOL;
       if ((chunk.id != makeChunkId('R', 'I', 'F', 'F')) || (name != makeChunkId('A', 'V', 'I', ' '))) {
-        return stream << MESSAGE("INVALID FORMAT") << EOL;
+        return stream << "INVALID FORMAT" << EOL;
       }
     }
 
@@ -219,57 +225,57 @@ FormatOutputStream& AVIEncoder::getInfo(FormatOutputStream& stream) throw(IOExce
     unsigned int listTotalRead = 0;
     {
       Chunk chunk;
-      file.read(Cast::getCharAddress(chunk), sizeof(chunk));
+      file.read(Cast::getAddress(chunk), sizeof(chunk));
       ChunkId name;
-      file.read(Cast::getCharAddress(name), sizeof(name));
-      stream << indent(2) << chunk.id << MESSAGE("('")
-             << name << MESSAGE("' chunk of size ") << chunk.size << EOL;
+      file.read(Cast::getAddress(name), sizeof(name));
+      stream << indent(2) << chunk.id << "('"
+             << name << "' chunk of size " << chunk.size << EOL;
       if ((chunk.id != makeChunkId('L', 'I', 'S', 'T')) || (name != makeChunkId('h', 'd', 'r', 'l'))) {
-        return stream << MESSAGE("INVALID FORMAT") << EOL;
+        return stream << "INVALID FORMAT" << EOL;
       }
       listTotalSize = chunk.size;
     }
 
     ChunkId avih;
-    file.read(Cast::getCharAddress(avih), sizeof(avih));
+    file.read(Cast::getAddress(avih), sizeof(avih));
     LittleEndian<uint32> size;
-    file.read(Cast::getCharAddress(size), sizeof(size));
-    Allocator<char> buffer(maximum<unsigned int>(size, sizeof(AVIHeader)));
-    fill<char>(buffer.getElements(), buffer.getSize(), 0);
+    file.read(Cast::getAddress(size), sizeof(size));
+    Allocator<uint8> buffer(maximum<unsigned int>(size, sizeof(AVIHeader)));
+    fill<uint8>(buffer.getElements(), buffer.getSize(), 0);
     AVIHeader* header = (AVIHeader*)buffer.getElements();
     file.read(buffer.getElements(), size);
-    stream << MESSAGE("    'avih'(<Main AVI header>) of size ") << size << EOL
-           << MESSAGE("      microSecPerFrame=") << header->microSecPerFrame << EOL
-           << MESSAGE("      maxBytesPerSec=") << header->maxBytesPerSec << EOL
-           << MESSAGE("      paddingGranularity=") << header->paddingGranularity << EOL
-           << MESSAGE("      hasIndex=") << header->hasIndex << EOL
-           << MESSAGE("      mustUseIndex=") << header->mustUseIndex << EOL
-           << MESSAGE("      isInterleaved=") << header->isInterleaved << EOL
-           << MESSAGE("      trustCKType=") << header->trustCKType << EOL
-           << MESSAGE("      wasCaptureFile=") << header->wasCaptureFile << EOL
-           << MESSAGE("      copyrighted=") << header->copyrighted << EOL
-           << MESSAGE("      totalFrames=") << header->totalFrames << EOL
-           << MESSAGE("      initialFrames=") << header->initialFrames << EOL
-           << MESSAGE("      streams=") << header->streams << EOL
-           << MESSAGE("      suggestedBufferSize=") << header->suggestedBufferSize << EOL
-           << MESSAGE("      width=") << header->width << EOL
-           << MESSAGE("      height=") << header->height << EOL
-           << MESSAGE("      scale=") << header->scale << EOL
-           << MESSAGE("      rate=") << header->rate << EOL
-           << MESSAGE("      start=") << header->start << EOL
-           << MESSAGE("      length=") << header->length << EOL;
+    stream << indent(6) << "'avih'(<Main AVI header>) of size " << size << EOL
+           << indent(6) << " microSecPerFrame=" << header->microSecPerFrame << EOL
+           << indent(6) << "maxBytesPerSec=" << header->maxBytesPerSec << EOL
+           << indent(6) << "paddingGranularity=" << header->paddingGranularity << EOL
+           << indent(6) << "hasIndex=" << header->hasIndex << EOL
+           << indent(6) << "mustUseIndex=" << header->mustUseIndex << EOL
+           << indent(6) << "isInterleaved=" << header->isInterleaved << EOL
+           << indent(6) << "trustCKType=" << header->trustCKType << EOL
+           << indent(6) << "wasCaptureFile=" << header->wasCaptureFile << EOL
+           << indent(6) << "copyrighted=" << header->copyrighted << EOL
+           << indent(6) << " totalFrames=" << header->totalFrames << EOL
+           << indent(6) << "initialFrames=" << header->initialFrames << EOL
+           << indent(6) << "streams=" << header->streams << EOL
+           << indent(6) << "suggestedBufferSize=" << header->suggestedBufferSize << EOL
+           << indent(6) << "width=" << header->width << EOL
+           << indent(6) << "height=" << header->height << EOL
+           << indent(6) << "scale=" << header->scale << EOL
+           << indent(6) << "rate=" << header->rate << EOL
+           << indent(6) << "start=" << header->start << EOL
+           << indent(6) << "length=" << header->length << EOL;
     listTotalRead += size;
 
     for (unsigned int i = 0; i < header->streams; ++i) {
       Chunk list;
-      file.read(Cast::getCharAddress(list), sizeof(list));
+      file.read(Cast::getAddress(list), sizeof(list));
       ChunkId name;
-      file.read(Cast::getCharAddress(name), sizeof(name));
-      stream << indent(2) << list.id << MESSAGE("('")
-             << name << MESSAGE("' chunk of size ") << list.size << EOL;
+      file.read(Cast::getAddress(name), sizeof(name));
+      stream << indent(2) << list.id << "('"
+             << name << "' chunk of size " << list.size << EOL;
 
       if ((list.id != makeChunkId('L', 'I', 'S', 'T')) || (name != makeChunkId('s', 't', 'r', 'l'))) {
-        return stream << MESSAGE("  INVALID FORMAT") << EOL;
+        return stream << "  INVALID FORMAT" << EOL;
       }
 
       ChunkId str_;
@@ -277,41 +283,41 @@ FormatOutputStream& AVIEncoder::getInfo(FormatOutputStream& stream) throw(IOExce
       unsigned int totalRead = sizeof(name);
 
       // read strh
-      file.read(Cast::getCharAddress(str_), sizeof(str_));
+      file.read(Cast::getAddress(str_), sizeof(str_));
       if (str_ != makeChunkId('s', 't', 'r', 'h')) {
-        return stream << MESSAGE("Expected chunk id: strh") << EOL;
+        return stream << "Expected chunk id: strh" << EOL;
       }
-      file.read(Cast::getCharAddress(size), sizeof(size));
+      file.read(Cast::getAddress(size), sizeof(size));
       totalRead += sizeof(str_) + sizeof(size) + (size+1)/2*2;
-      Allocator<char> headerBuffer(
+      Allocator<uint8> headerBuffer(
         maximum<MemorySize>((size+1)/2*2, sizeof(AVIStreamHeader))
       );
-      fill<char>(headerBuffer.getElements(), headerBuffer.getSize(), 0);
+      fill<uint8>(headerBuffer.getElements(), headerBuffer.getSize(), 0);
       AVIStreamHeader* header = (AVIStreamHeader*)headerBuffer.getElements();
 
       file.read(headerBuffer.getElements(), (size+1)/2*2);
-      stream << MESSAGE("    '") << str_ << MESSAGE("'(<AVI stream header>) of size ") << size << EOL
-             << MESSAGE("      type=") << header->type << EOL
-             << MESSAGE("      handler=") << header->handler << EOL
-             << MESSAGE("      flags=") << HEX << header->flags << EOL
-             << MESSAGE("      initialFrames=") << header->initialFrames << EOL
-             << MESSAGE("      scale=") << header->scale << EOL
-             << MESSAGE("      rate=") << header->rate << EOL
-             << MESSAGE("      start=") << header->start << EOL
-             << MESSAGE("      length=") << header->length << EOL
-             << MESSAGE("      suggestedBufferSize=") << header->suggestedBufferSize << EOL
-             << MESSAGE("      quality=") << header->quality << EOL
-             << MESSAGE("      sampleSize=") << header->sampleSize << EOL;
+      stream << "    '" << str_ << "'(<AVI stream header>) of size " << size << EOL
+             << "      type=" << header->type << EOL
+             << "      handler=" << header->handler << EOL
+             << "      flags=" << HEX << header->flags << EOL
+             << "      initialFrames=" << header->initialFrames << EOL
+             << "      scale=" << header->scale << EOL
+             << "      rate=" << header->rate << EOL
+             << "      start=" << header->start << EOL
+             << "      length=" << header->length << EOL
+             << "      suggestedBufferSize=" << header->suggestedBufferSize << EOL
+             << "      quality=" << header->quality << EOL
+             << "      sampleSize=" << header->sampleSize << EOL;
 
       // read strf - BITMAPINFO for vids and WAVEFORMATEX for auds
-      file.read(Cast::getCharAddress(str_), sizeof(str_));
+      file.read(Cast::getAddress(str_), sizeof(str_));
       if (str_ != makeChunkId('s', 't', 'r', 'f')) {
-        return stream << MESSAGE("Expected chunk id: strf") << EOL;
+        return stream << "Expected chunk id: strf" << EOL;
       }
-      file.read(Cast::getCharAddress(size), sizeof(size));
+      file.read(Cast::getAddress(size), sizeof(size));
       totalRead += sizeof(str_) + sizeof(size) + (size+1)/2*2;
 
-      Allocator<char> streamFormatBuffer(
+      Allocator<uint8> streamFormatBuffer(
         maximum<MemorySize>(
           (size+1)/2*2,
           maximum<MemorySize>(
@@ -320,53 +326,53 @@ FormatOutputStream& AVIEncoder::getInfo(FormatOutputStream& stream) throw(IOExce
           )
         )
       );
-      fill<char>(streamFormatBuffer.getElements(), streamFormatBuffer.getSize(), 0);
+      fill<uint8>(streamFormatBuffer.getElements(), streamFormatBuffer.getSize(), 0);
       file.read(streamFormatBuffer.getElements(), (size+1)/2*2);
 
       if (header->type == makeChunkId('v', 'i', 'd', 's')) {
-        stream << MESSAGE("    '") << str_ << MESSAGE("'(<BitmapInfo>) of size ") << size << EOL;
+        stream << "    '" << str_ << "'(<BitmapInfo>) of size " << size << EOL;
         BitmapInfoHeader* header = (BitmapInfoHeader*)streamFormatBuffer.getElements();
 
-        stream << MESSAGE("      size=") << header->size << EOL
-               << MESSAGE("      width=") << header->width << EOL
-               << MESSAGE("      height=") << header->height << EOL
-               << MESSAGE("      planes=") << header->planes << EOL
-               << MESSAGE("      bitsPerPixel=") << header->bitsPerPixel << EOL
-               << MESSAGE("      compression=") << header->compression << EOL
-               << MESSAGE("      sizeImage=") << header->sizeImage << EOL
-               << MESSAGE("      xPelsPerMeter=") << header->xPelsPerMeter << EOL
-               << MESSAGE("      yPelsPerMeter=") << header->yPelsPerMeter << EOL
-               << MESSAGE("      colorUsed=") << header->colorUsed << EOL
-               << MESSAGE("      colorImportant=") << header->colorImportant << EOL;
+        stream << "      size=" << header->size << EOL
+               << "      width=" << header->width << EOL
+               << "      height=" << header->height << EOL
+               << "      planes=" << header->planes << EOL
+               << "      bitsPerPixel=" << header->bitsPerPixel << EOL
+               << "      compression=" << header->compression << EOL
+               << "      sizeImage=" << header->sizeImage << EOL
+               << "      xPelsPerMeter=" << header->xPelsPerMeter << EOL
+               << "      yPelsPerMeter=" << header->yPelsPerMeter << EOL
+               << "      colorUsed=" << header->colorUsed << EOL
+               << "      colorImportant=" << header->colorImportant << EOL;
 
       } else if (header->type == makeChunkId('a', 'u', 'd', 's')) {
-        stream << MESSAGE("    '") << str_ << MESSAGE("'(<WaveFormatExtended>) of size ") << size << EOL;
+        stream << "    '" << str_ << "'(<WaveFormatExtended>) of size " << size << EOL;
         WaveFormatExtended* header = (WaveFormatExtended*)streamFormatBuffer.getElements();
 
-        stream << MESSAGE("      formatTag=") << header->formatTag << EOL
-               << MESSAGE("      channels=") << header->channels << EOL
-               << MESSAGE("      samplesPerSec=") << header->samplesPerSec << EOL
-               << MESSAGE("      averageBytesPerSec=") << header->averageBytesPerSec << EOL
-               << MESSAGE("      blockAlign=") << header->blockAlign << EOL
-               << MESSAGE("      bitsPerSample=") << header->bitsPerSample << EOL
-               << MESSAGE("      size=") << header->size << EOL;
+        stream << "      formatTag=" << header->formatTag << EOL
+               << "      channels=" << header->channels << EOL
+               << "      samplesPerSec=" << header->samplesPerSec << EOL
+               << "      averageBytesPerSec=" << header->averageBytesPerSec << EOL
+               << "      blockAlign=" << header->blockAlign << EOL
+               << "      bitsPerSample=" << header->bitsPerSample << EOL
+               << "      size=" << header->size << EOL;
 
       } else {
-        stream << MESSAGE("    '") << str_ << MESSAGE("'(<Unknown stream type>) of size ") << size << EOL;
+        stream << "    '" << str_ << "'(<Unknown stream type>) of size " << size << EOL;
       }
 
       while (totalRead < list.size) {
-        file.read(Cast::getCharAddress(str_), sizeof(str_));
-        file.read(Cast::getCharAddress(size), sizeof(size));
+        file.read(Cast::getAddress(str_), sizeof(str_));
+        file.read(Cast::getAddress(size), sizeof(size));
         totalRead += sizeof(str_) + sizeof(size) + (size+1)/2*2;
-        Allocator<char> buffer((size+1)/2*2);
+        Allocator<uint8> buffer((size+1)/2*2);
         file.read(buffer.getElements(), (size+1)/2*2);
 
         if (str_ == makeChunkId('s', 't', 'r', 'n')) {
-          stream << MESSAGE("    '") << str_ << MESSAGE("'(<chars>) of size ") << size << EOL
-                 << MESSAGE("      data=") << buffer.getElements() << EOL;
+          stream << "    '" << str_ << "'(<chars>) of size " << size << EOL
+                 << "      data=" << buffer.getElements() << EOL;
         } else {
-          stream << MESSAGE("    '") << str_ << MESSAGE("'(<Unknown stream data>) of size ") << size << EOL;
+          stream << "    '" << str_ << "'(<Unknown stream data>) of size " << size << EOL;
         }
       }
 
@@ -376,28 +382,28 @@ FormatOutputStream& AVIEncoder::getInfo(FormatOutputStream& stream) throw(IOExce
 
     while (true) {
       if (file.getPosition() >= file.getSize()) {
-        return stream << MESSAGE("INVALID FORMAT") << EOL;
+        return stream << "INVALID FORMAT" << EOL;
       }
       Chunk chunk;
-      file.read(Cast::getCharAddress(chunk), sizeof(chunk));
+      file.read(Cast::getAddress(chunk), sizeof(chunk));
       if (chunk.id == makeChunkId('L', 'I', 'S', 'T')) {
         ChunkId name;
-        file.read(Cast::getCharAddress(name), sizeof(name));
+        file.read(Cast::getAddress(name), sizeof(name));
         unsigned int totalSize = chunk.size;
         unsigned int totalRead = sizeof(name);
-        stream << MESSAGE("  LIST('") << name << MESSAGE("' chunk of size ") << totalSize << ENDL;
+        stream << "  LIST('" << name << "' chunk of size " << totalSize << ENDL;
 
         while (totalRead < totalSize) {
           Chunk dataChunk;
-          file.read(Cast::getCharAddress(dataChunk), sizeof(dataChunk));
+          file.read(Cast::getAddress(dataChunk), sizeof(dataChunk));
           totalRead += sizeof(dataChunk) + dataChunk.size;
-          stream << MESSAGE("    chunk: {id=") << dataChunk.id << MESSAGE(";size=") << dataChunk.size << '}' << ENDL;
+          stream << "    chunk: {id=" << dataChunk.id << ";size=" << dataChunk.size << '}' << ENDL;
           file.setPosition(dataChunk.size, File::CURRENT); // skip JUNK and unknown chunks
         }
 
         break;
       } else {
-        stream << MESSAGE("  chunk: {id=") << chunk.id << MESSAGE(";size=") << chunk.size << '}' << ENDL;
+        stream << "  chunk: {id=" << chunk.id << ";size=" << chunk.size << '}' << ENDL;
         file.setPosition(chunk.size, File::CURRENT); // skip JUNK and unknown chunks
       }
     }
@@ -405,22 +411,22 @@ FormatOutputStream& AVIEncoder::getInfo(FormatOutputStream& stream) throw(IOExce
 //    if (header.hasIndex)
     while (true) {
       if (file.getPosition() >= file.getSize()) {
-        return stream << MESSAGE("INVALID FORMAT") << EOL;
+        return stream << "INVALID FORMAT" << EOL;
       }
       Chunk chunk;
-      file.read(Cast::getCharAddress(chunk), sizeof(chunk));
+      file.read(Cast::getAddress(chunk), sizeof(chunk));
       if (chunk.id == makeChunkId('i', 'd', 'x', '1')) {
-        stream << MESSAGE("  chunk: {id=") << chunk.id << MESSAGE(";size=") << chunk.size << '}' << ENDL;
+        stream << "  chunk: {id=" << chunk.id << ";size=" << chunk.size << '}' << ENDL;
         file.setPosition(chunk.size, File::CURRENT); // skip chunk
         break;
       } else {
-        stream << MESSAGE("  chunk: {id=") << chunk.id << MESSAGE(";size=") << chunk.size << '}' << ENDL;
+        stream << "  chunk: {id=" << chunk.id << ";size=" << chunk.size << '}' << ENDL;
         file.setPosition(chunk.size, File::CURRENT); // skip JUNK and unknown chunks
       }
     }
 
-    stream << MESSAGE("  file position=") << file.getPosition() << EOL
-           << MESSAGE("  file size=") << file.getSize() << EOL;
+    stream << "  file position=" << file.getPosition() << EOL
+           << "  file size=" << file.getSize() << EOL;
   }
 
   return stream;
@@ -437,33 +443,33 @@ AVIEncoder::~AVIEncoder() {
 void AVIReader::analyse() throw(IOException) {
   {
     Chunk riff;
-    file.read(Cast::getCharAddress(riff), sizeof(riff));
+    file.read(Cast::getAddress(riff), sizeof(riff));
     assert(riff.id == makeChunkId('R', 'I', 'F', 'F'), InvalidFormat(this));
     ChunkId name;
-    file.read(Cast::getCharAddress(name), sizeof(name));
+    file.read(Cast::getAddress(name), sizeof(name));
     assert(name == makeChunkId('A', 'V', 'I', ' '), InvalidFormat(this));
-    fout << MESSAGE("riff=") << riff.id << MESSAGE(" size=") << riff.size << MESSAGE(" name=") << name << ENDL;
+    fout << "riff=" << riff.id << " size=" << riff.size << " name=" << name << ENDL;
   }
 
   unsigned int totalRead = 0;
 
   Chunk list;
-  file.read(Cast::getCharAddress(list), sizeof(list));
+  file.read(Cast::getAddress(list), sizeof(list));
   assert(list.id == makeChunkId('L', 'I', 'S', 'T'), InvalidFormat(this));
 
   ChunkId name;
   assert(totalRead + sizeof(name) < list.size, InvalidFormat(this));
-  file.read(Cast::getCharAddress(name), sizeof(name));
+  file.read(Cast::getAddress(name), sizeof(name));
   assert(name == makeChunkId('h', 'd', 'r', 'l'), InvalidFormat(this));
   totalRead += sizeof(name);
 
   {
     Chunk avih;
     assert(totalRead + sizeof(avih) < list.size, InvalidFormat(this));
-    file.read(Cast::getCharAddress(avih), sizeof(avih));
+    file.read(Cast::getAddress(avih), sizeof(avih));
     assert(avih.id == makeChunkId('a', 'v', 'i', 'h'), InvalidFormat(this));
-    Allocator<char> buffer(maximum<unsigned int>(avih.size, sizeof(AVIHeader)));
-    fill<char>(buffer.getElements(), buffer.getSize(), 0);
+    Allocator<uint8> buffer(maximum<unsigned int>(avih.size, sizeof(AVIHeader)));
+    fill<uint8>(buffer.getElements(), buffer.getSize(), 0);
     file.read(buffer.getElements(), (avih.size + 1)/2*2);
     totalRead += sizeof(avih) + (avih.size + 1)/2*2;
     AVIHeader* header = Cast::pointer<AVIHeader*>(buffer.getElements());
@@ -493,7 +499,7 @@ void AVIReader::analyse() throw(IOException) {
   for (unsigned int streamIndex = 0; streamIndex < globalDescriptor.streams; ++streamIndex) { // read descriptions of all streams
     Chunk list;
 //    assert(totalRead + sizeof(chunk) < totalSize, InvalidFormat(this));
-    file.read(Cast::getCharAddress(list), sizeof(list));
+    file.read(Cast::getAddress(list), sizeof(list));
 //    totalRead += sizeof(list);
     assert(list.id == makeChunkId('L', 'I', 'S', 'T'), InvalidFormat(this));
 
@@ -501,7 +507,7 @@ void AVIReader::analyse() throw(IOException) {
     unsigned int totalSize = list.size; // todo may need to +1/2*2
 
     ChunkId name;
-    file.read(Cast::getCharAddress(name), sizeof(name));
+    file.read(Cast::getAddress(name), sizeof(name));
     assert(name == makeChunkId('s', 't', 'r', 'l'), InvalidFormat(this));
     totalRead += sizeof(name);
 
@@ -511,14 +517,14 @@ void AVIReader::analyse() throw(IOException) {
     // read strh
     {
       assert(totalRead + sizeof(chunk) < totalSize, InvalidFormat(this));
-      file.read(Cast::getCharAddress(chunk), sizeof(chunk));
+      file.read(Cast::getAddress(chunk), sizeof(chunk));
       assert(chunk.id == makeChunkId('s', 't', 'r', 'h'), InvalidFormat(this));
       unsigned int size = (chunk.size+1)/2*2;
       assert(totalRead + size < totalSize, InvalidFormat(this));
-      Allocator<char> buffer(
+      Allocator<uint8> buffer(
         maximum<MemorySize>(size, sizeof(AVIStreamHeader))
       );
-      fill<char>(buffer.getElements(), buffer.getSize(), 0);
+      fill<uint8>(buffer.getElements(), buffer.getSize(), 0);
       file.read(buffer.getElements(), size);
       totalRead += sizeof(chunk) + size;
 
@@ -553,15 +559,15 @@ void AVIReader::analyse() throw(IOException) {
 
     // read strf
     assert(totalRead + sizeof(chunk) < totalSize, InvalidFormat(this));
-    file.read(Cast::getCharAddress(chunk), sizeof(chunk));
+    file.read(Cast::getAddress(chunk), sizeof(chunk));
     assert(chunk.id == makeChunkId('s', 't', 'r', 'f'), InvalidFormat(this));
     unsigned int size = (chunk.size+1)/2*2;
     totalRead += sizeof(chunk) + size;
     
-    Allocator<char> buffer(
+    Allocator<uint8> buffer(
       maximum<MemorySize>(size, sizeof(BitmapInfoHeader))
     );
-    fill<char>(buffer.getElements(), buffer.getSize(), 0);
+    fill<uint8>(buffer.getElements(), buffer.getSize(), 0);
     file.read(buffer.getElements(), size);
 
     if (streamType == VIDEO) {
@@ -590,14 +596,16 @@ void AVIReader::analyse() throw(IOException) {
       case AVIEncoder::Compression::RLE8:
         videoStreamDescriptor.compression = RLE8;
         assert(
-          (videoStreamDescriptor.planes == 1) && (videoStreamDescriptor.bitsPerPixel == 8),
+          (videoStreamDescriptor.planes == 1) &&
+          (videoStreamDescriptor.bitsPerPixel == 8),
           Exception("Frame format not supported")
         );
         break;
       case AVIEncoder::Compression::RLE4:
         videoStreamDescriptor.compression = RLE4;
         assert(
-          (videoStreamDescriptor.planes == 1) && (videoStreamDescriptor.bitsPerPixel == 4),
+          (videoStreamDescriptor.planes == 1) &&
+          (videoStreamDescriptor.bitsPerPixel == 4),
           Exception("Frame format not supported")
         );
         break;
@@ -608,7 +616,10 @@ void AVIReader::analyse() throw(IOException) {
       if (videoStreamDescriptor.bitsPerPixel <= 8) { // do we need to initialize the palette
         const AVIPaletteEntry* srcPalette = (AVIPaletteEntry*)(buffer.getElements() + header->size);
         unsigned int numberOfEntries = (header->colorUsed == 0) ? (1U << videoStreamDescriptor.bitsPerPixel) : static_cast<unsigned int>(header->colorUsed);
-        assert(header->size + numberOfEntries * sizeof(AVIPaletteEntry) <= chunk.size, InvalidFormat(this));
+        assert(
+          header->size + numberOfEntries * sizeof(AVIPaletteEntry) <= chunk.size,
+          InvalidFormat(this)
+        );
         palette.setSize(256);
         ColorPixel* destPalette = palette.getElements();
         for (unsigned int i = 0; i < numberOfEntries; ++i) {
@@ -621,14 +632,14 @@ void AVIReader::analyse() throw(IOException) {
 
     while (totalRead < totalSize) {
       assert(totalRead + sizeof(chunk) < totalSize, InvalidFormat(this));
-      file.read(Cast::getCharAddress(chunk), sizeof(chunk));
+      file.read(Cast::getAddress(chunk), sizeof(chunk));
 
       totalRead += sizeof(chunk);
       unsigned int size = (chunk.size+1)/2*2;
       assert(totalRead + size <= totalSize, InvalidFormat(this));
       if (chunk.id == makeChunkId('s', 't', 'r', 'd')) {
         streamData.setSize(size);
-        file.read((char*)streamData.getElements(), size);
+        file.read(streamData.getElements(), size);
       } else {
         file.setPosition(size, File::CURRENT); // skip chunk
       }
@@ -639,11 +650,11 @@ void AVIReader::analyse() throw(IOException) {
   while (true) { // stream data
     // check size
     Chunk chunk;
-    file.read(Cast::getCharAddress(chunk), sizeof(chunk));
+    file.read(Cast::getAddress(chunk), sizeof(chunk));
     unsigned int size = (chunk.size+1)/2*2;
     if (chunk.id == makeChunkId('L', 'I', 'S', 'T')) {
       ChunkId name;
-      file.read(Cast::getCharAddress(name), sizeof(name));
+      file.read(Cast::getAddress(name), sizeof(name));
       if (name == makeChunkId('m', 'o', 'v', 'i')) {
         break; // we have found what we were looking for
       }
@@ -828,24 +839,27 @@ void AVIReader::decodeFrame(ColorImage& frame, const byte* src, unsigned int siz
 }
 
 void AVIReader::getFrame(ColorImage& frame) throw(IOException) {
-  assert(frame.getDimension() == globalDescriptor.dimension, Exception("Invalid arg"));
+  assert(
+    frame.getDimension() == globalDescriptor.dimension,
+    Exception("Invalid arg")
+  );
 
   Chunk chunk;
   while (true) { // find frame of video stream
     // check size
-    file.read(Cast::getCharAddress(chunk), sizeof(chunk));
-    fout << MESSAGE("getFrame: chunk=") << chunk.id
-         << MESSAGE(" size=") << chunk.size << ENDL;
+    file.read(Cast::getAddress(chunk), sizeof(chunk));
+    fout << "getFrame: chunk=" << chunk.id
+         << " size=" << chunk.size << ENDL;
     // check size
     unsigned int size = (chunk.size+1)/2*2;
-  fout << MESSAGE("getFrame: streamId=") << getStreamId(chunk.id) << MESSAGE(" videoStreamIndex=") << videoStreamIndex << ENDL;
+    fout << "getFrame: streamId=" << getStreamId(chunk.id) << " videoStreamIndex=" << videoStreamIndex << ENDL;
 
     if (getStreamId(chunk.id) == videoStreamIndex) {
 
       if (buffer.getSize() < size) { // make room for data
         buffer.setSize(size);
       }
-      file.read((char*)buffer.getElements(), size);
+      file.read(buffer.getElements(), size);
 
       unsigned int streamType = getStreamType(chunk.id);
       if (streamType == getStreamType(makeChunkId('#', '#', 'd', 'b'))) { // uncompressed data

@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2002-2003 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -79,7 +79,7 @@ namespace gip {
     if (file.getSize() < sizeof(header)) {
       return false;
     }
-    file.read(Cast::getCharAddress(header), sizeof(header));
+    file.read(Cast::getAddress(header), sizeof(header));
 
     if (header.magic != RASEncoderImpl::MAGIC) {
       return false;
@@ -118,11 +118,12 @@ namespace gip {
     return true;
   }
   
-  ColorImage* RASEncoder::read(const String& filename) throw(InvalidFormat, IOException) {
+  ColorImage* RASEncoder::read(
+    const String& filename) throw(InvalidFormat, IOException) {
     RASEncoderImpl::Header header;
 
     File file(filename, File::READ, 0);
-    file.read(Cast::getCharAddress(header), sizeof(header));
+    file.read(Cast::getAddress(header), sizeof(header));
 
     assert((header.width >= 0) && (header.height >= 0), InvalidFormat(this));
     const Dimension dimension(header.width, header.height);
@@ -442,17 +443,17 @@ namespace gip {
 //    header.mapLength = 0;
 
     const unsigned int bytesPerLine = ((dimension.getWidth() * 3 + 1)/2)*2; // 16 bit alignment
-    Allocator<char> buffer(
+    Allocator<uint8> buffer(
       (BUFFER_SIZE >= bytesPerLine) ? (BUFFER_SIZE/bytesPerLine) * bytesPerLine : bytesPerLine
     );
     
     File file(filename, File::WRITE, File::CREATE);
-    file.write(Cast::getCharAddress(header), sizeof(header));
+    file.write(Cast::getAddress(header), sizeof(header));
     
     const ColorImage::ReadableRows::RowIterator endRow = image->getRows().getFirst();
     ColorImage::ReadableRows::RowIterator row = image->getRows().getEnd();
-    const Allocator<char>::Iterator endDest = buffer.getEndIterator();
-    Allocator<char>::Iterator dest = buffer.getBeginIterator();
+    const Allocator<uint8>::Iterator endDest = buffer.getEndIterator();
+    Allocator<uint8>::Iterator dest = buffer.getBeginIterator();
     
     while (row != endRow) {
       --row;
@@ -498,17 +499,17 @@ namespace gip {
 //    header.mapLength = 0;
 
     const unsigned int bytesPerLine = ((dimension.getWidth() + 1)/2)*2; // 16 bit alignment
-    Allocator<char> buffer(
+    Allocator<uint8> buffer(
       (BUFFER_SIZE >= bytesPerLine) ? (BUFFER_SIZE/bytesPerLine)*bytesPerLine : bytesPerLine
     );
 
     File file(filename, File::WRITE, File::CREATE);
-    file.write(Cast::getCharAddress(header), sizeof(header));
+    file.write(Cast::getAddress(header), sizeof(header));
 
     const GrayImage::ReadableRows::RowIterator endRow = image->getRows().getFirst();
     GrayImage::ReadableRows::RowIterator row = image->getRows().getEnd();
-    const Allocator<char>::Iterator endDest = buffer.getEndIterator();
-    Allocator<char>::Iterator dest = buffer.getBeginIterator();
+    const Allocator<uint8>::Iterator endDest = buffer.getEndIterator();
+    Allocator<uint8>::Iterator dest = buffer.getBeginIterator();
 
     while (row != endRow) {
       --row;
@@ -526,9 +527,15 @@ namespace gip {
       }
     }
     if (dest != buffer.getBeginIterator()) {
-      file.write(buffer.getElements(), dest - buffer.getBeginIterator()); // write entire buffer
+      file.write(
+        buffer.getElements(),
+        dest - buffer.getBeginIterator()
+      ); // write entire buffer
     }
-    file.truncate(sizeof(header) + static_cast<unsigned long long>(bytesPerLine) * dimension.getHeight());
+    file.truncate(
+      sizeof(header) +
+      static_cast<unsigned long long>(bytesPerLine) * dimension.getHeight()
+    );
   }
 
   HashTable<String, AnyValue> RASEncoder::getInformation(const String& filename) throw(IOException) {
@@ -536,13 +543,13 @@ namespace gip {
     RASEncoderImpl::Header header;
     {
       File file(filename, File::READ, 0);
-      file.read(Cast::getCharAddress(header), sizeof(header));
+      file.read(Cast::getAddress(header), sizeof(header));
     }
-    result[MESSAGE("encoder")] = Type::getType(*this);
-    result[MESSAGE("description")] = MESSAGE("Sun Rasterfile Format");
-    result[MESSAGE("width")] = static_cast<unsigned int>(header.width);
-    result[MESSAGE("height")] = static_cast<unsigned int>(header.height);
-    result[MESSAGE("depth")] = static_cast<unsigned int>(header.depth);
+    result["encoder"] = Type::getType(*this);
+    result["description"] = "Sun Rasterfile Format";
+    result["width"] = static_cast<unsigned int>(header.width);
+    result["height"] = static_cast<unsigned int>(header.height);
+    result["depth"] = static_cast<unsigned int>(header.depth);
     return result;
   }
 

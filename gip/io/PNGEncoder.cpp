@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001-2003 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,19 +24,26 @@ namespace gip {
 
     static void read(png_structp context, png_bytep buffer, png_size_t size) {
       File* file = (File*)::png_get_io_ptr(context);
-      file->read(Cast::pointer<char*>(buffer), static_cast<unsigned int>(size)); // could raise exception
+      file->read(
+        Cast::pointer<uint8*>(buffer),
+        static_cast<unsigned int>(size)
+      ); // could raise exception
     }
 
     static void write(png_structp context, png_bytep buffer, png_size_t size) {
       File* file = (File*)::png_get_io_ptr(context);
-      file->write(Cast::pointer<const char*>(buffer), static_cast<unsigned int>(size)); // could raise exception
+      file->write(
+        Cast::pointer<const uint8*>(buffer),
+        static_cast<unsigned int>(size)
+      ); // could raise exception
     }
 
     static void flush(png_structp context) throw() {
       // file.flush(); // TAG: flushed when file is closed
     }
 
-    static void errorHandler(png_structp context, png_const_charp message) throw(InvalidFormat) {
+    static void errorHandler(
+      png_structp context, png_const_charp message) throw(InvalidFormat) {
       throw InvalidFormat();
     }
     
@@ -46,21 +53,22 @@ namespace gip {
   }
   
   String PNGEncoder::getDescription() const throw() {
-    return MESSAGE("Portable Network Graphics");
+    return Literal("Portable Network Graphics");
   }
   
   String PNGEncoder::getDefaultExtension() const throw() {
-    return MESSAGE("png");
+    return Literal("png");
   }
 
   bool PNGEncoder::isValid(const String& filename) throw(IOException) {
-    char signature[8]; // size of signature is 8
+    uint8 signature[8]; // size of signature is 8
     File file(filename, File::READ, 0);
     unsigned int result = file.read(signature, sizeof(signature));
     return (result == 8) && !::png_sig_cmp((png_byte*)signature, 0, result);
   }
 
-  ColorImage* PNGEncoder::read(const String& filename) throw(InvalidFormat, IOException) {
+  ColorImage* PNGEncoder::read(
+    const String& filename) throw(InvalidFormat, IOException) {
     File file(filename, File::READ, 0);
 
     png_structp context = ::png_create_read_struct(
@@ -151,10 +159,15 @@ namespace gip {
     }
   }
 
-  void PNGEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException) {
+  void PNGEncoder::write(
+    const String& filename,
+    const ColorImage* image) throw(ImageException, IOException) {
     unsigned int width = image->getDimension().getWidth();
     unsigned int height = image->getDimension().getHeight();
-    assert((width <= (1 << 31)) && (height <= (1 << 31)), ImageException(this));
+    assert(
+      (width <= (1 << 31)) && (height <= (1 << 31)),
+      ImageException(this)
+    );
 
     File file(filename, File::WRITE, File::CREATE | File::EXCLUSIVE);
     
@@ -228,11 +241,14 @@ namespace gip {
     bool isLossless() const throw() - not static
   */
   
-  void PNGEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
+  void PNGEncoder::writeGray(
+    const String& filename,
+    const GrayImage* image) throw(ImageException, IOException) {
     throw NotImplemented(this);
   }
 
-  HashTable<String, AnyValue> PNGEncoder::getInformation(const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> PNGEncoder::getInformation(
+    const String& filename) throw(IOException) {
     HashTable<String, AnyValue> result;
     File file(filename, File::READ, 0);
     
@@ -273,15 +289,15 @@ namespace gip {
         &filterType
       );
 
-      result[MESSAGE("encoder")] = Type::getType(*this);
-      result[MESSAGE("description")] = MESSAGE("Portable Network Graphics");
-      result[MESSAGE("width")] = width;
-      result[MESSAGE("height")] = height;
-      result[MESSAGE("bit depth")] = bitDepth;
-      result[MESSAGE("color type")] = colorType;
-      result[MESSAGE("interlaced type")] = interlaceType;
-      result[MESSAGE("compression type")] = compressionType;
-      result[MESSAGE("filter type")] = filterType;
+      result["encoder"] = Type::getType(*this);
+      result["description"] = "Portable Network Graphics";
+      result["width"] = width;
+      result["height"] = height;
+      result["bit depth"] = bitDepth;
+      result["color type"] = colorType;
+      result["interlaced type"] = interlaceType;
+      result["compression type"] = compressionType;
+      result["filter type"] = filterType;
       
       ::png_destroy_read_struct(&context, &information, 0);
     } catch(IOException& e) {
