@@ -10,7 +10,7 @@ AC_PREREQ(2.5)
 dnl AC_CHECK_COMPILERS()
 AC_PROG_CXX()
 dnl AC_ENABLE_SHARED(yes)
-dnl AC_ENABLE_STATIC(no)
+dnl AC_ENABLE_STATIC(yes)
 AC_LIBTOOL_WIN32_DLL()
 AC_PROG_LIBTOOL()
 
@@ -19,6 +19,8 @@ dnl perform program name transformation
 AC_ARG_PROGRAM()
 
 AM_INIT_AUTOMAKE(gip, 0.1)
+
+
 
 ac_gip_config=configuration.tmp
 rm -f $ac_gip_config

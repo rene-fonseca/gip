@@ -20,5 +20,5 @@ all:
 	automake
 	autoconf
 
-klampenborg-gcc:
-	CXX="g++ -mno-cygwin -mthreads" CXXFLAGS="-O0 -g3" ./configure --prefix=/usr/local/gip --with-base-include=//d/projects/base/base --with-base-lib=//d/projects/base/base/base --target=i686-pc-mingw32
+klampenborg-gcc: all
+	CC="gcc -mno-cygwin -mthreads" LTCC='"gcc -mno-cygwin -mthreads"' CXX="gcc -mno-cygwin -mthreads" CXXFLAGS="-O0 -g3" ./configure --target=mingw32 --prefix=/usr/local/gip --with-base-include=//d/projects/base/base --with-base-lib=//d/projects/base/base/base
