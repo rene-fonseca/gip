@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -45,13 +45,9 @@ namespace gip {
     /**
       Returns an array of extensions.
     */
-    virtual Array<String> getExtensions() const throw();
-
-    ColorImage* read(const String& filename) throw(IOException);
-    
-    void write(const String& filename, const ColorImage& image) throw(IOException);
+    virtual Array<String> getExtensions() const throw();    
   };
   
-}; // end of namespace
+}; // end of gip namespace
 
 #endif
