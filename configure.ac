@@ -23,18 +23,24 @@ ac_gip_build_host=$(uname -n)
 AC_PREREQ(2.52)
 AC_COPYRIGHT([Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>])
 AC_REVISION($Revision$)
-dnl AC_CHECK_COMPILERS()
-AC_PROG_CXX()
-dnl AC_ENABLE_SHARED(yes)
-dnl AC_ENABLE_STATIC(yes)
-AC_LIBTOOL_WIN32_DLL()
-AC_PROG_LIBTOOL()
 
 AC_CANONICAL_SYSTEM()
+
 dnl perform program name transformation
 AC_ARG_PROGRAM()
 
 AM_INIT_AUTOMAKE(gip-framework, 0.1.2)
+
+dnl AC_CHECK_COMPILERS()
+dnl AC_EXEEXT() dnl TAG: required before 2.50
+dnl AC_PROG_MAKE_SET()
+AC_PROG_CXX()
+AC_PROG_CPP()
+AC_CHECK_TOOL(WINDRES, windres)
+dnl AC_ENABLE_SHARED(yes)
+dnl AC_ENABLE_STATIC(yes)
+AC_LIBTOOL_WIN32_DLL()
+AC_PROG_LIBTOOL()
 
 
 
@@ -81,8 +87,8 @@ dnl Add VERSION resource to the dynamic library on Windows platforms (i.e. cygwi
 case "$ac_cv_target" in
 *-*-cygwin|*-*-mingw32)
   dnl The -Wl option is used to circumvent libtool
-  GIP_LIBADD_ADD="${GIP_LIBADD_ADD}${GIP_LIBADD_ADD:+ }"'-Wl,winrcver.o'
-  GIP_DEPENDENCIES_ADD="${GIP_DEPENDENCIES_ADD}${GIP_DEPENDENCIES_ADD:+ }"'winrcver.o'
+  GIP_LIBADD_ADD="${GIP_LIBADD_ADD}${GIP_LIBADD_ADD:+ }"'-Wl,win32rc.o'
+  GIP_DEPENDENCIES_ADD="${GIP_DEPENDENCIES_ADD}${GIP_DEPENDENCIES_ADD:+ }"'win32rc.o'
   ;;
 esac
 
