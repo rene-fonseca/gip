@@ -25,8 +25,11 @@
 namespace gip {
 
 /**
+  An image with the elements stored in an array.
+  
   @short Image containing the image elements in an array for random access.
   @author Rene Moeller Fonseca
+  @version 1.0
 */
 
 template<class PIXEL>
@@ -117,7 +120,9 @@ public:
 
   typedef ColumnsImpl<IteratorTraits<Pixel> > Columns;
   typedef ColumnsImpl<ReadIteratorTraits<Pixel> > ReadableColumns;
-
+  
+  ArrayImage() throw(MemoryException);
+  
   /**
     Initializes the image to the specified dimension. The elements are not initialized.
 
@@ -130,6 +135,12 @@ public:
   */
   ArrayImage(const ArrayImage& copy) throw();
 
+  ArrayImage& operator=(const ArrayImage& eq) throw() {
+    Image<Pixel>::operator=(eq);
+    elements = eq.elements;
+    return *this;
+  }
+  
   /**
     Returns the rows of the image for modifying access. This will force the
     image to be copied if shared by multiple image objects.
@@ -175,13 +186,18 @@ public:
 };
 
 template<class PIXEL>
+ArrayImage<PIXEL>::ArrayImage() throw(MemoryException) :
+  Image<PIXEL>(Dimension(0, 0)), elements(new ReferenceCountedAllocator<Pixel>(0)) {
+}
+
+template<class PIXEL>
 ArrayImage<PIXEL>::ArrayImage(const Dimension& dimension) throw(MemoryException) :
-  Image<PIXEL>(dimension), elements(new ReferenceCountedAllocator<Pixel>(dimension.getSize())) {
+  Image<Pixel>(dimension), elements(new ReferenceCountedAllocator<Pixel>(dimension.getSize())) {
 }
 
 template<class PIXEL>
 ArrayImage<PIXEL>::ArrayImage(const ArrayImage& copy) throw() :
-  Image<PIXEL>(copy), elements(copy.elements) {
+  Image<Pixel>(copy), elements(copy.elements) {
 }
 
 template<class PIXEL>
@@ -197,9 +213,10 @@ const ArrayImage<PIXEL>::Pixel* ArrayImage<PIXEL>::getElements() const throw() {
 
 typedef ArrayImage<GrayPixel> GrayImage;
 typedef ArrayImage<ColorPixel> ColorImage;
-typedef ArrayImage<FloatPixel> FloatImage;
-typedef ArrayImage<ComplexPixel> ComplexImage;
+typedef ArrayImage<ColorAlphaPixel> ColorAlphaImage;
+typedef ArrayImage<float> FloatImage;
+typedef ArrayImage<Complex> ComplexImage;
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif
