@@ -40,17 +40,19 @@ public:
     ColorImage originalImage(*image);
     delete image;
 
-    GrayImage grayOriginalImage(originalImage.getDimension());
+//    GrayImage grayOriginalImage(originalImage.getDimension());
+//    {
+//      Convert<GrayImage, ColorImage, RGBToGray> transform(&grayOriginalImage, &originalImage, RGBToGray());
+//      fout << MESSAGE("Converting image: ColorImage->GrayImage") << ' '
+//           << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
+//      transform();
+//    }
+//
+//    GrayImage finalImage(grayOriginalImage.getDimension());
+    ColorImage finalImage(originalImage.getDimension());
     {
-      Convert<GrayImage, ColorImage, RGBToGray> transform(&grayOriginalImage, &originalImage, RGBToGray());
-      fout << MESSAGE("Converting image: ColorImage->GrayImage") << ' '
-           << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
-      transform();
-    }
-
-    GrayImage finalImage(grayOriginalImage.getDimension());
-    {
-      ContrastStretch transform(&finalImage, &grayOriginalImage);
+//      ContrastStretch<GrayImage, GrayImage> transform(&finalImage, &grayOriginalImage);
+      ContrastStretch<ColorImage, ColorImage> transform(&finalImage, &originalImage);
       fout << MESSAGE("Transforming image: ") << ' ' << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
       Timer timer;
       transform();
@@ -58,7 +60,8 @@ public:
     }
 
     fout << MESSAGE("Exporting image with encoder: ") << encoder.getDescription() << ENDL;
-    encoder.writeGray(outputFile, &finalImage);
+    encoder.write(outputFile, &finalImage);
+//    encoder.writeGray(outputFile, &finalImage);
   }
   
   void main() throw() {
