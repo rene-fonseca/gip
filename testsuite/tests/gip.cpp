@@ -15,6 +15,7 @@
 #include <base/string/FormatOutputStream.h>
 #include <base/Version.h>
 #include <gip/Version.h>
+#include <gip/io/BMPEncoder.h>
 
 using namespace base;
 using namespace gip;
