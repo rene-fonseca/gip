@@ -19,8 +19,6 @@
 
 namespace gip {
 
-  typedef Array<unsigned int> Histogram;
-
   /**
     Gray level histogram operation.
     
@@ -30,17 +28,33 @@ namespace gip {
   */
 
   class GrayHistogram : public UnaryOperation<GrayPixel, void> {
+  public:
+
+    typedef Array<unsigned int> Histogram;
   private:
 
     /** The gray histogram. */
     Histogram gray;
+    /** The histogram elements. */
+    unsigned int* elements;
   public:
 
-    GrayHistogram() throw(MemoryException);
+    GrayHistogram() throw(MemoryException)
+      : gray(PixelTraits<GrayPixel>::MAXIMUM + 1, 0), elements(gray.getElements()) {
+      reset();
+    }
+ 
+    inline void operator()(const Argument& value) throw() {
+      ++elements[static_cast<unsigned char>(value)];
+    }
 
-    void operator()(const Argument& value) throw();
-
-    Histogram getHistogram() const throw();
+    void reset() throw() {
+      fill<unsigned int>(gray.getElements(), gray.getSize(), 0);
+    }
+    
+    Histogram getHistogram() const throw() {
+      return gray;
+    }
   };
 
 
@@ -54,27 +68,60 @@ namespace gip {
   */
   
   class ColorHistogram : public UnaryOperation<ColorPixel, void> {
-  private:
-
-    /** The blue histogram. */
-    Histogram blue;
-    /** The green histogram. */
-    Histogram green;
-    /** The red histogram. */
-    Histogram red;
   public:
 
-    ColorHistogram() throw(MemoryException);
+    typedef Array<unsigned int> Histogram;
+  private:
 
-    void operator()(const Argument& value) throw();
+    /** The red histogram. */
+    Histogram red;
+    /** The green histogram. */
+    Histogram green;
+    /** The blue histogram. */
+    Histogram blue;
+    /** The red histogram elements. */
+    unsigned int* redElements;
+    /** The green histogram elements. */
+    unsigned int* greenElements;
+    /** The blue histogram elements. */
+    unsigned int* blueElements;
+  public:
 
-    Histogram getBlueHistogram() const throw();
+    ColorHistogram() throw(MemoryException)
+      : red(PixelTraits<ColorPixel>::MAXIMUM + 1, 0),
+        green(PixelTraits<ColorPixel>::MAXIMUM + 1, 0),
+        blue(PixelTraits<ColorPixel>::MAXIMUM + 1, 0),
+        redElements(red.getElements()),
+        greenElements(green.getElements()),
+        blueElements(blue.getElements()) { // TAG: #intensities depends on pixel type
+      reset();
+    }
+    
+    inline void operator()(const Argument& value) throw() {
+      ++redElements[static_cast<unsigned char>(value.red)];
+      ++greenElements[static_cast<unsigned char>(value.green)];
+      ++blueElements[static_cast<unsigned char>(value.blue)];
+    }
 
-    Histogram getGreenHistogram() const throw();
+    void reset() throw() {
+      fill<unsigned int>(red.getElements(), red.getSize(), 0);
+      fill<unsigned int>(green.getElements(), green.getSize(), 0);
+      fill<unsigned int>(blue.getElements(), blue.getSize(), 0);
+    }
 
-    Histogram getRedHistogram() const throw();
+    Histogram getBlueHistogram() const throw() {
+      return blue;
+    }
+
+    Histogram getGreenHistogram() const throw() {
+      return green;
+    }
+    
+    Histogram getRedHistogram() const throw() {
+      return red;
+    }
   };
 
-}; // end of namespace
+}; // end of gip namespace
 
 #endif
