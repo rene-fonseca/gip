@@ -18,13 +18,13 @@ namespace gip {
   class NoiseOperation {
   private:
 
-    RGBPixel pixel;
+    ColorPixel pixel;
   public:
 
     inline NoiseOperation() throw() {
     }
 
-    inline RGBPixel operator()() throw() {
+    inline ColorPixel operator()() throw() {
       return pixel;
     }
   };

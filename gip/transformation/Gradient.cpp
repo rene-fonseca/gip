@@ -71,7 +71,7 @@ namespace gip {
 
 //      long double gray = fabs(verticalGray) + fabs(horizontalGray);
         long double gray = sqrt(verticalGray*verticalGray + horizontalGray*horizontalGray);
-        *column++ = minimum(static_cast<Intensity>(gray), MAXIMUM_INTENSITY);
+        *column++ = minimum<unsigned char>(static_cast<unsigned char>(gray), 0xff);
       }
       ++row;
     }
