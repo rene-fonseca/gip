@@ -75,11 +75,11 @@ namespace gip {
             int rho = static_cast<int>(x * trigo->cosine + y * trigo->sine + halfWidth);
             ASSERT(rho < width);
             ASSERT(rho >= 0);
-            destRow[rho] += 1; // TAG: alternatively use gradient as weight
+            ++destRow[rho]; // TAG: alternatively use gradient as weight
           }
         }
       }
     }
   }
   
-}; // end of namespace
+}; // end of namespace gip
