@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -43,7 +43,7 @@ namespace gip {
       
       typename DestinationImage::Rows::RowIterator::ElementIterator column = row.getFirst();
       for (unsigned int columnIndex = 0; columnIndex < columns; ++columnIndex) {
-        *column = *srcRow[static_cast<unsigned int>(columnIndex * columnRatio)];
+        *column = srcRow[static_cast<unsigned int>(columnIndex * columnRatio)];
         ++column;
       }
       ++row;

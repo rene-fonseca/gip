@@ -86,7 +86,7 @@ void FourierTransformation::operator()() throw() {
       DestinationImage::Rows::RowIterator row = rowLookup[*mappedRow++];
       SourceImage::ReadableRows::RowIterator::ElementIterator srcColumn = srcRow.getFirst();
       for (; srcColumn != srcRow.getEnd(); ++srcColumn) { // traverse all columns of current row
-        *row[*mappedColumn++] = *srcColumn;
+        row[*mappedColumn++] = *srcColumn;
       }
     }
   }

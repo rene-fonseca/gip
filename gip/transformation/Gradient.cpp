@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -44,37 +44,37 @@ namespace gip {
 
       for (unsigned int columnIndex = 1; columnIndex < columns - 1; ++columnIndex) {
         long double verticalGray = 0;
-        verticalGray += -constant::SQRT2 * *srcRow0[columnIndex - 1];
-        verticalGray += -2 * *srcRow0[columnIndex];
-        verticalGray += -constant::SQRT2 * *srcRow0[columnIndex + 1];
+        verticalGray += -constant::SQRT2 * srcRow0[columnIndex - 1];
+        verticalGray += -2 * srcRow0[columnIndex];
+        verticalGray += -constant::SQRT2 * srcRow0[columnIndex + 1];
 
-//      verticalGray += 0 * *srcRow1[columnIndex - 1];
-//      verticalGray += 0 * *srcRow1[columnIndex];
-//      verticalGray += 0 * *srcRow1[columnIndex + 1];
+//      verticalGray += 0 * srcRow1[columnIndex - 1];
+//      verticalGray += 0 * srcRow1[columnIndex];
+//      verticalGray += 0 * srcRow1[columnIndex + 1];
 
-        verticalGray += constant::SQRT2 * *srcRow2[columnIndex - 1];
-        verticalGray += 2 * *srcRow2[columnIndex];
-        verticalGray += constant::SQRT2 * *srcRow2[columnIndex + 1];
+        verticalGray += constant::SQRT2 * srcRow2[columnIndex - 1];
+        verticalGray += 2 * srcRow2[columnIndex];
+        verticalGray += constant::SQRT2 * srcRow2[columnIndex + 1];
 
         long double horizontalGray = 0;
-        horizontalGray += -constant::SQRT2 * *srcRow0[columnIndex - 1];
-//      horizontalGray += 0 * *srcRow0[columnIndex];
-        horizontalGray += constant::SQRT2 * *srcRow0[columnIndex + 1];
+        horizontalGray += -constant::SQRT2 * srcRow0[columnIndex - 1];
+//      horizontalGray += 0 * srcRow0[columnIndex];
+        horizontalGray += constant::SQRT2 * srcRow0[columnIndex + 1];
 
-        horizontalGray += -2 * *srcRow1[columnIndex - 1];
-//      horizontalGray += 0 * *srcRow1[columnIndex];
-        horizontalGray += 2 * *srcRow1[columnIndex + 1];
+        horizontalGray += -2 * srcRow1[columnIndex - 1];
+//      horizontalGray += 0 * srcRow1[columnIndex];
+        horizontalGray += 2 * srcRow1[columnIndex + 1];
 
-        horizontalGray += -constant::SQRT2 * *srcRow2[columnIndex - 1];
-//      horizontalGray += 0 * *srcRow2[columnIndex];
-        horizontalGray += constant::SQRT2 * *srcRow2[columnIndex + 1];
+        horizontalGray += -constant::SQRT2 * srcRow2[columnIndex - 1];
+//      horizontalGray += 0 * srcRow2[columnIndex];
+        horizontalGray += constant::SQRT2 * srcRow2[columnIndex + 1];
 
 //      long double gray = fabs(verticalGray) + fabs(horizontalGray);
-        long double gray = sqrt(verticalGray*verticalGray + horizontalGray*horizontalGray);
+        long double gray = sqrt(verticalGray * verticalGray + horizontalGray * horizontalGray);
         *column++ = minimum<unsigned char>(static_cast<unsigned char>(gray), 0xff);
       }
       ++row;
     }
   }
 
-}; // end of namespace
+}; // end of gip namespace
