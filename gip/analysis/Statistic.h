@@ -18,6 +18,7 @@
 #include <base/Functor.h>
 #include <base/Cast.h>
 #include <base/mathematics/Math.h>
+#include <base/mathematics/Constants.h>
 
 namespace gip {
   
