@@ -34,7 +34,7 @@ namespace gip {
     @short Achromatic image element
     @ingroup pixels
   */
-  typedef int GrayPixel; // __attribute__ ((aligned (4) ))
+  typedef int GrayPixel;
   
   template<>
   class PixelTraits<GrayPixel> {
