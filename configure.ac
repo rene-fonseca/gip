@@ -124,7 +124,7 @@ AC_CONFIG_FILES(gip/docs/Makefile)
 AC_CONFIG_FILES(gip/docs/en/Makefile)
 AC_CONFIG_FILES(gip/transformation/Makefile)
 AC_CONFIG_FILES(gip/analysis/Makefile)
-AC_CONFIG_FILES(gip/draw/Makefile)
+AC_CONFIG_FILES(gip/canvas/Makefile)
 AC_CONFIG_FILES(gip/io/Makefile)
 AC_CONFIG_FILES(gip/media/Makefile)
 
