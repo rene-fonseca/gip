@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,87 +19,87 @@
 
 namespace gip {
 
-/**
-  This class is normally used to specify an element within an image.
-
-  @short Discrete two-dimensional point.
-  @author René Møller Fonseca
-  @version 1.0
-*/
-
-class Point2D {
-private:
-
-  /** Specifies the Y coordinate. */
-  unsigned int row;
-  /** Specifies the X coordinate. */
-  unsigned int column;
-public:
-
   /**
-    Initializes point as origin (0, 0).
+    This class is normally used to specify an element within an image.
+
+    @short Discrete two-dimensional point.
+    @author Rene Moeller Fonseca
+    @version 1.0
   */
-  Point2D() throw() : row(0), column(0) {}
 
-  /**
-    Initializes point.
+  class Point2D {
+  private:
 
-    @param row The desired row of the point.
-    @param column The desired column of the point.
-  */
-  Point2D(unsigned int row, unsigned int column) throw();
+    /** Specifies the Y coordinate. */
+    unsigned int row;
+    /** Specifies the X coordinate. */
+    unsigned int column;
+  public:
 
-  /**
-    Initializes point from other point.
-  */
-  inline Point2D(const Point2D& copy) throw() : row(copy.row), column(copy.column) {}
+    /**
+      Initializes point as origin (0, 0).
+    */
+    Point2D() throw() : row(0), column(0) {}
 
-  /**
-    Assignment of point by point.
-  */
-  inline Point2D& operator=(const Point2D& eq) throw() {
-    row = eq.row; // no need to protect against self-assignment
-    column = eq.column;
-    return *this;
-  }
+    /**
+      Initializes point.
+      
+      @param row The desired row of the point.
+      @param column The desired column of the point.
+    */
+    Point2D(unsigned int row, unsigned int column) throw();
 
-  /**
-    Returns true if the point is contained within the specified dimension.
-  */
-  inline bool isWithin(const Dimension& dimension) const throw() {
-    return (column < dimension.getWidth()) && (row < dimension.getHeight());
-  }
+    /**
+      Initializes point from other point.
+    */
+    inline Point2D(const Point2D& copy) throw() : row(copy.row), column(copy.column) {}
 
-  /**
-    Returns the column of the point.
-  */
-  inline unsigned int getColumn() const throw() {
-    return column;
-  }
+    /**
+      Assignment of point by point.
+    */
+    inline Point2D& operator=(const Point2D& eq) throw() {
+      row = eq.row; // no need to protect against self-assignment
+      column = eq.column;
+      return *this;
+    }
 
-  /**
-    Returns the row of the point.
-  */
-  inline unsigned int getRow() const throw() {
-    return row;
-  }
+    /**
+      Returns true if the point is contained within the specified dimension.
+    */
+    inline bool isWithin(const Dimension& dimension) const throw() {
+      return (column < dimension.getWidth()) && (row < dimension.getHeight());
+    }
 
-  /**
-    Sets the column of the point.
-  */
-  inline void setColumn(unsigned int column) throw() {
-    this->column = column;
-  }
+    /**
+      Returns the column of the point.
+    */
+    inline unsigned int getColumn() const throw() {
+      return column;
+    }
 
-  /**
-    Sets the row of the point.
-  */
-  inline void setRow(unsigned int row) throw() {
-    this->row = row;
-  }
-};
+    /**
+      Returns the row of the point.
+    */
+    inline unsigned int getRow() const throw() {
+      return row;
+    }
 
-inline Point2D::Point2D(unsigned int _row, unsigned int _column) throw() : row(_row), column(_column) {}
+    /**
+      Sets the column of the point.
+    */
+    inline void setColumn(unsigned int column) throw() {
+      this->column = column;
+    }
+
+    /**
+      Sets the row of the point.
+    */
+    inline void setRow(unsigned int row) throw() {
+      this->row = row;
+    }
+  };
+
+  inline Point2D::Point2D(unsigned int _row, unsigned int _column) throw() : row(_row), column(_column) {}
 
 }; // end of gip namespace
 

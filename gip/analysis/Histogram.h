@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,59 +19,61 @@
 
 namespace gip {
 
-typedef Array<unsigned int> Histogram;
+  typedef Array<unsigned int> Histogram;
 
-/**
-  Gray level histogram operation.
+  /**
+    Gray level histogram operation.
+    
+    @short Gray level histogram operation.
+    @author Rene Moeller Fonseca
+    @version 1.0
+  */
 
-  @short Gray level histogram operation.
-  @author René Møller Fonseca
-*/
+  class GrayHistogram : public UnaryOperation<GrayPixel, void> {
+  private:
 
-class GrayHistogram : public UnaryOperation<GrayPixel, void> {
-private:
+    /** The gray histogram. */
+    Histogram gray;
+  public:
 
-  /** The gray histogram. */
-  Histogram gray;
-public:
+    GrayHistogram() throw(MemoryException);
 
-  GrayHistogram() throw(MemoryException);
+    void operator()(const Argument& value) throw();
 
-  void operator()(const Argument& value) throw();
-
-  Histogram getHistogram() const throw();
-};
+    Histogram getHistogram() const throw();
+  };
 
 
 
-/**
-  Color histogram operation.
+  /**
+    Color histogram operation.
+    
+    @short Color histogram operation.
+    @author Rene Moeller Fonseca
+    @version 1.0
+  */
+  
+  class ColorHistogram : public UnaryOperation<ColorPixel, void> {
+  private:
 
-  @short Color histogram operation.
-  @author René Møller Fonseca
-*/
+    /** The blue histogram. */
+    Histogram blue;
+    /** The green histogram. */
+    Histogram green;
+    /** The red histogram. */
+    Histogram red;
+  public:
 
-class ColorHistogram : public UnaryOperation<ColorPixel, void> {
-private:
+    ColorHistogram() throw(MemoryException);
 
-  /** The blue histogram. */
-  Histogram blue;
-  /** The green histogram. */
-  Histogram green;
-  /** The red histogram. */
-  Histogram red;
-public:
+    void operator()(const Argument& value) throw();
 
-  ColorHistogram() throw(MemoryException);
+    Histogram getBlueHistogram() const throw();
 
-  void operator()(const Argument& value) throw();
+    Histogram getGreenHistogram() const throw();
 
-  Histogram getBlueHistogram() const throw();
-
-  Histogram getGreenHistogram() const throw();
-
-  Histogram getRedHistogram() const throw();
-};
+    Histogram getRedHistogram() const throw();
+  };
 
 }; // end of namespace
 

@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,39 +19,40 @@
 
 namespace gip {
 
-/**
-  Transformation.
-
-  @author René Møller Fonseca
-*/
-
-template<class DEST, class SRC>
-class Transformation : public Object {
-public:
-
-  typedef DEST DestinationImage;
-  typedef SRC SourceImage;
-protected:
-
-  /** The destination image of the transformation. */
-  DestinationImage* const destination;
-  /** The source image of the transformation. */
-  const SourceImage* const source;
-public:
-
   /**
-    Initializes transformation object.
+    Transformation.
 
-    @param destination The destination image.
-    @param source The source image.
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    @version 1.0
   */
-  Transformation(DestinationImage* destination, const SourceImage* source) throw();
-};
+  
+  template<class DEST, class SRC>
+  class Transformation : public Object {
+  public:
 
-template<class DEST, class SRC>
-inline Transformation<DEST, SRC>::Transformation(DestinationImage* dest, const SourceImage* src) throw() :
-  destination(dest), source(src) {
-}
+    typedef DEST DestinationImage;
+    typedef SRC SourceImage;
+  protected:
+
+    /** The destination image of the transformation. */
+    DestinationImage* const destination;
+    /** The source image of the transformation. */
+    const SourceImage* const source;
+  public:
+
+    /**
+      Initializes transformation object.
+      
+      @param destination The destination image.
+      @param source The source image.
+    */
+    Transformation(DestinationImage* destination, const SourceImage* source) throw();
+  };
+
+  template<class DEST, class SRC>
+  inline Transformation<DEST, SRC>::Transformation(DestinationImage* dest, const SourceImage* src) throw()
+    : destination(dest), source(src) {
+  }
 
 }; // end of namespace
 

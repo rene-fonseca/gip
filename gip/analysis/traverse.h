@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -21,7 +21,8 @@ namespace gip {
 /**
   Invocates the specified unary operation (non-modifying) for each element of the specified image.
 
-  @author René Møller Fonseca
+  @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+  @version 1.0
 */
 template<class IMAGE, class UNOPR>
 inline void forEach(const IMAGE& image, UNOPR& function) throw() {
@@ -38,7 +39,8 @@ inline void forEach(const IMAGE& image, UNOPR& function) throw() {
 /**
   Applies the specified operation on every element of the specified image.
 
-  @author René Møller Fonseca
+  @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+  @version 1.0
 */
 template<class IMAGE, class UNOPR>
 inline void transform(IMAGE& image, UNOPR& function) {
@@ -78,7 +80,8 @@ inline void transform(LEFT& left, const RIGHT& right, BINOPR& function) throw(Im
 /**
   Applies the specified operation on every element of the specified image.
 
-  @author René Møller Fonseca
+  @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+  @version 1.0
 */
 template<class DEST, class SRC, class UNOPR>
 inline void fillWithUnary(DEST& destination, const SRC& source, UNOPR& function) throw(ImageException) {
@@ -103,7 +106,7 @@ inline void fillWithUnary(DEST& destination, const SRC& source, UNOPR& function)
 }
 
 /**
-  @author René Møller Fonseca
+  @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 */
 //template<class DEST, class LEFT, class RIGHT, class BINOPR>
 //inline void fillWithBinary(DEST& destination, const LSRC& left, const RSRC& right, BINOPR& function) throw(ImageException) {

@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,44 +20,46 @@
 
 namespace gip {
 
-// temporary - should be enable in base
-template<class TYPE>
-class Same : UnaryOperation<TYPE, TYPE> {
-public:
-  inline Result operator()(const Argument& value) const throw() {return value;}
-};
-
-/**
-  Duplicates the contents of an image.
-
-  @author René Møller Fonseca
-*/
-
-class Duplicate : public Transformation<ColorImage, ColorImage> {
-public:
+  // temporary - should be enable in base
+  template<class TYPE>
+  class Same : UnaryOperation<TYPE, TYPE> {
+  public:
+    inline Result operator()(const Argument& value) const throw() {return value;}
+  };
 
   /**
-    Initializes duplication object.
+    Duplicates the contents of an image.
 
-    @param destination The destination image.
-    @param source The source image.
+    @short Image duplication operation
+    @author Rene Moeller Fonseca
+    @version 1.0
   */
-  Duplicate(DestinationImage* destination, const SourceImage* source) throw();
 
-  /**
-    Duplicates the contents of the source image to the destination image.
-  */
-  void operator()() throw();
-};
+  class Duplicate : public Transformation<ColorImage, ColorImage> {
+  public:
 
-Duplicate::Duplicate(DestinationImage* destination, const SourceImage* source) throw() :
-  Transformation<DestinationImage, SourceImage>(destination, source) {
-}
+    /**
+      Initializes duplication object.
 
-void Duplicate::operator()() throw() {
-  Same<ColorPixel> operation;
-  fillWithUnary(*destination, *source, operation);
-}
+      @param destination The destination image.
+      @param source The source image.
+    */
+    Duplicate(DestinationImage* destination, const SourceImage* source) throw();
+
+    /**
+      Duplicates the contents of the source image to the destination image.
+    */
+    void operator()() throw();
+  };
+
+  Duplicate::Duplicate(DestinationImage* destination, const SourceImage* source) throw()
+    : Transformation<DestinationImage, SourceImage>(destination, source) {
+  }
+
+  void Duplicate::operator()() throw() {
+    Same<ColorPixel> operation;
+    fillWithUnary(*destination, *source, operation);
+  }
 
 }; // end of namespace
 

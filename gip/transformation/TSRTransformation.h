@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,18 +19,21 @@
 
 namespace gip {
 
-/**
-  @short Translation, scaling, and rotation transformation.
-  @author René Møller Fonseca
-*/
-
-class TSRTransformation : public Transformation<ColorImage, ColorImage> {
-public:
-
-  TSRTransformation(DestinationImage* destination, const SourceImage* source) throw();
-
-  void operator()() throw();
-};
+  /**
+    Translation, scaling, and rotation transformation.
+    
+    @short Translation, scaling, and rotation transformation
+    @author Rene Moeller Fonseca
+    @version 1.0
+  */
+  
+  class TSRTransformation : public Transformation<ColorImage, ColorImage> {
+  public:
+    
+    TSRTransformation(DestinationImage* destination, const SourceImage* source) throw();
+    
+    void operator()() throw();
+  };
 
 }; // end of namespace
 

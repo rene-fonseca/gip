@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by René Møller Fonseca <fonseca@mip.sdu.dk>
+    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,28 +20,30 @@
 
 namespace gip {
 
-/**
-  Calculate the gradient of an image.
-
-  @author René Møller Fonseca
-*/
-
-class Gradient : public Transformation<GrayImage, GrayImage> {
-public:
-
   /**
-    Initializes duplication object.
+    Calculate the gradient of an image.
 
-    @param destination The destination image.
-    @param source The source image.
+    @short Gradient of image
+    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    @version 1.0
   */
-  Gradient(DestinationImage* destination, const SourceImage* source) throw(ImageException);
+  
+  class Gradient : public Transformation<GrayImage, GrayImage> {
+  public:
 
-  /**
-    Duplicates the contents of the source image to the destination image.
-  */
-  void operator()() throw();
-};
+    /**
+      Initializes duplication object.
+
+      @param destination The destination image.
+      @param source The source image.
+    */
+    Gradient(DestinationImage* destination, const SourceImage* source) throw(ImageException);
+
+    /**
+      Duplicates the contents of the source image to the destination image.
+    */
+    void operator()() throw();
+  };
 
 }; // end of namespace
 
