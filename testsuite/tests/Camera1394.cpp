@@ -31,7 +31,8 @@ using namespace gip;
 class RGB24ToRGB : public UnaryOperation<Camera1394::RGB24Pixel, ColorPixel> {
 public:
   
-  inline RGB24ToRGB() throw() {}
+  inline RGB24ToRGB() throw() {
+  }
   
   inline Result operator()(const Argument& value) const throw() {
     return makeColorPixel(value.red, value.blue, value.green);

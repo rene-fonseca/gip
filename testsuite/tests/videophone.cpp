@@ -65,7 +65,8 @@ public:
     VideoPhoneServlet* videoPhoneServlet;
   public:
 
-    Recorder(VideoPhoneServlet* object) throw() : videoPhoneServlet(object) {}
+    Recorder(VideoPhoneServlet* object) throw() : videoPhoneServlet(object) {
+    }
 
     void run() throw() {
       videoPhoneServlet->record();
@@ -78,7 +79,8 @@ public:
     VideoPhoneServlet* videoPhoneServlet;
   public:
 
-    Player(VideoPhoneServlet* object) throw() : videoPhoneServlet(object) {}
+    Player(VideoPhoneServlet* object) throw() : videoPhoneServlet(object) {
+    }
   
     void run() throw() {
       videoPhoneServlet->play();
@@ -91,7 +93,8 @@ public:
     VideoPhoneServlet* videoPhoneServlet;
   public:
 
-    Reader(VideoPhoneServlet* object) throw() : videoPhoneServlet(object) {}
+    Reader(VideoPhoneServlet* object) throw() : videoPhoneServlet(object) {
+    }
 
     void run() throw() {
       videoPhoneServlet->read();
@@ -104,7 +107,8 @@ public:
     VideoPhoneServlet* videoPhoneServlet;
   public:
 
-    Writer(VideoPhoneServlet* object) throw() : videoPhoneServlet(object) {}
+    Writer(VideoPhoneServlet* object) throw() : videoPhoneServlet(object) {
+    }
 
     void run() throw() {
       videoPhoneServlet->write();
@@ -472,7 +476,8 @@ public:
     fout << MESSAGE("Completed") << ENDL;
   }
   
-  ~VideoPhoneServlet() throw() {}
+  ~VideoPhoneServlet() throw() {
+  }
 };
 
 class VideoPhoneApplication : public Application, public Camera1394::AcquisitionListener {

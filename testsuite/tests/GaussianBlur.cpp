@@ -56,7 +56,8 @@ public:
     : scale(1.0/dimension.getSize()) {
   }
   
-  //inline RealToGray(const Dimension& dimension) throw() : scale(255) {}
+  //inline RealToGray(const Dimension& dimension) throw() : scale(255) {
+  //}
 
   inline GrayPixel operator()(const Complex& value) const throw() {
     return clamp(0, static_cast<GrayPixel>(value.getReal() * scale), 255);
