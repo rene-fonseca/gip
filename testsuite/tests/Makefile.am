@@ -29,6 +29,9 @@ bin_PROGRAMS += Erode
 bin_PROGRAMS += Dilate
 bin_PROGRAMS += Flip
 bin_PROGRAMS += Mirror
+bin_PROGRAMS += Rotate
+bin_PROGRAMS += Scale
+bin_PROGRAMS += Stat
 bin_PROGRAMS += Transpose
 
 gip_SOURCES = gip.cpp
@@ -47,6 +50,9 @@ Dilate_SOURCES = Dilate.cpp
 Canvas_SOURCES = Canvas.cpp
 Flip_SOURCES = Flip.cpp
 Mirror_SOURCES = Mirror.cpp
+Rotate_SOURCES = Rotate.cpp
+Scale_SOURCES = Scale.cpp
+Stat_SOURCES = Stat.cpp
 Transpose_SOURCES = Transpose.cpp
 
 EXTRA_DIST =
