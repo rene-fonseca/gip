@@ -17,7 +17,7 @@ Release: 1
 License: GPL
 Source: %{name}-%{version}.tar.bz2
 Url: http://www.mip.sdu.dk/~fonseca/gip
-Vendor: Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+Vendor: Rene Moeller Fonseca <fonseca@>
 Packager: Rene Moeller Fonseca <fonseca@mip.sdu.dk>
 Distribution: The GIP Framework
 Prefix: /usr
