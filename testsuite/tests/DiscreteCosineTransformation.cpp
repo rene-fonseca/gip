@@ -160,7 +160,7 @@ public:
   void main() throw() {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
-         << MESSAGE("http://www.mip.sdu.dk/~fonseca/gip") << EOL
+         << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL
          << MESSAGE("Copyright (C) 2002-2019 by Rene Moeller Fonseca") << EOL << ENDL;
     
     String inputFile;

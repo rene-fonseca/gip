@@ -38,7 +38,7 @@
       BLOCK "040904e4"
       BEGIN
         VALUE "Comments", "Written by Ren� M�ller Fonseca. This framework is distributed under the GNU General Public License Version 2, June 1991.\0"
-        VALUE "CompanyName", "Ren� M�ller Fonseca <http://www.mip.sdu.dk/~fonseca/gip>\0"
+        VALUE "CompanyName", "Ren� M�ller Fonseca <https://dev.azure.com/renefonseca/gip>\0"
         VALUE "FileDescription", "A framework for developing image processing applications\0"
         VALUE "FileVersion",  _DK_SDU_MIP__GIP__VERSION "\0"
         VALUE "InternalName", "gip\0"

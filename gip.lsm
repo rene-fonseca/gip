@@ -6,9 +6,9 @@ Description:    A framework for developing image processing applications.
 Keywords:       generic image processing gip c++
 Author:         Ren� M�ller Fonseca
 Maintained-by:  Ren� M�ller Fonseca
-Primary-site:   http://www.mip.sdu.dk/~fonseca/gip
-Home-page:      http://www.mip.sdu.dk/~fonseca/gip
-Original-site:  http://www.mip.sdu.dk/~fonseca/gip
+Primary-site:   https://dev.azure.com/renefonseca/gip
+Home-page:      https://dev.azure.com/renefonseca/gip
+Original-site:  https://dev.azure.com/renefonseca/gip
 Platforms:      Utilizes the Base Framework (www.mip.sdu.dk/~fonseca/base)
 Copying-policy: GNU General Public License Version 2, June 1991
 End

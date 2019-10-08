@@ -806,7 +806,7 @@ public:
     fout << getFormalName() << " version "
          << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << "Generic Image Processing (GIP) Framework (Test Suite)" << EOL
-         << "http://www.mip.sdu.dk/~fonseca/gip" << EOL
+         << "https://dev.azure.com/renefonseca/gip" << EOL
          << "Copyright (C) 2002-2019 by Rene Moeller Fonseca" << EOL
          << ENDL;
   }
