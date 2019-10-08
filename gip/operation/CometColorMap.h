@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_OPERATION__COMET_COLOR_MAP_H
-#define _DK_SDU_MIP__GIP_OPERATION__COMET_COLOR_MAP_H
+#pragma once
 
 #include <gip/operation/ColorMap.h>
 
@@ -78,5 +77,3 @@ namespace gip {
   };
 
 }; // end of gip namespace
-
-#endif

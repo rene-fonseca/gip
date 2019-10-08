@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_TRANSFORMATION__CONVERT_H
-#define _DK_SDU_MIP__GIP_TRANSFORMATION__CONVERT_H
+#pragma once
 
 #include <gip/transformation/Transformation.h>
 #include <gip/ArrayImage.h>
@@ -241,7 +240,7 @@ namespace gip {
     */
     Convert(DestinationImage* destination, const SourceImage* source, const UNARY& _convert) throw() :
             Transformation<DestinationImage, SourceImage>(destination, source), convert(_convert) {
-      assert(
+      bassert(
         destination->getDimension() == source->getDimension(),
         Exception("Images must have identical dimensions", this)
       );
@@ -260,5 +259,3 @@ namespace gip {
   };
 
 }; // end of gip namespace
-
-#endif

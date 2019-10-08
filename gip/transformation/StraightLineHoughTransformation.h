@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_TRANSFORMATION__STRAIGHT_LINE_HOUGH_TRANSFORMATION_H
-#define _DK_SDU_MIP__GIP_TRANSFORMATION__STRAIGHT_LINE_HOUGH_TRANSFORMATION_H
+#pragma once
 
 #include <gip/gip.h>
 #include <gip/transformation/Transformation.h>
@@ -57,5 +56,3 @@ namespace gip {
   };
 
 }; // end of gip namespace
-
-#endif

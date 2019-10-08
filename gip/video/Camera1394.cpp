@@ -491,7 +491,7 @@ namespace gip {
   }
   
   bool Camera1394::isCamera(unsigned int node) throw(OutOfDomain, IEEE1394Exception) {
-    assert(node < IEEE1394::BROADCAST, OutOfDomain(this));
+    bassert(node < IEEE1394::BROADCAST, OutOfDomain(this));
     try {
       Camera1394Impl::ConfigurationIntro config;
       adapter.read(
@@ -528,7 +528,7 @@ namespace gip {
           return true;
         }
       }
-    } catch (IOException& e) {
+    } catch (IOException&) {
       // continue with next node
     }
     return false;
@@ -536,7 +536,7 @@ namespace gip {
   
   bool Camera1394::isCamera(const EUI64& guid) throw(Camera1394Exception, IEEE1394Exception) {
     int node = adapter.getPhysicalId(guid);
-    assert(
+    bassert(
       node >= 0,
       bindCause(Camera1394Exception("Device not found", this), IEEE1394::NODE_NOT_PRESENT)
     );
@@ -593,11 +593,11 @@ namespace gip {
 
   void Camera1394::open(const EUI64& guid) throw(Camera1394Exception, IEEE1394Exception) {
     int node = adapter.getPhysicalId(guid);
-    assert(
+    bassert(
       node >= 0,
       bindCause(Camera1394Exception("Device not found", this), IEEE1394::NODE_NOT_PRESENT)
     );
-    assert(
+    bassert(
       isCamera(node),
       bindCause(Camera1394Exception("Not a camera", this), Camera1394::NOT_A_CAMERA)
     );
@@ -610,7 +610,7 @@ namespace gip {
       sizeof(config)
     );
     
-    assert(
+    bassert(
       ((config.crc >> 24) * sizeof(IEEE1394::Quadlet) >= sizeof(Camera1394Impl::BusInfo)) && // check for general ROM format
       (config.busInfo.name == 0x31333934) && // "1394"
       ((config.busInfo.flags & 0xf0ff0000) == 0x20ff0000) &&
@@ -637,7 +637,7 @@ namespace gip {
       sizeof(deviceIndependentDirectory)
     );
     
-    assert(
+    bassert(
       (deviceIndependentDirectory.specification == 0x1200a02d) && // (ID for 1394TA)
       ((deviceIndependentDirectory.version & 0xff000000) == 0x13000000) &&
       ((deviceIndependentDirectory.dependentOffset & 0xff000000) == 0xd4000000),
@@ -671,7 +671,7 @@ namespace gip {
       sizeof(deviceDependentDirectory)
     );
     
-    assert(
+    bassert(
       ((deviceDependentDirectory.commandRegisters & 0xff000000) == 0x40000000) &&
       ((deviceDependentDirectory.vendorNameLeaf & 0xff000000) == 0x81000000) &&
       ((deviceDependentDirectory.modelNameLeaf & 0xff000000) == 0x82000000),
@@ -1464,7 +1464,7 @@ namespace gip {
   }
   
   void Camera1394::setMode(Mode mode) throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       isModeSupported(mode),
       bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
     );
@@ -1536,7 +1536,7 @@ namespace gip {
   }
   
   unsigned int Camera1394::getFrameRates(Mode mode) throw(NotSupported) {
-    assert(
+    bassert(
       isModeSupported(mode),
       bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
     );
@@ -1544,7 +1544,7 @@ namespace gip {
   }
 
   void Camera1394::setFrameRate(FrameRate frameRate) throw(NotSupported) {
-    assert(
+    bassert(
       frameRates[currentMode] & (1 << frameRate),
       bindCause(NotSupported(this), Camera1394::FRAME_RATE_NOT_SUPPORTED)
     );
@@ -1681,7 +1681,7 @@ namespace gip {
       break;
     }
     
-    assert(
+    bassert(
       available,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_SUPPORTED)
     );
@@ -1737,7 +1737,7 @@ namespace gip {
       }
     }
     
-    assert(
+    bassert(
       available &&
       ((operatingMode != Camera1394::DISABLED) || switchable && (operatingMode == Camera1394::DISABLED)) &&
       ((operatingMode != Camera1394::AUTOMATIC) || switchable && (operatingMode == Camera1394::AUTOMATIC)) &&
@@ -1822,11 +1822,11 @@ namespace gip {
   }
   
   void Camera1394::setGenericFeature(Feature feature, const GenericFeatureDescriptor& descriptor, int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
-    assert(
+    bassert(
       descriptor.available,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_SUPPORTED)
     );
-    assert(
+    bassert(
       (value >= descriptor.minimum) && (value <= descriptor.maximum),
       OutOfDomain(this)
     );
@@ -1841,7 +1841,7 @@ namespace gip {
       sizeof(original)
     );
     Camera1394Impl::FeatureControl control = Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(original);
-    assert(
+    bassert(
       control.enabled && !control.automaticMode && !control.autoAdjustmentMode,
       bindCause(Camera1394Exception(this), Camera1394::INVALID_FEATURE_MODE)
     ); // must be in manual mode
@@ -1861,7 +1861,7 @@ namespace gip {
   }
   
   int Camera1394::getBrightness() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.brightness.available && featureDescriptors.brightness.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -1880,7 +1880,7 @@ namespace gip {
   }
 
   int Camera1394::getAutoExposure() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.autoExposure.available && featureDescriptors.autoExposure.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -1899,7 +1899,7 @@ namespace gip {
   }
 
   int Camera1394::getSharpness() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.sharpness.available && featureDescriptors.sharpness.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -1918,7 +1918,7 @@ namespace gip {
   }
 
   int Camera1394::getWhiteBalanceBlueRatio() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.whiteBalance.available && featureDescriptors.whiteBalance.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -1933,7 +1933,7 @@ namespace gip {
   }
 
   int Camera1394::getWhiteBalanceRedRatio() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.whiteBalance.available && featureDescriptors.whiteBalance.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -1950,11 +1950,11 @@ namespace gip {
   void Camera1394::setWhiteBalance(
     int blueRatio,
     int redRatio) throw(NotSupported, OutOfRange, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.whiteBalance.available,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_SUPPORTED)
     );
-    assert(
+    bassert(
       (blueRatio >= featureDescriptors.whiteBalance.minimum) &&
       (blueRatio <= featureDescriptors.whiteBalance.maximum) &&
       (redRatio >= featureDescriptors.whiteBalance.minimum) &&
@@ -1973,7 +1973,7 @@ namespace gip {
       Cast::impersonate<Camera1394Impl::WhiteBalanceFeatureControl, uint32>(
         original
       );
-    assert(
+    bassert(
       control.enabled && !control.automaticMode && !control.autoAdjustmentMode,
       bindCause(Camera1394Exception(this), Camera1394::INVALID_FEATURE_MODE)
     ); // must be in manual mode
@@ -1994,7 +1994,7 @@ namespace gip {
   }
 
   int Camera1394::getHue() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.hue.available && featureDescriptors.hue.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -2013,7 +2013,7 @@ namespace gip {
   }
 
   int Camera1394::getSaturation() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.saturation.available && featureDescriptors.saturation.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -2032,7 +2032,7 @@ namespace gip {
   }
 
   int Camera1394::getGamma() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.gamma.available && featureDescriptors.gamma.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -2051,7 +2051,7 @@ namespace gip {
   }
 
   int Camera1394::getShutter() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.shutter.available && featureDescriptors.shutter.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -2070,7 +2070,7 @@ namespace gip {
   }
 
   int Camera1394::getGain() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.gain.available && featureDescriptors.gain.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -2089,7 +2089,7 @@ namespace gip {
   }
 
   int Camera1394::getIRIS() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.iris.available && featureDescriptors.iris.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -2108,7 +2108,7 @@ namespace gip {
   }
 
   int Camera1394::getFocus() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.focus.available && featureDescriptors.focus.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -2127,7 +2127,7 @@ namespace gip {
   }
 
   int Camera1394::getTemperature() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.temperature.available && featureDescriptors.temperature.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -2142,7 +2142,7 @@ namespace gip {
   }
 
   int Camera1394::getTargetTemperature() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.temperature.available && featureDescriptors.temperature.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -2157,11 +2157,11 @@ namespace gip {
   }
 
   void Camera1394::setTemperature(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.temperature.available,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_SUPPORTED)
     );
-    assert(
+    bassert(
       (value >= featureDescriptors.temperature.minimum) &&
       (value <= featureDescriptors.temperature.maximum),
       OutOfDomain(this)
@@ -2175,7 +2175,7 @@ namespace gip {
       sizeof(original)
     );
     Camera1394Impl::TemperatureFeatureControl control = Cast::impersonate<Camera1394Impl::TemperatureFeatureControl, uint32>(original);
-    assert(
+    bassert(
       control.enabled && !control.automaticMode && !control.autoAdjustmentMode,
       bindCause(Camera1394Exception(this), Camera1394::INVALID_FEATURE_MODE)
     ); // must be in manual mode
@@ -2201,10 +2201,10 @@ namespace gip {
 
   // TAG: getTrigger..???
   // TAG: setTriggerParam...??
-  // TAG: setTriggerPolatity(bool polatiry) throw(NotSupported, IEEE1394Exception) {} assert(POLARITY_INQ...
+  // TAG: setTriggerPolatity(bool polatiry) throw(NotSupported, IEEE1394Exception) {} bassert(POLARITY_INQ...
   
   int Camera1394::getZoom() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.zoom.available && featureDescriptors.zoom.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -2223,7 +2223,7 @@ namespace gip {
   }
 
   int Camera1394::getPan() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.pan.available && featureDescriptors.pan.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -2242,7 +2242,7 @@ namespace gip {
   }
 
   int Camera1394::getTilt() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.tilt.available && featureDescriptors.tilt.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -2261,7 +2261,7 @@ namespace gip {
   }
 
   int Camera1394::getOpticalFilter() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.opticalFilter.available && featureDescriptors.opticalFilter.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
     );
@@ -2280,7 +2280,7 @@ namespace gip {
   }
 
   int Camera1394::getCaptureSize() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.captureSize.available &&
       featureDescriptors.captureSize.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2300,7 +2300,7 @@ namespace gip {
   }
 
   int Camera1394::getCaptureQuality() const throw(NotSupported, IEEE1394Exception) {
-    assert(
+    bassert(
       featureDescriptors.captureQuality.available &&
       featureDescriptors.captureQuality.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2320,7 +2320,7 @@ namespace gip {
   }
 
   Dimension Camera1394::getMaximumDimension(Mode mode) const throw(NotSupported) {
-    assert(
+    bassert(
       isModeSupported(mode),
       bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
     );
@@ -2329,7 +2329,7 @@ namespace gip {
     } else {
       const Camera1394Impl::ModeInformation& info =
         Camera1394Impl::MODE_INFORMATION[mode];
-      assert(
+      bassert(
         info.width && info.height,
         bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
       );
@@ -2338,7 +2338,7 @@ namespace gip {
   }
 
   Dimension Camera1394::getUnitDimension(Mode mode) const throw(NotSupported) {
-    assert(
+    bassert(
       isModeSupported(mode),
       bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
     );
@@ -2346,7 +2346,7 @@ namespace gip {
       return partialImageMode[Camera1394Impl::MODE_INFORMATION[mode].mode].unitDimension;
     } else {
       const Camera1394Impl::ModeInformation& info = Camera1394Impl::MODE_INFORMATION[mode];
-      assert(
+      bassert(
         info.width && info.height,
         bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
       );
@@ -2355,7 +2355,7 @@ namespace gip {
   }
 
   Point2D Camera1394::getUnitOffset(Mode mode) const throw(NotSupported) {
-    assert(
+    bassert(
       isModeSupported(mode),
       bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
     );
@@ -2363,7 +2363,7 @@ namespace gip {
       return partialImageMode[Camera1394Impl::MODE_INFORMATION[mode].mode].unitOffset;
     } else {
       const Camera1394Impl::ModeInformation& info = Camera1394Impl::MODE_INFORMATION[mode];
-      assert(
+      bassert(
         info.height && info.width,
         bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
       );
@@ -2372,7 +2372,7 @@ namespace gip {
   }
 
   unsigned int Camera1394::getPixelFormats(Mode mode) const throw(NotSupported) {
-    assert(
+    bassert(
       isModeSupported(mode),
       bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
     );
@@ -2385,7 +2385,7 @@ namespace gip {
   }
 
   void Camera1394::setRegion(const Region& region) throw(OutOfDomain, IEEE1394Exception) {
-    assert(
+    bassert(
       (region.getOffset().getColumn() % mode.unitOffset.getColumn() == 0) &&
       (region.getOffset().getRow() % mode.unitOffset.getRow() == 0) &&
       (region.getDimension().getWidth() % mode.unitDimension.getWidth() == 0) &&
@@ -2422,7 +2422,7 @@ namespace gip {
 
   void Camera1394::setPixelFormat(PixelFormat pixelFormat) throw(NotSupported, IEEE1394Exception) {
     if (pixelFormat != this->pixelFormat) {
-      assert(
+      bassert(
         mode.pixelFormats & (1 << pixelFormat),
         bindCause(NotSupported(this), Camera1394::PIXEL_FORMAT_NOT_SUPPORTED)
       );
@@ -2435,7 +2435,7 @@ namespace gip {
   bool Camera1394::acquire(
     uint8* buffer,
     unsigned int size) throw(ImageException, IEEE1394Exception) {
-    assert(
+    bassert(
       size == transmission.totalBytesPerFrame,
       bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH)
     );
@@ -2551,7 +2551,7 @@ namespace gip {
     if (pixelFormat != Camera1394::Y_8BIT) {
       setPixelFormat(Camera1394::Y_8BIT);
     }
-    assert(
+    bassert(
       frame.getDimension() == region.getDimension(),
       bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH)
     );
@@ -2695,7 +2695,7 @@ namespace gip {
       setPixelFormat(Camera1394::Y_16BIT);
     }
     
-    assert(
+    bassert(
       frame.getDimension() == region.getDimension(),
       bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH)
     );
@@ -2817,7 +2817,7 @@ namespace gip {
       setPixelFormat(Camera1394::RGB_8BIT);
     }
 
-    assert(
+    bassert(
       frame.getDimension() == region.getDimension(),
       bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH)
     );
@@ -2961,11 +2961,11 @@ namespace gip {
     
     // check if frames are valid
     for (Array<FrameBuffer>::Iterator i = first; i < end; ++i) {
-      assert(
+      bassert(
         i->getSize() == transmission.totalBytesPerFrame,
         bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH)
       );
-      assert(
+      bassert(
         i->getBuffer(),
         bindCause(ImageException(this), Camera1394::INVALID_FRAME_BUFFER)
       );
@@ -3171,7 +3171,7 @@ namespace gip {
       break;
     case Camera1394::YUV_422_8BIT:
       {
-        assert(
+        bassert(
           image.getWidth() % 2 == 0,
           ImageException(Type::getType<Camera1394>())
         );
@@ -3261,7 +3261,7 @@ namespace gip {
     case Camera1394::YUV_422_8BIT:
       {
         // TAG: use FIR filter
-        assert(
+        bassert(
           image.getWidth() % 2 == 0,
           ImageException(Type::getType<Camera1394>())
         );

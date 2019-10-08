@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP__SEGMENTOR_H
-#define _DK_SDU_MIP__GIP__SEGMENTOR_H
+#pragma once
 
 #include <base/Object.h>
 #include <base/OutOfRange.h>
@@ -64,5 +63,3 @@ namespace gip {
   }
 
 }; // end of gip namespace
-
-#endif

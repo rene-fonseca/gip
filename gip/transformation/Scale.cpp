@@ -22,7 +22,7 @@ namespace gip {
   template<class DEST, class SRC>
   Scale<DEST, SRC>::Scale(DestinationImage* destination, const SourceImage* source) throw(ImageException)
     : Transformation<DEST, SRC>(destination, source) {
-    assert(source->getDimension().isProper(), ImageException("Unable to scale image", this));
+    bassert(source->getDimension().isProper(), ImageException("Unable to scale image", this));
   }
   
   template<class DEST, class SRC>

@@ -19,11 +19,11 @@ namespace gip {
     DestinationImage* destination) throw(ImageException)
     : UnaryTransformation<FloatImage>(destination) {
 
-    assert(
+    bassert(
       destination->getDimension().isProper(),
       ImageException("Image has inproper dimension", this)
     );
-    assert(
+    bassert(
       Math::isPowerOf2(destination->getDimension().getWidth()) &&
       Math::isPowerOf2(destination->getDimension().getHeight()),
       ImageException("Width and height of images must be power of two", this)
@@ -110,11 +110,11 @@ namespace gip {
     DestinationImage* destination) throw(ImageException)
     : UnaryTransformation<GrayImage>(destination) {
     
-    assert(
+    bassert(
       destination->getDimension().isProper(),
       ImageException("Image has inproper dimension", this)
     );
-    assert(
+    bassert(
       Math::isPowerOf2(destination->getDimension().getWidth()) &&
       Math::isPowerOf2(destination->getDimension().getHeight()),
       ImageException("Width and height of images must be power of two", this)

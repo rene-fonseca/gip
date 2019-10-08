@@ -19,7 +19,7 @@ namespace gip {
 
   Gradient::Gradient(DestinationImage* destination, const SourceImage* source) throw(ImageException)
     : Transformation<DestinationImage, SourceImage>(destination, source) {
-    assert(
+    bassert(
       destination->getDimension() == source->getDimension(),
       ImageException("Images must have identical dimensions", this)
     );

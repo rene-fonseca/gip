@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_TRANSFORMATION__MIRROR_H
-#define _DK_SDU_MIP__GIP_TRANSFORMATION__MIRROR_H
+#pragma once
 
 #include <gip/transformation/UnaryTransformation.h>
 #include <gip/gip.h>
@@ -42,7 +41,7 @@ namespace gip {
   template<class DEST>
   Mirror<DEST>::Mirror(DestinationImage* destination) throw(ImageException)
     : UnaryTransformation<DestinationImage>(destination) {
-    assert(
+    bassert(
       destination->getDimension().isProper(),
       ImageException("Dimension of image is invalid", this)
     );
@@ -66,5 +65,3 @@ namespace gip {
   }
 
 }; // end of gip namespace
-
-#endif

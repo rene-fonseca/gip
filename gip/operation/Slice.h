@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_OPERATION__SLICE_H
-#define _DK_SDU_MIP__GIP_OPERATION__SLICE_H
+#pragma once
 
 #include <gip/RGBPixel.h>
 #include <base/OutOfDomain.h>
@@ -49,7 +48,7 @@ namespace gip {
       : minimum(_minimum),
         maximum(_maximum),
         background(_background) {
-      assert(minimum <= maximum, OutOfDomain(this));
+      bassert(minimum <= maximum, OutOfDomain(this));
     }
 
     /**
@@ -61,5 +60,3 @@ namespace gip {
   };
   
 }; // end of gip namespace
-
-#endif

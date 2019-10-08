@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_TRANSFORMATION__BRESENHAM_SCALE_H
-#define _DK_SDU_MIP__GIP_TRANSFORMATION__BRESENHAM_SCALE_H
+#pragma once
 
 #include <gip/transformation/Transformation.h>
 #include <gip/ArrayImage.h>
@@ -44,8 +43,8 @@ namespace gip {
     */
     BresenhamScale(DestinationImage* destination, const SourceImage* source) throw(ImageException)
       : Transformation<DEST, SRC>(destination, source) {
-      assert(source->getDimension().isProper(), ImageException("Unable to scale image", this));  
-      assert(
+      bassert(source->getDimension().isProper(), ImageException("Unable to scale image", this));  
+      bassert(
         (destination->getWidth() <= source->getWidth()) && (destination->getHeight() <= source->getHeight()),
         ImageException("Unable to scale image", this)
       );
@@ -122,5 +121,3 @@ namespace gip {
   };
 
 }; // end of gip namespace
-
-#endif

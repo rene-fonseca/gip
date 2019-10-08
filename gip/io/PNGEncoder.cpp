@@ -77,7 +77,7 @@ namespace gip {
       PNGEncoderImpl::errorHandler,
       PNGEncoderImpl::errorHandler
     );
-    assert(context, MemoryException(this));
+    bassert(context, MemoryException(this));
     
     png_infop information = ::png_create_info_struct(context);
     if (!information) {
@@ -164,7 +164,7 @@ namespace gip {
     const ColorImage* image) throw(ImageException, IOException) {
     unsigned int width = image->getDimension().getWidth();
     unsigned int height = image->getDimension().getHeight();
-    assert(
+    bassert(
       (width <= (1 << 31)) && (height <= (1 << 31)),
       ImageException(this)
     );
@@ -177,7 +177,7 @@ namespace gip {
       PNGEncoderImpl::errorHandler,
       PNGEncoderImpl::errorHandler
     );
-    assert(context, MemoryException(this));
+    bassert(context, MemoryException(this));
     
     png_infop information = ::png_create_info_struct(context);
     if (!information) {
@@ -258,7 +258,7 @@ namespace gip {
       PNGEncoderImpl::errorHandler,
       PNGEncoderImpl::errorHandler
     );
-    assert(context, MemoryException(this));
+    bassert(context, MemoryException(this));
     
     png_infop information = ::png_create_info_struct(context);
     if (!information) {
@@ -300,7 +300,7 @@ namespace gip {
       result["filter type"] = filterType;
       
       ::png_destroy_read_struct(&context, &information, 0);
-    } catch(IOException& e) {
+    } catch(IOException&) {
       ::png_destroy_read_struct(&context, &information, 0);
     }
     return result;

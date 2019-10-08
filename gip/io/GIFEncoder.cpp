@@ -121,7 +121,7 @@ namespace gip {
           Cast::getAddress(LZWCodeSize),
           sizeof(LZWCodeSize)
         ); // get LZW minimum code size
-        assert((LZWCodeSize >= 2) && (LZWCodeSize <= 9), InvalidFormat("Invalid GIF format", this));
+        bassert((LZWCodeSize >= 2) && (LZWCodeSize <= 9), InvalidFormat("Invalid GIF format", this));
 
         const unsigned int clearCode = 1 << LZWCodeSize; // the clear code
         const unsigned int highCode = clearCode - 1; // set the highest code not needing decoding
@@ -148,7 +148,7 @@ namespace gip {
 
         while (!done) {
           code = getNextCode();
-          assert(!limitReached || (code == clearCode), InvalidFormat("Invalid GIF format", this));
+          bassert(!limitReached || (code == clearCode), InvalidFormat("Invalid GIF format", this));
           limitReached = false;
           if (code == endCode) { // stop on end code
             break;
@@ -159,7 +159,7 @@ namespace gip {
             do { // remove all clear codes
               code = getNextCode();
             } while (code == clearCode);
-            assert(code != endCode, InvalidFormat("Invalid GIF format", this)); // ending code after a clear code
+            bassert(code != endCode, InvalidFormat("Invalid GIF format", this)); // ending code after a clear code
 //        if (code >= slot) { // if beyond preset codes then set to zero
 //          code = 0;
 //        }
@@ -180,7 +180,7 @@ namespace gip {
                 oldCode = code;
               }
             } else { // the code is not in the table
-              assert(C == slot, InvalidFormat("Invalid GIF format", this));
+              bassert(C == slot, InvalidFormat("Invalid GIF format", this));
               unsigned int tempCode = oldCode;
               while (oldCode > highCode) { // translate the old code
                 decodeStack[stackIndex] = suffix[oldCode];
@@ -276,7 +276,7 @@ namespace gip {
     bool value = (header.signature[0] == 'G') && (header.signature[1] == 'I') && (header.signature[2] == 'F') &&
       ((header.version[0] == '8') && (header.version[1] == '7') && (header.version[2] == 'a') ||
        (header.version[0] == '8') && (header.version[1] == '9') && (header.version[2] == 'a'));
-    assert(value, InvalidFormat("Invalid GIF format", this));
+    bassert(value, InvalidFormat("Invalid GIF format", this));
 
     GIFImpl::LogicalScreenDescriptor globalDescriptor;
     file.read(Cast::getAddress(globalDescriptor), sizeof(globalDescriptor));
@@ -298,7 +298,7 @@ namespace gip {
 
     GIFImpl::ImageDescriptor imageDescriptor;
     file.read(Cast::getAddress(imageDescriptor), sizeof(imageDescriptor));
-    assert(imageDescriptor.separator == GIFImpl::IMAGESEPARATOR, InvalidFormat("Invalid GIF format", this));
+    bassert(imageDescriptor.separator == GIFImpl::IMAGESEPARATOR, InvalidFormat("Invalid GIF format", this));
 
     ColorPixel localColorTable[256];
     unsigned int localColors = 1 << (imageDescriptor.entriesOfColorTable + 1);
@@ -322,11 +322,11 @@ namespace gip {
 
     uint8 terminator;
     file.read(Cast::getAddress(terminator), sizeof(terminator)); // check terminator
-    assert(terminator == GIFImpl::TERMINATOR, InvalidFormat("Invalid GIF format", this));
+    bassert(terminator == GIFImpl::TERMINATOR, InvalidFormat("Invalid GIF format", this));
 
     uint8 trailer;
     file.read(Cast::getAddress(trailer), sizeof(trailer)); // check trailer
-    assert(trailer == GIFImpl::TRAILER, InvalidFormat("Invalid GIF format", this));
+    bassert(trailer == GIFImpl::TRAILER, InvalidFormat("Invalid GIF format", this));
 
     return new ColorImage(image);
   }

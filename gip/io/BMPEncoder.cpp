@@ -49,7 +49,7 @@ namespace gip {
     }
     
     inline Result operator()(Argument value) const throw() {
-      assert(
+      bassert(
         value < maxIndex,
         bindCause(InvalidFormat("Color table index out of range", this), ImageEncoder::INVALID_COLOR)
       );
@@ -207,7 +207,7 @@ namespace gip {
         file.setPosition(sizeof(BMPHeader), File::BEGIN); // move to beginning of palette
         if (header.bitsPerPixel <= 8) { // should palette be used
           unsigned int maximumNumberOfColors = 1 << header.bitsPerPixel;
-          assert(
+          bassert(
             numberOfColors <= maximumNumberOfColors,
             bindCause(InvalidFormat(this), ImageEncoder::INVALID_COLOR_TABLE)
           );
@@ -363,7 +363,7 @@ namespace gip {
                 ColorPixel* dest = elements + dimension.getWidth() * row + column;
                 for (unsigned int count = second; count > 0; --count) {
                   unsigned int index = *src++;
-                  assert(
+                  bassert(
                     index < numberOfColors,
                     bindCause(InvalidFormat("Color table index out of range", this), ImageEncoder::INVALID_COLOR)
                   );
@@ -375,7 +375,7 @@ namespace gip {
                 column += second;
               }
             } else {
-              assert(
+              bassert(
                 second < numberOfColors,
                 bindCause(InvalidFormat("Color table index out of range", this), ImageEncoder::INVALID_COLOR)
               );
@@ -417,7 +417,7 @@ namespace gip {
                 ColorPixel* dest = elements + dimension.getWidth() * row + column;
                 for (unsigned int count = second >> 1; count > 0; --count) {
                   unsigned int value = *src++;
-                  assert(
+                  bassert(
                     ((value >> 4) < numberOfColors) && ((value & 0x0f) < numberOfColors),
                     bindCause(InvalidFormat("Color table index out of range", this), ImageEncoder::INVALID_COLOR)
                   );
@@ -426,7 +426,7 @@ namespace gip {
                 }
                 if (second & 0x01) { // set last pixel and skip to word boundary
                   unsigned int index = *src++ >> 4;
-                  assert(
+                  bassert(
                     index < numberOfColors,
                     bindCause(InvalidFormat("Color table index out of range", this), ImageEncoder::INVALID_COLOR)
                   );
@@ -437,7 +437,7 @@ namespace gip {
               }
             } else {
               ColorPixel* dest = elements + dimension.getWidth() * row + column;
-              assert(
+              bassert(
                 ((second >> 4) < numberOfColors) && ((second & 0x0f) < numberOfColors),
                 bindCause(InvalidFormat("Color table index out of range", this), ImageEncoder::INVALID_COLOR)
               );
@@ -469,7 +469,7 @@ namespace gip {
     unsigned long long sizeOfFile = sizeof(header) + bytesPerPaddedRow * image->getDimension().getHeight();
     unsigned int zeroPad = bytesPerPaddedRow - bytesPerRow;
 
-    assert(
+    bassert(
       sizeOfFile <= 0xffffffff,
       bindCause(ImageException("Dimension of image exceeds limit supported by encoder", this), ImageEncoder::DIMENSION_NOT_SUPPORTED)
     );
@@ -549,7 +549,7 @@ namespace gip {
       bytesPerPaddedRow * image->getDimension().getHeight();
     unsigned int zeroPad = bytesPerPaddedRow - bytesPerRow;
 
-    assert(
+    bassert(
       sizeOfFile <= 0xffffffff,
       bindCause(
         ImageException("Dimension of image exceeds limit supported by encoder", this),

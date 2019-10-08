@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP__SUBIMAGE_H
-#define _DK_SDU_MIP__GIP__SUBIMAGE_H
+#pragma once
 
 #include <gip/ShadowImage.h>
 #include <gip/Point2D.h>
@@ -65,5 +64,3 @@ inline Subimage<PIXEL>::Subimage(Image<PIXEL>* image, const Point2D& _offset) th
 }
 
 }; // end of gip namespace
-
-#endif

@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_TRANSFORMATION__CONVOLUTION_3X3_H
-#define _DK_SDU_MIP__GIP_TRANSFORMATION__CONVOLUTION_3X3_H
+#pragma once
 
 #include <gip/gip.h>
 #include <gip/transformation/Transformation.h>
@@ -153,7 +152,7 @@ namespace gip {
     Convolution3x3(DestinationImage* destination, const SourceImage* source) throw(ImageException)
       : Transformation<DestinationImage, SourceImage>(destination, source) {
       
-      assert(destination->getDimension() == source->getDimension(), ImageException(this));
+      bassert(destination->getDimension() == source->getDimension(), ImageException(this));
     }
     
     template<class PIXEL>
@@ -392,5 +391,3 @@ namespace gip {
   };
 
 }; // end of gip namespace
-
-#endif

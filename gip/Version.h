@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP__VERSION_H
-#define _DK_SDU_MIP__GIP__VERSION_H
+#pragma once
 
 #include <base/Version.h>
 #include <gip/features.h>
@@ -68,5 +67,3 @@ public:
 };
  
 }; // end of gip namespace
-
-#endif

@@ -125,7 +125,7 @@ namespace gip {
     File file(filename, File::READ, 0);
     file.read(Cast::getAddress(header), sizeof(header));
 
-    assert((header.width >= 0) && (header.height >= 0), InvalidFormat(this));
+    bassert((header.width >= 0) && (header.height >= 0), InvalidFormat(this));
     const Dimension dimension(header.width, header.height);
     ColorImage image(dimension);
     
@@ -139,7 +139,7 @@ namespace gip {
       break;
     case RASEncoderImpl::MAP_TYPE_RGB:
       if (header.mapLength % 3 == 0) {
-        assert(header.mapLength >= 0, InvalidFormat(this));
+        bassert(header.mapLength >= 0, InvalidFormat(this));
         const unsigned int bytesInVectors = minimum<int>(header.mapLength, 256*3); // we only want the first 256 vectors of each color map
         colorMapEntries = bytesInVectors/3;
         FileReader::ReadIterator vectorRed = reader.peek(bytesInVectors);
@@ -279,7 +279,7 @@ namespace gip {
     case RASEncoderImpl::TYPE_BYTE_ENCODED:
       {
         // TAG: if not color map then read blue, green, and red bytes
-        assert(header.length > 0, InvalidFormat(this));
+        bassert(header.length > 0, InvalidFormat(this));
         unsigned int pixelsToWrite = dimension.getSize();
         unsigned int bytesToRead = header.length;
         while (pixelsToWrite > 0) {
@@ -289,7 +289,7 @@ namespace gip {
             value = *src++;
             if (value != 0) {
               unsigned int count = value + 1; // a run may cross the end of line
-              assert(count <= pixelsToWrite, InvalidFormat(this));
+              bassert(count <= pixelsToWrite, InvalidFormat(this));
               pixelsToWrite -= count;
               ColorPixel result = colorMap[*src++];
               for (unsigned int i = count; i > 0; --i) {
@@ -424,9 +424,9 @@ namespace gip {
   }
   
   void RASEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException) {
-    assert(image, NullPointer(this));
+    bassert(image, NullPointer(this));
     const Dimension dimension = image->getDimension();
-    assert(
+    bassert(
       dimension.getSize() * 3 <= static_cast<unsigned int>(PrimitiveTraits<int>::MAXIMUM),
       ImageException(this)
     ); // make sure length fits in header.length
@@ -480,9 +480,9 @@ namespace gip {
   }
 
   void RASEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
-    assert(image, NullPointer(this));
+    bassert(image, NullPointer(this));
     Dimension dimension = image->getDimension();
-    assert(
+    bassert(
       dimension.getSize() <= static_cast<unsigned int>(PrimitiveTraits<int>::MAXIMUM),
       ImageException(this)
     ); // make sure length fits in header.length

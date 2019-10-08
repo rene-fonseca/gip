@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP__RGB_PIXEL_H
-#define _DK_SDU_MIP__GIP__RGB_PIXEL_H
+#pragma once
 
 #include <gip/PixelTraits.h>
 #include <base/Functor.h>
@@ -284,5 +283,3 @@ namespace base {
   };
 
 }; // end of base namespace
-
-#endif

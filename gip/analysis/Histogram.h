@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP__HISTOGRAM_H
-#define _DK_SDU_MIP__GIP__HISTOGRAM_H
+#pragma once
 
 #include <gip/gip.h>
 #include <base/collection/Array.h>
@@ -156,5 +155,3 @@ namespace gip {
   };
 
 }; // end of gip namespace
-
-#endif

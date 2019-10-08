@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP__FUNCTOR_H
-#define _DK_SDU_MIP__GIP__FUNCTOR_H
+#pragma once
 
 #include <gip/features.h>
 
@@ -91,5 +90,3 @@ inline TYPE clamp(const TYPE& minimum, const TYPE& value, const TYPE& maximum) t
   }
 
 }; // end of gip namespace
-
-#endif

@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_OPERATION__INTERPOLATE_H
-#define _DK_SDU_MIP__GIP_OPERATION__INTERPOLATE_H
+#pragma once
 
 #include <gip/RGBPixel.h>
 #include <base/Cast.h>
@@ -199,5 +198,3 @@ namespace gip {
   };
   
 }; // end of gip namespace
-
-#endif

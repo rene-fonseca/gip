@@ -18,15 +18,15 @@ namespace gip {
   WalshTransformation::WalshTransformation(DestinationImage* destination, const SourceImage* source) throw(ImageException)
     : Transformation<DestinationImage, SourceImage>(destination, source) {
 
-    assert(
+    bassert(
       source->getDimension().isProper(),
       ImageException("Source image has inproper dimension", this)
     );
-    assert(
+    bassert(
       destination->getDimension() == source->getDimension(),
       ImageException("Source and destination images must have equal dimension", this)
     );
-    assert(
+    bassert(
       Math::isPowerOf2(source->getDimension().getWidth()) && Math::isPowerOf2(source->getDimension().getHeight()),
       ImageException("Width and height of images must be power of two", this)
     );

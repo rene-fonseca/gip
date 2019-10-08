@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP__GRAY_ALPHA_PIXEL_H
-#define _DK_SDU_MIP__GIP__GRAY_ALPHA_PIXEL_H
+#pragma once
 
 #include <gip/PixelTraits.h>
 #include <base/Functor.h>
@@ -210,31 +209,37 @@ namespace gip {
 
   template<class COMPONENT>
   inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, int divisor) throw() {
-    pixel.gray *= factor;
-    pixel.alpha *= factor;
+    pixel.gray /= divisor;
+    pixel.alpha /= divisor;
     return pixel;
   }
 
   template<class COMPONENT>
   inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, unsigned int divisor) throw() {
-    pixel.gray *= factor;
-    pixel.alpha *= factor;
+    pixel.gray /= divisor;
+    pixel.alpha /= divisor;
     return pixel;
   }
 
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, float factor) throw() {
-    return pixel * 1/factor;
+  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, float divisor) throw() {
+    pixel.gray /= divisor;
+    pixel.alpha /= divisor;
+    return pixel;
   }
 
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, double factor) throw() {
-    return pixel * 1/factor;
+  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, double divisor) throw() {
+    pixel.gray /= divisor;
+    pixel.alpha /= divisor;
+    return pixel;
   }
 
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, long double factor) throw() {
-    return pixel * 1/factor;
+  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, long double divisor) throw() {
+    pixel.gray /= divisor;
+    pixel.alpha /= divisor;
+    return pixel;
   }
 
 
@@ -277,5 +282,3 @@ namespace base {
   };
 
 }; // end of base namespace
-
-#endif

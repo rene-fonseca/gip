@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_TRANSFORMATION__UNARY_TRANSFORMATION_H
-#define _DK_SDU_MIP__GIP_TRANSFORMATION__UNARY_TRANSFORMATION_H
+#pragma once
 
 #include <base/Object.h>
 #include <gip/gip.h>
@@ -47,5 +46,3 @@ namespace gip {
   }
 
 }; // end of gip namespace
-
-#endif

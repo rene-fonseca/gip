@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP__SHADOW_IMAGE_H
-#define _DK_SDU_MIP__GIP__SHADOW_IMAGE_H
+#pragma once
 
 #include <gip/Image.h>
 
@@ -55,5 +54,3 @@ inline const Dimension& ShadowImage<PIXEL>::getDimension() const throw() {
 }
 
 }; // end of gip namespace
-
-#endif

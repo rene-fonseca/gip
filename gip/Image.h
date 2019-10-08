@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP__IMAGE_H
-#define _DK_SDU_MIP__GIP__IMAGE_H
+#pragma once
 
 #include <base/Object.h>
 #include <base/Dimension.h>
@@ -94,12 +93,10 @@ namespace gip {
 
   template<class PIXEL>
   inline Image<PIXEL>::Image(const Dimension& _dimension) throw(ImageException) : dimension(_dimension) {
-    assert(
+    bassert(
       (dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff),
       ImageException("Image dimension limit exceeded", this)
     );
   }
 
 }; // end of gip namespace
-
-#endif

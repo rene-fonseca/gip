@@ -71,7 +71,7 @@ namespace gip {
   }
   
   void YUVEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException) {
-    assert(image, NullPointer(this));
+    bassert(image, NullPointer(this));
     Dimension dimension = image->getDimension();
     
 //    FileOutputStream file(filename, FileOutputStream::CREATE | FileOutputStream::TRUNCATE);

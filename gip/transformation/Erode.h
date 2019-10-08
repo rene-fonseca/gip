@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_TRANSFORMATION__ERODE_H
-#define _DK_SDU_MIP__GIP_TRANSFORMATION__ERODE_H
+#pragma once
 
 #include <gip/transformation/Transformation.h>
 #include <gip/ArrayImage.h>
@@ -141,7 +140,7 @@ namespace gip {
     Erode3x3(DestinationImage* destination, const SourceImage* source) throw(ImageException)
       : Transformation<DestinationImage, SourceImage>(destination, source) {
       
-      assert(destination->getDimension() == source->getDimension(), ImageException(this));
+      bassert(destination->getDimension() == source->getDimension(), ImageException(this));
     }
 
     void operator()() const throw() {
@@ -192,5 +191,3 @@ namespace gip {
   };
   
 }; // end of gip namespace
-
-#endif

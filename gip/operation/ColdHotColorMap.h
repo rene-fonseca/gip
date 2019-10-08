@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_OPERATION__COLD_HOT_COLOR_MAP_H
-#define _DK_SDU_MIP__GIP_OPERATION__COLD_HOT_COLOR_MAP_H
+#pragma once
 
 #include <gip/RGBPixel.h>
 
@@ -73,5 +72,3 @@ namespace gip {
   };
 
 }; // end of gip namespace
-
-#endif

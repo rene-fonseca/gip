@@ -148,7 +148,7 @@ namespace gip {
       return 0;
     }
     
-    assert(
+    bassert(
       (header.colorMapType == 0) && (header.image.pixelDepth == 24),
       InvalidFormat(this)
     );
@@ -162,7 +162,7 @@ namespace gip {
     ColorPixel* dest = image->getElements();
 
     // TAG: look at origin field in header
-    assert(header.image.origin == 0, NotImplemented(this));
+    bassert(header.image.origin == 0, NotImplemented(this));
     
     for (unsigned int row = dimension.getHeight(); row > 0; --row) {
       FileReader::ReadIterator src = reader.peek(dimension.getWidth() * 3);
@@ -180,9 +180,9 @@ namespace gip {
   void TGAEncoder::write(
     const String& filename,
     const ColorImage* image) throw(ImageException, IOException) {
-    assert(image, NullPointer(this));
+    bassert(image, NullPointer(this));
     Dimension dimension = image->getDimension();
-    assert(
+    bassert(
       (dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff),
       ImageException(this)
     );
@@ -236,9 +236,9 @@ namespace gip {
   void TGAEncoder::write(
     const String& filename,
     const ColorAlphaImage* image) throw(ImageException, IOException) {
-    assert(image, NullPointer(this));
+    bassert(image, NullPointer(this));
     Dimension dimension = image->getDimension();
-    assert(
+    bassert(
       (dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff),
       ImageException(this)
     );
@@ -294,9 +294,9 @@ namespace gip {
   void TGAEncoder::writeGray(
     const String& filename,
     const GrayImage* image) throw(ImageException, IOException) {
-    assert(image, NullPointer(this));
+    bassert(image, NullPointer(this));
     Dimension dimension = image->getDimension();
-    assert(
+    bassert(
       (dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff),
       ImageException(this)
     );

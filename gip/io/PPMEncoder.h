@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_IO__PPM_ENCODER_H
-#define _DK_SDU_MIP__GIP_IO__PPM_ENCODER_H
+#pragma once
 
 #include <gip/gip.h>
 #include <gip/io/ImageEncoder.h>
@@ -83,5 +82,3 @@ namespace gip {
   };
   
 }; // end of gip namespace
-
-#endif

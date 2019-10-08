@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP__COORDINATE_MAPPER_H
-#define _DK_SDU_MIP__GIP__COORDINATE_MAPPER_H
+#pragma once
 
 #include <base/Object.h>
 #include <base/Dimension.h>
@@ -66,5 +65,3 @@ namespace gip {
   }
 
 }; // end of gip namespace
-
-#endif

@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_TRANSFORMATION__TRANSPOSE_H
-#define _DK_SDU_MIP__GIP_TRANSFORMATION__TRANSPOSE_H
+#pragma once
 
 #include <gip/transformation/Transformation.h>
 #include <gip/Functor.h>
@@ -49,7 +48,7 @@ namespace gip {
   template<class DEST, class SRC>
   Transpose<DEST, SRC>::Transpose(DestinationImage* destination, SourceImage* source) throw(ImageException)
     : Transformation<DestinationImage, SourceImage>(destination, source) {
-    assert(
+    bassert(
       (destination->getDimension().getWidth() == source->getDimension().getHeight()) &&
       (destination->getDimension().getHeight() == source->getDimension().getWidth()),
       ImageException("Incompatible dimensions", this)
@@ -74,5 +73,3 @@ namespace gip {
   }
 
 }; // end of gip namespace
-
-#endif

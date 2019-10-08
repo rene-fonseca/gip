@@ -47,7 +47,7 @@ namespace gip {
   void PGMEncoder::writeGray(
     const String& filename,
     const GrayImage* image) throw(ImageException, IOException) {
-    assert(image, NullPointer(this));
+    bassert(image, NullPointer(this));
     Dimension dimension = image->getDimension();
     
     FileOutputStream file(

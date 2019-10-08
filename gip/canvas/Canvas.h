@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_CANVAS__CANVAS_H
-#define _DK_SDU_MIP__GIP_CANVAS__CANVAS_H
+#pragma once
 
 #include <gip/ArrayImage.h>
 #include <gip/Point.h>
@@ -273,5 +272,3 @@ namespace gip {
   };
 
 }; // end of gip namespace
-
-#endif

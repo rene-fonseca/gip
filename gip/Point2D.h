@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP__POINT_2D_H
-#define _DK_SDU_MIP__GIP__POINT_2D_H
+#pragma once
 
 #include <gip/features.h>
 #include <base/Dimension.h>
@@ -122,5 +121,3 @@ namespace base {
   };
 
 }; // end of base namespace
-
-#endif

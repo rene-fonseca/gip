@@ -20,11 +20,11 @@ namespace gip {
   StraightLineHoughTransformation::StraightLineHoughTransformation(DestinationImage* destination, const SourceImage* source) throw(ImageException)
     : Transformation<DestinationImage, SourceImage>(destination, source) {
     
-    assert(
+    bassert(
       source->getDimension().isProper(),
       ImageException("Source image has inproper dimension", this)
     );
-    assert(
+    bassert(
       destination->getDimension().isProper(),
       ImageException("Destination image has inproper dimension", this)
     );

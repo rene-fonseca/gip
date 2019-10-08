@@ -444,10 +444,10 @@ void AVIReader::analyse() throw(IOException) {
   {
     Chunk riff;
     file.read(Cast::getAddress(riff), sizeof(riff));
-    assert(riff.id == makeChunkId('R', 'I', 'F', 'F'), InvalidFormat(this));
+    bassert(riff.id == makeChunkId('R', 'I', 'F', 'F'), InvalidFormat(this));
     ChunkId name;
     file.read(Cast::getAddress(name), sizeof(name));
-    assert(name == makeChunkId('A', 'V', 'I', ' '), InvalidFormat(this));
+    bassert(name == makeChunkId('A', 'V', 'I', ' '), InvalidFormat(this));
     fout << "riff=" << riff.id << " size=" << riff.size << " name=" << name << ENDL;
   }
 
@@ -455,19 +455,19 @@ void AVIReader::analyse() throw(IOException) {
 
   Chunk list;
   file.read(Cast::getAddress(list), sizeof(list));
-  assert(list.id == makeChunkId('L', 'I', 'S', 'T'), InvalidFormat(this));
+  bassert(list.id == makeChunkId('L', 'I', 'S', 'T'), InvalidFormat(this));
 
   ChunkId name;
-  assert(totalRead + sizeof(name) < list.size, InvalidFormat(this));
+  bassert(totalRead + sizeof(name) < list.size, InvalidFormat(this));
   file.read(Cast::getAddress(name), sizeof(name));
-  assert(name == makeChunkId('h', 'd', 'r', 'l'), InvalidFormat(this));
+  bassert(name == makeChunkId('h', 'd', 'r', 'l'), InvalidFormat(this));
   totalRead += sizeof(name);
 
   {
     Chunk avih;
-    assert(totalRead + sizeof(avih) < list.size, InvalidFormat(this));
+    bassert(totalRead + sizeof(avih) < list.size, InvalidFormat(this));
     file.read(Cast::getAddress(avih), sizeof(avih));
-    assert(avih.id == makeChunkId('a', 'v', 'i', 'h'), InvalidFormat(this));
+    bassert(avih.id == makeChunkId('a', 'v', 'i', 'h'), InvalidFormat(this));
     Allocator<uint8> buffer(maximum<unsigned int>(avih.size, sizeof(AVIHeader)));
     fill<uint8>(buffer.getElements(), buffer.getSize(), 0);
     file.read(buffer.getElements(), (avih.size + 1)/2*2);
@@ -498,17 +498,17 @@ void AVIReader::analyse() throw(IOException) {
   videoStreamIndex = -1; // no video stream has been found
   for (unsigned int streamIndex = 0; streamIndex < globalDescriptor.streams; ++streamIndex) { // read descriptions of all streams
     Chunk list;
-//    assert(totalRead + sizeof(chunk) < totalSize, InvalidFormat(this));
+//    bassert(totalRead + sizeof(chunk) < totalSize, InvalidFormat(this));
     file.read(Cast::getAddress(list), sizeof(list));
 //    totalRead += sizeof(list);
-    assert(list.id == makeChunkId('L', 'I', 'S', 'T'), InvalidFormat(this));
+    bassert(list.id == makeChunkId('L', 'I', 'S', 'T'), InvalidFormat(this));
 
     unsigned int totalRead = 0;
     unsigned int totalSize = list.size; // todo may need to +1/2*2
 
     ChunkId name;
     file.read(Cast::getAddress(name), sizeof(name));
-    assert(name == makeChunkId('s', 't', 'r', 'l'), InvalidFormat(this));
+    bassert(name == makeChunkId('s', 't', 'r', 'l'), InvalidFormat(this));
     totalRead += sizeof(name);
 
     Chunk chunk;
@@ -516,11 +516,11 @@ void AVIReader::analyse() throw(IOException) {
 
     // read strh
     {
-      assert(totalRead + sizeof(chunk) < totalSize, InvalidFormat(this));
+      bassert(totalRead + sizeof(chunk) < totalSize, InvalidFormat(this));
       file.read(Cast::getAddress(chunk), sizeof(chunk));
-      assert(chunk.id == makeChunkId('s', 't', 'r', 'h'), InvalidFormat(this));
+      bassert(chunk.id == makeChunkId('s', 't', 'r', 'h'), InvalidFormat(this));
       unsigned int size = (chunk.size+1)/2*2;
-      assert(totalRead + size < totalSize, InvalidFormat(this));
+      bassert(totalRead + size < totalSize, InvalidFormat(this));
       Allocator<uint8> buffer(
         maximum<MemorySize>(size, sizeof(AVIStreamHeader))
       );
@@ -558,9 +558,9 @@ void AVIReader::analyse() throw(IOException) {
     }
 
     // read strf
-    assert(totalRead + sizeof(chunk) < totalSize, InvalidFormat(this));
+    bassert(totalRead + sizeof(chunk) < totalSize, InvalidFormat(this));
     file.read(Cast::getAddress(chunk), sizeof(chunk));
-    assert(chunk.id == makeChunkId('s', 't', 'r', 'f'), InvalidFormat(this));
+    bassert(chunk.id == makeChunkId('s', 't', 'r', 'f'), InvalidFormat(this));
     unsigned int size = (chunk.size+1)/2*2;
     totalRead += sizeof(chunk) + size;
     
@@ -585,7 +585,7 @@ void AVIReader::analyse() throw(IOException) {
       switch (header->compression) {
       case AVIEncoder::Compression::RGB:
         videoStreamDescriptor.compression = RGB;
-        assert(
+        bassert(
           (videoStreamDescriptor.planes == 1) && (videoStreamDescriptor.bitsPerPixel == 4) ||
           (videoStreamDescriptor.planes == 1) && (videoStreamDescriptor.bitsPerPixel == 8) ||
           (videoStreamDescriptor.planes == 3) && (videoStreamDescriptor.bitsPerPixel == 24) ||
@@ -595,7 +595,7 @@ void AVIReader::analyse() throw(IOException) {
         break;
       case AVIEncoder::Compression::RLE8:
         videoStreamDescriptor.compression = RLE8;
-        assert(
+        bassert(
           (videoStreamDescriptor.planes == 1) &&
           (videoStreamDescriptor.bitsPerPixel == 8),
           Exception("Frame format not supported")
@@ -603,7 +603,7 @@ void AVIReader::analyse() throw(IOException) {
         break;
       case AVIEncoder::Compression::RLE4:
         videoStreamDescriptor.compression = RLE4;
-        assert(
+        bassert(
           (videoStreamDescriptor.planes == 1) &&
           (videoStreamDescriptor.bitsPerPixel == 4),
           Exception("Frame format not supported")
@@ -616,7 +616,7 @@ void AVIReader::analyse() throw(IOException) {
       if (videoStreamDescriptor.bitsPerPixel <= 8) { // do we need to initialize the palette
         const AVIPaletteEntry* srcPalette = (AVIPaletteEntry*)(buffer.getElements() + header->size);
         unsigned int numberOfEntries = (header->colorUsed == 0) ? (1U << videoStreamDescriptor.bitsPerPixel) : static_cast<unsigned int>(header->colorUsed);
-        assert(
+        bassert(
           header->size + numberOfEntries * sizeof(AVIPaletteEntry) <= chunk.size,
           InvalidFormat(this)
         );
@@ -631,12 +631,12 @@ void AVIReader::analyse() throw(IOException) {
     }
 
     while (totalRead < totalSize) {
-      assert(totalRead + sizeof(chunk) < totalSize, InvalidFormat(this));
+      bassert(totalRead + sizeof(chunk) < totalSize, InvalidFormat(this));
       file.read(Cast::getAddress(chunk), sizeof(chunk));
 
       totalRead += sizeof(chunk);
       unsigned int size = (chunk.size+1)/2*2;
-      assert(totalRead + size <= totalSize, InvalidFormat(this));
+      bassert(totalRead + size <= totalSize, InvalidFormat(this));
       if (chunk.id == makeChunkId('s', 't', 'r', 'd')) {
         streamData.setSize(size);
         file.read(streamData.getElements(), size);
@@ -684,7 +684,7 @@ void AVIReader::decodeFrame(ColorImage& frame, const byte* src, unsigned int siz
       case 8:
         {
           // todo: line alignment
-          assert(size == dimension.getSize() * 1, Exception("Invalid frame"));
+          bassert(size == dimension.getSize() * 1, Exception("Invalid frame"));
           const ColorPixel* pal = palette.getElements();
           unsigned int zeroPad = (dimension.getWidth()+3)/4*4 - dimension.getWidth(); // number of zero pads
           --dest;
@@ -707,7 +707,7 @@ void AVIReader::decodeFrame(ColorImage& frame, const byte* src, unsigned int siz
       case 24:
         {
           // todo: line alignment
-          assert(size == dimension.getSize() * 3, Exception("Invalid frame"));
+          bassert(size == dimension.getSize() * 3, Exception("Invalid frame"));
           const byte* end = src + size;
           --dest;
           --src;
@@ -721,7 +721,7 @@ void AVIReader::decodeFrame(ColorImage& frame, const byte* src, unsigned int siz
         break;
       case 32:
         {
-          assert(size == dimension.getSize() * 4, InvalidFormat(this));
+          bassert(size == dimension.getSize() * 4, InvalidFormat(this));
           const byte* end = src + size;
           --dest;
           --src;
@@ -839,7 +839,7 @@ void AVIReader::decodeFrame(ColorImage& frame, const byte* src, unsigned int siz
 }
 
 void AVIReader::getFrame(ColorImage& frame) throw(IOException) {
-  assert(
+  bassert(
     frame.getDimension() == globalDescriptor.dimension,
     Exception("Invalid arg")
   );
@@ -870,8 +870,8 @@ void AVIReader::getFrame(ColorImage& frame) throw(IOException) {
         break;
       } else if (streamType == getStreamType(makeChunkId('#', '#', 'p', 'c'))) { // palette change
         const AVIPaletteChange* src = (AVIPaletteChange*)buffer.getElements();
-        assert(static_cast<unsigned int>(src->firstEntry) + static_cast<unsigned int>(src->numberOfEntries) <= 256, InvalidFormat(this));
-        assert(sizeof(AVIPaletteChange) + src->numberOfEntries * sizeof(AVIPaletteEntry) <= chunk.size, InvalidFormat(this));
+        bassert(static_cast<unsigned int>(src->firstEntry) + static_cast<unsigned int>(src->numberOfEntries) <= 256, InvalidFormat(this));
+        bassert(sizeof(AVIPaletteChange) + src->numberOfEntries * sizeof(AVIPaletteEntry) <= chunk.size, InvalidFormat(this));
         ColorPixel* destPalette = palette.getElements(); // palette has 256 entries
         for (unsigned int i = src->firstEntry; i < static_cast<unsigned int>(src->firstEntry) + src->numberOfEntries; ++i) {
           destPalette[i].blue = src->entry[i].blue;

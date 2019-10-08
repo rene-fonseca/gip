@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP__ARRAY_IMAGE_H
-#define _DK_SDU_MIP__GIP__ARRAY_IMAGE_H
+#pragma once
 
 #include <gip/Image.h>
 #include <gip/Pixel.h>
@@ -226,5 +225,3 @@ typedef ArrayImage<float> FloatImage;
 typedef ArrayImage<Complex> ComplexImage;
 
 }; // end of gip namespace
-
-#endif

@@ -151,7 +151,7 @@ namespace gip {
               encoded.getSize(),
               true
             );
-            assert(count > 0, InvalidFormat(this));
+            bassert(count > 0, InvalidFormat(this));
             src = encoded.getElements();
             endOfBuffer = src + count;
           }
@@ -160,7 +160,7 @@ namespace gip {
           ++offset;
           if ((0xc0 & value) == 0xc0) {
             unsigned int count = 0x3f & value;
-            assert(count <= bytesToRead, InvalidFormat(this));
+            bassert(count <= bytesToRead, InvalidFormat(this));
 
             if (src >= endOfBuffer) { // if empty buffer then refill
               unsigned int count = file.read(
@@ -168,7 +168,7 @@ namespace gip {
                 encoded.getSize(),
                 true
               );
-              assert(count > 0, InvalidFormat(this));
+              bassert(count > 0, InvalidFormat(this));
               src = encoded.getElements();
               endOfBuffer = src + count;
             }
@@ -235,7 +235,7 @@ namespace gip {
     unsigned int width = image->getDimension().getWidth();
     unsigned int height = image->getDimension().getHeight();
     unsigned int bytesPerLine = (width + 1)/2*2;
-    assert((width > 0) && (height > 0), ImageException("Dimension of image not supported by encoder", this));
+    bassert((width > 0) && (height > 0), ImageException("Dimension of image not supported by encoder", this));
 
     clear(header);
     header.manufacturer = 10;
@@ -306,7 +306,7 @@ namespace gip {
     unsigned int width = image->getDimension().getWidth();
     unsigned int height = image->getDimension().getHeight();
     unsigned int bytesPerLine = (width + 1)/2*2;
-    assert(
+    bassert(
       (width > 0) && (height > 0),
       ImageException("Dimension of image not supported by encoder", this)
     );

@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_ANALYSIS__TRAVERSE_H
-#define _DK_SDU_MIP__GIP_ANALYSIS__TRAVERSE_H
+#pragma once
 
 #include <gip/ImageException.h>
 
@@ -59,7 +58,7 @@ namespace gip {
   template<class LEFT, class RIGHT, class BINOPR>
   inline void transform(LEFT& left, const RIGHT& right, BINOPR& function) throw(ImageException) {
     // check if function is binary and write nice error if not???
-    assert(
+    bassert(
       left.getDimension() == right.getDimension(),
       ImageException("Images must have identical dimension")
     );
@@ -87,7 +86,7 @@ namespace gip {
   */
   template<class DEST, class SRC, class UNOPR>
   inline void fillWithUnary(DEST& destination, const SRC& source, UNOPR& function) throw(ImageException) {
-    assert(
+    bassert(
       destination.getDimension() == source.getDimension(),
       ImageException("Images must have identical dimension")
     );
@@ -116,7 +115,7 @@ namespace gip {
 //  // typedef typename function::Result Result
 //  // typedef typename function::LeftArgument LeftArgument
 //  // typedef typename function::RightArgument RightArgument
-//  assert(
+//  bassert(
 //    (destination.getDimension() == left.getDimension()) && (left.getDimension() == right.getDimension()),
 //    ImageException("Images must have identical dimension")
 //  );
@@ -184,5 +183,3 @@ namespace gip {
 //};
 
 }; // end of gip namespace
-
-#endif
