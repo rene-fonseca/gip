@@ -859,7 +859,7 @@ public:
   }
 
   void dumpIdentifier() throw() {
-    fout << "mip.sdu.dk/~fonseca/gip/testsuite/videophone" << ENDL;
+    fout << "https://dev.azure.com/renefonseca/gip/~fonseca/gip/testsuite/videophone" << ENDL;
   }
   
   void dumpVersion() throw() {
