@@ -24,7 +24,6 @@ namespace gip {
 
     @short Gradient of image
     @ingroup transformations
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   

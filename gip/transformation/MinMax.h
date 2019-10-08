@@ -23,7 +23,6 @@ namespace gip {
     @short Finds the maximum element (normally intensity or mapped intensity)
     of an element.
     @ingroup transformations
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.1
   */
   

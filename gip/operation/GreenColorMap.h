@@ -22,7 +22,6 @@ namespace gip {
 
     @short Pure green color map.
     @ingroup colormaps
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   class GreenColorMap : public UnaryOperation<RGBPixel<long double>, long double> {

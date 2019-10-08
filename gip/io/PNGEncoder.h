@@ -23,7 +23,6 @@ namespace gip {
 
     @short Portable Network Graphics (PNG) format encoder
     @ingroup imageEncoders
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.1
   */
   

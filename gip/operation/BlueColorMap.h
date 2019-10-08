@@ -22,7 +22,6 @@ namespace gip {
 
     @short Pure blue color map.
     @ingroup colormaps
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   class BlueColorMap : public UnaryOperation<RGBPixel<long double>, long double> {

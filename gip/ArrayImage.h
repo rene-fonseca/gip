@@ -28,7 +28,6 @@ namespace gip {
   
   @short Image containing the image elements in an array for random access.
   @ingroup images
-  @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
   @version 1.0
 */
 

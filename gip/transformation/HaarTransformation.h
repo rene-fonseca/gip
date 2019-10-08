@@ -26,7 +26,6 @@ namespace gip {
     
     @short Fast Haar Transformation (FWT)
     @ingroup transformations
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 

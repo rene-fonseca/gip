@@ -21,7 +21,6 @@ namespace gip {
   Clamp value to boundary.
 
   @short Clamp value to boundary
-  @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
   @version 1.0
 */
 template<class TYPE>

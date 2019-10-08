@@ -43,7 +43,6 @@ namespace gip {
 
   /**
     @short AVI encoder.
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 
@@ -124,7 +123,6 @@ namespace gip {
       This class describes the whole AVI file.
       
       @short Description of the AVI file.
-      @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
       @version 1.0
     */
     class GlobalDescriptor : public Object {

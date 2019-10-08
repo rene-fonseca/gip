@@ -21,7 +21,6 @@ namespace gip {
     Invocates the specified unary operation (non-modifying) for each element of the specified image.
 
     @short Invokes the operation for each element of the image
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   template<class IMAGE, class UNOPR>
@@ -40,7 +39,6 @@ namespace gip {
     Applies the specified operation on every element of the specified image.
     
     @short Modifies each element of the image
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   template<class IMAGE, class UNOPR>
@@ -81,7 +79,6 @@ namespace gip {
   /**
     Applies the specified operation on every element of the specified image.
 
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   template<class DEST, class SRC, class UNOPR>
@@ -107,7 +104,6 @@ namespace gip {
   }
 
   /**
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
   */
 //template<class DEST, class LEFT, class RIGHT, class BINOPR>
 //inline void fillWithBinary(DEST& destination, const LSRC& left, const RSRC& right, BINOPR& function) throw(ImageException) {

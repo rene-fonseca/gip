@@ -25,7 +25,6 @@ namespace gip {
     
     @short Median filter with 3x3 window
     @ingroup transformations filtering
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   

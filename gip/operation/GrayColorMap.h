@@ -22,7 +22,6 @@ namespace gip {
 
     @short Black to white color map.
     @ingroup colormaps
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   class GrayColorMap : public UnaryOperation<RGBPixel<long double>, long double> {

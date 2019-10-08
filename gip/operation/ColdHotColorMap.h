@@ -22,7 +22,6 @@ namespace gip {
 
     @short Cold to hot color map.
     @ingroup colormaps
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   class ColdHotColorMap : public UnaryOperation<RGBPixel<long double>, long double> {

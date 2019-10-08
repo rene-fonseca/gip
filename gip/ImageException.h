@@ -27,7 +27,6 @@ namespace gip {
 
     @short Image exception.
     @ingroup exceptions
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 

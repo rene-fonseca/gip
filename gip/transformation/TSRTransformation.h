@@ -23,7 +23,6 @@ namespace gip {
     Translation, scaling, and rotation transformation.
     
     @short Translation, scaling, and rotation transformation
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 

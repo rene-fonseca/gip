@@ -33,7 +33,6 @@ namespace gip {
     
     @short IEEE 1394 Digital Camera support.
     @ingroup video
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 
@@ -45,7 +44,6 @@ namespace gip {
       
       @short Camera exception.
       @ingroup exceptions video
-      @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
       @version 1.0
     */
     

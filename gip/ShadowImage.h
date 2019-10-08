@@ -21,7 +21,6 @@ namespace gip {
   An image that maps onto another image (similar to FilterInputStream and FilterOutputStream).
 
   @short Shadow image.
-  @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
   @version 1.0
 */
 

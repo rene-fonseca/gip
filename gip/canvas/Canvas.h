@@ -31,7 +31,6 @@ namespace gip {
     This class supports the drawing of primitives onto an image.
 
     @short Canvas
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 

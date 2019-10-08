@@ -23,7 +23,6 @@ namespace gip {
   This class associates an offset with an image.
 
   @short Image that is part of a greater context.
-  @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
   @version 1.0
 */
 

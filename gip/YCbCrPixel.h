@@ -23,7 +23,6 @@ namespace gip {
 
   @short Y'CbCr color space pixel
   @ingroup pixels
-  @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
   @version 1.0
 */
 

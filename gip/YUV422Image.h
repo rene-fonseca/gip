@@ -22,7 +22,6 @@ namespace gip {
     
     @short YUV 422 image.
     @ingroup images
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   class YUV422Image : public Image<uint8> {

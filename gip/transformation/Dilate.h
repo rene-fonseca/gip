@@ -26,7 +26,6 @@ namespace gip {
     @short Dilate
     @see Erode
     @ingroup transformations morphological
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 

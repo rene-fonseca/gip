@@ -25,7 +25,6 @@ namespace gip {
     
     @short Discrete Cosine Transformation (DCT)
     @ingroup transformations
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 

@@ -26,7 +26,6 @@ namespace gip {
     coordinates have a corresponding index but this is not required.
 
     @short Mapper of coordinates into one-dimensional indices.
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 

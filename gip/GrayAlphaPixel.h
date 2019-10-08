@@ -25,7 +25,6 @@ namespace gip {
     @short Gray (achromatic) pixel with alpha component
     @see RGBPixel RGBAPixel
     @ingroup pixels
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   template<class COMPONENT>

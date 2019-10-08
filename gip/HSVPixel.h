@@ -24,7 +24,6 @@ namespace gip {
   @short HSV color space pixel
   @see HLSPixel
   @ingroup pixels
-  @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
   @version 1.0
 */
 

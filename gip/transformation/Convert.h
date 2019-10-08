@@ -218,7 +218,6 @@ namespace gip {
 
     @short Image convertion
     @ingroup transformation
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   template<class DEST, class SRC, class UNARY>

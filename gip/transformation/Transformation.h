@@ -26,7 +26,6 @@ namespace gip {
     Base class of all binary transformations.
     
     @short Base class of binary transformations.
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   

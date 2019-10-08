@@ -22,7 +22,6 @@ namespace gip {
     This class is normally used to specify an element within an image.
 
     @short Discrete two-dimensional point.
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 

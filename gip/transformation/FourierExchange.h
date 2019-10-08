@@ -31,7 +31,6 @@ namespace gip {
 
     @short Fourier region exchange.
     @ingroup transformations geometric
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 

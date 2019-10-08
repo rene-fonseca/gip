@@ -55,7 +55,6 @@ namespace gip {
     
     @short Gray level histogram operation
     @ingroup analysis
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 
@@ -95,7 +94,6 @@ namespace gip {
     Color histogram operation.
     
     @short Color histogram operation.
-    @author Rene Moeller Fonseca
     @version 1.0
   */
   

@@ -60,7 +60,6 @@ namespace gip {
 
     @short Fills the destination with noise.
     @ingroup transformations
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   

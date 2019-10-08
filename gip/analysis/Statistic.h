@@ -25,7 +25,6 @@ namespace gip {
     This class provides commonly used statistics support.
     
     @short Statistics.
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 

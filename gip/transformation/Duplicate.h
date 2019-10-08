@@ -36,7 +36,6 @@ namespace gip {
     Duplicates the contents of an image.
 
     @short Image duplication operation
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 

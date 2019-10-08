@@ -23,7 +23,6 @@ namespace gip {
     
     @short Interpolate operator.
     @ingroup operator
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
   

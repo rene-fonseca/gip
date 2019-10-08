@@ -23,7 +23,6 @@ namespace gip {
     some group of pixels.
     
     @short Unary operation used to find the minimum and maximum values
-    @author Rene Moeller Fonseca <fonseca@mip.sdu.dk>
     @version 1.0
   */
 
