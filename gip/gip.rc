@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework
     A framework for developing image processing applications
 
-    Copyright (C) 2001 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    See COPYRIGHT.txt for details.
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -37,12 +37,12 @@
     BEGIN
       BLOCK "040904e4"
       BEGIN
-        VALUE "Comments", "Written by René Møller Fonseca <fonseca@mip.sdu.dk>. This framework is distributed under the GNU General Public License Version 2, June 1991.\0"
-        VALUE "CompanyName", "René Møller Fonseca <http://www.mip.sdu.dk/~fonseca/gip>\0"
+        VALUE "Comments", "Written by Renï¿½ Mï¿½ller Fonseca <fonseca@mip.sdu.dk>. This framework is distributed under the GNU General Public License Version 2, June 1991.\0"
+        VALUE "CompanyName", "Renï¿½ Mï¿½ller Fonseca <http://www.mip.sdu.dk/~fonseca/gip>\0"
         VALUE "FileDescription", "A framework for developing image processing applications\0"
         VALUE "FileVersion",  _DK_SDU_MIP__GIP__VERSION "\0"
         VALUE "InternalName", "gip\0"
-        VALUE "LegalCopyright", "Copyright © 2000-2002 by René Møller Fonseca\0"
+        VALUE "LegalCopyright", "Copyright ï¿½ 2000-2002 by Renï¿½ Mï¿½ller Fonseca\0"
         VALUE "LegalTrademarks", "Currently not available\0"
         VALUE "OriginalFilename", "cyggip.dll\0"
 #if defined(_DK_SDU_MIP__GIP__DEBUG)

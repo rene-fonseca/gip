@@ -2,7 +2,7 @@
     Generic Image Processing (GIP) Framework (Test Suite)
     A framework for developing image processing applications
 
-    Copyright (C) 2002-2003 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+    See COPYRIGHT.txt for details.
 
     This framework is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
