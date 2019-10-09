@@ -24,12 +24,12 @@
 #include <base/Timer.h>
 #include <base/TypeInfo.h>
 
-using namespace dk::sdu::mip::gip;
+using namespace com::azure::dev::gip;
 
 class WalshToGray : public UnaryOperation<float, GrayPixel> {
 private:
 
-   long double scale;
+   long double scale = 0;
 public:
 
   inline WalshToGray(const Dimension& dimension) throw()

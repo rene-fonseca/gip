@@ -24,7 +24,7 @@
 #include <base/string/InvalidFormat.h>
 #include <base/Integer.h>
 
-using namespace dk::sdu::mip::gip;
+using namespace com::azure::dev::gip;
 
 class RotateApplication : public Application {
 private:

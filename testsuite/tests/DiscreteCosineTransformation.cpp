@@ -28,7 +28,7 @@
 #include <base/TypeInfo.h>
 #include <base/mathematics/Constants.h>
 
-using namespace dk::sdu::mip::gip;
+using namespace com::azure::dev::gip;
 
 class CosineToGray : public UnaryOperation<float, GrayPixel> {
 private:

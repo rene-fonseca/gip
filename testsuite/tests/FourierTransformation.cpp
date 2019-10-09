@@ -27,7 +27,7 @@
 #include <base/Timer.h>
 #include <base/TypeInfo.h>
 
-using namespace dk::sdu::mip::gip;
+using namespace com::azure::dev::gip;
 
 class FourierToGray : public UnaryOperation<Complex, GrayPixel> {
 private:

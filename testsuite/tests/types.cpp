@@ -19,7 +19,7 @@
 #include <gip/HLSPixel.h>
 #include <gip/HSVPixel.h>
 
-using namespace dk::sdu::mip::gip;
+using namespace com::azure::dev::gip;
 
 void writeHLSTest(const String& prefix, const RGBPixel<long double>& rgb) throw(IOException) {
   HLSPixel<long double> hls = RGBToHLS(rgb);

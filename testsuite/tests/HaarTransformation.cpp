@@ -25,7 +25,7 @@
 #include <base/TypeInfo.h>
 #include <base/mathematics/Random.h>
 
-using namespace dk::sdu::mip::gip;
+using namespace com::azure::dev::gip;
 
 class HaarToGray : public UnaryOperation<float, GrayPixel> {
 public:

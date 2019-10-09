@@ -25,7 +25,7 @@
 #include <gip/transformation/Convert.h>
 #include <base/Cast.h>
 
-using namespace dk::sdu::mip::gip;
+using namespace com::azure::dev::gip;
 
 class RGB24ToRGB : public UnaryOperation<Camera1394::RGB24Pixel, ColorPixel> {
 public:

@@ -17,7 +17,7 @@
 #include <gip/Version.h>
 #include <gip/io/BMPEncoder.h>
 
-using namespace dk::sdu::mip::gip;
+using namespace com::azure::dev::gip;
 
 class VersionApplication : public Application {
 private:

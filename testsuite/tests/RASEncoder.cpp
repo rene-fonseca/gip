@@ -17,7 +17,7 @@
 #include <base/Application.h>
 #include <base/string/FormatOutputStream.h>
 
-using namespace dk::sdu::mip::gip;
+using namespace com::azure::dev::gip;
 
 class RASEncoderApplication : public Application {
 private:

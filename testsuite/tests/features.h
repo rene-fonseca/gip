@@ -11,8 +11,7 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
-#ifndef _DK_SDU_MIP__GIP_TESTSUITE_TESTS__FEATURES_H
-#define _DK_SDU_MIP__GIP_TESTSUITE_TESTS__FEATURES_H
+#pragma once
 
 #include <gip/features.h>
 

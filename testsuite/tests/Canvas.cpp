@@ -22,7 +22,7 @@
 #include <base/mathematics/Random.h>
 #include <base/mathematics/Constants.h>
 
-using namespace dk::sdu::mip::gip;
+using namespace com::azure::dev::gip;
 
 class CanvasApplication : public Application {
 private:
