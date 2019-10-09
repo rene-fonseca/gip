@@ -81,10 +81,10 @@ public:
   Dimension getDimension(const String& value) const throw() {
     // dimension format "123x123"
     int x = value.indexOf('x');
-    assert(x > 0, base::InvalidFormat("Invalid dimension", this));
+    bassert(x > 0, base::InvalidFormat("Invalid dimension", this));
     String width = value.substring(0, x);
     String height = value.substring(x + 1);
-    assert(width.isProper() && height.isProper(), base::InvalidFormat("Invalid dimension", this));
+    bassert(width.isProper() && height.isProper(), base::InvalidFormat("Invalid dimension", this));
     return Dimension(
       static_cast<unsigned int>(Integer::parse(width, true)),
       static_cast<unsigned int>(Integer::parse(height, true))

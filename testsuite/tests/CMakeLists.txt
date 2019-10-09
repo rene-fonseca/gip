@@ -1,0 +1,25 @@
+cmake_minimum_required (VERSION 3.1)
+
+project (testsuite)
+
+file( GLOB TEST_SOURCES RELATIVE "${PROJECT_SOURCE_DIR}" *.cpp )
+# list(REMOVE_ITEM TEST_SOURCES "")
+
+message ("${CMAKE_CURRENT_BINARY_DIR}/../../base" )
+message ("${CMAKE_CURRENT_BINARY_DIR}/../../gip" )
+
+foreach( sourcefile ${TEST_SOURCES} )
+  string( REPLACE ".cpp" "" name ${sourcefile} )
+  add_executable( "test_${name}" ${sourcefile} )
+  # add_dependencies( "test_${name}" gip base )
+  # target_compile_definitions( "test_${name}" PUBLIC _DK_SDU_MIP__BASE__SHARED_LIBRARY )
+  # target_link_libraries( "test_${name}" "${CMAKE_CURRENT_BINARY_DIR}/../../DEBUG/base.lib" )
+  add_dependencies( "test_${name}" gip_STATIC )
+if (MSVC)
+target_link_libraries( "test_${name}" "${CMAKE_CURRENT_BINARY_DIR}/../../DEBUG/gip_static.lib" )
+target_link_libraries( "test_${name}" "${CMAKE_CURRENT_BINARY_DIR}/../../DEBUG/base_static.lib" )
+  target_link_libraries( "test_${name}" Ws2_32 Netapi32 Winmm)
+else ()
+  target_link_libraries( "test_${name}" gip ${BASE_LIB} )
+endif ()
+endforeach()

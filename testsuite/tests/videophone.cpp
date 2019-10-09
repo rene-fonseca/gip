@@ -636,91 +636,91 @@ public:
           command = COMMAND_HELP; // no need to continue argument processing
           return;
         } else if (*argument == "--adapter") {
-          assert(
+          bassert(
             adapterGuid.isInvalid(),
             InvalidArgument("IEEE 1394 adapter has already been specified")
           );
-          assert(
+          bassert(
             enu.hasNext(),
             InvalidArgument("EUI-64 of IEEE 1394 adapter is missing")
           );
           adapterGuid = EUI64(*enu.next());
         } else if (*argument == "--camera") {
-          assert(
+          bassert(
             cameraGuid.isInvalid(),
             InvalidArgument("IEEE 1394 camera has already been specified")
           );
-          assert(
+          bassert(
             enu.hasNext(),
             InvalidArgument("EUI-64 of IEEE 1394 camera is missing")
           );
           cameraGuid = EUI64(*enu.next());
         } else if (*argument == "--listnodes") {
-          assert(
+          bassert(
             command == COMMAND_ERROR,
             InvalidArgument("Command has already been specified")
           );
           command = COMMAND_LIST_NODES;
         } else if (*argument == "--listcameras") {
-          assert(
+          bassert(
             command == COMMAND_ERROR,
             InvalidArgument("Command has already been specified")
           );
           command = COMMAND_LIST_CAMERAS;
         } else if (*argument == "--capabilities") {
-          assert(
+          bassert(
             command == COMMAND_ERROR,
             InvalidArgument("Command has already been specified")
           );
           command = COMMAND_DUMP_CAPABILITIES;
         } else if (*argument == "--modecaps") {
-          assert(
+          bassert(
             command == COMMAND_ERROR,
             InvalidArgument("Command has already been specified")
           );
           command = COMMAND_DUMP_MODE_CAPABILITIES;
         } else if (*argument == "--acquire") {
-          assert(
+          bassert(
             command == COMMAND_ERROR,
             InvalidArgument("Command has already been specified")
           );
-          assert(enu.hasNext(), InvalidArgument("File name is missing"));
+          bassert(enu.hasNext(), InvalidArgument("File name is missing"));
           filename = *enu.next();
           command = COMMAND_ACQUIRE;
         } else if (*argument == "--loopback") {
-          assert(
+          bassert(
             command == COMMAND_ERROR,
             InvalidArgument("Command has already been specified")
           );
           command = COMMAND_LOOPBACK;
         } else if (*argument == "--host") {
-          assert(
+          bassert(
             command == COMMAND_ERROR,
             InvalidArgument("Command has already been specified")
           );
-          assert(enu.hasNext(), InvalidArgument("Host value missing"));
+          bassert(enu.hasNext(), InvalidArgument("Host value missing"));
           host = *enu.next();
           command = COMMAND_CONNECT;
         } else if (*argument == "--port") {
-          assert(enu.hasNext(), InvalidArgument("Port value missing"));
+          bassert(enu.hasNext(), InvalidArgument("Port value missing"));
           const String* rateString = enu.next();
           unsigned int temp = UnsignedInteger(*rateString).getValue();
-          assert(
+          bassert(
             (temp > 0) && (temp <= 0xffff),
             InvalidArgument("Port is invalid")
           );
           port = temp;
         } else if (*argument == "--mode") {
-          assert(enu.hasNext(), InvalidArgument("Camera mode missing"));
+          bassert(enu.hasNext(), InvalidArgument("Camera mode missing"));
           unsigned int temp = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
-          assert(
+          bassert(
             temp <= Camera1394::PARTIAL_IMAGE_MODE_7,
             InvalidArgument("Invalid camera mode")
           );
           mode = static_cast<Camera1394::Mode>(temp);
           setMode = true;
         } else if (*argument == "--rate") {
-          assert(enu.hasNext(), InvalidArgument("Frame rate missing"));
+          bassert(enu.hasNext(), InvalidArgument("Frame rate missing"));
           const String temp = *enu.next();
           if (temp == "60") {
             rate = Camera1394::RATE_60;
@@ -739,58 +739,58 @@ public:
           }
           setFrameRate = true;
         } else if (*argument == "--format") {
-          assert(enu.hasNext(), InvalidArgument("Pixel format missing"));
+          bassert(enu.hasNext(), InvalidArgument("Pixel format missing"));
           unsigned int temp = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
-          assert(
+          bassert(
             temp <= Camera1394::RGB_16BIT,
             InvalidArgument("Invalid pixel format")
           );
           pixelFormat = static_cast<Camera1394::PixelFormat>(temp);
           setPixelFormat = true;
         } else if (*argument == "--dimension") {
-          assert(enu.hasNext(), InvalidArgument("Frame dimension"));
+          bassert(enu.hasNext(), InvalidArgument("Frame dimension"));
           // FIXME
         } else if (*argument == "--offset") {
-          assert(enu.hasNext(), InvalidArgument("Frame offset missing"));
+          bassert(enu.hasNext(), InvalidArgument("Frame offset missing"));
           // FIXME
         } else if (*argument == "--brightness") {
-          assert(enu.hasNext(), InvalidArgument("Brightness value missing"));
+          bassert(enu.hasNext(), InvalidArgument("Brightness value missing"));
           brightnessValue = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
           setBrightness = true;
         } else if (*argument == "--exposure") {
-          assert(enu.hasNext(), InvalidArgument("Auto exposure value missing"));
+          bassert(enu.hasNext(), InvalidArgument("Auto exposure value missing"));
           autoExposureValue = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
           setAutoExposure = true;
         } else if (*argument == "--balance") {
-          assert(
+          bassert(
             enu.hasNext(),
             InvalidArgument("Blue ratio missing for white balance")
           );
           blueRatioValue = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
-          assert(
+          bassert(
             enu.hasNext(),
             InvalidArgument("Red ratio missing for white balance")
           );
           redRatioValue = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
           setWhiteBalance = true;
         } else if (*argument == "--hue") {
-          assert(enu.hasNext(), InvalidArgument("Hue value missing"));
+          bassert(enu.hasNext(), InvalidArgument("Hue value missing"));
           hueValue = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
           setHue = true;
         } else if (*argument == "--saturation") {
-          assert(enu.hasNext(), InvalidArgument("Saturation value missing"));
+          bassert(enu.hasNext(), InvalidArgument("Saturation value missing"));
           saturationValue = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
           setSaturation = true;
         } else if (*argument == "--gamma") {
-          assert(enu.hasNext(), InvalidArgument("Gamma value missing"));
+          bassert(enu.hasNext(), InvalidArgument("Gamma value missing"));
           gammaValue = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
           setGamma = true;
         } else if (*argument == "--shutter") {
-          assert(enu.hasNext(), InvalidArgument("Shutter value missing"));
+          bassert(enu.hasNext(), InvalidArgument("Shutter value missing"));
           shutterValue = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
           setShutter = true;
         } else if (*argument == "--gain") {
-          assert(enu.hasNext(), InvalidArgument("Gain value missing"));
+          bassert(enu.hasNext(), InvalidArgument("Gain value missing"));
           gainValue = UnsignedInteger::parse(*enu.next(), UnsignedInteger::DEC|UnsignedInteger::HEX);
           setGain = true;
         } else {
@@ -964,21 +964,21 @@ public:
     dumpCamera();
     
     if (setMode) {
-      assert(
+      bassert(
         camera.isModeSupported(mode),
         Camera1394::Camera1394Exception("Mode is not supported")
       );
       camera.setMode(mode);
     }
     if (setFrameRate) {
-      assert(
+      bassert(
         camera.isFrameRateSupported(rate),
         Camera1394::Camera1394Exception("Frame rate is not supported")
       );
       camera.setFrameRate(rate);
     }
     if (setPixelFormat) {
-      assert(
+      bassert(
         camera.getPixelFormats() & (1 << pixelFormat),
         Camera1394::Camera1394Exception("Pixel format is not supported")
       );
@@ -1221,8 +1221,8 @@ public:
   void setupCamera(bool fast = false) throw(Camera1394::Camera1394Exception) {
     if (cameraGuid.isInvalid()) { // check if EUI-64 has been specified
       Array<EUI64> cameras = camera.getCameras();
-      assert(cameras.getSize() > 0, Camera1394::Camera1394Exception("No cameras available", this));
-      assert(cameras.getSize() == 1, Camera1394::Camera1394Exception("More than one camera available", this));
+      bassert(cameras.getSize() > 0, Camera1394::Camera1394Exception("No cameras available", this));
+      bassert(cameras.getSize() == 1, Camera1394::Camera1394Exception("More than one camera available", this));
       cameraGuid = cameras[0];
       if (verbosity >= VERBOSITY_SILENT) {
         fout << "Opening camera: " << cameraGuid << EOL << ENDL;
@@ -1232,7 +1232,7 @@ public:
     camera.open(cameraGuid);
     
     if (setMode) {
-      assert(
+      bassert(
         camera.isModeSupported(mode),
         Camera1394::Camera1394Exception("Mode is not supported")
       );
@@ -1242,7 +1242,7 @@ public:
       camera.setMode(mode);
     }
     if (setFrameRate) {
-      assert(
+      bassert(
         camera.isFrameRateSupported(rate),
         Camera1394::Camera1394Exception("Frame rate is not supported")
       );
@@ -1252,7 +1252,7 @@ public:
       camera.setFrameRate(rate);
     }
     if (setPixelFormat) {
-      assert(
+      bassert(
         camera.getPixelFormats() & (1 << pixelFormat),
         Camera1394::Camera1394Exception("Pixel format is not supported")
       );
@@ -1264,56 +1264,56 @@ public:
 
     if (!fast) {
       if (setBrightness) {
-        assert(
+        bassert(
           camera.isFeatureSupported(Camera1394::BRIGHTNESS_CONTROL),
           Camera1394::Camera1394Exception("Brightness is not supported")
         );
         camera.setBrightness(brightnessValue);
       }
       if (setAutoExposure) {
-        assert(
+        bassert(
           camera.isFeatureSupported(Camera1394::AUTO_EXPOSURE_CONTROL),
           Camera1394::Camera1394Exception("Auto exposure is not supported")
         );
         camera.setAutoExposure(autoExposureValue);
       }
       if (setWhiteBalance) {
-        assert(
+        bassert(
           camera.isFeatureSupported(Camera1394::WHITE_BALANCE_CONTROL),
           Camera1394::Camera1394Exception("White balance is not supported")
         );
         camera.setWhiteBalance(blueRatioValue, redRatioValue);
       }
       if (setHue) {
-        assert(
+        bassert(
           camera.isFeatureSupported(Camera1394::HUE_CONTROL),
           Camera1394::Camera1394Exception("Hue is not supported")
         );
         camera.setHue(hueValue);
       }
       if (setSaturation) {
-        assert(
+        bassert(
           camera.isFeatureSupported(Camera1394::SATURATION_CONTROL),
           Camera1394::Camera1394Exception("Saturation is not supported")
         );        
         camera.setSaturation(saturationValue);
       }
       if (setGamma) {
-        assert(
+        bassert(
           camera.isFeatureSupported(Camera1394::GAMMA_CONTROL),
           Camera1394::Camera1394Exception("Gamma is not supported")
         );
         camera.setGamma(gammaValue);
       }
       if (setShutter) {
-        assert(
+        bassert(
           camera.isFeatureSupported(Camera1394::SHUTTER_CONTROL),
           Camera1394::Camera1394Exception("Shutter is not supported")
         );
         camera.setShutter(shutterValue);
       }
       if (setGain) {
-        assert(
+        bassert(
           camera.isFeatureSupported(Camera1394::GAIN_CONTROL),
           Camera1394::Camera1394Exception("Gain is not supported")
         );

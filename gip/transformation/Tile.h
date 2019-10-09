@@ -50,18 +50,18 @@ namespace gip {
 
   template<class DEST, class SRC>
   void Tile<DEST, SRC>::operator()() throw() {
-    Dimension dimension = destination->getDimension();
+    Dimension dimension = Transformation<DEST, SRC>::destination->getDimension();
     if (!dimension.isProper()) {
       return; // nothing to do
     }
     // TAG: need offset support
 
-    typename DestinationImage::Rows::RowIterator destRow = destination->getRows().getFirst();
-    typename SourceImage::ReadableRows::RowIterator srcBegin = source->getRows().getFirst();
-    typename SourceImage::ReadableRows::RowIterator srcEnd = source->getRows().getEnd();
+    typename DestinationImage::Rows::RowIterator destRow = Transformation<DEST, SRC>::destination->getRows().getFirst();
+    typename SourceImage::ReadableRows::RowIterator srcBegin = Transformation<DEST, SRC>::source->getRows().getFirst();
+    typename SourceImage::ReadableRows::RowIterator srcEnd = Transformation<DEST, SRC>::source->getRows().getEnd();
 
-    unsigned int verticalCycles = destination->getDimension().getHeight()/source->getDimension().getHeight();
-    unsigned int horizontalCycles = destination->getDimension().getWidth()/source->getDimension().getWidth();
+    unsigned int verticalCycles = Transformation<DEST, SRC>::destination->getDimension().getHeight()/Transformation<DEST, SRC>::source->getDimension().getHeight();
+    unsigned int horizontalCycles = Transformation<DEST, SRC>::destination->getDimension().getWidth()/Transformation<DEST, SRC>::source->getDimension().getWidth();
 
     while (verticalCycles--) {
       typename SourceImage::ReadableRows::RowIterator srcRow = srcBegin;
@@ -88,7 +88,7 @@ namespace gip {
       }
     }
 
-    typename DestinationImage::Rows::RowIterator destEnd = destination->getRows().getEnd();
+    typename DestinationImage::Rows::RowIterator destEnd = Transformation<DEST, SRC>::destination->getRows().getEnd();
     typename SourceImage::ReadableRows::RowIterator srcRow = srcBegin;
     while (destRow < destEnd) {
       typename DestinationImage::Rows::RowIterator::ElementIterator destColumn = destRow.getFirst();
