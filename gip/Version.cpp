@@ -28,7 +28,7 @@ const char Version::banner[] =
 "This framework is distributed in the hope that it will be useful,\n"
 "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
 "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
-"Please report bugs to <fonseca@mip.sdu.dk>.\n\n"
+"Please report bugs to https://dev.azure.com/renefonseca/gip.\n\n"
 "configure: " _DK_SDU_MIP__GIP__CONFIGURE "\n"
 "build data: " _DK_SDU_MIP__GIP__BUILD_DATE "\n";
 

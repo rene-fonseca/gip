@@ -4,11 +4,11 @@ Version:        0.1
 Entered-date:   
 Description:    A framework for developing image processing applications.
 Keywords:       generic image processing gip c++
-Author:         Ren� M�ller Fonseca
-Maintained-by:  Ren� M�ller Fonseca
+Author:         René Møller Fonseca
+Maintained-by:  René Møller Fonseca
 Primary-site:   https://dev.azure.com/renefonseca/gip
 Home-page:      https://dev.azure.com/renefonseca/gip
 Original-site:  https://dev.azure.com/renefonseca/gip
-Platforms:      Utilizes the Base Framework (www.mip.sdu.dk/~fonseca/base)
+Platforms:      Utilizes the Base Framework (https://dev.azure.com/renefonseca/base)
 Copying-policy: GNU General Public License Version 2, June 1991
 End

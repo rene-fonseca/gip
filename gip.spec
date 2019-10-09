@@ -2,7 +2,7 @@
 #    Generic Image Processing (GIP) Framework
 #    A framework for developing image processing applications
 #
-#    Copyright (C) 2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+#    See COPYRIGHT.txt for details.
 #
 #    This framework is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,8 +17,8 @@ Release: 1
 License: GPL
 Source: %{name}-%{version}.tar.bz2
 Url: https://dev.azure.com/renefonseca/gip
-Vendor: Rene Moeller Fonseca <fonseca@>
-Packager: Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+Vendor: Rene Moeller Fonseca
+Packager: Rene Moeller Fonseca
 Distribution: The GIP Framework
 Prefix: /usr
 BuildRoot: %{_builddir}/%{name}-%{version}-%{release}-root
@@ -93,9 +93,3 @@ make DESTDIR=%{buildroot} install-strip
 
 # clean up source tree
 rm -rf %{_builddir}/%{name}
-
-
-
-%changelog
-* Sun Apr 21 2002 Rene Moeller Fonseca <fonseca@mip.sdu.dk>
-- created RPM package specification
