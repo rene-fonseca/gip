@@ -74,6 +74,7 @@ namespace gip {
 
   };
   
+_DK_SDU_MIP__BASE__PACKED__BEGIN
   template<>
   struct GrayAlphaPixel<unsigned char> {
     union {
@@ -84,9 +85,11 @@ namespace gip {
       } _DK_SDU_MIP__BASE__PACKED;
     } _DK_SDU_MIP__BASE__PACKED;
   } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
   typedef GrayAlphaPixel<unsigned char> GrayAlphaPixel8;
 
+_DK_SDU_MIP__BASE__PACKED__BEGIN
   template<>
   struct GrayAlphaPixel<unsigned short> {
     union {
@@ -97,7 +100,8 @@ namespace gip {
       } _DK_SDU_MIP__BASE__PACKED;
     } _DK_SDU_MIP__BASE__PACKED;
   } _DK_SDU_MIP__BASE__PACKED;
-  
+_DK_SDU_MIP__BASE__PACKED__END
+
   typedef GrayAlphaPixel<unsigned short> GrayAlphaPixel16;
 
   template<>

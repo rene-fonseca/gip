@@ -952,12 +952,14 @@ namespace gip {
       ArrayImage<uint16>& frame)
       throw(NotSupported, ImageException, IEEE1394Exception);
     
+_DK_SDU_MIP__BASE__PACKED__BEGIN
     struct RGB24Pixel {
       uint8 red;
       uint8 green;
       uint8 blue;
     } _DK_SDU_MIP__BASE__PACKED;
-    
+_DK_SDU_MIP__BASE__PACKED__END
+
     /**
       Acquires a single frame in RGB 24 bit format. The current mode must
       support the 24 bit RGB format. Implicit switch to RGB_8BIT pixel format

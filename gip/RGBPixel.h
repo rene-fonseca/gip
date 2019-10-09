@@ -72,6 +72,7 @@ namespace gip {
 
   };
   
+_DK_SDU_MIP__BASE__PACKED__BEGIN
   template<>
   struct RGBPixel<unsigned char> {
     union {
@@ -83,6 +84,7 @@ namespace gip {
       } _DK_SDU_MIP__BASE__PACKED;
     } _DK_SDU_MIP__BASE__PACKED;
   } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
   /**
     The RGB pixel type represented by a single 32 bit word (with 8 bit
@@ -91,6 +93,7 @@ namespace gip {
   */
   typedef RGBPixel<unsigned char> ColorPixel;
 
+_DK_SDU_MIP__BASE__PACKED__BEGIN
   struct HiColor {
     union {
       uint16 rgb;
@@ -101,6 +104,7 @@ namespace gip {
       } _DK_SDU_MIP__BASE__PACKED;
     } _DK_SDU_MIP__BASE__PACKED;
   } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
   
 

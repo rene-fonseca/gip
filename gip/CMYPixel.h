@@ -75,6 +75,7 @@ namespace gip {
 
   };
   
+_DK_SDU_MIP__BASE__PACKED__BEGIN
   template<>
   struct CMYPixel<unsigned char> {
     union {
@@ -86,6 +87,7 @@ namespace gip {
       } _DK_SDU_MIP__BASE__PACKED;
     } _DK_SDU_MIP__BASE__PACKED;
   } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
 
 

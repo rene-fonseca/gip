@@ -66,6 +66,7 @@ public:
   };
 };
 
+_DK_SDU_MIP__BASE__PACKED__BEGIN
 template<>
 struct HSVPixel<unsigned char> {
   union {
@@ -77,6 +78,7 @@ struct HSVPixel<unsigned char> {
     } _DK_SDU_MIP__BASE__PACKED;
   } _DK_SDU_MIP__BASE__PACKED;
 } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
 /**
   This function returns the HSV pixel corresponding to the specified component values.
