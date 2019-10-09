@@ -19,12 +19,15 @@
 #include <sys/types.h> // get size_t
 #include <stdio.h> // get FILE (but we do not use this)
 
+#if 0
 extern "C" {
 #include <jpeglib.h>
 };
+#endif
 
 namespace gip {
 
+#if 0
   class JPEGEncoderImpl {
   public:
 
@@ -110,6 +113,7 @@ namespace gip {
     }
     
   };
+#endif
 
   JPEGEncoder::JPEGEncoder() throw() {
   }
@@ -130,6 +134,7 @@ namespace gip {
   }
 
   bool JPEGEncoder::isValid(const String& filename) throw(IOException) {
+#if 0
     JPEGEncoderImpl::JPEGSource source;
     struct jpeg_decompress_struct cinfo;
     struct jpeg_error_mgr jerr;
@@ -162,11 +167,13 @@ namespace gip {
     } catch(...) {
       return false; // but we really do not know
     }
+#endif
     return true;
   }
 
   ColorImage* JPEGEncoder::read(
     const String& filename) throw(InvalidFormat, IOException) {
+#if 0
     JPEGEncoderImpl::JPEGSource source;
     struct jpeg_decompress_struct cinfo;
     struct jpeg_error_mgr jerr;
@@ -227,13 +234,16 @@ namespace gip {
       ::jpeg_destroy_decompress(&cinfo);
     } catch(...) {
     }
-    
     return image;
+#else
+    return nullptr;
+#endif
   }
   
   void JPEGEncoder::write(
     const String& filename,
     const ColorImage* image) throw(ImageException, IOException) {
+#if 0
     struct JPEGEncoderImpl::JPEGDestination dest;
     struct jpeg_compress_struct cinfo;
     struct jpeg_error_mgr jerr;
@@ -292,6 +302,7 @@ namespace gip {
       ::jpeg_destroy_compress(&cinfo);
     } catch(...) {
     }
+#endif
   }
 
   void JPEGEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
@@ -345,6 +356,7 @@ namespace gip {
 
   HashTable<String, AnyValue> JPEGEncoder::getInformation(
     const String& filename) throw(IOException) {
+#if 0
     HashTable<String, AnyValue> result;
     
     JPEGEncoderImpl::JPEGSource source;
@@ -386,6 +398,9 @@ namespace gip {
     result[MESSAGE("height")] = cinfo.image_height;
     result[MESSAGE("components")] = cinfo.num_components;
     return result;
+#else
+    return HashTable<String, AnyValue>();
+#endif
   }
 
 }; // end of gip namespace

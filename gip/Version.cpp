@@ -13,22 +13,24 @@
 
 #include <gip/Version.h>
 
+/*
+#define _DK_SDU_MIP__GIP__RELEASE "1.0"
+*/
+#define _DK_SDU_MIP__GIP__CONFIGURE ""
+#define _DK_SDU_MIP__GIP__BUILD_DATE ""
+
 namespace gip {
 
 const char Version::banner[] =
-"Generic Image Processing (GIP) Framework release "_DK_SDU_MIP__GIP__RELEASE"\n"
+"Generic Image Processing (GIP) Framework release " _DK_SDU_MIP__GIP__RELEASE "\n"
 "A framework for developing image processing applications\n"
-"Copyright (C) 2001, 2002, 2003 Rene Moeller Fonseca\n\n"
+"Copyright (C) 2001-2019 Rene Moeller Fonseca\n\n"
 "This framework is distributed in the hope that it will be useful,\n"
 "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
 "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 "Please report bugs to <fonseca@mip.sdu.dk>.\n\n"
-"configure: "_DK_SDU_MIP__GIP__CONFIGURE"\n"
-"build data: "_DK_SDU_MIP__GIP__BUILD_DATE"\n"
-"build user: "_DK_SDU_MIP__GIP__BUILD_USER"\n"
-"build host: "_DK_SDU_MIP__GIP__BUILD_HOST"\n"
-"build system: "_DK_SDU_MIP__GIP__BUILD_SYSTEM"\n"
-"target system: "_DK_SDU_MIP__GIP__TARGET_SYSTEM"\n";
+"configure: " _DK_SDU_MIP__GIP__CONFIGURE "\n"
+"build data: " _DK_SDU_MIP__GIP__BUILD_DATE "\n";
 
 unsigned int Version::getMajorVersion() const throw() {
   return _DK_SDU_MIP__GIP__MAJOR_VERSION;
@@ -51,7 +53,7 @@ String Version::getVersion() const throw() {
 }
 
 String Version::getBanner() const throw() {
-  return Literal(banner);
+  return String(banner);
 }
  
 }; // end of gip namespace

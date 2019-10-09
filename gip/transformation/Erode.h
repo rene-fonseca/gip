@@ -143,13 +143,13 @@ namespace gip {
     }
 
     void operator()() const throw() {
-      typename SourceImage::ReadableRows rowLookup = source->getRows();
+      typename SourceImage::ReadableRows rowLookup = Transformation<DEST, SRC>::source->getRows();
       typename SourceImage::ReadableRows::RowIterator endRow = rowLookup.getEnd();
       typename SourceImage::ReadableRows::RowIterator previousRow = rowLookup.getFirst();
       typename SourceImage::ReadableRows::RowIterator currentRow = previousRow + 1;
       typename SourceImage::ReadableRows::RowIterator nextRow = currentRow + 1;
       
-      typename DestinationImage::Rows::RowIterator destRow = destination->getRows().getFirst();
+      typename DestinationImage::Rows::RowIterator destRow = Transformation<DEST, SRC>::destination->getRows().getFirst();
       
       // handle first row
       ++destRow;

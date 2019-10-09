@@ -53,14 +53,14 @@ namespace gip {
       Scale the source image to the destination image.
     */
     void operator()() throw() {
-      const unsigned int destWidth = destination->getDimension().getWidth();
-      const unsigned int destHeight = destination->getDimension().getHeight();
-      const unsigned int srcWidth = source->getDimension().getWidth();
-      const unsigned int srcHeight = source->getDimension().getHeight();
+      const unsigned int destWidth = Transformation<DEST, SRC>::destination->getDimension().getWidth();
+      const unsigned int destHeight = Transformation<DEST, SRC>::destination->getDimension().getHeight();
+      const unsigned int srcWidth = Transformation<DEST, SRC>::source->getDimension().getWidth();
+      const unsigned int srcHeight = Transformation<DEST, SRC>::source->getDimension().getHeight();
       const long double scale = 1.0/(srcHeight * srcWidth);
       
-      typename DestinationImage::Rows::RowIterator destRow = destination->getRows().getFirst();
-      typename SourceImage::ReadableRows srcRowsLookup = source->getRows();
+      typename DestinationImage::Rows::RowIterator destRow = Transformation<DEST, SRC>::destination->getRows().getFirst();
+      typename SourceImage::ReadableRows srcRowsLookup = Transformation<DEST, SRC>::source->getRows();
       typename SourceImage::ReadableRows::RowIterator srcRow = srcRowsLookup.getFirst();
       const typename SourceImage::ReadableRows::RowIterator srcEndRow = srcRowsLookup.getEnd();
       

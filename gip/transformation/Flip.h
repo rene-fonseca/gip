@@ -54,11 +54,11 @@ namespace gip {
 
   template<class DEST>
   void Flip<DEST>::operator()() throw() {
-    typename DestinationImage::Rows rowLookup = destination->getRows();
+    typename DestinationImage::Rows rowLookup = UnaryTransformation<DEST>::destination->getRows();
 
     typename DestinationImage::Rows::RowIterator topRow = rowLookup.getFirst();
     typename DestinationImage::Rows::RowIterator bottomRow = rowLookup.getEnd();
-    unsigned int count = destination->getHeight()/2;
+    unsigned int count = UnaryTransformation<DEST>::destination->getHeight()/2;
 
     while (count--) {
       --bottomRow; // order is important

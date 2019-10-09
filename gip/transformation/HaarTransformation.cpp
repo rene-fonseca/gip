@@ -15,7 +15,7 @@
 
 namespace gip {
 
-  HaarTransformation<FloatImage>::HaarTransformation<FloatImage>(
+  HaarTransformation<FloatImage>::HaarTransformation(
     DestinationImage* destination) throw(ImageException)
     : UnaryTransformation<FloatImage>(destination) {
 
@@ -106,7 +106,7 @@ namespace gip {
     }
   }
 
-  HaarTransformation<GrayImage>::HaarTransformation<GrayImage>(
+  HaarTransformation<GrayImage>::HaarTransformation(
     DestinationImage* destination) throw(ImageException)
     : UnaryTransformation<GrayImage>(destination) {
     

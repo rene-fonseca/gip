@@ -84,7 +84,7 @@ namespace gip {
         innerOperation,
         Maximum<long double>(0)
       );
-      forEach(*destination, operation);
+      forEach(*UnaryTransformation<DestinationImage>::destination, operation);
       return operation.getResult();
     }
   };

@@ -249,7 +249,7 @@ namespace gip {
       Duplicates the contents of the source image to the destination image.
     */
     void operator()() throw() {
-      fillWithUnary(*destination, *source, convert);
+      fillWithUnary(*Transformation<DEST, SRC>::destination, *Transformation<DEST, SRC>::source, convert);
     }
 
     UNARY getResult() const throw() {

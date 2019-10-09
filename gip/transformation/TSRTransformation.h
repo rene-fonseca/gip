@@ -106,10 +106,10 @@ namespace gip {
     }
 
     void operator()() throw() {
-      const unsigned int height = destination->getDimension().getHeight();
-      const unsigned int width = destination->getDimension().getWidth();
-      Pixel* dest = destination->getElements();
-      Interpolate<Pixel> interpolate(*source);
+      const unsigned int height = Transformation<DestinationImage, SourceImage>::destination->getDimension().getHeight();
+      const unsigned int width = Transformation<DestinationImage, SourceImage>::destination->getDimension().getWidth();
+      Pixel* dest = Transformation<DestinationImage, SourceImage>::destination->getElements();
+      Interpolate<Pixel> interpolate(*Transformation<DestinationImage, SourceImage>::source);
     
       // inverse of matrix (only x and y row)
       long double inverse[2][3];

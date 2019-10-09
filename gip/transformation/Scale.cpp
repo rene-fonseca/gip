@@ -15,9 +15,9 @@
 
 namespace gip {
   
-  template Scale<GrayImage, GrayImage>;
-  template Scale<ColorImage, ColorImage>;
-  template Scale<ColorAlphaImage, ColorAlphaImage>;
+  template class Scale<GrayImage, GrayImage>;
+  template class Scale<ColorImage, ColorImage>;
+  template class Scale<ColorAlphaImage, ColorAlphaImage>;
   
   template<class DEST, class SRC>
   Scale<DEST, SRC>::Scale(DestinationImage* destination, const SourceImage* source) throw(ImageException)
@@ -27,15 +27,15 @@ namespace gip {
   
   template<class DEST, class SRC>
   void Scale<DEST, SRC>::operator()() throw() {    
-    unsigned int rows = destination->getDimension().getHeight();
-    unsigned int columns = destination->getDimension().getWidth();
-    unsigned int srcRows = source->getDimension().getHeight();
-    unsigned int srcColumns = source->getDimension().getWidth();
+    unsigned int rows = Transformation<DEST, SRC>::destination->getDimension().getHeight();
+    unsigned int columns = Transformation<DEST, SRC>::destination->getDimension().getWidth();
+    unsigned int srcRows = Transformation<DEST, SRC>::source->getDimension().getHeight();
+    unsigned int srcColumns = Transformation<DEST, SRC>::source->getDimension().getWidth();
     long double rowRatio = static_cast<long double>(srcRows)/rows;
     long double columnRatio = static_cast<long double>(srcColumns)/columns;
     
-    typename DestinationImage::Rows rowsLookup = destination->getRows();
-    typename SourceImage::ReadableRows srcRowsLookup = source->getRows();
+    typename DestinationImage::Rows rowsLookup = Transformation<DEST, SRC>::destination->getRows();
+    typename SourceImage::ReadableRows srcRowsLookup = Transformation<DEST, SRC>::source->getRows();
     
     typename DestinationImage::Rows::RowIterator row = rowsLookup.getFirst();
     for (unsigned int rowIndex = 0; rowIndex < rows; ++rowIndex) {

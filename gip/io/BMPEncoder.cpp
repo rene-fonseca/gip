@@ -26,7 +26,7 @@ namespace gip {
   class FullPalette : public UnaryOperation<uint8, ColorPixel> {
   private:
     
-    ColorPixel* palette;
+    ColorPixel* palette = nullptr;
   public:
     
     inline FullPalette(ColorPixel* _palette) : palette(_palette) {
@@ -128,13 +128,13 @@ namespace gip {
     switch (header.compression) {
     case BMPEncoder::RGB:
       if (
-        (header.planes == 1) && (header.bitsPerPixel == 1) ||
-        (header.planes == 1) && (header.bitsPerPixel == 4) ||
-        (header.planes == 1) && (header.bitsPerPixel == 8) ||
-        (header.planes == 1) && (header.bitsPerPixel == 24) ||
-        (header.planes == 1) && (header.bitsPerPixel == 32) ||
-        (header.planes == 3) && (header.bitsPerPixel == 24) ||
-        (header.planes == 3) && (header.bitsPerPixel == 32)) {
+        ((header.planes == 1) && (header.bitsPerPixel == 1)) ||
+        ((header.planes == 1) && (header.bitsPerPixel == 4)) ||
+        ((header.planes == 1) && (header.bitsPerPixel == 8)) ||
+        ((header.planes == 1) && (header.bitsPerPixel == 24)) ||
+        ((header.planes == 1) && (header.bitsPerPixel == 32)) ||
+        ((header.planes == 3) && (header.bitsPerPixel == 24)) ||
+        ((header.planes == 3) && (header.bitsPerPixel == 32))) {
         break;
       }
       result = false;
@@ -170,13 +170,13 @@ namespace gip {
       switch (header.compression) {
       case BMPEncoder::RGB:
         if (
-          (header.planes == 1) && (header.bitsPerPixel == 1) ||
-          (header.planes == 1) && (header.bitsPerPixel == 4) ||
-          (header.planes == 1) && (header.bitsPerPixel == 8) ||
-          (header.planes == 1) && (header.bitsPerPixel == 24) ||
-          (header.planes == 1) && (header.bitsPerPixel == 32) ||
-          (header.planes == 3) && (header.bitsPerPixel == 24) ||
-          (header.planes == 3) && (header.bitsPerPixel == 32)) {
+          ((header.planes == 1) && (header.bitsPerPixel == 1)) ||
+          ((header.planes == 1) && (header.bitsPerPixel == 4)) ||
+          ((header.planes == 1) && (header.bitsPerPixel == 8)) ||
+          ((header.planes == 1) && (header.bitsPerPixel == 24)) ||
+          ((header.planes == 1) && (header.bitsPerPixel == 32)) ||
+          ((header.planes == 3) && (header.bitsPerPixel == 24)) ||
+          ((header.planes == 3) && (header.bitsPerPixel == 32))) {
           break;
         }
         return 0;

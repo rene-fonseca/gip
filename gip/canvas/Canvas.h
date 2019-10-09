@@ -41,7 +41,7 @@ namespace gip {
     typedef ColorImage::Pixel Pixel;
 
     /** The image to draw onto. */
-    ColorImage* canvas;
+    ColorImage* canvas = nullptr;
     /** The dimension of the canvas. */
     Dimension dimension;
     /** The rows . */
@@ -68,6 +68,7 @@ namespace gip {
           (point.getY() < dimension.getHeight())) {
         return rows[point.getY()][point.getX()];
       }
+      return Pixel();
     }
   public:
 

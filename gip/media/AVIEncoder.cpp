@@ -79,7 +79,7 @@ int getStreamId(const ChunkId& value) throw() {
 }
 
 unsigned int getStreamType(const ChunkId& value) throw() {
-  return static_cast<unsigned int>((value.id >> 16) & 0xff) << 8 + static_cast<unsigned int>((value.id >> 24) & 0xff);
+  return static_cast<unsigned int>(((value.id >> 16) & 0xff) << 8) + (static_cast<unsigned int>((value.id >> 24) & 0xff));
 //  return static_cast<unsigned int>(value.chars[2]) << 8 + static_cast<unsigned int>(value.chars[3]);
 }
 
@@ -586,10 +586,10 @@ void AVIReader::analyse() throw(IOException) {
       case AVIEncoder::Compression::RGB:
         videoStreamDescriptor.compression = RGB;
         bassert(
-          (videoStreamDescriptor.planes == 1) && (videoStreamDescriptor.bitsPerPixel == 4) ||
-          (videoStreamDescriptor.planes == 1) && (videoStreamDescriptor.bitsPerPixel == 8) ||
-          (videoStreamDescriptor.planes == 3) && (videoStreamDescriptor.bitsPerPixel == 24) ||
-          (videoStreamDescriptor.planes == 3) && (videoStreamDescriptor.bitsPerPixel == 32),
+          ((videoStreamDescriptor.planes == 1) && (videoStreamDescriptor.bitsPerPixel == 4)) ||
+          ((videoStreamDescriptor.planes == 1) && (videoStreamDescriptor.bitsPerPixel == 8)) ||
+          ((videoStreamDescriptor.planes == 3) && (videoStreamDescriptor.bitsPerPixel == 24)) ||
+          ((videoStreamDescriptor.planes == 3) && (videoStreamDescriptor.bitsPerPixel == 32)),
           Exception("Frame format not supported")
         );
         break;

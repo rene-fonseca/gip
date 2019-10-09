@@ -29,7 +29,7 @@ class ShadowImage : public Image<PIXEL> {
 protected:
 
   /** The image to work on. */
-  Image<PIXEL>* const image;
+  Image<PIXEL>* const image = nullptr;
 public:
 
   /**

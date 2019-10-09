@@ -21,7 +21,7 @@
 #include <base/mathematics/Complex.h>
 
 namespace gip {
-
+  
   /**
     @defgroup pixels Pixels
   */
@@ -103,7 +103,7 @@ namespace gip {
 
   template<>
   inline GrayPixel convertPixel<GrayPixel, ColorPixel>(const ColorPixel& value) throw() {
-    return (GrayPixel){(static_cast<unsigned int>(value.red) + value.green + value.blue + 1)/3}; // looses information
+    return (GrayPixel)((static_cast<unsigned int>(value.red) + value.green + value.blue + 1)/3); // looses information
   }
 
 //   template<>

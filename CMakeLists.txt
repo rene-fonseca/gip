@@ -33,8 +33,20 @@ include_directories ("${PROJECT_SOURCE_DIR}/../base") # TAG: need depend on base
 file(GLOB gip_SRC
   "gip/*.h"
   "gip/*.cpp"
+  "gip/analysis/*.h"
+  "gip/analysis/*.cpp"
   "gip/canvas/*.h"
   "gip/canvas/*.cpp"
+  "gip/io/*.h"
+  "gip/io/*.cpp"
+  "gip/media/*.h"
+  "gip/media/*.cpp"
+  "gip/operation/*.h"
+  "gip/operation/*.cpp"
+  "gip/transformation/*.h"
+  "gip/transformation/*.cpp"
+  "gip/video/*.h"
+  "gip/video/*.cpp"
 )
 # TAG: analysis io media operation transformation video
 
@@ -44,8 +56,13 @@ add_library(gip SHARED ${gip_SRC})
 add_library(gip_STATIC STATIC ${gip_SRC})
 set_target_properties(gip_STATIC PROPERTIES OUTPUT_NAME gip_static)
 
+find_library ( BASE_LIB NAMES base libbase libbase.dylib PATHS base ../base )
+message (${BASE_LIB})
+
+#add_dependencies( gip base )
+target_link_libraries(gip ${BASE_LIB})
+
 if (MSVC)
-target_link_libraries(gip base)
 # target_link_libraries(gip Ws2_32 Netapi32 Winmm)
 endif ()
 

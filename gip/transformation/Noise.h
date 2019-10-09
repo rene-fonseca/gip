@@ -84,8 +84,8 @@ namespace gip {
     */
     void operator()() throw() {
       forEach(
-        destination->getElements(),
-        destination->getDimension().getSize(),
+        UnaryTransformation<DEST>::destination->getElements(),
+        UnaryTransformation<DEST>::destination->getDimension().getSize(),
         NoiseOperation<Pixel>()
       );
     }

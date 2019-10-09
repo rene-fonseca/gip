@@ -52,7 +52,7 @@ public:
   private:
 
     RowIterator first;
-    unsigned int rows;
+    unsigned int rows = 0;
   public:
 
     inline RowsImpl(Pointer value, const Dimension& dimension) throw() :
@@ -153,14 +153,14 @@ public:
   */
   Rows getRows() throw(MemoryException) {
     elements.copyOnWrite();
-    return Rows(elements->getElements(), getDimension());
+    return Rows(elements->getElements(), Image<PIXEL>::getDimension());
   }
 
   /**
     Returns the rows of the image for non-modifying access.
   */
   ReadableRows getRows() const throw() {
-    return ReadableRows(elements->getElements(), getDimension());
+    return ReadableRows(elements->getElements(), Image<PIXEL>::getDimension());
   }
 
   /**
@@ -169,14 +169,14 @@ public:
   */
   Columns getColumns() throw(MemoryException) {
     elements.copyOnWrite();
-    return Columns(elements->getElements(), getDimension());
+    return Columns(elements->getElements(), Image<PIXEL>::getDimension());
   }
 
   /**
     Returns the rows of the image for non-modifying access.
   */
   ReadableColumns getColumns() const throw() {
-    return ReadableColumns(elements->getElements(), getDimension());
+    return ReadableColumns(elements->getElements(), Image<PIXEL>::getDimension());
   }
 
   /**

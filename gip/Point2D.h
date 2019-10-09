@@ -29,15 +29,15 @@ namespace gip {
   private:
 
     /** Specifies the Y coordinate. */
-    unsigned int row;
+    unsigned int row = 0;
     /** Specifies the X coordinate. */
-    unsigned int column;
+    unsigned int column = 0;
   public:
 
     /**
       Initializes point as origin (0, 0).
     */
-    inline Point2D() throw() : row(0), column(0) {
+    inline Point2D() throw() {
     }
 
     /**

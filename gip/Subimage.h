@@ -53,7 +53,7 @@ public:
     Returns the region associated with the image.
   */
   Region getRegion() const throw() {
-    return Region(offset, getDimension());
+    return Region(offset, ShadowImage<PIXEL>::getDimension());
   }
 };
 

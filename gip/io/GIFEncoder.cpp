@@ -262,8 +262,8 @@ namespace gip {
     }
 
     return (header.signature[0] == 'G') && (header.signature[1] == 'I') && (header.signature[2] == 'F') &&
-      ((header.version[0] == '8') && (header.version[1] == '7') && (header.version[2] == 'a') ||
-       (header.version[0] == '8') && (header.version[1] == '9') && (header.version[2] == 'a'));
+      (((header.version[0] == '8') && (header.version[1] == '7') && (header.version[2] == 'a')) ||
+       ((header.version[0] == '8') && (header.version[1] == '9') && (header.version[2] == 'a')));
   }
 
   ColorImage* GIFEncoder::read(const String& filename) throw(InvalidFormat, IOException) {
@@ -274,8 +274,8 @@ namespace gip {
     file.read(Cast::getAddress(header), sizeof(header));
 
     bool value = (header.signature[0] == 'G') && (header.signature[1] == 'I') && (header.signature[2] == 'F') &&
-      ((header.version[0] == '8') && (header.version[1] == '7') && (header.version[2] == 'a') ||
-       (header.version[0] == '8') && (header.version[1] == '9') && (header.version[2] == 'a'));
+      (((header.version[0] == '8') && (header.version[1] == '7') && (header.version[2] == 'a')) ||
+       ((header.version[0] == '8') && (header.version[1] == '9') && (header.version[2] == 'a')));
     bassert(value, InvalidFormat("Invalid GIF format", this));
 
     GIFImpl::LogicalScreenDescriptor globalDescriptor;

@@ -48,8 +48,8 @@ namespace gip {
 
   template<class DEST>
   void Mirror<DEST>::operator()() throw() {
-    unsigned int elementsPerRowToSwap = destination->getWidth()/2;
-    typename DestinationImage::Rows rowLookup = destination->getRows();
+    unsigned int elementsPerRowToSwap = UnaryTransformation<DestinationImage>::destination->getWidth()/2;
+    typename DestinationImage::Rows rowLookup = UnaryTransformation<DestinationImage>::destination->getRows();
     typename DestinationImage::Rows::RowIterator row = rowLookup.getFirst();
     for ( ; row != rowLookup.getEnd(); ++row) {
       typename DestinationImage::Rows::RowIterator::ElementIterator leftColumn = row.getFirst();

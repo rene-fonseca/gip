@@ -15,6 +15,7 @@
 #include <base/io/File.h>
 #include <base/NotImplemented.h>
 
+#if 0
 #include <png.h>
 
 namespace gip {
@@ -307,3 +308,4 @@ namespace gip {
   }
 
 }; // end of gip namespace
+#endif
