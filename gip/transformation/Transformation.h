@@ -38,9 +38,9 @@ namespace gip {
   protected:
 
     /** The destination image of the transformation. */
-    DestinationImage* const destination;
+    DestinationImage* const destination = nullptr;
     /** The source image of the transformation. */
-    const SourceImage* const source;
+    const SourceImage* const source = nullptr;
   public:
     
     /**

@@ -242,14 +242,14 @@ namespace gip {
     /** The AVI file. */
     File file;
     /** Valid. */
-    bool valid;
-    unsigned int frameIndex;
+    bool valid = false;
+    unsigned int frameIndex = 0;
     GlobalDescriptor globalDescriptor;
     VideoStreamDescriptor videoStreamDescriptor;
     /** Contains data used by the decoder. */
     Allocator<byte> streamData;
     /** Identifies the video stream within the AVI file. */
-    int videoStreamIndex;
+    int videoStreamIndex = 0;
     /** Read buffer. */
     Allocator<byte> buffer;
     /** Palette (not). */

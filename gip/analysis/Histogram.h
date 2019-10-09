@@ -29,7 +29,7 @@ namespace gip {
     /** The gray histogram. */
     Array<unsigned int> histogram;
     /** The histogram elements. */
-    unsigned int* elements;
+    unsigned int* elements = nullptr;
   public:
 
     Histogram() throw(MemoryException)
@@ -45,7 +45,7 @@ namespace gip {
       fill<unsigned int>(histogram.getElements(), histogram.getSize(), 0);
     }
 
-    Array<unsigned int> getHistogram() const throw() {
+    const Array<unsigned int>& getHistogram() const throw() {
       return histogram;
     }
   };
@@ -67,7 +67,7 @@ namespace gip {
     /** The gray histogram. */
     Histogram gray;
     /** The histogram elements. */
-    unsigned int* elements;
+    unsigned int* elements = nullptr;
   public:
 
     GrayHistogram() throw(MemoryException)
@@ -83,7 +83,7 @@ namespace gip {
       fill<unsigned int>(gray.getElements(), gray.getSize(), 0);
     }
     
-    Histogram getHistogram() const throw() {
+    const Histogram& getHistogram() const throw() {
       return gray;
     }
   };
@@ -110,11 +110,11 @@ namespace gip {
     /** The blue histogram. */
     Histogram blue;
     /** The red histogram elements. */
-    unsigned int* redElements;
+    unsigned int* redElements = nullptr;
     /** The green histogram elements. */
-    unsigned int* greenElements;
+    unsigned int* greenElements = nullptr;
     /** The blue histogram elements. */
-    unsigned int* blueElements;
+    unsigned int* blueElements = nullptr;
   public:
 
     ColorHistogram() throw(MemoryException)

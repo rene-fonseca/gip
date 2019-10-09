@@ -43,7 +43,7 @@ namespace gip {
 
       typedef PixelTraits<SourceImage::Pixel>::Arithmetic Arithmetic;
       Allocator<Pixel> allocatorLookup;
-      Pixel* lookup;
+      Pixel* lookup = nullptr;
     public:
 
       inline MapPixel(const Pixel& minimum, const Pixel& maximum) throw()
@@ -97,9 +97,9 @@ namespace gip {
       Allocator<Component> redAllocatorLookup;
       Allocator<Component> greenAllocatorLookup;
       Allocator<Component> blueAllocatorLookup;
-      Component* redLookup;
-      Component* greenLookup;
-      Component* blueLookup;
+      Component* redLookup = nullptr;
+      Component* greenLookup = nullptr;
+      Component* blueLookup = nullptr;
     public:
 
       inline MapPixel(const Pixel& minimum, const Pixel& maximum) throw()

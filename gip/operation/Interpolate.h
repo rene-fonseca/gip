@@ -31,7 +31,7 @@ namespace gip {
   private:
     
     typedef PIXEL Pixel;
-    const Pixel* elements;
+    const Pixel* elements = nullptr;
     Dimension dimension;
   public:
     

@@ -40,7 +40,7 @@ namespace gip {
     class MapPixel : public UnaryOperation<Pixel, Pixel> {
     private:
       
-      const Pixel* lookup;
+      const Pixel* lookup = nullptr;
     public:
       
       inline MapPixel(const Allocator<Pixel>& _lookup) throw()

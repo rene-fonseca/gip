@@ -33,7 +33,7 @@ namespace gip {
   protected:
 
     /** The destination image of the transformation. */
-    DestinationImage* destination;
+    DestinationImage* destination = nullptr;
   public:
 
     UnaryTransformation(DestinationImage* destination) throw();

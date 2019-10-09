@@ -29,15 +29,15 @@ namespace gip {
   private:
 
     /** Specifies the Y coordinate. */
-    int x;
+    int x = 0;
     /** Specifies the X coordinate. */
-    int y;
+    int y = 0;
   public:
 
     /**
       Initializes point as origin (0, 0).
     */
-    inline Point() throw() : x(0), y(0) {
+    inline Point() throw() {
     }
 
     /**

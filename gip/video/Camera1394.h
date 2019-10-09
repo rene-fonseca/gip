@@ -1016,15 +1016,15 @@ namespace gip {
     private:
       
       /** The frame buffer. */
-      uint8* buffer;
+      uint8* buffer = nullptr;
       /** The size of the frame buffer. */
-      unsigned int size;
+      unsigned int size = 0;
     public:
 
       /**
         Initializes frame buffer as invalid.
       */
-      inline FrameBuffer() throw() : buffer(0), size(0) {
+      inline FrameBuffer() throw() {
       }
       
       /**
