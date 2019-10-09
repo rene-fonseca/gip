@@ -59,16 +59,16 @@ namespace gip {
   template<class DEST>
   void FourierExchange<DEST>::operator()() throw() {
 
-    unsigned int halfWidth = destination->getDimension().getWidth()/2;
-    unsigned int halfHeight = destination->getDimension().getHeight()/2;
+    unsigned int halfWidth = UnaryTransformation<DEST>::destination->getDimension().getWidth()/2;
+    unsigned int halfHeight = UnaryTransformation<DEST>::destination->getDimension().getHeight()/2;
     if ((halfWidth == 0) || (halfHeight == 0)) {
       return; // nothing to do
     }
 
-    unsigned int rightOffset = (destination->getDimension().getWidth()+1)/2; // round up
-    unsigned int bottomOffset = (destination->getDimension().getHeight()+1)/2; // round up
+    unsigned int rightOffset = (UnaryTransformation<DEST>::destination->getDimension().getWidth()+1)/2; // round up
+    unsigned int bottomOffset = (UnaryTransformation<DEST>::destination->getDimension().getHeight()+1)/2; // round up
 
-    typename DestinationImage::Rows rows = destination->getRows();
+    typename DestinationImage::Rows rows = UnaryTransformation<DEST>::destination->getRows();
     typename DestinationImage::Rows::RowIterator end = rows.getEnd();
 
     // exchange region I and III

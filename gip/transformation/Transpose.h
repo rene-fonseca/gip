@@ -56,13 +56,13 @@ namespace gip {
 
   template<class DEST, class SRC>
   void Transpose<DEST, SRC>::operator()() throw() {
-    if (!destination->getDimension().isProper()) {
+    if (!Transformation<DEST, SRC>::destination->getDimension().isProper()) {
       return; // nothing to do
     }
 
-    typename DestinationImage::Rows::RowIterator destRow = destination->getRows().getFirst();
-    typename DestinationImage::Rows::RowIterator destEnd = destination->getRows().getEnd();
-    typename SourceImage::ReadableColumns::ColumnIterator srcColumn = source->getColumns().getFirst();
+    typename DestinationImage::Rows::RowIterator destRow = Transformation<DEST, SRC>::destination->getRows().getFirst();
+    typename DestinationImage::Rows::RowIterator destEnd = Transformation<DEST, SRC>::destination->getRows().getEnd();
+    typename SourceImage::ReadableColumns::ColumnIterator srcColumn = Transformation<DEST, SRC>::source->getColumns().getFirst();
 
     while (destRow < destEnd) {
       copy(destRow.getFirst(), destRow.getEnd(), srcColumn.getFirst());

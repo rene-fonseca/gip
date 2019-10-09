@@ -17,9 +17,11 @@
 
 #if 0
 #include <png.h>
+#endif
 
 namespace gip {
 
+#if 0
   class PNGEncoderImpl {
   public:
 
@@ -46,10 +48,10 @@ namespace gip {
     static void errorHandler(
       png_structp context, png_const_charp message) throw(InvalidFormat) {
       throw InvalidFormat();
-    }
-    
+    }    
   };
-  
+#endif
+
   PNGEncoder::PNGEncoder() throw() {
   }
   
@@ -62,14 +64,19 @@ namespace gip {
   }
 
   bool PNGEncoder::isValid(const String& filename) throw(IOException) {
+#if 0
     uint8 signature[8]; // size of signature is 8
     File file(filename, File::READ, 0);
     unsigned int result = file.read(signature, sizeof(signature));
     return (result == 8) && !::png_sig_cmp((png_byte*)signature, 0, result);
+#else
+    return false;
+#endif
   }
 
   ColorImage* PNGEncoder::read(
     const String& filename) throw(InvalidFormat, IOException) {
+#if 0
     File file(filename, File::READ, 0);
 
     png_structp context = ::png_create_read_struct(
@@ -158,11 +165,15 @@ namespace gip {
       ::png_destroy_read_struct(&context, &information, &endInformation);
       return 0;
     }
+#else
+    return nullptr;
+#endif
   }
 
   void PNGEncoder::write(
     const String& filename,
     const ColorImage* image) throw(ImageException, IOException) {
+#if 0
     unsigned int width = image->getDimension().getWidth();
     unsigned int height = image->getDimension().getHeight();
     bassert(
@@ -231,6 +242,8 @@ namespace gip {
       ::png_destroy_write_struct(&context, &information);
       throw;
     }
+#else
+#endif
   }
   
   /*
@@ -251,6 +264,7 @@ namespace gip {
   HashTable<String, AnyValue> PNGEncoder::getInformation(
     const String& filename) throw(IOException) {
     HashTable<String, AnyValue> result;
+#if 0
     File file(filename, File::READ, 0);
     
     png_structp context = ::png_create_read_struct(
@@ -304,8 +318,8 @@ namespace gip {
     } catch(IOException&) {
       ::png_destroy_read_struct(&context, &information, 0);
     }
+#endif
     return result;
   }
 
 }; // end of gip namespace
-#endif

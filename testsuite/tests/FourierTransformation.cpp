@@ -105,7 +105,7 @@ public:
   }
 
   unsigned int getPowerOf2(unsigned int value) throw(OutOfDomain) {
-    assert(value <= (1 << 31), OutOfDomain(this));
+    bassert(value <= (1 << 31), OutOfDomain(this));
     unsigned int powerOf2 = 1 << 31;
     while (powerOf2 > value) {
       powerOf2 >>= 1;
