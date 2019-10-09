@@ -68,7 +68,7 @@ namespace gip {
   public:
     
     typedef typename UnaryTransformation<DEST>::DestinationImage DestinationImage;
-    typedef typename DestinationImage::Pixel Pixel;    
+    typedef typename DestinationImage::Pixel Pixel;
     
     /**
       Initializes noise object.

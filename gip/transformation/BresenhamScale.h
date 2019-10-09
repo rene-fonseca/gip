@@ -42,7 +42,7 @@ namespace gip {
     */
     BresenhamScale(DestinationImage* destination, const SourceImage* source) throw(ImageException)
       : Transformation<DEST, SRC>(destination, source) {
-      bassert(source->getDimension().isProper(), ImageException("Unable to scale image", this));  
+      bassert(source->getDimension().isProper(), ImageException("Unable to scale image", this));
       bassert(
         (destination->getWidth() <= source->getWidth()) && (destination->getHeight() <= source->getHeight()),
         ImageException("Unable to scale image", this)

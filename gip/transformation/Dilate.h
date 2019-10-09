@@ -33,7 +33,7 @@ namespace gip {
   class Dilate : public Transformation<GrayImage, GrayImage> {
   public:
 
-    typedef GrayImage::Pixel Pixel;    
+    typedef GrayImage::Pixel Pixel;
 
     template<class PIXEL>
     class ApplyKernel {

@@ -141,7 +141,7 @@ namespace gip {
         }
         
         // handle right corner
-        *dest++ = getMedian4(currentRowColumn[-1], currentRowColumn[0], nextRowColumn[-1], nextRowColumn[0]);        
+        *dest++ = getMedian4(currentRowColumn[-1], currentRowColumn[0], nextRowColumn[-1], nextRowColumn[0]);
       }
       
       /*typename*/ SourceImage::ReadableRows::RowIterator previousRow = currentRow;

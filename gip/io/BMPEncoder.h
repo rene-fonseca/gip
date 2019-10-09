@@ -79,7 +79,7 @@ namespace gip {
       @param stream The stream to write the information to.
       @param filename The path of the file.
     */
-    void writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException);    
+    void writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException);
     
     /**
       Returns information about the specified image.

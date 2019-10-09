@@ -52,7 +52,7 @@ namespace gip {
         *--odd = o - e; // predict
         *--even = (e + o)/2; // update
       }
-      return odd;      
+      return odd;
     }
     
     static inline ColumnElementIterator partialColumnTransform(ColumnElementIterator even, ColumnElementIterator odd, ColumnElementIterator src, unsigned int size) throw() {
