@@ -1739,10 +1739,10 @@ namespace gip {
     
     bassert(
       available &&
-      ((operatingMode != Camera1394::DISABLED) || switchable && (operatingMode == Camera1394::DISABLED)) &&
-      ((operatingMode != Camera1394::AUTOMATIC) || switchable && (operatingMode == Camera1394::AUTOMATIC)) &&
-      ((operatingMode != Camera1394::AUTO_ADJUST) || switchable && (operatingMode == Camera1394::AUTO_ADJUST)) &&
-      ((operatingMode != Camera1394::MANUAL) || manualMode && (operatingMode == Camera1394::MANUAL)),
+      ((operatingMode != Camera1394::DISABLED) || (switchable && (operatingMode == Camera1394::DISABLED))) &&
+      ((operatingMode != Camera1394::AUTOMATIC) || (switchable && (operatingMode == Camera1394::AUTOMATIC))) &&
+      ((operatingMode != Camera1394::AUTO_ADJUST) || (switchable && (operatingMode == Camera1394::AUTO_ADJUST))) &&
+      ((operatingMode != Camera1394::MANUAL) || (manualMode && (operatingMode == Camera1394::MANUAL))),
       bindCause(NotSupported(this), Camera1394::FEATURE_OPERATING_MODE_NOT_SUPPORTED)
     );
     
@@ -1767,6 +1767,10 @@ namespace gip {
           break;
         case Camera1394::MANUAL:
           control.enabled = true;
+          break;
+        case Camera1394::AUTOMATIC:
+          break;
+        case Camera1394::AUTO_ADJUST:
           break;
         }
         control.absoluteControl = false;
@@ -2521,7 +2525,7 @@ namespace gip {
       }
     } else if (capabilities & MULTI_ACQUISITION) {
       if (!success) { // only required on failure
-        quadlet = 0 << 30 + 0; // multi shot
+        quadlet = (0 << 30) + 0; // multi shot
         adapter.write(
           camera,
           commandRegisters + Camera1394Impl::FINITE_SHOTS,
@@ -2664,7 +2668,7 @@ namespace gip {
       }
     } else if (capabilities & MULTI_ACQUISITION) {
       if (!success) { // only required on failure
-        quadlet = 0 << 30 + 0; // multi shot
+        quadlet = (0 << 30) + 0; // multi shot
         adapter.write(
           camera,
           commandRegisters + Camera1394Impl::FINITE_SHOTS,
@@ -2782,7 +2786,7 @@ namespace gip {
       }
     } else if (capabilities & MULTI_ACQUISITION) {
       if (!success) { // only required on failure
-        quadlet = 0 << 30 + 0; // multi shot
+        quadlet = (0 << 30) + 0; // multi shot
         adapter.write(
           camera,
           commandRegisters + Camera1394Impl::FINITE_SHOTS,
@@ -2908,7 +2912,7 @@ namespace gip {
       }
     } else if (capabilities & MULTI_ACQUISITION) {
       if (!success) { // only required on failure
-        quadlet = 0 << 30 + 0; // multi shot
+        quadlet = (0 << 30) + 0; // multi shot
         adapter.write(
           camera,
           commandRegisters + Camera1394Impl::FINITE_SHOTS,
