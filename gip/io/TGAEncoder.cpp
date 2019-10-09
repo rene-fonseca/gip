@@ -37,6 +37,7 @@ namespace gip {
       TYPE_RUN_LENGTH_BLACK_WHITE = 11
     };
     
+_DK_SDU_MIP__BASE__PACKED__BEGIN
     struct Header {
       unsigned char sizeOfIdentification;
       unsigned char colorMapType; // 0 ~ no color map - 1 ~ color map present
@@ -57,7 +58,9 @@ namespace gip {
         uint8 reserved : 2; // must be 0
       } _DK_SDU_MIP__BASE__PACKED image;
     } _DK_SDU_MIP__BASE__PACKED;
-    
+_DK_SDU_MIP__BASE__PACKED__END
+
+_DK_SDU_MIP__BASE__PACKED__BEGIN
     struct Footer {
       LittleEndian<uint32> extensionOffset;
       LittleEndian<uint32> directoryOffset;
@@ -65,6 +68,7 @@ namespace gip {
       char dot; // '.'
       char zero; // '\0'
     } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
   };
   
   TGAEncoder::TGAEncoder() throw() {

@@ -74,6 +74,7 @@ namespace gip {
 
   enum {BMP_RGB = 0, BMP_RLE8 = 1, BMP_RLE4 = 2, BMP_BITFIELDS = 3};
 
+_DK_SDU_MIP__BASE__PACKED__BEGIN
   struct BMPHeader {
     char identifier[2]; // the characters identifying the bitmap
     LittleEndian<uint32> fileSize; // complete file size in bytes
@@ -91,13 +92,16 @@ namespace gip {
     LittleEndian<uint32> colorsUsed; // number of colors used by this bitmap
     LittleEndian<uint32> importantColors; // number of important colors
   } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
+_DK_SDU_MIP__BASE__PACKED__BEGIN
   struct BMPPaletteEntry {
     uint8 blue;
     uint8 green;
     uint8 red;
     uint8 reserved; // must be zero
   } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
   BMPEncoder::BMPEncoder() throw() {
   }

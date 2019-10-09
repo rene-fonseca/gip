@@ -21,22 +21,28 @@ namespace gip {
 /**
   Character code identifying a chunk of data with an Audio/Video Interleaved (AVI) file.
 */
+_DK_SDU_MIP__BASE__PACKED__BEGIN
 struct ChunkId { // TAG: fixme
   LittleEndian<uint32> id;
 } _DK_SDU_MIP__BASE__PACKED;
-  
+_DK_SDU_MIP__BASE__PACKED__END
+
+_DK_SDU_MIP__BASE__PACKED__BEGIN
 // union ChunkId {
 //   LittleEndian<uint32> id;
 //   char chars[4];
 // } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
 /**
   Chunk of data (ie. ChunkId and size).
 */
+_DK_SDU_MIP__BASE__PACKED__BEGIN
 struct Chunk {
   ChunkId id;
   LittleEndian<uint32> size;
 } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
 inline ChunkId makeChunkId(char a, char b, char c, char d) throw() {
   ChunkId result;
@@ -83,6 +89,7 @@ unsigned int getStreamType(const ChunkId& value) throw() {
 //  return static_cast<unsigned int>(value.chars[2]) << 8 + static_cast<unsigned int>(value.chars[3]);
 }
 
+_DK_SDU_MIP__BASE__PACKED__BEGIN
 struct AVIHeader {
   LittleEndian<uint32> microSecPerFrame; // period between frames
   LittleEndian<uint32> maxBytesPerSec; // approx. maximum data rate
@@ -111,14 +118,18 @@ struct AVIHeader {
   LittleEndian<uint32> start; // the starting time of the AVI file
   LittleEndian<uint32> length; // the length of the AVI file
 } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
+_DK_SDU_MIP__BASE__PACKED__BEGIN
 struct AVIIndexEntry {
   LittleEndian<uint32> ckid;
   LittleEndian<uint32> flags;
   LittleEndian<uint32> chunkOffset;
   LittleEndian<uint32> chunkLength;
 } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
+_DK_SDU_MIP__BASE__PACKED__BEGIN
 struct AVIStreamHeader {
   ChunkId type;
   ChunkId handler;
@@ -137,7 +148,9 @@ struct AVIStreamHeader {
   LittleEndian<uint32> right;
   LittleEndian<uint32> bottom;
 } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
+_DK_SDU_MIP__BASE__PACKED__BEGIN
 struct BitmapInfoHeader {
   LittleEndian<uint32> size;
   LittleEndian<int32> width;
@@ -151,7 +164,9 @@ struct BitmapInfoHeader {
   LittleEndian<uint32> colorUsed;
   LittleEndian<uint32> colorImportant;
 } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
+_DK_SDU_MIP__BASE__PACKED__BEGIN
 struct WaveFormatExtended {
   LittleEndian<uint16> formatTag;
   LittleEndian<uint16> channels;
@@ -161,20 +176,25 @@ struct WaveFormatExtended {
   LittleEndian<uint16> bitsPerSample;
   LittleEndian<uint16> size;
 } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
+_DK_SDU_MIP__BASE__PACKED__BEGIN
 struct AVIPaletteEntry {
   byte blue;
   byte green;
   byte red;
   byte reserved;
 } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
+_DK_SDU_MIP__BASE__PACKED__BEGIN
 struct AVIPaletteChange {
   byte firstEntry;
   byte numberOfEntries;
   LittleEndian<uint16> flags;
   AVIPaletteEntry entry[0];
 } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
 enum {BMP_RGB = 0, BMP_RLE8 = 1, BMP_RLE4 = 2, BMP_BITFIELDS = 3};
 

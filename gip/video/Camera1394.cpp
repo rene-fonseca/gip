@@ -211,6 +211,7 @@ namespace gip {
       VALUE_SETTING = 0x07c // 1.30 specification or later
     };
     
+_DK_SDU_MIP__BASE__PACKED__BEGIN
     struct BusInfo {
       BigEndian<uint32> name; // "1394"
       BigEndian<uint32> flags;
@@ -328,6 +329,7 @@ namespace gip {
       bool absoluteControl : 1;
       bool presence : 1;
     } _DK_SDU_MIP__BASE__PACKED;
+_DK_SDU_MIP__BASE__PACKED__END
 
     static const uint32 FEATURE_CONTROL_REGISTER[] = {
       FEATURE_BRIGHTNESS,
