@@ -302,22 +302,22 @@ namespace gip {
     /** The identifier of the camera. */
     EUI64 guid;
     /** The node id of the camera. */
-    unsigned short camera;
+    unsigned short camera = 0;
     /** The specification implemented by the camera. */
-    uint32 specification;
+    uint32 specification = 0;
 
     /** The name of the vendor. */
     String vendorName;
     /** The model of the camera. */
     String modelName;
     /** The base address of the command registers. */
-    uint64 commandRegisters;
+    uint64 commandRegisters = 0;
     /** Specifies the supported formats. */
-    unsigned int formats;
+    unsigned int formats = 0;
     /** Capabilities. */
-    unsigned int capabilities;
+    unsigned int capabilities = 0;
     /** Offset to advanced feature registers. */
-    uint64 advancedFeatureAddress;
+    uint64 advancedFeatureAddress = 0;
     /** Specifies the available modes. */
     bool supportedModes[NUMBER_OF_MODES];
     /** The supported frame rates for each mode. */
@@ -328,7 +328,7 @@ namespace gip {
     /** Mode descriptions. */
     ModeDescriptor partialImageMode[8];
     /** Specifies the available features for the current mode. */
-    unsigned int features;
+    unsigned int features = 0;
     
     struct {
       GenericFeatureDescriptor brightness;
