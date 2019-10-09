@@ -59,7 +59,7 @@ namespace gip {
   class FloatToGrayWithScale : public UnaryOperation<float, GrayPixel> {
   private:
 
-    long double scale;
+    long double scale = 0;
   public:
 
     inline FloatToGrayWithScale(long double _scale) throw() : scale(_scale) {
@@ -91,7 +91,7 @@ namespace gip {
   class RGBToComplex : public UnaryOperation<ColorPixel, Complex> {
   private:
 
-    long double scale;
+    long double scale = 0;
   public:
 
     inline RGBToComplex(long double _scale) throw() : scale(_scale) {
@@ -106,7 +106,7 @@ namespace gip {
   class ComplexToRGB : public UnaryOperation<Complex, ColorPixel> {
   private:
 
-    const long double scale;
+    const long double scale = 0;
   public:
 
     inline ComplexToRGB(long double _scale) throw() : scale(_scale) {
@@ -128,7 +128,7 @@ namespace gip {
   class ComplexToRGBImaginary : public UnaryOperation<Complex, ColorPixel> {
   private:
 
-    long double scale;
+    long double scale = 0;
   public:
 
     inline ComplexToRGBImaginary(long double _scale) throw() : scale(_scale) {
@@ -150,7 +150,7 @@ namespace gip {
   class ComplexToRGBSqrModulus : public UnaryOperation<Complex, ColorPixel> {
   private:
 
-    long double scale;
+    long double scale = 0;
   public:
 
     inline ComplexToRGBSqrModulus(long double _scale) throw() : scale(_scale) {
@@ -172,7 +172,7 @@ namespace gip {
   class ComplexToRGBModulus : public UnaryOperation<Complex, ColorPixel> {
   private:
 
-    long double scale;
+    long double scale = 0;
   public:
 
     inline ComplexToRGBModulus(long double _scale) throw() : scale(_scale) {
@@ -194,7 +194,7 @@ namespace gip {
   class ComplexToRGBLogModulus : public UnaryOperation<Complex, ColorPixel> {
   private:
 
-    long double scale;
+    long double scale = 0;
   public:
 
     inline ComplexToRGBLogModulus(double _scale) throw() : scale(_scale) {

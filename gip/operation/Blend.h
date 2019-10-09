@@ -36,8 +36,8 @@ namespace gip {
   class Blend<float> : public BinaryOperation<float, float, float> {
   private:
     
-    const long double opacity;
-    const long double transparency;
+    const long double opacity = 0;
+    const long double transparency = 0;
   public:
     
     inline Blend(const long double _opacity, const long double _opaque) throw()
@@ -54,8 +54,8 @@ namespace gip {
   class Blend<double> : public BinaryOperation<double, double, double> {
   private:
     
-    const long double opacity;
-    const long double transparency;
+    const long double opacity = 0;
+    const long double transparency = 0;
   public:
     
     inline Blend(const long double _opacity, const long double _opaque) throw()
@@ -72,8 +72,8 @@ namespace gip {
   class Blend<long double> : public BinaryOperation<long double, long double, long double> {
   private:
 
-    const long double opacity;
-    const long double transparency;
+    const long double opacity = 0;
+    const long double transparency = 0;
   public:
 
     inline Blend(const long double _opacity, const long double _opaque) throw()
@@ -92,9 +92,9 @@ namespace gip {
 
     typedef RGBPixel<COMPONENT> Pixel;
     typedef typename PixelTraits<Pixel>::Arithmetic Arithmetic;
-    const Arithmetic opacity;
-    const Arithmetic transparency;
-    const Arithmetic opaque;
+    const Arithmetic opacity = 0;
+    const Arithmetic transparency = 0;
+    const Arithmetic opaque = 0;
   public:
     
     inline Blend(const Arithmetic _opacity, const Arithmetic _opaque) throw()
@@ -120,10 +120,10 @@ namespace gip {
   private:
 
     typedef typename PixelTraits<ColorPixel>::Arithmetic Arithmetic;
-    const Arithmetic opacity;
-    const Arithmetic transparency;
-    const Arithmetic opaque;
-    const Arithmetic doubleOpaque;
+    const Arithmetic opacity = 0;
+    const Arithmetic transparency = 0;
+    const Arithmetic opaque = 0;
+    const Arithmetic doubleOpaque = 0;
   public:
     
     inline Blend(const Arithmetic _opacity, const Arithmetic _opaque) throw()

@@ -40,29 +40,29 @@ namespace gip {
     static const unsigned int NUMBER_OF_SYMBOLS = PixelTraits<Pixel>::MAXIMUM + 1;
     
     /** The number of samples. */
-    unsigned int numberOfSamples;
+    unsigned int numberOfSamples = 0;
     /** The pixel value frequencies. */
     unsigned int frequency[NUMBER_OF_SYMBOLS];
     /** The minimum frequency. */
-    unsigned int minimumFrequency;
+    unsigned int minimumFrequency = 0;
     /** The maximum frequency. */
-    unsigned int maximumFrequency;
+    unsigned int maximumFrequency = 0;
     /** The minimum pixel value. */
     Pixel minimum;
     /** The maximum pixel value. */
     Pixel maximum;
     /** The number of used pixel values. */
-    unsigned int used;
+    unsigned int used = 0;
     /** The mean value of the pixels. */
-    long double mean;
+    long double mean = 0;
     /** The median. */
-    unsigned int median;
+    unsigned int median = 0;
     /** The mode. */
-    unsigned int mode;
+    unsigned int mode = 0;
     /** The variance of the pixels. */
-    long double variance;
+    long double variance = 0;
     /** The entropy of the pixels. */
-    long double entropy;
+    long double entropy = 0;
   public:
     
     /**
