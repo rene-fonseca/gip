@@ -2,7 +2,7 @@ dnl ***************************************************************************
 dnl    Generic Image Processing (GIP) Framework (Test Suite)
 dnl    A framework for developing image processing applications
 dnl
-dnl    Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>
+dnl    See COPYRIGHT.txt for details.
 dnl
 dnl    This framework is distributed in the hope that it will be useful,
 dnl    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,7 +18,7 @@ AC_CONFIG_SRCDIR(testsuite)
 AC_CONFIG_AUX_DIR(..)
 
 AC_PREREQ(2.52)
-AC_COPYRIGHT([Copyright (C) 2001-2002 by Rene Moeller Fonseca <fonseca@mip.sdu.dk>])
+AC_COPYRIGHT([Copyright (C) 2001-2002 by Rene Moeller Fonseca])
 AC_REVISION($Revision$)
 
 AC_CANONICAL_SYSTEM()
