@@ -48,12 +48,12 @@
 namespace gip {
   
   // this framework depends on the base framework
-  using namespace dk::sdu::mip::base;
+  using namespace com::azure::dev::base;
 };
 
-namespace dk {
-  namespace sdu {
-    namespace mip {
+namespace com {
+  namespace azure {
+    namespace dev {
       namespace gip {
         using namespace ::gip;
       };
