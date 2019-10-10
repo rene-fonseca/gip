@@ -586,7 +586,7 @@ _DK_SDU_MIP__BASE__PACKED__END
             cameras.append(EUI64(config.busInfo.guid));
           }
         }
-      } catch (IOException& e) {
+      } catch (IOException&) {
         // continue with next node
       }
     }
@@ -699,7 +699,7 @@ _DK_SDU_MIP__BASE__PACKED__END
     unsigned int vendorLeafSize = quadlet >> 16;
     ASSERT(vendorLeafSize >= 2);
     if (vendorLeafSize > 2) {
-      char leaf[vendorLeafSize * sizeof(IEEE1394::Quadlet)];
+      PrimitiveArray<char> leaf(vendorLeafSize * sizeof(IEEE1394::Quadlet));
       adapter.read(
         node,
         IEEE1394::CSR_BASE_ADDRESS + vendorNameOffset + sizeof(IEEE1394::Quadlet),
@@ -723,7 +723,7 @@ _DK_SDU_MIP__BASE__PACKED__END
     unsigned int modelLeafSize = quadlet >> 16;
     ASSERT(modelLeafSize >= 2);
     if (modelLeafSize > 2) {
-      char leaf[modelLeafSize * sizeof(IEEE1394::Quadlet)];
+      PrimitiveArray<char> leaf(modelLeafSize * sizeof(IEEE1394::Quadlet));
       adapter.read(
         node,
         IEEE1394::CSR_BASE_ADDRESS + modelNameOffset + sizeof(IEEE1394::Quadlet),
@@ -925,7 +925,7 @@ _DK_SDU_MIP__BASE__PACKED__END
         Camera1394::PARTIAL_IMAGE_MODE_0
       };
 
-      static const int NUMBER_OF_MODES[] = {
+      static const unsigned int NUMBER_OF_MODES[] = {
         Camera1394::Y_640X480_16BIT - Camera1394::YUV_444_160X120_24BIT + 1,
         Camera1394::Y_1024X768_16BIT - Camera1394::YUV_422_800X600_16BIT + 1,
         Camera1394::Y_1600X1200_16BIT - Camera1394::YUV_422_1280X960_16BIT + 1,
@@ -1833,7 +1833,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_SUPPORTED)
     );
     bassert(
-      (value >= descriptor.minimum) && (value <= descriptor.maximum),
+      (value >= static_cast<int>(descriptor.minimum)) && (value <= static_cast<int>(descriptor.maximum)),
       OutOfDomain(this)
     );
     // TAG: mode must be manual
@@ -1961,10 +1961,10 @@ _DK_SDU_MIP__BASE__PACKED__END
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_SUPPORTED)
     );
     bassert(
-      (blueRatio >= featureDescriptors.whiteBalance.minimum) &&
-      (blueRatio <= featureDescriptors.whiteBalance.maximum) &&
-      (redRatio >= featureDescriptors.whiteBalance.minimum) &&
-      (redRatio <= featureDescriptors.whiteBalance.maximum),
+      (blueRatio >= static_cast<int>(featureDescriptors.whiteBalance.minimum)) &&
+      (blueRatio <= static_cast<int>(featureDescriptors.whiteBalance.maximum)) &&
+      (redRatio >= static_cast<int>(featureDescriptors.whiteBalance.minimum)) &&
+      (redRatio <= static_cast<int>(featureDescriptors.whiteBalance.maximum)),
       OutOfDomain(this)
     );
     uint64 featureRegister = commandRegisters + Camera1394Impl::FEATURE_WHITE_BALANCE;
@@ -2168,8 +2168,8 @@ _DK_SDU_MIP__BASE__PACKED__END
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_SUPPORTED)
     );
     bassert(
-      (value >= featureDescriptors.temperature.minimum) &&
-      (value <= featureDescriptors.temperature.maximum),
+      (value >= static_cast<int>(featureDescriptors.temperature.minimum)) &&
+      (value <= static_cast<int>(featureDescriptors.temperature.maximum)),
       OutOfDomain(this)
     );
     uint64 featureRegister = commandRegisters + Camera1394Impl::FEATURE_TEMPERATURE;
@@ -2445,7 +2445,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       size == transmission.totalBytesPerFrame,
       bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH)
     );
-    IEEE1394::Quadlet headers[transmission.packetsPerFrame];
+    PrimitiveArray<IEEE1394::Quadlet> headers(transmission.packetsPerFrame);
 
     const unsigned int bytesInLastPacket = transmission.totalBytesPerFrame -
       transmission.bytesPerPacket * (transmission.packetsPerFrame - 1);
@@ -2462,7 +2462,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(headers)
     );
 
-    uint8 lastPacket[transmission.bytesPerPacket];
+    PrimitiveArray<uint8> lastPacket(transmission.bytesPerPacket);
     IEEE1394::IsochronousReadFixedDataRequest lastRequest =
       readChannel.getReadFixedDataRequest();
     lastRequest.setSubchannel(transmission.subchannel);
@@ -2561,7 +2561,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       frame.getDimension() == region.getDimension(),
       bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH)
     );
-    IEEE1394::Quadlet headers[transmission.packetsPerFrame];
+    PrimitiveArray<IEEE1394::Quadlet> headers(transmission.packetsPerFrame);
     
     const unsigned int bytesInLastPacket = transmission.totalBytesPerFrame -
       transmission.bytesPerPacket * (transmission.packetsPerFrame - 1);
@@ -2578,7 +2578,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(headers)
     );
 
-    uint8 lastPacket[transmission.bytesPerPacket];
+    PrimitiveArray<uint8> lastPacket(transmission.bytesPerPacket);
     IEEE1394::IsochronousReadFixedDataRequest lastRequest =
       readChannel.getReadFixedDataRequest();
     lastRequest.setSubchannel(transmission.subchannel);
@@ -2705,7 +2705,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       frame.getDimension() == region.getDimension(),
       bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH)
     );
-    IEEE1394::Quadlet headers[transmission.packetsPerFrame];
+    PrimitiveArray<IEEE1394::Quadlet> headers(transmission.packetsPerFrame);
     
     const unsigned int bytesInLastPacket = transmission.totalBytesPerFrame -
       transmission.bytesPerPacket * (transmission.packetsPerFrame - 1);
@@ -2722,7 +2722,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(headers)
     );
     
-    uint8 lastPacket[transmission.bytesPerPacket];
+    PrimitiveArray<uint8> lastPacket(transmission.bytesPerPacket);
     IEEE1394::IsochronousReadFixedDataRequest lastRequest =
       readChannel.getReadFixedDataRequest();
     lastRequest.setSubchannel(transmission.subchannel);
@@ -2827,7 +2827,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       frame.getDimension() == region.getDimension(),
       bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH)
     );
-    IEEE1394::Quadlet headers[transmission.packetsPerFrame];
+    PrimitiveArray<IEEE1394::Quadlet> headers(transmission.packetsPerFrame);
     
     const unsigned int bytesInLastPacket = transmission.totalBytesPerFrame -
       transmission.bytesPerPacket * (transmission.packetsPerFrame - 1);
@@ -2844,7 +2844,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(headers)
     );
 
-    uint8 lastPacket[transmission.bytesPerPacket];
+    PrimitiveArray<uint8> lastPacket(transmission.bytesPerPacket);
     IEEE1394::IsochronousReadFixedDataRequest lastRequest =
       readChannel.getReadFixedDataRequest();
     lastRequest.setSubchannel(transmission.subchannel);
@@ -2978,11 +2978,11 @@ _DK_SDU_MIP__BASE__PACKED__END
     }
     
     // inititialize requests
-    IEEE1394::Quadlet headers[transmission.packetsPerFrame]; // shared by frames
+    PrimitiveArray<IEEE1394::Quadlet> headers(transmission.packetsPerFrame); // shared by frames
     Allocator<IEEE1394::IsochronousReadFixedDataRequest> requests(frames.getSize() * 2); // 2 requests per frame
 
     const Allocator<IEEE1394::IsochronousReadFixedDataRequest>::Iterator endRequest = requests.getEndIterator();
-    uint8 lastPacket[transmission.bytesPerPacket]; // TAG: need one per frame
+    PrimitiveArray<uint8> lastPacket(transmission.bytesPerPacket); // TAG: need one per frame
     
     const unsigned int bytesInLastPacket = transmission.totalBytesPerFrame -
       transmission.bytesPerPacket * (transmission.packetsPerFrame - 1);

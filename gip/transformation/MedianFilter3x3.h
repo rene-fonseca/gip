@@ -47,22 +47,22 @@ namespace gip {
     static inline Elements sort(Component left, Component middle, Component right) throw() {
       if (middle <= right) {
         if (left <= middle) {
-          return (Elements){left, middle, right};
+          return Elements{left, middle, right};
         } else {
-          return (Elements){middle, (left <= right) ? left : right, (left <= right) ? right : left};
+          return Elements{middle, (left <= right) ? left : right, (left <= right) ? right : left};
         }
       } else if (left <= right) {
-        return (Elements){left, right, middle};
+        return Elements{left, right, middle};
       } else {
-        return (Elements){right, (left <= middle) ? left : middle, (left <= middle) ? middle : left};
+        return Elements{right, (left <= middle) ? left : middle, (left <= middle) ? middle : left};
       }
     }
 
     static inline Elements2 sort(Component left, Component right) throw() {
       if (left <= right) {
-        return (Elements2){left, right};
+        return Elements2{left, right};
       } else {
-        return (Elements2){right, left};
+        return Elements2{right, left};
       }
     }
     

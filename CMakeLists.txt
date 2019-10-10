@@ -56,13 +56,11 @@ file(GLOB gip_SRC
 )
 # TAG: analysis io media operation transformation video
 
-# message(${gip_SRC})
-
 add_library(gip SHARED ${gip_SRC})
 add_library(gip_STATIC STATIC ${gip_SRC})
 set_target_properties(gip_STATIC PROPERTIES OUTPUT_NAME gip_static)
 
-find_library ( BASE_LIB NAMES base libbase libbase.dylib PATHS base ../base )
+find_library ( BASE_LIB NAMES base libbase libbase.dylib PATHS base ../base ../base/build/Debug )
 message (${BASE_LIB})
 
 #add_dependencies( gip base )

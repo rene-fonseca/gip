@@ -36,8 +36,8 @@ namespace gip {
   void HaarTransformation<FloatImage>::operator()() throw() {
     // Haar transformation row by row
     if (numberOfColumnIterations > 0) {
-      Pixel buffer[1 << (numberOfColumnIterations - 1)];
-      RowElementIterator even(buffer + (1 << (numberOfColumnIterations - 1)));
+      PrimitiveArray<Pixel> buffer(static_cast<MemorySize>(1) << (numberOfColumnIterations - 1));
+      RowElementIterator even(buffer + (static_cast<MemorySize>(1) << (numberOfColumnIterations - 1U)));
       
       DestinationImage::Rows rowsLookup = destination->getRows();
       for (DestinationImage::Rows::RowIterator row = rowsLookup.getFirst();
@@ -71,8 +71,8 @@ namespace gip {
 
     // Haar transformation column by column
     if (numberOfRowIterations > 0) {
-      Pixel buffer[1 << (numberOfRowIterations - 1)];
-      ColumnElementIterator even(buffer + (1 << (numberOfRowIterations - 1)), 1);
+      PrimitiveArray<Pixel> buffer(static_cast<MemorySize>(1) << (numberOfRowIterations - 1));
+      ColumnElementIterator even(buffer + (static_cast<MemorySize>(1) << (numberOfRowIterations - 1)), 1);
       
       DestinationImage::Columns columnsLookup = destination->getColumns();
       DestinationImage::Columns::ColumnIterator column = columnsLookup.getFirst();
@@ -127,8 +127,8 @@ namespace gip {
   void HaarTransformation<GrayImage>::operator()() throw() {
     // Haar transformation row by row
     if (numberOfColumnIterations > 0) {
-      Pixel buffer[1 << (numberOfColumnIterations - 1)];
-      RowElementIterator even(buffer + (1 << (numberOfColumnIterations - 1)));
+      PrimitiveArray<Pixel> buffer(static_cast<MemorySize>(1) << (numberOfColumnIterations - 1));
+      RowElementIterator even(buffer + (static_cast<MemorySize>(1) << (numberOfColumnIterations - 1)));
       
       DestinationImage::Rows rowsLookup = destination->getRows();
       for (DestinationImage::Rows::RowIterator row = rowsLookup.getFirst();
@@ -163,8 +163,8 @@ namespace gip {
 
     // Haar transformation column by column
     if (numberOfRowIterations > 0) {
-      Pixel buffer[1 << (numberOfRowIterations - 1)];
-      ColumnElementIterator even(buffer + (1 << (numberOfRowIterations - 1)), 1);
+      PrimitiveArray<Pixel> buffer(static_cast<MemorySize>(1) << (numberOfRowIterations - 1));
+      ColumnElementIterator even(buffer + (static_cast<MemorySize>(1) << (numberOfRowIterations - 1)), 1);
       
       DestinationImage::Columns columnsLookup = destination->getColumns();
       for (DestinationImage::Columns::ColumnIterator column = columnsLookup.getFirst();
@@ -202,8 +202,8 @@ namespace gip {
   void HaarTransformation<GrayImage>::inverse() throw() {
     // Haar transformation column by column
     if (numberOfRowIterations > 0) {
-      Pixel buffer[1 << (numberOfRowIterations - 1)];
-      ColumnElementIterator even(buffer + (1 << (numberOfRowIterations - 1)), 1);
+      PrimitiveArray<Pixel> buffer(static_cast<MemorySize>(1) << (numberOfRowIterations - 1));
+      ColumnElementIterator even(buffer + (static_cast<MemorySize>(1) << (numberOfRowIterations - 1)), 1);
       
       DestinationImage::Columns columnsLookup = destination->getColumns();
       for (DestinationImage::Columns::ColumnIterator column = columnsLookup.getFirst();
@@ -221,8 +221,8 @@ namespace gip {
 
     // Haar transformation row by row
     if (numberOfColumnIterations > 0) {
-      Pixel buffer[1 << (numberOfColumnIterations - 1)];
-      RowElementIterator even(buffer + (1 << (numberOfColumnIterations - 1)));
+      PrimitiveArray<Pixel> buffer(static_cast<MemorySize>(1) << (numberOfColumnIterations - 1));
+      RowElementIterator even(buffer + (static_cast<MemorySize>(1) << (numberOfColumnIterations - 1)));
       
       DestinationImage::Rows rowsLookup = destination->getRows();
       for (DestinationImage::Rows::RowIterator row = rowsLookup.getFirst();
