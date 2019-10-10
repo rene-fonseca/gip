@@ -139,15 +139,15 @@ namespace gip {
       fill<unsigned int>(blue.getElements(), blue.getSize(), 0);
     }
 
-    Histogram getBlueHistogram() const throw() {
+    const Histogram& getBlueHistogram() const throw() {
       return blue;
     }
 
-    Histogram getGreenHistogram() const throw() {
+    const Histogram& getGreenHistogram() const throw() {
       return green;
     }
     
-    Histogram getRedHistogram() const throw() {
+    const Histogram& getRedHistogram() const throw() {
       return red;
     }
   };

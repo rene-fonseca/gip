@@ -153,8 +153,8 @@ namespace gip {
     private:
 
       const Arithmetic* lookup;
-      Arithmetic max;
-      Arithmetic maxIntensity;
+      Arithmetic max = 0;
+      Arithmetic maxIntensity = 0;
     public:
 
       inline FindMaximumComponent(const Allocator<Arithmetic>& _lookup) throw() : lookup(_lookup.getElements()) {
