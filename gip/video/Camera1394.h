@@ -36,7 +36,7 @@ namespace gip {
     @version 1.0
   */
 
-  class Camera1394 : public Camera {
+  class _DK_SDU_MIP__BASE__API Camera1394 : public Camera {
   public:
 
     /**
@@ -47,7 +47,7 @@ namespace gip {
       @version 1.0
     */
     
-    class Camera1394Exception : public Exception {
+    class _DK_SDU_MIP__BASE__API Camera1394Exception : public Exception {
     public:
       
       /**

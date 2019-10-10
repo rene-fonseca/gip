@@ -39,7 +39,7 @@ namespace gip {
     @version 1.0
   */
 
-  class Duplicate : public Transformation<ColorImage, ColorImage> {
+  class _DK_SDU_MIP__BASE__API Duplicate : public Transformation<ColorImage, ColorImage> {
   public:
 
     /**

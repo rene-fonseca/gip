@@ -25,7 +25,7 @@ namespace gip {
     @version 1.1
   */
 
-  class JPEGEncoder : public ImageEncoder {
+  class _DK_SDU_MIP__BASE__API JPEGEncoder : public ImageEncoder {
     friend class JPEGEncoderImpl;
   private:
 

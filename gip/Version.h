@@ -25,7 +25,7 @@ namespace gip {
   @version 1.0
 */
 
-class Version : public base::Version {
+class _DK_SDU_MIP__BASE__API Version : public base::Version {
 private:
 
   /** Banner. */

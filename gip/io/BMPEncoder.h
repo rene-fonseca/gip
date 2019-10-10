@@ -26,7 +26,7 @@ namespace gip {
     @version 1.2
   */
 
-  class BMPEncoder : public ImageEncoder {
+  class _DK_SDU_MIP__BASE__API BMPEncoder : public ImageEncoder {
   public:
 
     /** Compression. */

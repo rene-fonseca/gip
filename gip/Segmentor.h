@@ -29,7 +29,7 @@ namespace gip {
     @version 1.0
   */
 
-  class Segmentor : public Object {
+  class _DK_SDU_MIP__BASE__API Segmentor : public Object {
   protected:
 
     /** The dimension to be segmented. */

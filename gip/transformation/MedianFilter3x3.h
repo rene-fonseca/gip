@@ -28,7 +28,7 @@ namespace gip {
     @version 1.0
   */
   
-  class MedianFilter3x3 : public Transformation<GrayImage, GrayImage> {
+  class _DK_SDU_MIP__BASE__API MedianFilter3x3 : public Transformation<GrayImage, GrayImage> {
   private:
     
     typedef PixelTraits<SourceImage::Pixel>::Component Component;

@@ -26,7 +26,7 @@ namespace gip {
     @version 1.0
   */
   
-  class PGMEncoder : public ImageEncoder {
+  class _DK_SDU_MIP__BASE__API PGMEncoder : public ImageEncoder {
   public:
     
     /**

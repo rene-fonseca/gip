@@ -28,11 +28,11 @@ namespace gip {
     @version 1.0
   */
 
-  class FourierTransformation : public Transformation<ComplexImage, ComplexImage> {
+  class _DK_SDU_MIP__BASE__API FourierTransformation : public Transformation<ComplexImage, ComplexImage> {
   private:
 
     /** Specifies that a forward Fourier transformation has been requested. */
-    bool forward;
+    bool forward = true;
     /** Lookup table for row indices. */
     Allocator<unsigned int> mappedRows;
     /** Lookup table for column indices. */

@@ -28,7 +28,7 @@ namespace gip {
     @version 1.0
   */
 
-  class DiscreteCosineTransformation : public Transformation<FloatImage, FloatImage> {
+  class _DK_SDU_MIP__BASE__API DiscreteCosineTransformation : public Transformation<FloatImage, FloatImage> {
   private:
 
     typedef FloatImage::Pixel Pixel;

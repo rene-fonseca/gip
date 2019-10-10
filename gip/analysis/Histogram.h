@@ -58,7 +58,7 @@ namespace gip {
     @version 1.0
   */
 
-  class GrayHistogram : public UnaryOperation<GrayPixel, void> {
+  class _DK_SDU_MIP__BASE__API GrayHistogram : public UnaryOperation<GrayPixel, void> {
   public:
 
     typedef Array<unsigned int> Histogram;
@@ -97,7 +97,7 @@ namespace gip {
     @version 1.0
   */
   
-  class ColorHistogram : public UnaryOperation<ColorPixel, void> {
+  class _DK_SDU_MIP__BASE__API ColorHistogram : public UnaryOperation<ColorPixel, void> {
   public:
 
     typedef Array<unsigned int> Histogram;

@@ -28,7 +28,7 @@ namespace gip {
     @version 1.0
   */
 
-  class LinearScale : public Transformation<ColorImage, ColorImage> {
+  class _DK_SDU_MIP__BASE__API LinearScale : public Transformation<ColorImage, ColorImage> {
   public:
 
     /**

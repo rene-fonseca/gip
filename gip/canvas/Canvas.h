@@ -19,11 +19,11 @@
 
 namespace gip {
 
-//  class Font : public Object {
+//  class _DK_SDU_MIP__BASE__API Font : public Object {
 //  public:
 //  };
 //
-//  class BitmapFont : public Font {
+//  class _DK_SDU_MIP__BASE__API BitmapFont : public Font {
 //  public:
 //  };
 
@@ -34,7 +34,7 @@ namespace gip {
     @version 1.0
   */
 
-  class Canvas {
+  class _DK_SDU_MIP__BASE__API Canvas {
   private:
 
     /** The pixel type of the canvas. */

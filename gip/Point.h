@@ -25,7 +25,7 @@ namespace gip {
     @version 1.0
   */
 
-  class Point {
+  class _DK_SDU_MIP__BASE__API Point {
   private:
 
     /** Specifies the Y coordinate. */

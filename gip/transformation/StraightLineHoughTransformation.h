@@ -28,7 +28,7 @@ namespace gip {
     @version 1.0
   */
 
-  class StraightLineHoughTransformation : public Transformation<FloatImage, GrayImage> {
+  class _DK_SDU_MIP__BASE__API StraightLineHoughTransformation : public Transformation<FloatImage, GrayImage> {
   private:
 
     struct Entry {

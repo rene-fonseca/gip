@@ -28,7 +28,7 @@ namespace gip {
     @version 1.0
   */
 
-  class WalshTransformation : public Transformation<FloatImage, FloatImage> {
+  class _DK_SDU_MIP__BASE__API WalshTransformation : public Transformation<FloatImage, FloatImage> {
   private:
 
     /** Lookup table for row indices. */

@@ -29,7 +29,7 @@ namespace gip {
     @version 1.0
   */
 
-  class CoordinateMapper : public Object {
+  class _DK_SDU_MIP__BASE__API CoordinateMapper : public Object {
   protected:
 
     /** The dimension to be enumerated. */

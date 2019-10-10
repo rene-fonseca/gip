@@ -27,7 +27,7 @@ namespace gip {
     @version 1.0
   */
   
-  class Gradient : public Transformation<GrayImage, GrayImage> {
+  class _DK_SDU_MIP__BASE__API Gradient : public Transformation<GrayImage, GrayImage> {
   public:
 
     /**

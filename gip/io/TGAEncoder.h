@@ -27,7 +27,7 @@ namespace gip {
     @version 1.0
   */
   
-  class TGAEncoder : public ImageEncoder {
+  class _DK_SDU_MIP__BASE__API TGAEncoder : public ImageEncoder {
   public:
     
     /** Specifies the size of the internal buffer use for reading and writing. */
