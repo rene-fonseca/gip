@@ -51,7 +51,7 @@ namespace gip {
       BigEndian<int32> type;
       BigEndian<int32> mapType;
       BigEndian<int32> mapLength;
-    } _DK_SDU_MIP__BASE__PACKED;
+    } _COM_AZURE_DEV__BASE__PACKED;
   };
   
   RASEncoder::RASEncoder() throw() {

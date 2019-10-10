@@ -75,7 +75,7 @@ namespace gip {
 
   };
   
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
   template<>
   struct CMYPixel<unsigned char> {
     union {
@@ -84,10 +84,10 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
         unsigned char cyan;
         unsigned char magenta;
         unsigned char yellow;
-      } _DK_SDU_MIP__BASE__PACKED;
-    } _DK_SDU_MIP__BASE__PACKED;
-  } _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+      } _COM_AZURE_DEV__BASE__PACKED;
+    } _COM_AZURE_DEV__BASE__PACKED;
+  } _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
 
 

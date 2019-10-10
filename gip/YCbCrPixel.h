@@ -65,7 +65,7 @@ public:
   };
 };
 
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
 template<>
 struct YCbCrPixel<unsigned char> {
   union {
@@ -74,10 +74,10 @@ struct YCbCrPixel<unsigned char> {
       unsigned char luma;
       unsigned char cb;
       unsigned char cr;
-    } _DK_SDU_MIP__BASE__PACKED;
-  } _DK_SDU_MIP__BASE__PACKED;
-} _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+    } _COM_AZURE_DEV__BASE__PACKED;
+  } _COM_AZURE_DEV__BASE__PACKED;
+} _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
 /**
   This function returns the Y'CbCr pixel corresponding to the specified component values.

@@ -19,11 +19,11 @@
 
 namespace gip {
 
-//  class _DK_SDU_MIP__BASE__API Font : public Object {
+//  class _COM_AZURE_DEV__BASE__API Font : public Object {
 //  public:
 //  };
 //
-//  class _DK_SDU_MIP__BASE__API BitmapFont : public Font {
+//  class _COM_AZURE_DEV__BASE__API BitmapFont : public Font {
 //  public:
 //  };
 
@@ -34,7 +34,7 @@ namespace gip {
     @version 1.0
   */
 
-  class _DK_SDU_MIP__BASE__API Canvas {
+  class _COM_AZURE_DEV__BASE__API Canvas {
   private:
 
     /** The pixel type of the canvas. */

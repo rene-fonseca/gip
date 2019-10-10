@@ -26,7 +26,7 @@ namespace gip {
     @version 1.0
   */
   
-  class _DK_SDU_MIP__BASE__API YUVEncoder : public ImageEncoder {
+  class _COM_AZURE_DEV__BASE__API YUVEncoder : public ImageEncoder {
   public:
 
     /** The width of images. */

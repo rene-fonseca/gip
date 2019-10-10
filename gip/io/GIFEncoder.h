@@ -28,7 +28,7 @@ namespace gip {
     @version 1.1
   */
 
-  class _DK_SDU_MIP__BASE__API GIFEncoder : public ImageEncoder {
+  class _COM_AZURE_DEV__BASE__API GIFEncoder : public ImageEncoder {
   public:
 
     /**

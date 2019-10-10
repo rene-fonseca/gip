@@ -36,7 +36,7 @@ namespace gip {
     @version 1.0
   */
 
-  class _DK_SDU_MIP__BASE__API Camera1394 : public Camera {
+  class _COM_AZURE_DEV__BASE__API Camera1394 : public Camera {
   public:
 
     /**
@@ -47,7 +47,7 @@ namespace gip {
       @version 1.0
     */
     
-    class _DK_SDU_MIP__BASE__API Camera1394Exception : public Exception {
+    class _COM_AZURE_DEV__BASE__API Camera1394Exception : public Exception {
     public:
       
       /**
@@ -952,13 +952,13 @@ namespace gip {
       ArrayImage<uint16>& frame)
       throw(NotSupported, ImageException, IEEE1394Exception);
     
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
     struct RGB24Pixel {
       uint8 red;
       uint8 green;
       uint8 blue;
-    } _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+    } _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
     /**
       Acquires a single frame in RGB 24 bit format. The current mode must

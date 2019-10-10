@@ -66,7 +66,7 @@ public:
   };
 };
 
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
 template<>
 struct HSVPixel<unsigned char> {
   union {
@@ -75,10 +75,10 @@ struct HSVPixel<unsigned char> {
       unsigned char hue;
       unsigned char saturation;
       unsigned char value;
-    } _DK_SDU_MIP__BASE__PACKED;
-  } _DK_SDU_MIP__BASE__PACKED;
-} _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+    } _COM_AZURE_DEV__BASE__PACKED;
+  } _COM_AZURE_DEV__BASE__PACKED;
+} _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
 /**
   This function returns the HSV pixel corresponding to the specified component values.

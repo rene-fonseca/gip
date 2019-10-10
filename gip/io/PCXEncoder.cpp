@@ -20,7 +20,7 @@
 
 namespace gip {
 
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
   struct PCXHeader {
     uint8 manufacturer; // 10 = ZSoft .pcx
     uint8 version; // version information
@@ -40,8 +40,8 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
     LittleEndian<int16> horizontalScreenSize; // horizontal screen size in pixels
     LittleEndian<int16> verticalScreenSize; // vertical screen size in pixels
     uint8 zeros[54]; // make header 128 bytes - set to 0
-  } _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+  } _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
   PCXEncoder::PCXEncoder() throw() {
   }

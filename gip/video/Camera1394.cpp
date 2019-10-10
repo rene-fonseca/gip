@@ -211,12 +211,12 @@ namespace gip {
       VALUE_SETTING = 0x07c // 1.30 specification or later
     };
     
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
     struct BusInfo {
       BigEndian<uint32> name; // "1394"
       BigEndian<uint32> flags;
       uint8 guid[8];
-    } _DK_SDU_MIP__BASE__PACKED busInfo;
+    } _COM_AZURE_DEV__BASE__PACKED busInfo;
     
     struct RootDirectory {
       BigEndian<uint32> crc;
@@ -224,14 +224,14 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
       BigEndian<uint32> flags; // 0x0c in MSB
       BigEndian<uint32> nodeOffset; // 0x8d in MSB
       BigEndian<uint32> deviceDirectoryOffset; // 0xd1 in MSB
-    } _DK_SDU_MIP__BASE__PACKED rootDirectory;
+    } _COM_AZURE_DEV__BASE__PACKED rootDirectory;
     
     struct DeviceIndependentDirectory {
       BigEndian<uint32> crc;
       BigEndian<uint32> specification; // 0x12 in MSB
       BigEndian<uint32> version; // 0x13 in MSB
       BigEndian<uint32> dependentOffset; // 0xd4 in MSB
-    } _DK_SDU_MIP__BASE__PACKED;
+    } _COM_AZURE_DEV__BASE__PACKED;
     
     struct DeviceDependentDirectory {
       BigEndian<uint16> size;
@@ -239,13 +239,13 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
       BigEndian<uint32> commandRegisters; // 0x40 in MSB
       BigEndian<uint32> vendorNameLeaf; // 0x81 in MSB
       BigEndian<uint32> modelNameLeaf; // 0x82 in MSB
-    } _DK_SDU_MIP__BASE__PACKED;
+    } _COM_AZURE_DEV__BASE__PACKED;
     
     struct ConfigurationIntro {
       BigEndian<uint32> crc;
       BusInfo busInfo;
       RootDirectory rootDirectory;
-    } _DK_SDU_MIP__BASE__PACKED;
+    } _COM_AZURE_DEV__BASE__PACKED;
     
     struct FeatureInquery {
       unsigned int maximumValue : 12;
@@ -258,7 +258,7 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
       bool reserved : 1;
       bool absoluteControl : 1;
       bool presence : 1;
-    } _DK_SDU_MIP__BASE__PACKED;
+    } _COM_AZURE_DEV__BASE__PACKED;
     
     struct TriggerFeatureInquery {
       unsigned int reserved2 : 12;
@@ -273,7 +273,7 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
       unsigned int reserved0 : 2;
       bool absoluteControl : 1;
       bool presence : 1;
-    } _DK_SDU_MIP__BASE__PACKED;
+    } _COM_AZURE_DEV__BASE__PACKED;
 
     struct CommonFeatureControl {
       unsigned int reserved1 : 24;
@@ -283,7 +283,7 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
       unsigned int reserved0 : 3;
       bool absoluteControl : 1;
       bool presence : 1;
-    } _DK_SDU_MIP__BASE__PACKED;
+    } _COM_AZURE_DEV__BASE__PACKED;
     
     struct FeatureControl {
       unsigned int value : 12;
@@ -294,7 +294,7 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
       unsigned int reserved0 : 3;
       bool absoluteControl : 1;
       bool presence : 1;
-    } _DK_SDU_MIP__BASE__PACKED;
+    } _COM_AZURE_DEV__BASE__PACKED;
     
     struct WhiteBalanceFeatureControl {
       unsigned int redRatio : 12;
@@ -305,7 +305,7 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
       unsigned int reserved0 : 3;
       bool absoluteControl : 1;
       bool presence : 1;
-    } _DK_SDU_MIP__BASE__PACKED;
+    } _COM_AZURE_DEV__BASE__PACKED;
     
     struct TemperatureFeatureControl {
       unsigned int currentValue : 12;
@@ -316,7 +316,7 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
       unsigned int reserved0 : 3;
       bool absoluteControl : 1;
       bool presence : 1;
-    } _DK_SDU_MIP__BASE__PACKED;
+    } _COM_AZURE_DEV__BASE__PACKED;
     
     struct TriggerFeatureControl {
       unsigned int parameter : 12;
@@ -328,8 +328,8 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
       unsigned int reserved0 : 4;
       bool absoluteControl : 1;
       bool presence : 1;
-    } _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+    } _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
     static const uint32 FEATURE_CONTROL_REGISTER[] = {
       FEATURE_BRIGHTNESS,

@@ -22,25 +22,25 @@ namespace gip {
 
   namespace GIFImpl {
 
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
     struct Header {
       char signature[3]; // 'GIF'
       char version[3]; // '87a' or '89a'
-    } _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+    } _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
     struct DataSubBlock {
       uint8 size; // size of the block in bytes
       uint8 data[255]; // the data
-    } _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+    } _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
     const uint8 TERMINATOR = 0x00; // terminates stream of data blocks
     const uint8 TRAILER = 0x3b; // indicates end of data stream
     const uint8 IMAGESEPARATOR = 0x2c; // indicates beginning of image
 
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
     struct LogicalScreenDescriptor {
       LittleEndian<uint16> width; // logical screen width
       LittleEndian<uint16> height; // logical screen height
@@ -50,10 +50,10 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
       bool colorTable : 1; // true if table is present
       uint8 backGroundColorIndex; // index to global color table
       uint8 aspectRatio; // actual ratio = (aspectRatio + 15) / 64
-    } _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+    } _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
     struct ImageDescriptor {
       uint8 separator; // fixed value of ImageSeperator
       LittleEndian<uint16> left; // column in pixels in respect to left edge of logical screen
@@ -65,16 +65,16 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
       bool sortedColorTable : 1; // true if the colors are sorted after importance
       bool interlaced : 1; // true if image is interlaced
       bool colorTable : 1; // true if color table is present
-    } _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+    } _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
     struct ColorEntry {
       uint8 red;
       uint8 green;
       uint8 blue;
-    } _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+    } _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
 
 

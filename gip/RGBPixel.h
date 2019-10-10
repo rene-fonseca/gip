@@ -72,7 +72,7 @@ namespace gip {
 
   };
   
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
   template<>
   struct RGBPixel<uint8> {
     union {
@@ -81,10 +81,10 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
         uint8 red;
         uint8 green;
         uint8 blue;
-      } _DK_SDU_MIP__BASE__PACKED;
-    } _DK_SDU_MIP__BASE__PACKED;
-  } _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+      } _COM_AZURE_DEV__BASE__PACKED;
+    } _COM_AZURE_DEV__BASE__PACKED;
+  } _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
   /**
     The RGB pixel type represented by a single 32 bit word (with 8 bit
@@ -93,7 +93,7 @@ _DK_SDU_MIP__BASE__PACKED__END
   */
   typedef RGBPixel<uint8> ColorPixel;
 
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
   struct HiColor {
     union {
       uint16 rgb;
@@ -101,10 +101,10 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
         uint16 red : 5;
         uint16 green : 6;
         uint16 blue : 5;
-      } _DK_SDU_MIP__BASE__PACKED;
-    } _DK_SDU_MIP__BASE__PACKED;
-  } _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+      } _COM_AZURE_DEV__BASE__PACKED;
+    } _COM_AZURE_DEV__BASE__PACKED;
+  } _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
   
 

@@ -66,7 +66,7 @@ public:
   };
 };
 
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
 template<>
 struct HLSPixel<unsigned char> {
   union {
@@ -75,10 +75,10 @@ struct HLSPixel<unsigned char> {
       unsigned char hue;
       unsigned char lightness;
       unsigned char saturation;
-    } _DK_SDU_MIP__BASE__PACKED;
-  } _DK_SDU_MIP__BASE__PACKED;
-} _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+    } _COM_AZURE_DEV__BASE__PACKED;
+  } _COM_AZURE_DEV__BASE__PACKED;
+} _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
 /**
   This function returns the HLS pixel corresponding to the specified component values.

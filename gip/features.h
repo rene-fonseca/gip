@@ -26,8 +26,8 @@
    (minor <= _COM_AZURE_DEV__GIP__MINOR_VERSION) && \
    (micro <= _COM_AZURE_DEV__GIP__MICRO_VERSION))
 
-#if (!((_DK_SDU_MIP__BASE__MAJOR_VERSION >= 0) && \
-       (_DK_SDU_MIP__BASE__MINOR_VERSION >= 9)))
+#if (!((_COM_AZURE_DEV__BASE__MAJOR_VERSION >= 0) && \
+       (_COM_AZURE_DEV__BASE__MINOR_VERSION >= 9)))
 #  error The Base Framework is too old
 #endif
 

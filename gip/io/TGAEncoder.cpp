@@ -37,7 +37,7 @@ namespace gip {
       TYPE_RUN_LENGTH_BLACK_WHITE = 11
     };
     
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
     struct Header {
       unsigned char sizeOfIdentification;
       unsigned char colorMapType; // 0 ~ no color map - 1 ~ color map present
@@ -46,7 +46,7 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
         LittleEndian<uint16> origin;
         LittleEndian<uint16> length;
         uint8 bitsPerEntry; // 16, 24, or 32
-      } _DK_SDU_MIP__BASE__PACKED colorMap; // ignored for type 0
+      } _COM_AZURE_DEV__BASE__PACKED colorMap; // ignored for type 0
       struct Image {
         LittleEndian<uint16> x;
         LittleEndian<uint16> y;
@@ -56,19 +56,19 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
         uint8 attributeBits : 4;
         uint8 origin : 2;
         uint8 reserved : 2; // must be 0
-      } _DK_SDU_MIP__BASE__PACKED image;
-    } _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+      } _COM_AZURE_DEV__BASE__PACKED image;
+    } _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
     struct Footer {
       LittleEndian<uint32> extensionOffset;
       LittleEndian<uint32> directoryOffset;
       char signature[16];
       char dot; // '.'
       char zero; // '\0'
-    } _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+    } _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
   };
   
   TGAEncoder::TGAEncoder() throw() {

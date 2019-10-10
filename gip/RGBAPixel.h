@@ -80,7 +80,7 @@ namespace gip {
 
   };
 
-_DK_SDU_MIP__BASE__PACKED__BEGIN
+_COM_AZURE_DEV__BASE__PACKED__BEGIN
   template<>
   struct RGBAPixel<unsigned char> {
     union {
@@ -90,10 +90,10 @@ _DK_SDU_MIP__BASE__PACKED__BEGIN
         unsigned char green;
         unsigned char blue;
         unsigned char alpha;
-      } _DK_SDU_MIP__BASE__PACKED;
-    } _DK_SDU_MIP__BASE__PACKED;
-  } _DK_SDU_MIP__BASE__PACKED;
-_DK_SDU_MIP__BASE__PACKED__END
+      } _COM_AZURE_DEV__BASE__PACKED;
+    } _COM_AZURE_DEV__BASE__PACKED;
+  } _COM_AZURE_DEV__BASE__PACKED;
+_COM_AZURE_DEV__BASE__PACKED__END
 
   /**
     The RGBA pixel type represented by a single 32 bit word (with 8 bit

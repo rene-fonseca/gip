@@ -22,7 +22,7 @@ namespace gip {
     @version 1.0
   */
   
-//   class _DK_SDU_MIP__BASE__API IntensityMapper : public UnaryTransformation {
+//   class _COM_AZURE_DEV__BASE__API IntensityMapper : public UnaryTransformation {
 //   public:
     
 //     IntensityMapper(DestinationImage* destination, const SourceImage* source) : UnaryTransformation<?, ?>() {

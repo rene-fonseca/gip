@@ -25,7 +25,7 @@ namespace gip {
     @version 1.0
   */
 
-  class _DK_SDU_MIP__BASE__API Region {
+  class _COM_AZURE_DEV__BASE__API Region {
   private:
 
     /** The offset of the region. */

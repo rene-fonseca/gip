@@ -30,7 +30,7 @@ namespace gip {
     @version 1.0
   */
 
-  class _DK_SDU_MIP__BASE__API ImageException : public Exception {
+  class _COM_AZURE_DEV__BASE__API ImageException : public Exception {
   public:
 
     /**
