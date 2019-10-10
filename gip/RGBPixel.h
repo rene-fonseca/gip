@@ -74,13 +74,13 @@ namespace gip {
   
 _DK_SDU_MIP__BASE__PACKED__BEGIN
   template<>
-  struct RGBPixel<unsigned char> {
+  struct RGBPixel<uint8> {
     union {
       unsigned int rgb;
       struct {
-        unsigned char red;
-        unsigned char green;
-        unsigned char blue;
+        uint8 red;
+        uint8 green;
+        uint8 blue;
       } _DK_SDU_MIP__BASE__PACKED;
     } _DK_SDU_MIP__BASE__PACKED;
   } _DK_SDU_MIP__BASE__PACKED;
@@ -91,16 +91,16 @@ _DK_SDU_MIP__BASE__PACKED__END
     components) is so commonplace that it has been given its own name. The
     remaining 8 bits are not used.
   */
-  typedef RGBPixel<unsigned char> ColorPixel;
+  typedef RGBPixel<uint8> ColorPixel;
 
 _DK_SDU_MIP__BASE__PACKED__BEGIN
   struct HiColor {
     union {
       uint16 rgb;
       struct {
-        unsigned char red : 5;
-        unsigned char green : 6;
-        unsigned char blue : 5;
+        uint16 red : 5;
+        uint16 green : 6;
+        uint16 blue : 5;
       } _DK_SDU_MIP__BASE__PACKED;
     } _DK_SDU_MIP__BASE__PACKED;
   } _DK_SDU_MIP__BASE__PACKED;
