@@ -354,7 +354,7 @@ _DK_SDU_MIP__BASE__PACKED__END
     };
 
     void importGenericFeature(IEEE1394::Quadlet quadlet, Camera1394::GenericFeatureDescriptor& descriptor) throw() {
-      Camera1394Impl::FeatureInquery feature = Cast::impersonate<Camera1394Impl::FeatureInquery, uint32>(quadlet);
+      Camera1394Impl::FeatureInquery feature = *reinterpret_cast<const Camera1394Impl::FeatureInquery*>(&quadlet); // Cast::impersonate<Camera1394Impl::FeatureInquery, uint32>(quadlet);
       descriptor.available = feature.presence;
       descriptor.autoAdjustmentMode = feature.onePush;
       descriptor.readable = feature.readable;
@@ -1415,6 +1415,8 @@ _DK_SDU_MIP__BASE__PACKED__END
       return featureDescriptors.captureSize.readable;
     case CAPTURE_QUALITY:
       return featureDescriptors.captureQuality.readable;
+    default:
+      throw OutOfDomain(this);
     }
   }
   
@@ -1695,13 +1697,13 @@ _DK_SDU_MIP__BASE__PACKED__END
     switch (feature) {
     case TRIGGER_CONTROL:
       {
-        Camera1394Impl::TriggerFeatureControl control = Cast::impersonate<Camera1394Impl::TriggerFeatureControl>(quadlet);
+        Camera1394Impl::TriggerFeatureControl control = *reinterpret_cast<const Camera1394Impl::TriggerFeatureControl*>(&quadlet); //  Cast::impersonate<Camera1394Impl::TriggerFeatureControl>(quadlet);
         return control.enabled ? Camera1394::MANUAL : Camera1394::DISABLED;
       }
     default:
       {
         // includes white balance and temperature features
-        Camera1394Impl::FeatureControl control = Cast::impersonate<Camera1394Impl::FeatureControl>(quadlet);
+        Camera1394Impl::FeatureControl control = *reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet); // Cast::impersonate<Camera1394Impl::FeatureControl>(quadlet);
         if (!control.enabled) {
           return Camera1394::DISABLED;
         }
@@ -1762,7 +1764,7 @@ _DK_SDU_MIP__BASE__PACKED__END
     switch (feature) {
     case TRIGGER_CONTROL:
       {
-        Camera1394Impl::TriggerFeatureControl control = Cast::impersonate<Camera1394Impl::TriggerFeatureControl>(original);
+        Camera1394Impl::TriggerFeatureControl control = *reinterpret_cast<const Camera1394Impl::TriggerFeatureControl*>(&original); // Cast::impersonate<Camera1394Impl::TriggerFeatureControl>(original);
         switch (operatingMode) {
         case Camera1394::DISABLED:
           control.enabled = false;
@@ -1776,13 +1778,13 @@ _DK_SDU_MIP__BASE__PACKED__END
           break;
         }
         control.absoluteControl = false;
-        quadlet = Cast::impersonate<uint32>(control);
+        quadlet = *reinterpret_cast<const uint32*>(&control); // Cast::impersonate<uint32>(control);
       }
       break;
     default:
       {
         // includes white balance and temperature features
-        Camera1394Impl::CommonFeatureControl control = Cast::impersonate<Camera1394Impl::CommonFeatureControl>(original);
+        Camera1394Impl::CommonFeatureControl control = *reinterpret_cast<const Camera1394Impl::CommonFeatureControl*>(&original); // Cast::impersonate<Camera1394Impl::CommonFeatureControl>(original);
         switch (operatingMode) {
         case Camera1394::DISABLED:
           control.enabled = false;
@@ -1806,7 +1808,7 @@ _DK_SDU_MIP__BASE__PACKED__END
           break;
         }
         control.absoluteControl = false;
-        quadlet = Cast::impersonate<uint32>(control);
+        quadlet = *reinterpret_cast<const uint32*>(&control); // Cast::impersonate<uint32>(control);
       }
     }
     
@@ -1846,7 +1848,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(original),
       sizeof(original)
     );
-    Camera1394Impl::FeatureControl control = Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(original);
+    Camera1394Impl::FeatureControl control = *reinterpret_cast<const Camera1394Impl::FeatureControl*>(&original); // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(original);
     bassert(
       control.enabled && !control.automaticMode && !control.autoAdjustmentMode,
       bindCause(Camera1394Exception(this), Camera1394::INVALID_FEATURE_MODE)
@@ -1854,7 +1856,7 @@ _DK_SDU_MIP__BASE__PACKED__END
     control.absoluteControl = false; // enable value field
     control.value = value;
     IEEE1394::Quadlet quadlet;
-    quadlet = Cast::impersonate<uint32>(control);
+    quadlet = *reinterpret_cast<const uint32*>(&control); // Cast::impersonate<uint32>(control);
     adapter.write(camera, featureRegister, Cast::getAddress(quadlet), sizeof(quadlet));
     if (!getFeatureStatus(feature)) { // check if error or warning
       adapter.write(
@@ -1878,7 +1880,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setBrightness(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -1897,7 +1899,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setAutoExposure(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -1916,7 +1918,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setSharpness(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -1935,7 +1937,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::WhiteBalanceFeatureControl, uint32>(quadlet).blueRatio;
+    return reinterpret_cast<const Camera1394Impl::WhiteBalanceFeatureControl*>(&quadlet)->blueRatio; // Cast::impersonate<Camera1394Impl::WhiteBalanceFeatureControl, uint32>(quadlet).blueRatio;
   }
 
   int Camera1394::getWhiteBalanceRedRatio() const throw(NotSupported, IEEE1394Exception) {
@@ -1950,7 +1952,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::WhiteBalanceFeatureControl, uint32>(quadlet).redRatio;
+    return reinterpret_cast<const Camera1394Impl::WhiteBalanceFeatureControl*>(&quadlet)->redRatio; // Cast::impersonate<Camera1394Impl::WhiteBalanceFeatureControl, uint32>(quadlet).redRatio;
   }
   
   void Camera1394::setWhiteBalance(
@@ -1976,9 +1978,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       sizeof(original)
     );
     Camera1394Impl::WhiteBalanceFeatureControl control =
-      Cast::impersonate<Camera1394Impl::WhiteBalanceFeatureControl, uint32>(
-        original
-      );
+      *reinterpret_cast<const Camera1394Impl::WhiteBalanceFeatureControl*>(&original); // Cast::impersonate<Camera1394Impl::WhiteBalanceFeatureControl, uint32>(original);
     bassert(
       control.enabled && !control.automaticMode && !control.autoAdjustmentMode,
       bindCause(Camera1394Exception(this), Camera1394::INVALID_FEATURE_MODE)
@@ -1987,7 +1987,7 @@ _DK_SDU_MIP__BASE__PACKED__END
     control.blueRatio = blueRatio;
     control.redRatio = redRatio;
     IEEE1394::Quadlet quadlet;
-    quadlet = Cast::impersonate<uint32>(control);
+    quadlet = *reinterpret_cast<const uint32*>(&control); // Cast::impersonate<uint32>(control);
     adapter.write(camera, featureRegister, Cast::getAddress(quadlet), sizeof(quadlet));
     if (!getFeatureStatus(WHITE_BALANCE_CONTROL)) { // check if error or warning
       adapter.write(
@@ -2011,7 +2011,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setHue(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -2030,7 +2030,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setSaturation(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -2049,7 +2049,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setGamma(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -2068,7 +2068,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setShutter(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -2087,7 +2087,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setGain(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -2106,7 +2106,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setIRIS(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -2125,7 +2125,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setFocus(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -2144,7 +2144,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::TemperatureFeatureControl, uint32>(quadlet).currentValue;
+    return reinterpret_cast<const Camera1394Impl::TemperatureFeatureControl*>(&quadlet)->currentValue; // Cast::impersonate<Camera1394Impl::TemperatureFeatureControl, uint32>(quadlet).currentValue;
   }
 
   int Camera1394::getTargetTemperature() const throw(NotSupported, IEEE1394Exception) {
@@ -2159,7 +2159,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::TemperatureFeatureControl, uint32>(quadlet).targetValue;
+    return reinterpret_cast<const Camera1394Impl::TemperatureFeatureControl*>(&quadlet)->targetValue; // Cast::impersonate<Camera1394Impl::TemperatureFeatureControl, uint32>(quadlet).targetValue;
   }
 
   void Camera1394::setTemperature(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -2180,7 +2180,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(original),
       sizeof(original)
     );
-    Camera1394Impl::TemperatureFeatureControl control = Cast::impersonate<Camera1394Impl::TemperatureFeatureControl, uint32>(original);
+    Camera1394Impl::TemperatureFeatureControl control = *reinterpret_cast<const Camera1394Impl::TemperatureFeatureControl*>(&original); // Cast::impersonate<Camera1394Impl::TemperatureFeatureControl, uint32>(original);
     bassert(
       control.enabled && !control.automaticMode && !control.autoAdjustmentMode,
       bindCause(Camera1394Exception(this), Camera1394::INVALID_FEATURE_MODE)
@@ -2188,7 +2188,7 @@ _DK_SDU_MIP__BASE__PACKED__END
     control.absoluteControl = false; // enable value field
     control.targetValue = value;
     IEEE1394::Quadlet quadlet;
-    quadlet = Cast::impersonate<uint32>(control);
+    quadlet = *reinterpret_cast<const uint32*>(&control); // Cast::impersonate<uint32>(control);
     adapter.write(
       camera,
       featureRegister,
@@ -2221,7 +2221,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setZoom(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -2240,7 +2240,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setPan(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -2259,7 +2259,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setTilt(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) { // TAG: Camera1394Exception
@@ -2278,7 +2278,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setOpticalFilter(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -2298,7 +2298,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setCaptureSize(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
@@ -2318,7 +2318,7 @@ _DK_SDU_MIP__BASE__PACKED__END
       Cast::getAddress(quadlet),
       sizeof(quadlet)
     );
-    return Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
+    return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
   void Camera1394::setCaptureQuality(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {

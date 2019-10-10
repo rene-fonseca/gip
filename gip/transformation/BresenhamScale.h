@@ -65,7 +65,7 @@ namespace gip {
       const typename SourceImage::ReadableRows::RowIterator srcEndRow = srcRowsLookup.getEnd();
       
       //Allocator<long double> buffer(destWidth);
-      long double buffer[destWidth];
+      PrimitiveArray<long double> buffer(destWidth);
       fill<long double>(buffer, destWidth, 0);
       
       unsigned int y = 0;
