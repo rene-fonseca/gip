@@ -42,7 +42,7 @@
         VALUE "FileDescription", "A framework for developing image processing applications\0"
         VALUE "FileVersion",  _DK_SDU_MIP__GIP__VERSION "\0"
         VALUE "InternalName", "gip\0"
-        VALUE "LegalCopyright", "Copyright � 2000-2002 by Ren� M�ller Fonseca\0"
+        VALUE "LegalCopyright", "Copyright � 2000-2019 by Ren� M�ller Fonseca\0"
         VALUE "LegalTrademarks", "Currently not available\0"
         VALUE "OriginalFilename", "cyggip.dll\0"
 #if defined(_DK_SDU_MIP__GIP__DEBUG)

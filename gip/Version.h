@@ -60,6 +60,16 @@ public:
   base::String getVersion() const throw();
 
   /**
+    Returns the short commit id.
+  */
+  base::String getCommit() const throw();
+
+  /*
+    Returns the build date in seconds since epoch.
+  */
+  int64 getBuildDate() const throw();
+
+  /**
     Returns a short banner (multiple lines) describing the framework.
   */
   base::String getBanner() const throw();

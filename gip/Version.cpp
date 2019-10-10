@@ -12,12 +12,9 @@
  ***************************************************************************/
 
 #include <gip/Version.h>
+#include <gip/config.h>
 
-/*
-#define _DK_SDU_MIP__GIP__RELEASE "1.0"
-*/
-#define _DK_SDU_MIP__GIP__CONFIGURE ""
-#define _DK_SDU_MIP__GIP__BUILD_DATE ""
+#define _DK_SDU_MIP__GIP__RELEASE ""
 
 namespace gip {
 
@@ -29,7 +26,6 @@ const char Version::banner[] =
 "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
 "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 "Please report bugs to https://dev.azure.com/renefonseca/gip.\n\n"
-"configure: " _DK_SDU_MIP__GIP__CONFIGURE "\n"
 "build data: " _DK_SDU_MIP__GIP__BUILD_DATE "\n";
 
 unsigned int Version::getMajorVersion() const throw() {
@@ -41,7 +37,7 @@ unsigned int Version::getMinorVersion() const throw() {
 }
 
 unsigned int Version::getMicroVersion() const throw() {
-  return _DK_SDU_MIP__GIP__MICRO_VERSION;
+  return _DK_SDU_MIP__GIP__GIT_REVISION;
 }
 
 String Version::getRelease() const throw() {
@@ -52,8 +48,16 @@ String Version::getVersion() const throw() {
   return Literal(_DK_SDU_MIP__GIP__VERSION);
 }
 
+String Version::getCommit() const throw() {
+  return Literal(_DK_SDU_MIP__GIP__GIT_COMMIT_SHORT);
+}
+
+int64 Version::getBuildDate() const throw() {
+  return _DK_SDU_MIP__GIP__BUILD_DATE_SECONDS;
+}
+
 String Version::getBanner() const throw() {
   return String(banner);
 }
- 
+
 }; // end of gip namespace

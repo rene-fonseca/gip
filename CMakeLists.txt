@@ -24,7 +24,8 @@ else ()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-exceptions") # FIXME
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-exceptions")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror") # no warnings allowed
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated") # exception specifications
   # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-overflow") # FIXME
@@ -64,17 +65,22 @@ execute_process(OUTPUT_VARIABLE GIT_COMMIT_SHORT COMMAND git rev-parse --short H
 string(REGEX REPLACE "\n$" "" GIT_COMMIT_SHORT "${GIT_COMMIT_SHORT}")
 execute_process(OUTPUT_VARIABLE GIT_REVISION COMMAND git rev-list HEAD --count)
 string(REGEX REPLACE "\n$" "" GIT_REVISION "${GIT_REVISION}")
+# TAG: add build date date --iso-8601=seconds
+execute_process(OUTPUT_VARIABLE BUILD_DATE COMMAND date)
+string(REGEX REPLACE "\n$" "" BUILD_DATE "${BUILD_DATE}")
+execute_process(OUTPUT_VARIABLE BUILD_DATE_SECONDS COMMAND date "+%s")
+string(REGEX REPLACE "\n$" "" BUILD_DATE_SECONDS "${BUILD_DATE_SECONDS}")
 
 message("Branch: ${GIT_BRANCH}")
 message("Commit: ${GIT_COMMIT}")
 message("Revision: ${GIT_REVISION}")
 
 # generate configuration header
-configure_file(${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/generated/config.h)
+configure_file(${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 include_directories(${CMAKE_BINARY_DIR}/generated)
 
-add_library(gip SHARED ${gip_SRC} ${CMAKE_BINARY_DIR}/generated/config.h)
-add_library(gip_STATIC STATIC ${gip_SRC} ${CMAKE_BINARY_DIR}/generated/config.h)
+add_library(gip SHARED ${gip_SRC} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
+add_library(gip_STATIC STATIC ${gip_SRC} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 set_target_properties(gip_STATIC PROPERTIES OUTPUT_NAME gip_static)
 
 find_library ( BASE_LIB NAMES base libbase libbase.dylib PATHS base ../base ../base/build/Debug )
