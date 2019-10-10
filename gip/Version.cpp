@@ -14,46 +14,46 @@
 #include <gip/Version.h>
 #include <gip/config.h>
 
-#define _DK_SDU_MIP__GIP__RELEASE ""
+#define _COM_AZURE_DEV__GIP__RELEASE ""
 
 namespace gip {
 
 const char Version::banner[] =
-"Generic Image Processing (GIP) Framework release " _DK_SDU_MIP__GIP__RELEASE "\n"
+"Generic Image Processing (GIP) Framework release " _COM_AZURE_DEV__GIP__RELEASE "\n"
 "A framework for developing image processing applications\n"
 "Copyright (C) 2001-2019 Rene Moeller Fonseca\n\n"
 "This framework is distributed in the hope that it will be useful,\n"
 "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
 "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 "Please report bugs to https://dev.azure.com/renefonseca/gip.\n\n"
-"build data: " _DK_SDU_MIP__GIP__BUILD_DATE "\n";
+"build data: " _COM_AZURE_DEV__GIP__BUILD_DATE "\n";
 
 unsigned int Version::getMajorVersion() const throw() {
-  return _DK_SDU_MIP__GIP__MAJOR_VERSION;
+  return _COM_AZURE_DEV__GIP__MAJOR_VERSION;
 }
 
 unsigned int Version::getMinorVersion() const throw() {
-  return _DK_SDU_MIP__GIP__MINOR_VERSION;
+  return _COM_AZURE_DEV__GIP__MINOR_VERSION;
 }
 
 unsigned int Version::getMicroVersion() const throw() {
-  return _DK_SDU_MIP__GIP__GIT_REVISION;
+  return _COM_AZURE_DEV__GIP__GIT_REVISION;
 }
 
 String Version::getRelease() const throw() {
-  return Literal(_DK_SDU_MIP__GIP__RELEASE);
+  return Literal(_COM_AZURE_DEV__GIP__RELEASE);
 }
 
 String Version::getVersion() const throw() {
-  return Literal(_DK_SDU_MIP__GIP__VERSION);
+  return Literal(_COM_AZURE_DEV__GIP__VERSION);
 }
 
 String Version::getCommit() const throw() {
-  return Literal(_DK_SDU_MIP__GIP__GIT_COMMIT_SHORT);
+  return Literal(_COM_AZURE_DEV__GIP__GIT_COMMIT_SHORT);
 }
 
 int64 Version::getBuildDate() const throw() {
-  return _DK_SDU_MIP__GIP__BUILD_DATE_SECONDS;
+  return _COM_AZURE_DEV__GIP__BUILD_DATE_SECONDS;
 }
 
 String Version::getBanner() const throw() {
