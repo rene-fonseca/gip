@@ -18,3 +18,4 @@ testsuite/
 *.tlog
 *.log
 *.pdb
+*.obj
