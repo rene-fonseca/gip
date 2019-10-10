@@ -33,7 +33,7 @@ namespace gip {
 
     typedef FloatImage::Pixel Pixel;
     /** Specifies that a forward transformation has been requested. */
-    bool forward;
+    bool forward = true;
     /** Lookup table for row indices. */
     Allocator<unsigned int> mappedRows;
     /** Lookup table for column indices. */

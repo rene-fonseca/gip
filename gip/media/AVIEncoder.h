@@ -130,41 +130,41 @@ namespace gip {
     private:
 
       /** The period between the frames. */
-      unsigned int microSecPerFrame;
+      unsigned int microSecPerFrame = 0;
       /** Approx. maximum data rate. */
-      unsigned int maxBytesPerSec;
+      unsigned int maxBytesPerSec = 0;
       /** NOT USED. */
-      unsigned int paddingGranularity;
+      unsigned int paddingGranularity = 0;
       /** Specifies that the AVI file has an index at the end. */
-      bool hasIndex;
+      bool hasIndex = false;
       /** Must use index. */
-      bool mustUseIndex;
+      bool mustUseIndex = false;
       /** Specifies htat the streams are interleaved. */
-      bool isInterleaved;
+      bool isInterleaved = false;
       /** Use CKType to find key frames. */
-      bool trustCKType;
+      bool trustCKType = false;
       /** Capture file. */
-      bool wasCaptureFile;
+      bool wasCaptureFile = false;
       /** Specifies that the AVI file contains copyrighted data. */
-      bool copyrighted;
+      bool copyrighted = false;
       /** The total number of frames. */
-      unsigned int totalFrames;
+      unsigned int totalFrames = 0;
       /** Number of frames prior to the initial frame. */
-      unsigned int initialFrames;
+      unsigned int initialFrames = 0;
       /** The number of streams within the object. */
-      unsigned int streams;
+      unsigned int streams = 0;
       /** Suggested buffer size. */
-      unsigned int suggestedBufferSize;
+      unsigned int suggestedBufferSize = 0;
       /** Specifies the dimension of the AVI file. */
       Dimension dimension;
       /** Scale. */
-      unsigned int scale;
+      unsigned int scale = 0;
       /** Rate. */
-      unsigned int rate;
+      unsigned int rate = 0;
       /** The starting time of the AVI file. */
-      unsigned int start;
+      unsigned int start = 0;
       /** The length of the AVI file. */
-      unsigned int length;
+      unsigned int length = 0;
     public:
 
       inline unsigned int getTotalNumberOfFrames() const throw() {
@@ -186,24 +186,24 @@ namespace gip {
     private:
 
       /** Specifies the installable compressor or decompressor. */
-      unsigned int handler;
+      unsigned int handler = 0;
       /** Specifies that the stream is disabled by default. */
-      bool disabled;
+      bool disabled = false;
       /** Specifies that the palette must be animated due to palette changes. */
-      bool animatePalette;
+      bool animatePalette = false;
       /** Specifies the priority of the stream. */
-      unsigned int priority;
-      //  unsigned int initialFrames;
+      unsigned int priority = 0;
+      //  unsigned int initialFrames = 0;
       /** Used to calculate the framerate (=rate/scale). */
-      unsigned int scale;
+      unsigned int scale = 0;
       /** Used to calculate the framerate (=rate/scale). */
-      unsigned int rate;
+      unsigned int rate = 0;
       /** Specifies the starting time of the stream in units specified by 'scale' and 'rate'. */
-      unsigned int start;
+      unsigned int start = 0;
       /** Specifies the length of the stream in units specified by 'scale' and 'rate'. */
-      unsigned int length;
+      unsigned int length = 0;
       /** Specifies how large a buffer should be used to read this stream. */
-      unsigned int suggestedBufferSize;
+      unsigned int suggestedBufferSize = 0;
       /**
         Specifies an indicator of the quality of the data in the stream.
         Quality is represented as a number between 0 and 10,000. For compressed
@@ -211,7 +211,7 @@ namespace gip {
         passed to the  compression software. If set to 1, drivers use the
         default quality value.
       */
-      unsigned int quality;
+      unsigned int quality = 0;
       /**
         Specifies the size of a single sample of data. This is set to zero if
         the samples can vary in size. If this number is nonzero, then multiple
@@ -220,19 +220,19 @@ namespace gip {
         separate chunk. For video streams, this number is typically zero,
         although it can be nonzero if all video frames are the same size.
       */
-      unsigned int sampleSize;
+      unsigned int sampleSize = 0;
 
       // frame section
-      unsigned int width;
-      unsigned int height;
-      unsigned int planes;
-      unsigned int bitsPerPixel;
-      FrameCompression compression;
-      unsigned int sizeImage;
-      unsigned int xPelsPerMeter;
-      unsigned int yPelsPerMeter;
-      unsigned int colorUsed;
-      unsigned int colorImportant;
+      unsigned int width = 0;
+      unsigned int height = 0;
+      unsigned int planes = 0;
+      unsigned int bitsPerPixel = 0;
+      FrameCompression compression = RGB;
+      unsigned int sizeImage = 0;
+      unsigned int xPelsPerMeter = 0;
+      unsigned int yPelsPerMeter = 0;
+      unsigned int colorUsed = 0;
+      unsigned int colorImportant = 0;
     public:
 
     };

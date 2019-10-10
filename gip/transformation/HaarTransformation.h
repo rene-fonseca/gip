@@ -41,8 +41,8 @@ namespace gip {
     typedef DestinationImage::Columns::ColumnIterator::ElementIterator ColumnElementIterator;
     typedef DestinationImage::Pixel Pixel;
 
-    unsigned int numberOfColumnIterations;
-    unsigned int numberOfRowIterations;
+    unsigned int numberOfColumnIterations = 0;
+    unsigned int numberOfRowIterations = 0;
     
     static inline RowElementIterator partialTransform(RowElementIterator even, RowElementIterator odd, RowElementIterator src, unsigned int size) throw() {
       const RowElementIterator begin = src - size;
@@ -101,8 +101,8 @@ namespace gip {
     typedef DestinationImage::Columns::ColumnIterator::ElementIterator ColumnElementIterator;
     typedef DestinationImage::Pixel Pixel;
 
-    unsigned int numberOfColumnIterations;
-    unsigned int numberOfRowIterations;
+    unsigned int numberOfColumnIterations = 0;
+    unsigned int numberOfRowIterations = 0;
 
     static inline RowElementIterator partialTransform(RowElementIterator even, RowElementIterator odd, RowElementIterator src, unsigned int size) throw() {
       const RowElementIterator begin = src - size;

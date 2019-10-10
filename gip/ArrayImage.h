@@ -95,7 +95,7 @@ public:
   private:
 
     ColumnIterator first;
-    unsigned int columns;
+    unsigned int columns = 0;
   public:
     
     inline ColumnsImpl(Pointer value, const Dimension& dimension) throw() :
