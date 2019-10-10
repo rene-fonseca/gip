@@ -32,8 +32,8 @@ namespace gip {
   private:
 
     struct Entry {
-      long double cosine;
-      long double sine;
+      double cosine;
+      double sine;
     };
     
     /** Lookup table for cosine and sine. */

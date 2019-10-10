@@ -39,7 +39,7 @@ namespace gip {
     typedef ArrayImage<Pixel> SourceImage;
     
     /** The homogeneous transformation matrix. */
-    long double matrix[2][3];
+    double matrix[2][3];
   public:
     
     TSRTransformation(DestinationImage* destination, const SourceImage* source) throw()
@@ -48,7 +48,7 @@ namespace gip {
       identity();
     }
     
-    void load(long double _matrix[2][3]) throw() {
+    void load(double _matrix[2][3]) throw() {
       matrix[0][0] = _matrix[0][0];
       matrix[0][1] = _matrix[0][1];
       matrix[0][2] = _matrix[0][2];
@@ -67,10 +67,10 @@ namespace gip {
     }
   
     void rotate(long double alpha) throw() {
-      const long double cos = Math::cos(alpha);
-      const long double sin = Math::sin(alpha);
+      const double cos = Math::cos(alpha);
+      const double sin = Math::sin(alpha);
 
-      long double temp[2][3] = {
+      double temp[2][3] = {
         {
           matrix[0][0] * cos - matrix[1][0] * sin,
           matrix[0][1] * cos - matrix[1][1] * sin,
@@ -91,7 +91,7 @@ namespace gip {
       matrix[1][2] = temp[1][2];
     }
 
-    void scale(long double value) throw() {
+    void scale(double value) throw() {
       matrix[0][0] *= value;
       matrix[0][1] *= value;
       matrix[0][2] *= value;
@@ -100,7 +100,7 @@ namespace gip {
       matrix[1][2] *= value;
     }
 
-    void translate(long double dx, long double dy) throw() {
+    void translate(double dx, double dy) throw() {
       matrix[0][2] += dx;
       matrix[1][2] += dy;
     }
@@ -112,8 +112,8 @@ namespace gip {
       Interpolate<Pixel> interpolate(*Transformation<DestinationImage, SourceImage>::source);
     
       // inverse of matrix (only x and y row)
-      long double inverse[2][3];
-      const long double factor = 1/(matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]);
+      double inverse[2][3];
+      const double factor = 1/(matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]);
     
       inverse[0][0] = matrix[1][1] * factor;
       inverse[0][1] = -matrix[0][1] * factor;
@@ -123,8 +123,8 @@ namespace gip {
       inverse[1][2] = (matrix[0][2] * matrix[1][0] - matrix[0][0] * matrix[1][2]) * factor;
     
       for (unsigned int y = 0; y < height; ++y) {
-        long double srcX = inverse[0][1] * y + inverse[0][2];
-        long double srcY = inverse[1][1] * y + inverse[1][2];
+        double srcX = inverse[0][1] * y + inverse[0][2];
+        double srcY = inverse[1][1] * y + inverse[1][2];
         for (unsigned int x = 0; x < width; ++x) {
           srcX += inverse[0][0];
           srcY += inverse[1][0];

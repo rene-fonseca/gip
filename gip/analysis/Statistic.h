@@ -54,15 +54,15 @@ namespace gip {
     /** The number of used pixel values. */
     unsigned int used = 0;
     /** The mean value of the pixels. */
-    long double mean = 0;
+    double mean = 0;
     /** The median. */
     unsigned int median = 0;
     /** The mode. */
     unsigned int mode = 0;
     /** The variance of the pixels. */
-    long double variance = 0;
+    double variance = 0;
     /** The entropy of the pixels. */
-    long double entropy = 0;
+    double entropy = 0;
   public:
     
     /**
@@ -90,7 +90,7 @@ namespace gip {
       
       mean = 0;
       for (unsigned int i = 0; i < NUMBER_OF_SYMBOLS; ++i) {
-        mean += Cast::implicit<long double>(i) * frequency[i];
+        mean += Cast::implicit<double>(i) * frequency[i];
       }
       mean /= numberOfSamples;
       
@@ -100,8 +100,8 @@ namespace gip {
       minimum = PixelTraits<Pixel>::MAXIMUM;
       maximum = PixelTraits<Pixel>::MINIMUM;
       used = 0;
-      long double sqrsum = 0;
-      entropy = numberOfSamples * Math::ln(Cast::implicit<long double>(numberOfSamples));
+      double sqrsum = 0;
+      entropy = numberOfSamples * Math::ln(Cast::implicit<double>(numberOfSamples));
       for (unsigned int i = 0; i < NUMBER_OF_SYMBOLS; ++i) {
         if (frequency[i] != 0) {
           if (frequency[i] < minimumFrequency) {
@@ -121,7 +121,7 @@ namespace gip {
           }
           ++used;
           sqrsum += frequency[i] * (i - mean) * (i - mean);
-          entropy -= frequency[i] * Math::ln(Cast::implicit<long double>(frequency[i]));
+          entropy -= frequency[i] * Math::ln(Cast::implicit<double>(frequency[i]));
         } else {
           minimumFrequency = 0;
         }
@@ -197,7 +197,7 @@ namespace gip {
     /**
       Returns the mean value.
     */
-    inline long double getMean() const throw() {
+    inline double getMean() const throw() {
       return mean;
     }
 
@@ -219,28 +219,28 @@ namespace gip {
     /**
       Returns the variance.
     */
-    inline long double getVariance() const throw() {
+    inline double getVariance() const throw() {
       return variance;
     }
 
     /**
       Returns the standard deviation.
     */
-    inline long double getDeviation() const throw() {
+    inline double getDeviation() const throw() {
       return Math::sqrt(variance);
     }
 
     /**
       Returns the dimensionless coefficient-of-variation.
     */
-    inline long double getCoefficientOfVariation() const throw() {
+    inline double getCoefficientOfVariation() const throw() {
       return Math::sqrt(variance)/mean;
     }
     
     /**
       Returns the entropy in binary units.
     */
-    inline long double getEntropy() const throw() {
+    inline double getEntropy() const throw() {
       return entropy;
     }
   };

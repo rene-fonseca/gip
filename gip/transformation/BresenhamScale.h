@@ -57,16 +57,16 @@ namespace gip {
       const unsigned int destHeight = Transformation<DEST, SRC>::destination->getDimension().getHeight();
       const unsigned int srcWidth = Transformation<DEST, SRC>::source->getDimension().getWidth();
       const unsigned int srcHeight = Transformation<DEST, SRC>::source->getDimension().getHeight();
-      const long double scale = 1.0/(srcHeight * srcWidth);
+      const double scale = 1.0/(srcHeight * srcWidth);
       
       typename DestinationImage::Rows::RowIterator destRow = Transformation<DEST, SRC>::destination->getRows().getFirst();
       typename SourceImage::ReadableRows srcRowsLookup = Transformation<DEST, SRC>::source->getRows();
       typename SourceImage::ReadableRows::RowIterator srcRow = srcRowsLookup.getFirst();
       const typename SourceImage::ReadableRows::RowIterator srcEndRow = srcRowsLookup.getEnd();
       
-      //Allocator<long double> buffer(destWidth);
-      PrimitiveArray<long double> buffer(destWidth);
-      fill<long double>(buffer, destWidth, 0);
+      //Allocator<double> buffer(destWidth);
+      PrimitiveArray<double> buffer(destWidth);
+      fill<double>(buffer, destWidth, 0);
       
       unsigned int y = 0;
       unsigned int rowModulus = destHeight;
@@ -75,8 +75,8 @@ namespace gip {
         typename SourceImage::ReadableRows::RowIterator::ElementIterator srcColumn = srcRow.getFirst();
         const typename SourceImage::ReadableRows::RowIterator::ElementIterator srcEndColumn = srcRow.getEnd();
         
-        long double* currentRow = buffer;
-        long double integrate = 0;
+        double* currentRow = buffer;
+        double integrate = 0;
         unsigned int columnModulus = destWidth;
         
         if (rowModulus < srcHeight) {

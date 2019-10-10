@@ -78,11 +78,11 @@ namespace gip {
       : UnaryTransformation<DestinationImage>(destination) {
     }
 
-    long double operator()() throw() { // DestinationImage::Pixel
+    double operator()() throw() { // DestinationImage::Pixel
       ComplexToSqrModulus innerOperation;
-      NestOperations<ComplexToSqrModulus, Maximum<long double> > operation(
+      NestOperations<ComplexToSqrModulus, Maximum<double> > operation(
         innerOperation,
-        Maximum<long double>(0)
+        Maximum<double>(0)
       );
       forEach(*UnaryTransformation<DestinationImage>::destination, operation);
       return operation.getResult();

@@ -59,14 +59,14 @@ namespace gip {
   class FloatToGrayWithScale : public UnaryOperation<float, GrayPixel> {
   private:
 
-    long double scale = 0;
+    double scale = 0;
   public:
 
-    inline FloatToGrayWithScale(long double _scale) throw() : scale(_scale) {
+    inline FloatToGrayWithScale(double _scale) throw() : scale(_scale) {
     }
 
     inline GrayPixel operator()(const float& value) const throw() {
-      long double temp = scale * value;
+      double temp = scale * value;
       if (temp < 0x00) {
         return 0x00;
       } else if (temp > 0xff) {
@@ -91,10 +91,10 @@ namespace gip {
   class RGBToComplex : public UnaryOperation<ColorPixel, Complex> {
   private:
 
-    long double scale = 0;
+    double scale = 0;
   public:
 
-    inline RGBToComplex(long double _scale) throw() : scale(_scale) {
+    inline RGBToComplex(double _scale) throw() : scale(_scale) {
     }
 
     inline Complex operator()(const ColorPixel& value) const throw() {
@@ -106,14 +106,14 @@ namespace gip {
   class ComplexToRGB : public UnaryOperation<Complex, ColorPixel> {
   private:
 
-    const long double scale = 0;
+    const double scale = 0;
   public:
 
-    inline ComplexToRGB(long double _scale) throw() : scale(_scale) {
+    inline ComplexToRGB(double _scale) throw() : scale(_scale) {
     }
 
     inline Result operator()(const Argument& value) const throw() {
-      long double temp = scale * value.getReal();
+      double temp = scale * value.getReal();
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
       } else if (temp > 0xff) {
@@ -128,14 +128,14 @@ namespace gip {
   class ComplexToRGBImaginary : public UnaryOperation<Complex, ColorPixel> {
   private:
 
-    long double scale = 0;
+    double scale = 0;
   public:
 
-    inline ComplexToRGBImaginary(long double _scale) throw() : scale(_scale) {
+    inline ComplexToRGBImaginary(double _scale) throw() : scale(_scale) {
     }
 
     inline Result operator()(const Argument& value) const throw() {
-      long double temp = scale * value.getImaginary();
+      double temp = scale * value.getImaginary();
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
       } else if (temp > 0xff) {
@@ -150,14 +150,14 @@ namespace gip {
   class ComplexToRGBSqrModulus : public UnaryOperation<Complex, ColorPixel> {
   private:
 
-    long double scale = 0;
+    double scale = 0;
   public:
 
-    inline ComplexToRGBSqrModulus(long double _scale) throw() : scale(_scale) {
+    inline ComplexToRGBSqrModulus(double _scale) throw() : scale(_scale) {
     }
 
     inline Result operator()(const Argument& value) const throw() {
-      long double temp = scale * value.getSqrModulus();
+      double temp = scale * value.getSqrModulus();
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
       } else if (temp > 0xff) {
@@ -172,14 +172,14 @@ namespace gip {
   class ComplexToRGBModulus : public UnaryOperation<Complex, ColorPixel> {
   private:
 
-    long double scale = 0;
+    double scale = 0;
   public:
 
-    inline ComplexToRGBModulus(long double _scale) throw() : scale(_scale) {
+    inline ComplexToRGBModulus(double _scale) throw() : scale(_scale) {
     }
 
     inline Result operator()(const Argument& value) const throw() {
-      long double temp = scale * value.getModulus();
+      double temp = scale * value.getModulus();
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
       } else if (temp > 0xff) {
@@ -194,14 +194,14 @@ namespace gip {
   class ComplexToRGBLogModulus : public UnaryOperation<Complex, ColorPixel> {
   private:
 
-    long double scale = 0;
+    double scale = 0;
   public:
 
     inline ComplexToRGBLogModulus(double _scale) throw() : scale(_scale) {
     }
 
     inline Result operator()(const Argument& value) const throw() {
-      long double temp = scale * Math::ln(1 + value.getModulus());
+      double temp = scale * Math::ln(1 + value.getModulus());
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
       } else if (temp > 0xff) {
