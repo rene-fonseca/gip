@@ -15,9 +15,9 @@
 
 namespace gip {
   
-  template class Scale<GrayImage, GrayImage>;
-  template class Scale<ColorImage, ColorImage>;
-  template class Scale<ColorAlphaImage, ColorAlphaImage>;
+  template _DK_SDU_MIP__BASE__API class Scale<GrayImage, GrayImage>;
+  template _DK_SDU_MIP__BASE__API class Scale<ColorImage, ColorImage>;
+  template _DK_SDU_MIP__BASE__API class Scale<ColorAlphaImage, ColorAlphaImage>;
   
   template<class DEST, class SRC>
   Scale<DEST, SRC>::Scale(DestinationImage* destination, const SourceImage* source) throw(ImageException)
