@@ -44,7 +44,7 @@ namespace gip {
     ColorImage* canvas = nullptr;
     /** The dimension of the canvas. */
     Dimension dimension;
-    /** The rows . */
+    /** The rows. */
     ColorImage::Rows rows;
     /** The name of the active font. */
     String fontName;
