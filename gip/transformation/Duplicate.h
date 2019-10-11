@@ -39,7 +39,7 @@ namespace gip {
     @version 1.0
   */
 
-  class _COM_AZURE_DEV__BASE__API Duplicate : public Transformation<ColorImage, ColorImage> {
+  class _COM_AZURE_DEV__GIP__API Duplicate : public Transformation<ColorImage, ColorImage> {
   public:
 
     /**

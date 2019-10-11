@@ -25,7 +25,7 @@ namespace gip {
 
   typedef unsigned char byte;
 
-  class _COM_AZURE_DEV__BASE__API MovieDescription : public Object {
+  class _COM_AZURE_DEV__GIP__API MovieDescription : public Object {
   public:
 
     /**
@@ -46,7 +46,7 @@ namespace gip {
     @version 1.0
   */
 
-  class _COM_AZURE_DEV__BASE__API AVIEncoder : public Object {
+  class _COM_AZURE_DEV__GIP__API AVIEncoder : public Object {
   private:
 
     String filename;
@@ -114,7 +114,7 @@ namespace gip {
 
 
 
-  class _COM_AZURE_DEV__BASE__API AVIReader : public Object {
+  class _COM_AZURE_DEV__GIP__API AVIReader : public Object {
   public:
 
     typedef enum {RGB, RLE8, RLE4} FrameCompression;
@@ -125,7 +125,7 @@ namespace gip {
       @short Description of the AVI file.
       @version 1.0
     */
-    class _COM_AZURE_DEV__BASE__API GlobalDescriptor : public Object {
+    class _COM_AZURE_DEV__GIP__API GlobalDescriptor : public Object {
       friend class AVIReader;
     private:
 
@@ -178,7 +178,7 @@ namespace gip {
       @short Format of the video stream data.
       @version 1.0
     */
-    class VideoStreamDescriptor : public Object {
+    class _COM_AZURE_DEV__GIP__API VideoStreamDescriptor : public Object {
       friend class AVIReader;
     public:
 

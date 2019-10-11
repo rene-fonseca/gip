@@ -27,7 +27,7 @@ namespace gip {
     @version 1.0
   */
   
-  class _COM_AZURE_DEV__BASE__API Gradient : public Transformation<GrayImage, GrayImage> {
+  class _COM_AZURE_DEV__GIP__API Gradient : public Transformation<GrayImage, GrayImage> {
   public:
 
     /**

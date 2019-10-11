@@ -29,7 +29,7 @@ namespace gip {
     @version 1.0
   */
 
-  class _COM_AZURE_DEV__BASE__API CoordinateMapper : public Object {
+  class _COM_AZURE_DEV__GIP__API CoordinateMapper : public Object {
   protected:
 
     /** The dimension to be enumerated. */

@@ -25,7 +25,7 @@ namespace gip {
   @version 1.0
 */
 
-class _COM_AZURE_DEV__BASE__API Version : public base::Version {
+class _COM_AZURE_DEV__GIP__API Version : public base::Version {
 private:
 
   /** Banner. */

@@ -30,7 +30,7 @@ namespace gip {
     @version 1.0
   */
 
-  class _COM_AZURE_DEV__BASE__API Camera : public Object {
+  class _COM_AZURE_DEV__GIP__API Camera : public Object {
   public:
 
     /**

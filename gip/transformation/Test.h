@@ -25,7 +25,7 @@ namespace gip {
     @version 1.0
   */
   
-  class _COM_AZURE_DEV__BASE__API Test : public UnaryTransformation<ColorImage> {
+  class _COM_AZURE_DEV__GIP__API Test : public UnaryTransformation<ColorImage> {
   public:
 
     Test(DestinationImage* destination) throw();

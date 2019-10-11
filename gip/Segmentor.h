@@ -29,7 +29,7 @@ namespace gip {
     @version 1.0
   */
 
-  class _COM_AZURE_DEV__BASE__API Segmentor : public Object {
+  class _COM_AZURE_DEV__GIP__API Segmentor : public Object {
   protected:
 
     /** The dimension to be segmented. */

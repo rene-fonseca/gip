@@ -25,7 +25,7 @@ namespace gip {
     @version 1.0
   */
 
-  class _COM_AZURE_DEV__BASE__API Point2D {
+  class _COM_AZURE_DEV__GIP__API Point2D {
   private:
 
     /** Specifies the Y coordinate. */

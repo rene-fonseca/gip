@@ -37,7 +37,7 @@ namespace gip {
     @version 1.1
   */
   
-  class _COM_AZURE_DEV__BASE__API ImageEncoder : public Object {
+  class _COM_AZURE_DEV__GIP__API ImageEncoder : public Object {
   public:
 
     /** Exception cause. */

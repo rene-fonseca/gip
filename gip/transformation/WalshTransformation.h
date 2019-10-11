@@ -28,7 +28,7 @@ namespace gip {
     @version 1.0
   */
 
-  class _COM_AZURE_DEV__BASE__API WalshTransformation : public Transformation<FloatImage, FloatImage> {
+  class _COM_AZURE_DEV__GIP__API WalshTransformation : public Transformation<FloatImage, FloatImage> {
   private:
 
     /** Lookup table for row indices. */

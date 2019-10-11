@@ -28,7 +28,7 @@ namespace gip {
     @version 1.0
   */
 
-  class _COM_AZURE_DEV__BASE__API DiscreteCosineTransformation : public Transformation<FloatImage, FloatImage> {
+  class _COM_AZURE_DEV__GIP__API DiscreteCosineTransformation : public Transformation<FloatImage, FloatImage> {
   private:
 
     typedef FloatImage::Pixel Pixel;

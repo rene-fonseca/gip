@@ -28,7 +28,7 @@ namespace gip {
     @version 1.0
   */
 
-  class _COM_AZURE_DEV__BASE__API FourierTransformation : public Transformation<ComplexImage, ComplexImage> {
+  class _COM_AZURE_DEV__GIP__API FourierTransformation : public Transformation<ComplexImage, ComplexImage> {
   private:
 
     /** Specifies that a forward Fourier transformation has been requested. */

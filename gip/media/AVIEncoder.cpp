@@ -461,6 +461,7 @@ AVIEncoder::~AVIEncoder() {
 
 
 void AVIReader::analyse() throw(IOException) {
+#if 0
   {
     Chunk riff;
     file.read(Cast::getAddress(riff), sizeof(riff));
@@ -470,6 +471,7 @@ void AVIReader::analyse() throw(IOException) {
     bassert(name == makeChunkId('A', 'V', 'I', ' '), InvalidFormat(this));
     fout << "riff=" << riff.id << " size=" << riff.size << " name=" << name << ENDL;
   }
+#endif
 
   unsigned int totalRead = 0;
 
@@ -868,11 +870,13 @@ void AVIReader::getFrame(ColorImage& frame) throw(IOException) {
   while (true) { // find frame of video stream
     // check size
     file.read(Cast::getAddress(chunk), sizeof(chunk));
+    // check size
+    unsigned int size = (chunk.size + 1) / 2 * 2;
+#if 0
     fout << "getFrame: chunk=" << chunk.id
          << " size=" << chunk.size << ENDL;
-    // check size
-    unsigned int size = (chunk.size+1)/2*2;
     fout << "getFrame: streamId=" << getStreamId(chunk.id) << " videoStreamIndex=" << videoStreamIndex << ENDL;
+#endif
 
     if (getStreamId(chunk.id) == videoStreamIndex) {
 

@@ -36,7 +36,7 @@ namespace gip {
     @version 1.0
   */
 
-  class _COM_AZURE_DEV__BASE__API Camera1394 : public Camera {
+  class _COM_AZURE_DEV__GIP__API Camera1394 : public Camera {
   public:
 
     /**
@@ -47,7 +47,7 @@ namespace gip {
       @version 1.0
     */
     
-    class _COM_AZURE_DEV__BASE__API Camera1394Exception : public Exception {
+    class _COM_AZURE_DEV__GIP__API Camera1394Exception : public Exception {
     public:
       
       /**

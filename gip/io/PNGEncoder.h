@@ -26,7 +26,7 @@ namespace gip {
     @version 1.1
   */
   
-  class _COM_AZURE_DEV__BASE__API PNGEncoder : public ImageEncoder {
+  class _COM_AZURE_DEV__GIP__API PNGEncoder : public ImageEncoder {
   public:
 
     /**

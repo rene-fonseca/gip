@@ -89,11 +89,16 @@ configure_file(${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/generated/gip
 include_directories(${CMAKE_BINARY_DIR}/generated)
 
 add_library(gip SHARED ${gip_SRC} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
+target_compile_definitions(gip PUBLIC _DK_SDU_MIP__GIP__SHARED_LIBRARY)
+
 add_library(gip_STATIC STATIC ${gip_SRC} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 set_target_properties(gip_STATIC PROPERTIES OUTPUT_NAME gip_static)
 
-find_library ( BASE_LIB NAMES base libbase libbase.dylib PATHS base ../base ../base/build/Debug )
-message (${BASE_LIB})
+find_library(BASE_LIB NAMES base libbase libbase.dylib PATHS base ../base ../base/build/Debug)
+message(${BASE_LIB})
+
+find_library(BASE_LIB_STATIC NAMES base_static libbase_static libbase_static.lib PATHS base ../base ../base/build/Debug)
+message(${BASE_LIB_STATIC})
 
 #add_dependencies( gip base )
 target_link_libraries(gip ${BASE_LIB})
