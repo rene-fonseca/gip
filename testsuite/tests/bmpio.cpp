@@ -62,7 +62,7 @@ public:
       ColorImage* orig;
       try {
         orig = readEncoder.read(filename);
-      } catch (gip::InvalidFormat& e) {
+      } catch (gip::InvalidFormat&) {
         ferr << MESSAGE("Invalid or unsupported BMP format") << ENDL;
         setExitCode(EXIT_CODE_ERROR);
         return;

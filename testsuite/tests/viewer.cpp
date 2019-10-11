@@ -724,7 +724,7 @@ public:
   }
   
   void update(const View& view) throw() {
-    openGL.glClearColor(0.3, 0.3, 0.6, 1.0);
+    openGL.glClearColor(0.3f, 0.3f, 0.6f, 1.0f);
     openGL.glClear(OpenGL::COLOR_BUFFER_BIT | OpenGL::DEPTH_BUFFER_BIT);
     
     openGL.glMatrixMode(OpenGL::MODELVIEW);
