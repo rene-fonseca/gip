@@ -34,28 +34,13 @@ endif ()
 
 endif ()
 
-include_directories ("${PROJECT_SOURCE_DIR}")
-include_directories ("${PROJECT_SOURCE_DIR}/../base") # TAG: need depend on base lib
+include_directories("${PROJECT_SOURCE_DIR}")
+include_directories("${PROJECT_SOURCE_DIR}/../base") # TAG: need depend on base lib
 
-file(GLOB gip_SRC
+file(GLOB_RECURSE gip_SRC
   "gip/*.h"
   "gip/*.cpp"
-  "gip/analysis/*.h"
-  "gip/analysis/*.cpp"
-  "gip/canvas/*.h"
-  "gip/canvas/*.cpp"
-  "gip/io/*.h"
-  "gip/io/*.cpp"
-  "gip/media/*.h"
-  "gip/media/*.cpp"
-  "gip/operation/*.h"
-  "gip/operation/*.cpp"
-  "gip/transformation/*.h"
-  "gip/transformation/*.cpp"
-  "gip/video/*.h"
-  "gip/video/*.cpp"
 )
-# TAG: analysis io media operation transformation video
 
 execute_process(OUTPUT_VARIABLE GIT_BRANCH COMMAND git symbolic-ref --short HEAD)
 string(REGEX REPLACE "\n$" "" GIT_BRANCH "${GIT_BRANCH}")
@@ -100,17 +85,25 @@ message(${BASE_LIB})
 find_library(BASE_LIB_STATIC NAMES base_static libbase_static libbase_static.lib PATHS base ../base ../base/build/Debug)
 message(${BASE_LIB_STATIC})
 
-#add_dependencies( gip base )
+#add_dependencies(gip base)
 target_link_libraries(gip ${BASE_LIB})
 
 if (MSVC)
 # target_link_libraries(gip Ws2_32 Netapi32 Winmm)
 endif ()
 
+foreach(source IN ITEMS ${gip_SRC})
+  get_filename_component(source_path "${source}" PATH)
+  file(RELATIVE_PATH source_path_rel "${PROJECT_SOURCE_DIR}/gip" "${source_path}")
+  string(REPLACE "/" "\\" group_path "${source_path_rel}")
+  source_group("${group_path}" FILES "${source}")
+  #message ("${group_path} -> ${source}")
+endforeach()
+
 # avoid no symbols warnings
 if (APPLE)
-set(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> Scr <TARGET> <LINK_FLAGS> <OBJECTS>")
-set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
+  set(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> Scr <TARGET> <LINK_FLAGS> <OBJECTS>")
+  set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
 endif ()
 
 add_subdirectory("testsuite/tests")
