@@ -66,10 +66,19 @@ string(REGEX REPLACE "\n$" "" GIT_COMMIT_SHORT "${GIT_COMMIT_SHORT}")
 execute_process(OUTPUT_VARIABLE GIT_REVISION COMMAND git rev-list HEAD --count)
 string(REGEX REPLACE "\n$" "" GIT_REVISION "${GIT_REVISION}")
 # TAG: add build date date --iso-8601=seconds
+
+if (MSVC)
+set(BUILD_DATE "Epoch") # TAG: FIXME
+else ()
 execute_process(OUTPUT_VARIABLE BUILD_DATE COMMAND date)
 string(REGEX REPLACE "\n$" "" BUILD_DATE "${BUILD_DATE}")
+endif ()
+if (MSVC)
+set(BUILD_DATE_SECONDS "0") # TAG: FIXME
+else ()
 execute_process(OUTPUT_VARIABLE BUILD_DATE_SECONDS COMMAND date "+%s")
 string(REGEX REPLACE "\n$" "" BUILD_DATE_SECONDS "${BUILD_DATE_SECONDS}")
+endif ()
 
 message("Branch: ${GIT_BRANCH}")
 message("Commit: ${GIT_COMMIT}")
