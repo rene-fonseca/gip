@@ -194,7 +194,7 @@ namespace gip {
     cinfo.err = ::jpeg_std_error(&jerr);
     jerr.error_exit = JPEGEncoderImpl::errorHandler;
     
-    ColorImage* image = 0;
+    ColorImage* image = nullptr;
     try {
       ::jpeg_create_decompress(&cinfo);
       cinfo.src = Cast::pointer<struct jpeg_source_mgr*>(&source);

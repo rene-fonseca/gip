@@ -1358,7 +1358,7 @@ namespace gip {
   // width, height, bytesPerLine, bytesPerCharacter
 
   void Canvas::write(const Point& position, const String& message) throw() {
-    const unsigned char* fontBitmap = 0; // fill me
+    const unsigned char* fontBitmap = nullptr; // fill me
     const unsigned int bytesPerRow = 1;
     const unsigned int bytesPerCharacter = 16;
     const unsigned int characterWidth = 8;

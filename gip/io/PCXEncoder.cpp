@@ -132,8 +132,8 @@ _COM_AZURE_DEV__BASE__PACKED__END
       }
     }
 
-    uint8* src = 0;
-    uint8* endOfBuffer = 0;
+    uint8* src = nullptr;
+    uint8* endOfBuffer = nullptr;
     unsigned int offset = sizeof(header);
 
     for (unsigned int row = 0; row < height; ++row) { // read all rows of image

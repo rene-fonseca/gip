@@ -1598,7 +1598,7 @@ public:
       if (verbosity >= Verbosity::EVERYTHING) {
         fout << MESSAGE("Encoder: ") << encoder->getDescription() << ENDL;
       }
-      ColorImage* frame = 0;
+      ColorImage* frame = nullptr;
       try {
         frame = encoder->read(openFile.getFilename());
       } catch (IOException) {
