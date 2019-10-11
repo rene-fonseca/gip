@@ -165,10 +165,10 @@ namespace gip {
 
     if (options & ANTIALIASING) {
       unsigned int yExactSquared = radius * radius; // calculated incrementally: radius * radius - x * x
-      int otherY; // selects inner or outer pixel
+      int otherY = 0; // selects inner or outer pixel
 
       if (options & FILL) { // anti aliased filled circle
-        unsigned int yLast = Math::iSqrt(radius * radius/2); // TAG: rounding problem
+        int yLast = Math::iSqrt(radius * radius/2); // TAG: rounding problem
         while (x < y) {
           unsigned int yExact = Math::iSqrt8Round(yExactSquared); // scaled with 256 // TAG: could be optimized
           unsigned int error = yExact & 0xff; // use fraction - error = y - y' <= 0.5 - scaled with 256
@@ -233,9 +233,9 @@ namespace gip {
         }
       } else { // anti aliased circle
         while (x < y) {
-          unsigned int error;
-          unsigned int otherError;
-          int otherY;
+          unsigned int error = 0;
+          unsigned int otherError = 0;
+          int otherY = 0;
           unsigned int yExact = Math::iSqrt8Round(yExactSquared); // scaled with 256 // TAG: could be optimized
           if (yExact < y * 256) {
             error = yExact & 0xff; // use fraction
@@ -1066,6 +1066,7 @@ namespace gip {
         (point.getX() < dimension.getWidth()) && (point.getY() < dimension.getHeight())) {
       return rows[point.getY()][point.getX()];
     }
+    result.rgb = 0;
     return result;
   }
 

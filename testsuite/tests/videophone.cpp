@@ -156,7 +156,7 @@ public:
       if (success) {
         Camera1394::convert(frame, camera.getPixelFormat(), buffer.getElements());
       }
-    } catch (Camera1394::Camera1394Exception& e) {
+    } catch (Camera1394::Camera1394Exception&) {
     }
     return success;
   }
@@ -337,7 +337,7 @@ public:
             buffer.getElements(),
             buffer.getByteSize()
           );
-        } catch (EndOfFile& e) {
+        } catch (EndOfFile&) {
           fout << "Connection terminated by remote host" << ENDL;
           Application::getApplication()->terminate();
           break;

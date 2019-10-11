@@ -63,7 +63,7 @@ public:
     try {
       IEEE1394 ieee1394;
       fout << MESSAGE("Adapters: ") << ieee1394.getAdapters() << ENDL;
-    } catch (Exception& e) {
+    } catch (Exception&) {
       fout << ENDL;
       ferr << MESSAGE("Unable to list adapters") << ENDL;
       Application::getApplication()->setExitCode(EXIT_CODE_ERROR);

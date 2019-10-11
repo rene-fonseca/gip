@@ -1577,7 +1577,7 @@ public:
         if (!openFile.execute()) {
           return; // canceled
         }
-      } catch (UserInterfaceException& e) {
+      } catch (UserInterfaceException&) {
         MessageDialog dialog(
           MESSAGE("Error"),
           MESSAGE("Unable to open dialog."),
@@ -1619,7 +1619,7 @@ public:
         if (!saveFile.execute()) {
           return; // canceled
         }
-      } catch (UserInterfaceException& e) {
+      } catch (UserInterfaceException&) {
         MessageDialog dialog(
           MESSAGE("Error"),
           MESSAGE("Unable to open dialog."),
@@ -1669,7 +1669,7 @@ public:
         try {
           // TAG: fixme
           this->displayMode = displayMode;
-        } catch (UserInterfaceException& e) {
+        } catch (UserInterfaceException&) {
           MessageDialog dialog(
             MESSAGE("Error"),
             MESSAGE("Unable to switch display mode."),
