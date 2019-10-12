@@ -32,7 +32,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated") # exception specifications
   # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-overflow") # FIXME
   # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wdeprecated-declarations") # FIXME
-  # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror") # no warnings allowed
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror") # no warnings allowed
 endif ()
 
 endif ()
@@ -86,18 +86,11 @@ include_directories(${CMAKE_BINARY_DIR}/generated)
 add_library(gip SHARED ${gip_SRC} ${gip_ADDITIONAL} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 target_compile_definitions(gip PUBLIC _DK_SDU_MIP__GIP__SHARED_LIBRARY)
 
-if (APPLE)
 # macOS requires all values to be less than 1024
 set_target_properties(gip
   PROPERTIES
   VERSION ${gip_VERSION_MAJOR}.${gip_VERSION_MINOR}
   SOVERSION ${gip_VERSION_MAJOR})
-else ()
-set_target_properties(gip
-  PROPERTIES
-  VERSION ${gip_VERSION_MAJOR}.${gip_VERSION_MINOR}.${GIT_REVISION}
-  SOVERSION ${gip_VERSION_MAJOR})
-endif ()
 
 add_library(gip_STATIC STATIC ${gip_SRC} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 set_target_properties(gip_STATIC PROPERTIES OUTPUT_NAME gip_static)
