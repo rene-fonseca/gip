@@ -1,13 +1,14 @@
-cmake_minimum_required (VERSION 3.1)
+cmake_minimum_required(VERSION 3.1)
 
 # see https://cmake.org/cmake-tutorial/
 
-project (gip)
+project(gip)
 
-set (gip_VERSION_MAJOR 0)
-set (gip_VERSION_MINOR 9)
+set(gip_VERSION_MAJOR 0)
+set(gip_VERSION_MINOR 9)
+set(gip_VERSION_MICRO 0)
 
-#configure_file (
+#configure_file(
 #  "${PROJECT_SOURCE_DIR}/configure.h.in"
 #  "${PROJECT_BINARY_DIR}/configure.h"
 #)
@@ -73,12 +74,14 @@ message("Revision: ${GIT_REVISION}")
 
 # generate configuration header
 configure_file(${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/generated/gip/config.h)
-include_directories(${CMAKE_BINARY_DIR}/generated)
 
 set(gip_ADDITIONAL "")
 if (MSVC)
-  set(gip_ADDITIONAL ${CMAKE_SOURCE_DIR}/gip/gip.rc)
+  configure_file(${CMAKE_SOURCE_DIR}/gip.rc.in ${CMAKE_BINARY_DIR}/generated/gip/gip.rc)
+  set(gip_ADDITIONAL ${CMAKE_BINARY_DIR}/generated/gip/gip.rc)
 endif ()
+
+include_directories(${CMAKE_BINARY_DIR}/generated)
 
 add_library(gip SHARED ${gip_SRC} ${gip_ADDITIONAL} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 target_compile_definitions(gip PUBLIC _DK_SDU_MIP__GIP__SHARED_LIBRARY)
