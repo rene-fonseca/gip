@@ -21,4 +21,3 @@ namespace gip {
   }
 
 }; // end of gip namespace
-

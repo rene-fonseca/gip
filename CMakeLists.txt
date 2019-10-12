@@ -75,12 +75,12 @@ message("Revision: ${GIT_REVISION}")
 configure_file(${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 include_directories(${CMAKE_BINARY_DIR}/generated)
 
-set(git_ADDITIONAL "")
+set(gip_ADDITIONAL "")
 if (MSVC)
-  set(git_ADDITIONAL ${CMAKE_SOURCE_DIR}/git/git.rc)
+  set(gip_ADDITIONAL ${CMAKE_SOURCE_DIR}/gip/gip.rc)
 endif ()
 
-add_library(gip SHARED ${gip_SRC} ${git_ADDITIONAL} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
+add_library(gip SHARED ${gip_SRC} ${gip_ADDITIONAL} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 target_compile_definitions(gip PUBLIC _DK_SDU_MIP__GIP__SHARED_LIBRARY)
 
 add_library(gip_STATIC STATIC ${gip_SRC} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
