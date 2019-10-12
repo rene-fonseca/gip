@@ -130,7 +130,7 @@ public:
       );
     }
     
-    for (int i = 0; i < canvas.getDimension().getWidth() + 45; i += 5) {
+    for (unsigned int i = 0; i < canvas.getDimension().getWidth() + 45; i += 5) {
       canvas.line(Point(-45 + i, 0), Point(i, 45), makeColorPixel(255, 0, 0), Canvas::ANTIALIASING);
       canvas.line(Point(-45 + i, 45), Point(i, 0), makeColorPixel(0, 0, 255), Canvas::ANTIALIASING);
     }

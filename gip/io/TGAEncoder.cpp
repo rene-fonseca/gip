@@ -96,7 +96,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     
     File file(filename, File::READ, 0);
     if (file.getSize() >= sizeof(footer)) {
-      file.setPosition(-sizeof(footer), File::END);
+      file.setPosition(-static_cast<MemoryDiff>(sizeof(footer)), File::END);
       file.read(Cast::getAddress(footer), sizeof(footer));
       if ((compare<char>(
              footer.signature,
@@ -133,7 +133,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     
     File file(filename, File::READ, 0);
     if (file.getSize() >= sizeof(footer)) {
-      file.setPosition(-sizeof(footer), File::END);
+      file.setPosition(-static_cast<MemoryDiff>(sizeof(footer)), File::END);
       file.read(Cast::getAddress(footer), sizeof(footer));
       if ((compare<char>(
              footer.signature,
@@ -361,7 +361,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     
     File file(filename, File::READ, 0);
     if (file.getSize() >= sizeof(footer)) {
-      file.setPosition(-sizeof(footer), File::END);
+      file.setPosition(-static_cast<MemoryDiff>(sizeof(footer)), File::END);
       file.read(Cast::getAddress(footer), sizeof(footer) - 1);
       if ((compare<char>(
              footer.signature,
