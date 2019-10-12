@@ -8,6 +8,7 @@ cmake_install.cmake
 Makefile
 *.a
 *.so
+*.so.*
 *.dylib
 testsuite/
 
