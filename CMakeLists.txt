@@ -79,11 +79,12 @@ set_target_properties(gip
 add_library(gip_STATIC STATIC ${gip_SRC} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 set_target_properties(gip_STATIC PROPERTIES OUTPUT_NAME gip_static)
 
+# TAG: need to handle Debug/Release
 find_library(BASE_LIB NAMES base libbase libbase.dylib PATHS base ../base ../base/build/Debug)
-message(${BASE_LIB})
+message("BASE_LIB: ${BASE_LIB}")
 
 find_library(BASE_LIB_STATIC NAMES base_static libbase_static libbase_static.lib PATHS base ../base ../base/build/Debug)
-message(${BASE_LIB_STATIC})
+message("BASE_LIB_STATIC: ${BASE_LIB_STATIC}")
 
 #add_dependencies(gip base)
 target_link_libraries(gip ${BASE_LIB})
