@@ -1,8 +1,9 @@
 build/
+Debug/
+Release/
 generated/
 CMakeFiles/
 CMakeCache.txt
-build/
 cmake_install.cmake
 Makefile
 *.a

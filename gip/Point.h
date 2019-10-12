@@ -46,7 +46,8 @@ namespace gip {
       @param x The desired x coordinate.
       @param y The desired y coordinate.
     */
-    Point(int x, int y) throw();
+    inline Point(int _x, int _y) throw() : x(_x), y(_y) {
+    }
 
     /**
       Initializes point from other point.
@@ -91,9 +92,6 @@ namespace gip {
       this->y = y;
     }
   };
-
-  inline Point::Point(int _x, int _y) throw() : x(_x), y(_y) {
-  }
   
   inline Point operator+(const Point& left, const Point& right) throw() {
     return Point(left.getX() + right.getX(), left.getY() + right.getY());
@@ -106,7 +104,7 @@ namespace gip {
   /**
     Writes the specified point to the stream (e.g. "(x,y)").
   */
-  FormatOutputStream& operator<<(FormatOutputStream& stream, const Point& value) throw(IOException);
+  _COM_AZURE_DEV__GIP__API FormatOutputStream& operator<<(FormatOutputStream& stream, const Point& value) throw(IOException);
 
 }; // end of gip namespace
 

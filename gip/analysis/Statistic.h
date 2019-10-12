@@ -37,7 +37,7 @@ namespace gip {
     /** The pixel type. */
     typedef typename Image::Pixel Pixel;
     /** The number of different pixel values. */
-    static const unsigned int NUMBER_OF_SYMBOLS = PixelTraits<Pixel>::MAXIMUM + 1;
+    static constexpr unsigned int NUMBER_OF_SYMBOLS = PixelTraits<Pixel>::MAXIMUM + 1;
     
     /** The number of samples. */
     unsigned int numberOfSamples = 0;
@@ -72,8 +72,8 @@ namespace gip {
     */
     Statistic(const Image& image) throw()
       : numberOfSamples(image.getDimension().getSize()) {
+
       // count frequency of each pixel value
-      unsigned int frequency[NUMBER_OF_SYMBOLS];
       fill<unsigned int>(frequency, getArraySize(frequency), 0);
       
       typename Image::ReadableRows rows = Cast::implicit<const Image>(image).getRows();
@@ -111,7 +111,7 @@ namespace gip {
             maximumFrequency = frequency[i];
             mode = i;
           }
-          if (i < minimum) {
+          if (static_cast<int>(i) < minimum) {
             minimum = i;
           }
           maximum = i;

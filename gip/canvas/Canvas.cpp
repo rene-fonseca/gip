@@ -172,7 +172,7 @@ namespace gip {
         while (x < y) {
           unsigned int yExact = Math::iSqrt8Round(yExactSquared); // scaled with 256 // TAG: could be optimized
           unsigned int error = yExact & 0xff; // use fraction - error = y - y' <= 0.5 - scaled with 256
-          int yBlend = (yExact < y * 256) ? y /*blend with inner*/ : (y + 1) /*blend with outer*/;
+          int yBlend = (yExact < static_cast<unsigned int>(y * 256)) ? y /*blend with inner*/ : (y + 1) /*blend with outer*/;
 
           pixelInternal(
             Point(x, yBlend) + center,
@@ -237,7 +237,7 @@ namespace gip {
           unsigned int otherError = 0;
           int otherY = 0;
           unsigned int yExact = Math::iSqrt8Round(yExactSquared); // scaled with 256 // TAG: could be optimized
-          if (yExact < y * 256) {
+          if (yExact < static_cast<unsigned int>(y * 256)) {
             error = yExact & 0xff; // use fraction
             otherError = 255 - error;
             otherY = y - 1; // blend with inner pixel
@@ -396,7 +396,7 @@ namespace gip {
         unsigned int yOuterExact = Math::iSqrt8Round(radiusOuter*radiusOuter - x*x); // scaled with 256 // TAG: could be optimized
         error = yOuterExact & 0xff; // use fraction
         int yOuterBlend =
-          (yOuterExact < yOuter * 256) ? yOuter /*blend with inner*/ : (yOuter + 1) /*blend with outer*/;
+          (yOuterExact < static_cast<unsigned int>(yOuter * 256)) ? yOuter /*blend with inner*/ : (yOuter + 1) /*blend with outer*/;
         pixelInternal(
           Point(x, yOuterBlend) + center,
           blend(getPixelInternal(Point(x, yOuterBlend) + center), color, 255, error)
@@ -433,7 +433,7 @@ namespace gip {
         unsigned int yInnerExact = Math::iSqrt8Round(radiusInner*radiusInner - x*x); // scaled with 256 // TAG: could be optimized
         error = 255 - yInnerExact & 0xff; // use fraction
         int yInnerBlend =
-          (yInnerExact < yInner * 256) ? (yInner - 1) /*blend with outer*/ : yInner /*blend with inner*/;
+          (yInnerExact < static_cast<unsigned int>(yInner * 256)) ? (yInner - 1) /*blend with outer*/ : yInner /*blend with inner*/;
         pixelInternal(
           Point(x, yInnerBlend) + center,
           blend(getPixelInternal(Point(x, yInnerBlend) + center), color, 255, error)
@@ -499,7 +499,7 @@ namespace gip {
         unsigned int yOuterExact = Math::iSqrt8Round(radiusOuter*radiusOuter - x*x); // scaled with 256 // TAG: could be optimized
         int error = yOuterExact & 0xff; // use fraction
         int yOuterBlend =
-          (yOuterExact < yOuter * 256) ? yOuter /*blend with inner*/ : (yOuter + 1) /*blend with outer*/;
+          (yOuterExact < static_cast<unsigned int>(yOuter * 256)) ? yOuter /*blend with inner*/ : (yOuter + 1) /*blend with outer*/;
         pixelInternal(
           Point(x, yOuterBlend) + center,
           blend(getPixelInternal(Point(x, yOuterBlend) + center), color, 255, error)
@@ -748,7 +748,7 @@ namespace gip {
           unsigned int otherOpacity;
           int otherY;
           int yExact = dimension.getHeight() * Math::iSqrt8(dimension.getWidth()*dimension.getWidth() - x * x)/dimension.getWidth(); // TAG: rounding problem
-          if (yExact < 256 * y) {
+          if (yExact < y * 256) {
             otherOpacity = 256 * y - yExact;
             opacity = 255 - otherOpacity;
             otherY = y - 1; // blend with inner pixel
@@ -882,7 +882,7 @@ namespace gip {
           unsigned int otherOpacity;
           int otherY;
           int yExact = dimension.getHeight() * Math::iSqrt8(dimension.getWidth()*dimension.getWidth() - x * x)/dimension.getWidth(); // TAG: rounding problem
-          if (yExact < 256 * y) {
+          if (yExact < y * 256) {
             otherOpacity = 256 * y - yExact; // use fraction
             otherY = y - 1; // blend with inner pixel
           } else {
@@ -1054,16 +1054,14 @@ namespace gip {
   }
 
   void Canvas::pixel(const Point& point, Pixel color) throw() {
-    if ((point.getX() >= 0) && (point.getY() >= 0) &&
-        (point.getX() < dimension.getWidth()) && (point.getY() < dimension.getHeight())) {
+    if (isPointInsideDimension(point, dimension)) {
       rows[point.getY()][point.getX()] = color;
     }
   }
 
   Canvas::Pixel Canvas::getPixel(const Point& point) const throw() {
     Canvas::Pixel result;
-    if ((point.getX() >= 0) && (point.getY() >= 0) &&
-        (point.getX() < dimension.getWidth()) && (point.getY() < dimension.getHeight())) {
+    if (isPointInsideDimension(point, dimension)) {
       return rows[point.getY()][point.getX()];
     }
     result.rgb = 0;

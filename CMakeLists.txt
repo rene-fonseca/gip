@@ -1,13 +1,14 @@
-cmake_minimum_required (VERSION 3.1)
+cmake_minimum_required(VERSION 3.1)
 
 # see https://cmake.org/cmake-tutorial/
 
-project (gip)
+project(gip)
 
-set (gip_VERSION_MAJOR 0)
-set (gip_VERSION_MINOR 9)
+set(gip_VERSION_MAJOR 0)
+set(gip_VERSION_MINOR 9)
+set(gip_VERSION_MICRO 0)
 
-#configure_file (
+#configure_file(
 #  "${PROJECT_SOURCE_DIR}/configure.h.in"
 #  "${PROJECT_BINARY_DIR}/configure.h"
 #)
@@ -19,7 +20,7 @@ endif ()
 
 if (MSVC)
   # TAG: need to fix all exception specifications
-  # TAG: /wx # no warnings allowed
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /WX") # no warnings allowed
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4290 /wd4838 /wd4244 /wd4267 /wd4996 /wd4297")
 else ()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -73,15 +74,30 @@ message("Revision: ${GIT_REVISION}")
 
 # generate configuration header
 configure_file(${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/generated/gip/config.h)
-include_directories(${CMAKE_BINARY_DIR}/generated)
 
-set(git_ADDITIONAL "")
+set(gip_ADDITIONAL "")
 if (MSVC)
-  set(git_ADDITIONAL ${CMAKE_SOURCE_DIR}/git/git.rc)
+  configure_file(${CMAKE_SOURCE_DIR}/gip.rc.in ${CMAKE_BINARY_DIR}/generated/gip/gip.rc)
+  set(gip_ADDITIONAL ${CMAKE_BINARY_DIR}/generated/gip/gip.rc)
 endif ()
 
-add_library(gip SHARED ${gip_SRC} ${git_ADDITIONAL} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
+include_directories(${CMAKE_BINARY_DIR}/generated)
+
+add_library(gip SHARED ${gip_SRC} ${gip_ADDITIONAL} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 target_compile_definitions(gip PUBLIC _DK_SDU_MIP__GIP__SHARED_LIBRARY)
+
+if (APPLE)
+# macOS requires all values to be less than 1024
+set_target_properties(gip
+  PROPERTIES
+  VERSION ${gip_VERSION_MAJOR}.${gip_VERSION_MINOR}
+  SOVERSION ${gip_VERSION_MAJOR})
+else ()
+set_target_properties(gip
+  PROPERTIES
+  VERSION ${gip_VERSION_MAJOR}.${gip_VERSION_MINOR}.${GIT_REVISION}
+  SOVERSION ${gip_VERSION_MAJOR})
+endif ()
 
 add_library(gip_STATIC STATIC ${gip_SRC} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 set_target_properties(gip_STATIC PROPERTIES OUTPUT_NAME gip_static)

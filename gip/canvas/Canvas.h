@@ -54,18 +54,21 @@ namespace gip {
     /** Draws a clipped line onto the canvas with anti-aliasing enabled. */
     void lineClippedAntiAliased(const Point& p1, const Point& p2, Pixel color) throw();
 
+    /** Returns true if the point is inside the rectangle from (0, 0) and to Dimension. */
+    static inline bool isPointInsideDimension(const Point& point, const Dimension& dimension) noexcept {
+      return (point.getX() >= 0) && (point.getY() >= 0) &&
+        (static_cast<unsigned int>(point.getX()) < dimension.getWidth()) &&
+        (static_cast<unsigned int>(point.getY()) < dimension.getHeight());
+    }
+
     inline void pixelInternal(const Point& point, Pixel color) throw() {
-      if ((point.getX() >= 0) && (point.getY() >= 0) &&
-          (point.getX() < dimension.getWidth()) &&
-          (point.getY() < dimension.getHeight())) {
+      if (isPointInsideDimension(point, dimension)) {
         rows[point.getY()][point.getX()] = color;
       }
     }
 
     inline Pixel getPixelInternal(const Point& point) const throw() {
-      if ((point.getX() >= 0) && (point.getY() >= 0) &&
-          (point.getX() < dimension.getWidth()) &&
-          (point.getY() < dimension.getHeight())) {
+      if (isPointInsideDimension(point, dimension)) {
         return rows[point.getY()][point.getX()];
       }
       return Pixel();
