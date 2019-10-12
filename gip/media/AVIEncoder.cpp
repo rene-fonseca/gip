@@ -192,7 +192,7 @@ struct AVIPaletteChange {
   byte firstEntry;
   byte numberOfEntries;
   LittleEndian<uint16> flags;
-  AVIPaletteEntry entry[0];
+  AVIPaletteEntry entry[1];
 } _COM_AZURE_DEV__BASE__PACKED;
 _COM_AZURE_DEV__BASE__PACKED__END
 
@@ -893,7 +893,7 @@ void AVIReader::getFrame(ColorImage& frame) throw(IOException) {
         decodeFrame(frame, buffer.getElements(), chunk.size, COMPRESSED);
         break;
       } else if (streamType == getStreamType(makeChunkId('#', '#', 'p', 'c'))) { // palette change
-        const AVIPaletteChange* src = (AVIPaletteChange*)buffer.getElements();
+        const AVIPaletteChange* src = reinterpret_cast<const AVIPaletteChange*>(buffer.getElements());
         bassert(static_cast<unsigned int>(src->firstEntry) + static_cast<unsigned int>(src->numberOfEntries) <= 256, InvalidFormat(this));
         bassert(sizeof(AVIPaletteChange) + src->numberOfEntries * sizeof(AVIPaletteEntry) <= chunk.size, InvalidFormat(this));
         ColorPixel* destPalette = palette.getElements(); // palette has 256 entries

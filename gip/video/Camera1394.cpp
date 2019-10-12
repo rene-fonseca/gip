@@ -703,7 +703,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       adapter.read(
         node,
         IEEE1394::CSR_BASE_ADDRESS + vendorNameOffset + sizeof(IEEE1394::Quadlet),
-        Cast::pointer<uint8*>(leaf),
+        Cast::pointer<uint8*>(static_cast<char*>(leaf)),
         vendorLeafSize * sizeof(IEEE1394::Quadlet)
       );
       vendorName = String(leaf + 2 * sizeof(IEEE1394::Quadlet), (vendorLeafSize - 2) * sizeof(IEEE1394::Quadlet));
@@ -727,7 +727,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       adapter.read(
         node,
         IEEE1394::CSR_BASE_ADDRESS + modelNameOffset + sizeof(IEEE1394::Quadlet),
-        Cast::pointer<uint8*>(leaf),
+        Cast::pointer<uint8*>(static_cast<char*>(leaf)),
         modelLeafSize * sizeof(IEEE1394::Quadlet)
       );
       modelName = String(
