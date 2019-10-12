@@ -8,11 +8,6 @@ set(gip_VERSION_MAJOR 0)
 set(gip_VERSION_MINOR 9)
 set(gip_VERSION_MICRO 0)
 
-#configure_file(
-#  "${PROJECT_SOURCE_DIR}/configure.h.in"
-#  "${PROJECT_BINARY_DIR}/configure.h"
-#)
-
 if (MSVC)
   add_definitions(-DUNICODE)
   add_definitions(-D_UNICODE)
@@ -53,20 +48,9 @@ execute_process(OUTPUT_VARIABLE GIT_COMMIT_SHORT COMMAND git rev-parse --short H
 string(REGEX REPLACE "\n$" "" GIT_COMMIT_SHORT "${GIT_COMMIT_SHORT}")
 execute_process(OUTPUT_VARIABLE GIT_REVISION COMMAND git rev-list HEAD --count)
 string(REGEX REPLACE "\n$" "" GIT_REVISION "${GIT_REVISION}")
-# TAG: add build date date --iso-8601=seconds
 
-if (MSVC)
-set(BUILD_DATE "Epoch") # TAG: FIXME
-else ()
-execute_process(OUTPUT_VARIABLE BUILD_DATE COMMAND date)
-string(REGEX REPLACE "\n$" "" BUILD_DATE "${BUILD_DATE}")
-endif ()
-if (MSVC)
-set(BUILD_DATE_SECONDS "0") # TAG: FIXME
-else ()
-execute_process(OUTPUT_VARIABLE BUILD_DATE_SECONDS COMMAND date "+%s")
-string(REGEX REPLACE "\n$" "" BUILD_DATE_SECONDS "${BUILD_DATE_SECONDS}")
-endif ()
+string(TIMESTAMP BUILD_DATE "%Y-%m-%d" UTC)
+string(TIMESTAMP BUILD_DATE_SECONDS "%s" UTC)
 
 message("Branch: ${GIT_BRANCH}")
 message("Commit: ${GIT_COMMIT}")
