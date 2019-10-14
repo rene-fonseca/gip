@@ -68,7 +68,7 @@ endif ()
 include_directories(${CMAKE_BINARY_DIR}/generated)
 
 add_library(gip SHARED ${gip_SRC} ${gip_ADDITIONAL} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
-target_compile_definitions(gip PUBLIC _DK_SDU_MIP__GIP__SHARED_LIBRARY)
+target_compile_definitions(gip PUBLIC _COM_AZURE_DEV__GIP__SHARED_LIBRARY)
 
 # macOS requires all values to be less than 1024
 set_target_properties(gip
