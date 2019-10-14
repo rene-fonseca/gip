@@ -11,14 +11,16 @@
     For the licensing terms refer to the file 'LICENSE'.
  ***************************************************************************/
 
+#pragma once
+
+#include <base/configuration.h>
+
 #if (_COM_AZURE_DEV__BASE__FLAVOR == _COM_AZURE_DEV__BASE__WIN32)
 #if defined(_COM_AZURE_DEV__GIP__SHARED_LIBRARY_BUILD)
 #  define _COM_AZURE_DEV__GIP__API __declspec(dllexport)
 #elif defined(_COM_AZURE_DEV__GIP__SHARED_LIBRARY)
 #  define _COM_AZURE_DEV__GIP__API __declspec(dllimport)
 #endif
-#else
-// TAG: add other platform
 #endif
 
 #if !defined(_COM_AZURE_DEV__GIP__API)
