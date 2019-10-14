@@ -66,7 +66,7 @@ namespace gip {
       matrix[1][2] = 0;
     }
   
-    void rotate(long double alpha) throw() {
+    void rotate(double alpha) throw() {
       const double cos = Math::cos(alpha);
       const double sin = Math::sin(alpha);
 

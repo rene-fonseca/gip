@@ -44,7 +44,7 @@ namespace gip {
       ++column;
 
       for (unsigned int columnIndex = 1; columnIndex < columns - 1; ++columnIndex) {
-        long double verticalGray = 0;
+        double verticalGray = 0;
         verticalGray += -constant::SQRT2 * srcRow0[columnIndex - 1];
         verticalGray += -2 * srcRow0[columnIndex];
         verticalGray += -constant::SQRT2 * srcRow0[columnIndex + 1];
@@ -57,7 +57,7 @@ namespace gip {
         verticalGray += 2 * srcRow2[columnIndex];
         verticalGray += constant::SQRT2 * srcRow2[columnIndex + 1];
 
-        long double horizontalGray = 0;
+        double horizontalGray = 0;
         horizontalGray += -constant::SQRT2 * srcRow0[columnIndex - 1];
 //      horizontalGray += 0 * srcRow0[columnIndex];
         horizontalGray += constant::SQRT2 * srcRow0[columnIndex + 1];
@@ -70,8 +70,8 @@ namespace gip {
 //      horizontalGray += 0 * srcRow2[columnIndex];
         horizontalGray += constant::SQRT2 * srcRow2[columnIndex + 1];
 
-//      long double gray = Math::abs(verticalGray) + Math::abs(horizontalGray);
-        long double gray = Math::sqrt(verticalGray * verticalGray + horizontalGray * horizontalGray);
+//      double gray = Math::abs(verticalGray) + Math::abs(horizontalGray);
+        double gray = Math::sqrt(verticalGray * verticalGray + horizontalGray * horizontalGray);
         *column++ = minimum<unsigned char>(static_cast<unsigned char>(gray), 0xff);
       }
       ++row;

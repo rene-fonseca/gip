@@ -86,7 +86,7 @@ void FourierTransformation::operator()() throw() {
     DestinationImage::Rows::RowIterator row = rowsLookup.getFirst();
     for (; row != rowsLookup.getEnd(); ++row) {
       ElementIterator endPoint = row.getEnd();
-      long double delta = forward ? constant::PI : -constant::PI;
+      double delta = forward ? constant::PI : -constant::PI;
       for (unsigned int halfBlockSize = 1; halfBlockSize < columns; halfBlockSize <<= 1) { // double size of block per loop
         unsigned int blockSize = halfBlockSize << 1;
         Complex u(1, 0); // (Math::cos(0); Math::sin(0))
@@ -116,7 +116,7 @@ void FourierTransformation::operator()() throw() {
     const Complex* endColumn = column + columns;
     const Complex* endPoint = column + columns * rows;
     for (; column < endColumn; ++column) {
-      long double delta = forward ? constant::PI : -constant::PI;
+      double delta = forward ? constant::PI : -constant::PI;
       for (unsigned int halfStep = columns; halfStep < columns * rows; halfStep <<= 1) {
         unsigned int fullStep = halfStep << 1;
         Complex u(1, 0); // (Math::cos(0); Math::sin(0))

@@ -36,11 +36,11 @@ namespace gip {
   class Blend<float> : public BinaryOperation<float, float, float> {
   private:
     
-    const long double opacity = 0;
-    const long double transparency = 0;
+    const float opacity = 0;
+    const float transparency = 0;
   public:
     
-    inline Blend(const long double _opacity, const long double _opaque) throw()
+    inline Blend(const float _opacity, const float _opaque) throw()
       : opacity(_opacity/_opaque),
         transparency(1 - _opacity/_opaque) {
     }
@@ -54,11 +54,11 @@ namespace gip {
   class Blend<double> : public BinaryOperation<double, double, double> {
   private:
     
-    const long double opacity = 0;
-    const long double transparency = 0;
+    const double opacity = 0;
+    const double transparency = 0;
   public:
     
-    inline Blend(const long double _opacity, const long double _opaque) throw()
+    inline Blend(const double _opacity, const double _opaque) throw()
       : opacity(_opacity/_opaque),
         transparency(1 - _opacity/_opaque) {
     }

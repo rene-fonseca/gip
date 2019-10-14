@@ -33,9 +33,9 @@ namespace gip {
     lookup.setSize(dimension.getHeight());
 // TAG: relocateable ???
 // TAG: width % 2 == 1 ???
-    long double deltaTheta = constant::PI/dimension.getHeight();
-    long double inverseOfDeltaRho = dimension.getWidth() *
-      1/Math::sqrt(static_cast<long double>(
+    double deltaTheta = constant::PI/dimension.getHeight();
+    double inverseOfDeltaRho = dimension.getWidth() *
+      1/Math::sqrt(static_cast<double>(
         static_cast<unsigned long long>(dimension.getHeight()) * dimension.getHeight() +
         static_cast<unsigned long long>(dimension.getWidth()) * dimension.getWidth()
       ));
@@ -43,7 +43,7 @@ namespace gip {
     const Entry* end = dest + dimension.getHeight();
     unsigned int i = 0;
     while (dest < end) {
-      long double inner = i++ * deltaTheta;
+      double inner = i++ * deltaTheta;
       dest->cosine = Math::cos(inner) * inverseOfDeltaRho;
       dest->sine = Math::sin(inner) * inverseOfDeltaRho;
       ++dest;
@@ -53,7 +53,7 @@ namespace gip {
   void StraightLineHoughTransformation::operator()() throw() {
     const unsigned int height = destination->getDimension().getHeight();
     const unsigned int width = destination->getDimension().getWidth();
-    const long double halfWidth = width * 0.5;
+    const double halfWidth = width * 0.5;
     const Entry* endOfTrigo = lookup.getElements() + height;
     const int halfSrcHeight = source->getDimension().getHeight()/2;
     const int halfSrcWidth = source->getDimension().getWidth()/2;

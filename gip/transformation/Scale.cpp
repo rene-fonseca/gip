@@ -31,8 +31,8 @@ namespace gip {
     unsigned int columns = Transformation<DEST, SRC>::destination->getDimension().getWidth();
     unsigned int srcRows = Transformation<DEST, SRC>::source->getDimension().getHeight();
     unsigned int srcColumns = Transformation<DEST, SRC>::source->getDimension().getWidth();
-    long double rowRatio = static_cast<long double>(srcRows)/rows;
-    long double columnRatio = static_cast<long double>(srcColumns)/columns;
+    double rowRatio = static_cast<long double>(srcRows)/rows;
+    double columnRatio = static_cast<long double>(srcColumns)/columns;
     
     typename DestinationImage::Rows rowsLookup = Transformation<DEST, SRC>::destination->getRows();
     typename SourceImage::ReadableRows srcRowsLookup = Transformation<DEST, SRC>::source->getRows();

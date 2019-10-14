@@ -29,8 +29,8 @@ namespace gip {
     unsigned int columns = destination->getDimension().getWidth();
     unsigned int srcRows = source->getDimension().getHeight();
     unsigned int srcColumns = source->getDimension().getWidth();
-    long double stepPerRow = static_cast<long double>(srcRows - 1)/(rows - 1);
-    long double stepPerColumn = static_cast<long double>(srcColumns - 1)/(columns - 1);
+    double stepPerRow = static_cast<long double>(srcRows - 1)/(rows - 1);
+    double stepPerColumn = static_cast<long double>(srcColumns - 1)/(columns - 1);
 
     DestinationImage::Rows rowsLookup = destination->getRows();
     SourceImage::ReadableRows srcRowsLookup = source->getRows();
@@ -39,27 +39,27 @@ namespace gip {
     --columns; // last column is a special case
 
     DestinationImage::Rows::RowIterator row = rowsLookup.getFirst();
-    long double floatRow = 0;
+    double floatRow = 0;
     for (unsigned int rowCount = rows; rowCount > 0; --rowCount) {
       unsigned int srcRowIndex = static_cast<unsigned int>(floatRow); // round to zero
-      long double weightRow = floatRow - srcRowIndex;
+      double weightRow = floatRow - srcRowIndex;
 
       SourceImage::ReadableRows::RowIterator srcCurrentRow = srcRowsLookup[srcRowIndex];
       SourceImage::ReadableRows::RowIterator srcNextRow = srcCurrentRow;
       ++srcNextRow;
 
       DestinationImage::Rows::RowIterator::ElementIterator column = row.getFirst();
-      long double floatColumn = 0;
+      double floatColumn = 0;
       for (unsigned int columnCount = columns; columnCount > 0; --columnCount) {
         unsigned int srcColumnIndex = static_cast<unsigned int>(floatColumn); // round to zero
-        long double weightColumn = floatColumn - srcColumnIndex;
+        double weightColumn = floatColumn - srcColumnIndex;
 
         SourceImage::ReadableRows::RowIterator::ElementIterator srcColumn = srcCurrentRow[srcColumnIndex];
         ColorPixel temp = *srcColumn;
-        long double weight = (1 - weightRow) * (1 - weightColumn);
-        long double blue = temp.blue * weight;
-        long double green = temp.green * weight;
-        long double red = temp.red * weight;
+        double weight = (1 - weightRow) * (1 - weightColumn);
+        double blue = temp.blue * weight;
+        double green = temp.green * weight;
+        double red = temp.red * weight;
 
         ++srcColumn;
         temp = *srcColumn;
@@ -95,7 +95,7 @@ namespace gip {
       {
         // initialize last column
         unsigned int srcColumnIndex = srcColumns - 1;
-        long double weight = (1 - weightRow);
+        double weight = (1 - weightRow);
 
         ColorPixel current = srcCurrentRow[srcColumnIndex];
         ColorPixel next = srcNextRow[srcColumnIndex];
@@ -113,11 +113,11 @@ namespace gip {
     // initialize last row
     SourceImage::ReadableRows::RowIterator srcCurrentRow = srcRowsLookup[srcRows - 1];
     DestinationImage::Rows::RowIterator::ElementIterator column = row.getFirst();
-    long double floatColumn = 0;
+    double floatColumn = 0;
     for (unsigned int columnCount = columns + 1; columnCount > 0; --columnCount) { // also the last pixel of the row
       unsigned int srcColumnIndex = static_cast<unsigned int>(floatColumn); // round to zero
-      long double weightColumn = floatColumn - srcColumnIndex;
-      long double weight = 1 - weightColumn;
+      double weightColumn = floatColumn - srcColumnIndex;
+      double weight = 1 - weightColumn;
 
       SourceImage::ReadableRows::RowIterator::ElementIterator srcColumn = srcCurrentRow[srcColumnIndex];
       ColorPixel current = *srcColumn;

@@ -87,15 +87,15 @@ void DiscreteCosineTransformation::operator()() throw() {
       ElementIterator endPoint = row.getEnd();
       for (unsigned int halfBlockSize = 1; halfBlockSize < columns; halfBlockSize <<= 1) { // double size of block per loop
         const unsigned int blockSize = 2 * halfBlockSize;
-        const long double delta = constant::PI/halfBlockSize;
+        const double delta = constant::PI/halfBlockSize;
         ElementIterator offset = row.getFirst();
         const ElementIterator endOffset = offset + halfBlockSize;
         for (; offset != endOffset; ++offset) {
           ElementIterator evenBlockPoint = offset;
           ElementIterator oddBlockPoint = offset + halfBlockSize;
-          long double u = constant::PI/halfBlockSize * 0.25;
+          double u = constant::PI/halfBlockSize * 0.25;
           while (evenBlockPoint < endPoint) {
-            long double odd = (*evenBlockPoint - *oddBlockPoint) * Math::cos(u); // TAG: use LUT
+            double odd = (*evenBlockPoint - *oddBlockPoint) * Math::cos(u); // TAG: use LUT
             u += delta;
             *evenBlockPoint += *oddBlockPoint;
             *oddBlockPoint = odd;
@@ -117,14 +117,14 @@ void DiscreteCosineTransformation::operator()() throw() {
       for (unsigned int i = rows/2; i > 0; i >>= 1, halfBlockSize <<= 1) {
         const unsigned int halfStep = halfBlockSize * columns;
         const unsigned int fullStep = 2 * halfBlockSize * columns;
-        const long double delta = constant::PI/halfBlockSize;
+        const double delta = constant::PI/halfBlockSize;
         const Pixel* endOffset = column + halfStep;
         for (Pixel* offset = column; offset < endOffset; offset += columns) {
           Pixel* evenBlockPoint = offset;
           Pixel* oddBlockPoint = offset + halfStep;
-          long double u = constant::PI/halfBlockSize * 0.25;
+          double u = constant::PI/halfBlockSize * 0.25;
           while (evenBlockPoint < endPoint) {
-            long double odd = (*evenBlockPoint - *oddBlockPoint) * Math::cos(u); // TAG: use LUT
+            double odd = (*evenBlockPoint - *oddBlockPoint) * Math::cos(u); // TAG: use LUT
             u += delta;
             *evenBlockPoint += *oddBlockPoint;
             *oddBlockPoint = odd;
