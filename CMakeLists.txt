@@ -17,6 +17,7 @@ if (MSVC)
   # TAG: need to fix all exception specifications
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /WX") # no warnings allowed
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4290 /wd4838 /wd4244 /wd4267 /wd4996 /wd4297")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4251") # TAG: DLL export issue  
 else ()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
