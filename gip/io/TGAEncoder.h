@@ -31,7 +31,7 @@ namespace gip {
   public:
     
     /** Specifies the size of the internal buffer use for reading and writing. */
-    static const unsigned int BUFFER_SIZE = 4096 * 4;
+    static constexpr unsigned int BUFFER_SIZE = 4096 * 4;
     
     /**
       Initializes the encoder.

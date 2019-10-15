@@ -54,6 +54,26 @@ inline ChunkId makeChunkId(char a, char b, char c, char d) throw() {
   return result;
 }
 
+inline FormatOutputStream& operator<<(FormatOutputStream& stream, const LittleEndian<int16>& value) throw(IOException)
+{
+  return stream << static_cast<uint16>(value);
+}
+
+inline FormatOutputStream& operator<<(FormatOutputStream& stream, const LittleEndian<uint16>& value) throw(IOException)
+{
+  return stream << static_cast<uint16>(value);
+}
+
+inline FormatOutputStream& operator<<(FormatOutputStream& stream, const LittleEndian<int32>& value) throw(IOException)
+{
+  return stream << static_cast<uint32>(value);
+}
+
+inline FormatOutputStream& operator<<(FormatOutputStream& stream, const LittleEndian<uint32>& value) throw(IOException)
+{
+  return stream << static_cast<uint32>(value);
+}
+
 FormatOutputStream& operator<<(
   FormatOutputStream& stream, const ChunkId& value) throw(IOException) {
   unsigned int temp = value.id;
