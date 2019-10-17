@@ -1839,7 +1839,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       OutOfDomain(this)
     );
     // TAG: mode must be manual
-    ASSERT(feature < getArraySize(feature));
+    ASSERT(feature < getArraySize(Camera1394Impl::FEATURE_CONTROL_REGISTER));
     uint64 featureRegister = commandRegisters + Camera1394Impl::FEATURE_CONTROL_REGISTER[feature];
     IEEE1394::Quadlet original;
     adapter.read(
