@@ -13,6 +13,8 @@ if (MSVC)
   add_definitions(-D_UNICODE)
 endif ()
 
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_COM_AZURE_DEV__BASE__DEBUG") # TAG: gets set for release MSC release build!
+
 if (MSVC)
   # TAG: need to fix all exception specifications
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /WX") # no warnings allowed
