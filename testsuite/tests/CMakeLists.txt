@@ -22,4 +22,19 @@ else ()
   target_link_libraries("test_${name}" gip ${BASE_LIB})
 endif ()
   set_target_properties("test_${name}" PROPERTIES FOLDER testsuite)
+
+  install(TARGETS "test_${name}"
+    CONFIGURATIONS Debug
+    ARCHIVE DESTINATION "${CMAKE_BINARY_DIR}/bin/debug"
+    LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/bin/debug"
+    RUNTIME DESTINATION "${CMAKE_BINARY_DIR}/bin/debug"
+  )
+
+  install(TARGETS "test_${name}"
+    CONFIGURATIONS Release
+    ARCHIVE DESTINATION "${CMAKE_BINARY_DIR}/bin/release"
+    LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/bin/release"
+    RUNTIME DESTINATION "${CMAKE_BINARY_DIR}/bin/release"
+  )
+
 endforeach()

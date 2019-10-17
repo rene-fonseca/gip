@@ -109,4 +109,30 @@ if (APPLE)
   set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
 endif ()
 
+# preserve folder structure
+install(
+  DIRECTORY "${CMAKE_SOURCE_DIR}/gip" # source directory
+  DESTINATION "${CMAKE_BINARY_DIR}/include" # target directory
+  FILES_MATCHING PATTERN "*.h" # select header files
+)
+install(
+  DIRECTORY "${CMAKE_BINARY_DIR}/generated/gip" # source directory
+  DESTINATION "${CMAKE_BINARY_DIR}/include" # target directory
+  FILES_MATCHING PATTERN "*.h" # select header files
+)
+
+install(TARGETS gip gip_STATIC
+  CONFIGURATIONS Debug
+  ARCHIVE DESTINATION "${CMAKE_BINARY_DIR}/lib/debug"
+  LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/lib/debug"
+  RUNTIME DESTINATION "${CMAKE_BINARY_DIR}/bin/debug"
+)
+
+install(TARGETS gip gip_STATIC
+  CONFIGURATIONS Release
+  ARCHIVE DESTINATION "${CMAKE_BINARY_DIR}/lib/release"
+  LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/lib/release"
+  RUNTIME DESTINATION "${CMAKE_BINARY_DIR}/bin/release"
+)
+
 add_subdirectory("testsuite/tests")
