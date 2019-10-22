@@ -7,8 +7,8 @@ pool:
 steps:
 - task: DownloadPipelineArtifact@1
   inputs:
-    artifact: base
-    path: $(Build.SourcesDirectory)/base
+    artifactName: base
+    targetPath: $(Build.SourcesDirectory)/base
 
 - task: CMake@1
   inputs:
