@@ -7,7 +7,12 @@ pool:
 steps:
 - task: DownloadPipelineArtifact@1
   inputs:
-    artifactName: base
+    buildType: 'specific'
+    project: 'base'
+    definition: 2
+    buildVersionToDownload: 'latestFromBranch'
+    branchName: 'refs/heads/master'
+    artifactName: 'base'
     targetPath: $(Build.SourcesDirectory)/base
 
 - task: CMake@1
