@@ -25,16 +25,16 @@ endif ()
 
   install(TARGETS "test_${name}"
     CONFIGURATIONS Debug
-    ARCHIVE DESTINATION "${CMAKE_BINARY_DIR}/bin/debug"
-    LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/bin/debug"
-    RUNTIME DESTINATION "${CMAKE_BINARY_DIR}/bin/debug"
+    ARCHIVE DESTINATION "${CMAKE_BINARY_DIR}/install/bin/debug"
+    LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/install/bin/debug"
+    RUNTIME DESTINATION "${CMAKE_BINARY_DIR}/install/bin/debug"
   )
 
   install(TARGETS "test_${name}"
     CONFIGURATIONS Release
-    ARCHIVE DESTINATION "${CMAKE_BINARY_DIR}/bin/release"
-    LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/bin/release"
-    RUNTIME DESTINATION "${CMAKE_BINARY_DIR}/bin/release"
+    ARCHIVE DESTINATION "${CMAKE_BINARY_DIR}/install/bin/release"
+    LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/install/bin/release"
+    RUNTIME DESTINATION "${CMAKE_BINARY_DIR}/install/bin/release"
   )
 
 endforeach()

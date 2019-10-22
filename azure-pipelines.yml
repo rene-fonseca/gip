@@ -5,10 +5,15 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
+- task: DownloadPipelineArtifact@1
+  inputs:
+    artifact: base
+    path: $(Build.SourcesDirectory)/base
+
 - task: CMake@1
   inputs:
     cmakeArgs: '..'
 
 - task: CMake@1
   inputs:
-    cmakeArgs: '--build . --config Debug'
+    cmakeArgs: '--build . --config Debug' --target install
