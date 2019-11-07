@@ -423,8 +423,11 @@ namespace gip {
     return new ColorImage(image);
   }
   
-  void RASEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException) {
-    bassert(image, NullPointer(this));
+  void RASEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException)
+  {
+    if (!image) {
+      throw NullPointer(this);
+    }
     const Dimension dimension = image->getDimension();
     bassert(
       dimension.getSize() * 3 <= static_cast<unsigned int>(PrimitiveTraits<int>::MAXIMUM),
@@ -479,8 +482,11 @@ namespace gip {
     file.truncate(sizeof(header) + static_cast<unsigned long long>(bytesPerLine) * dimension.getHeight());
   }
 
-  void RASEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
-    bassert(image, NullPointer(this));
+  void RASEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException)
+  {
+    if (!image) {
+      throw NullPointer(this);
+    }
     Dimension dimension = image->getDimension();
     bassert(
       dimension.getSize() <= static_cast<unsigned int>(PrimitiveTraits<int>::MAXIMUM),

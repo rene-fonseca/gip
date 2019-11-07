@@ -41,8 +41,11 @@ namespace gip {
   
   void PPMEncoder::write(
     const String& filename,
-    const ColorImage* image) throw(ImageException, IOException) {
-    bassert(image, NullPointer(this));
+    const ColorImage* image) throw(ImageException, IOException)
+  {
+    if (!image) {
+      throw NullPointer(this);
+    }
     Dimension dimension = image->getDimension();
     
     FileOutputStream file(

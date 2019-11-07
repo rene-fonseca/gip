@@ -183,8 +183,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
   
   void TGAEncoder::write(
     const String& filename,
-    const ColorImage* image) throw(ImageException, IOException) {
-    bassert(image, NullPointer(this));
+    const ColorImage* image) throw(ImageException, IOException)
+  {
+    if (!image) {
+      throw NullPointer(this);
+    }
     Dimension dimension = image->getDimension();
     bassert(
       (dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff),
@@ -239,8 +242,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
   void TGAEncoder::write(
     const String& filename,
-    const ColorAlphaImage* image) throw(ImageException, IOException) {
-    bassert(image, NullPointer(this));
+    const ColorAlphaImage* image) throw(ImageException, IOException)
+  {
+    if (!image) {
+      throw NullPointer(this);
+    }
     Dimension dimension = image->getDimension();
     bassert(
       (dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff),
@@ -297,8 +303,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
   void TGAEncoder::writeGray(
     const String& filename,
-    const GrayImage* image) throw(ImageException, IOException) {
-    bassert(image, NullPointer(this));
+    const GrayImage* image) throw(ImageException, IOException)
+  {
+    if (!image) {
+      throw NullPointer(this);
+    }
     Dimension dimension = image->getDimension();
     bassert(
       (dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff),
