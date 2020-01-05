@@ -332,7 +332,7 @@ public:
     Array<String>::ReadEnumerator enu = extensions.getReadEnumerator();
     while (enu.hasNext()) {
       const String* extension = enu.next();
-      if (!encoders.isKey(*extension)) {
+      if (!encoders.hasKey(*extension)) {
         encoders[*extension] = encoder;
         stream << MESSAGE("*.") << *extension << ';' << FLUSH;
       }
@@ -356,7 +356,7 @@ public:
   }
       
   ImageEncoder* getEncoderByName(const String& extension) throw() {
-    if (!encoders.isKey(extension)) {
+    if (!encoders.hasKey(extension)) {
       return 0;
     }
     ImageEncoder* encoder = encoders[extension];
@@ -369,7 +369,7 @@ public:
       return 0;
     }
     String extension = filename.substring(index + 1);
-    if (!encoders.isKey(extension)) {
+    if (!encoders.hasKey(extension)) {
       return 0;
     }
     ImageEncoder* encoder = encoders[extension];

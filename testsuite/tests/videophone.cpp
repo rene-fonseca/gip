@@ -198,8 +198,8 @@ public:
   void recordContinuously() throw() {
     // fill cyclic buffer
     const unsigned int NUMBER_OF_FRAMES = 16;
-    Array<Allocator<uint8> > frames(NUMBER_OF_FRAMES, Allocator<uint8>(), NUMBER_OF_FRAMES);
-    Array<Camera1394::FrameBuffer> buffers(NUMBER_OF_FRAMES, Camera1394::FrameBuffer(), NUMBER_OF_FRAMES);
+    Array<Allocator<uint8> > frames(NUMBER_OF_FRAMES, Allocator<uint8>());
+    Array<Camera1394::FrameBuffer> buffers(NUMBER_OF_FRAMES, Camera1394::FrameBuffer());
     
     Array<Allocator<uint8> >::Iterator frame = frames.getBeginIterator();
     Array<Camera1394::FrameBuffer>::Iterator buffer = buffers.getBeginIterator();
@@ -1522,8 +1522,8 @@ public:
       {
         // fill cyclic buffer
         const unsigned int NUMBER_OF_FRAMES = 16;
-        Array<Allocator<uint8> > frames(NUMBER_OF_FRAMES, Allocator<uint8>(), NUMBER_OF_FRAMES);
-        Array<Camera1394::FrameBuffer> buffers(NUMBER_OF_FRAMES, Camera1394::FrameBuffer(), NUMBER_OF_FRAMES);
+        Array<Allocator<uint8> > frames(NUMBER_OF_FRAMES, Allocator<uint8>());
+        Array<Camera1394::FrameBuffer> buffers(NUMBER_OF_FRAMES, Camera1394::FrameBuffer());
         
         {
           Array<Allocator<uint8> >::Iterator frame = frames.getBeginIterator();

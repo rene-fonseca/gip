@@ -39,15 +39,15 @@ public:
 
   Point getPoint(const Dimension& dimension) throw() {
     return Point(
-      Random::getInteger() % dimension.getWidth(),
-      Random::getInteger() % dimension.getHeight()
+      Random::random<int>() % dimension.getWidth(),
+      Random::random<int>() % dimension.getHeight()
     );
   }
 
   Point getPoint2(const Dimension& dimension) throw() {
     return Point(
-      Random::getInteger() % 10000 - 5000,
-      Random::getInteger() % 10000 - 5000
+      Random::random<int>() % 10000 - 5000,
+      Random::random<int>() % 10000 - 5000
     );
   }
 

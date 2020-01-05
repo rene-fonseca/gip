@@ -86,4 +86,4 @@ public:
   }
 };
 
-STUB(MedianApplication);
+APPLICATION_STUB(MedianApplication);
