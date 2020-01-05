@@ -14,7 +14,7 @@
 #pragma once
 
 #include <gip/transformation/UnaryTransformation.h>
-#include <base/math/Random.h>
+#include <base/Random.h>
 
 namespace gip {
 
@@ -25,7 +25,7 @@ namespace gip {
     typedef PIXEL Pixel;
 
     inline Pixel operator()() const throw() {
-      return Random::getLongDouble() * PixelTraits<Pixel>::MAXIMUM;
+      return Random::random<double>() * PixelTraits<Pixel>::MAXIMUM;
     }
   };
   
@@ -37,9 +37,9 @@ namespace gip {
     
     inline Pixel operator()() const throw() {
       return makeRGBPixel(
-        Random::getLongDouble() * PixelTraits<Pixel>::MAXIMUM,
-        Random::getLongDouble() * PixelTraits<Pixel>::MAXIMUM,
-        Random::getLongDouble() * PixelTraits<Pixel>::MAXIMUM
+        Random::random<double>() * PixelTraits<Pixel>::MAXIMUM,
+        Random::random<double>() * PixelTraits<Pixel>::MAXIMUM,
+        Random::random<double>() * PixelTraits<Pixel>::MAXIMUM
       );
     }
   };
@@ -50,7 +50,7 @@ namespace gip {
     
     inline ColorPixel operator()() const throw() {
       ColorPixel result;
-      result.rgb = Random::getInteger();
+      result.rgb = Random::random<int>();
       return result;
     }
   };
