@@ -16,8 +16,8 @@
 #include <gip/Pixel.h>
 #include <base/Functor.h>
 #include <base/Cast.h>
-#include <base/mathematics/Math.h>
-#include <base/mathematics/Constants.h>
+#include <base/math/Math.h>
+#include <base/math/Constants.h>
 
 namespace gip {
   

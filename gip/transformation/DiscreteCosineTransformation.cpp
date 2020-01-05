@@ -12,8 +12,8 @@
  ***************************************************************************/
 
 #include <gip/transformation/DiscreteCosineTransformation.h>
-#include <base/mathematics/Constants.h>
-#include <base/mathematics/Math.h>
+#include <base/math/Constants.h>
+#include <base/math/Math.h>
 
 namespace gip {
 

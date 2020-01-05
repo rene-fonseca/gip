@@ -13,7 +13,7 @@
 
 #include <gip/video/Camera1394.h>
 #include <base/UnexpectedFailure.h>
-#include <base/mathematics/Math.h>
+#include <base/math/Math.h>
 #include <base/string/StringOutputStream.h>
 #include <base/Cast.h>
 #include <base/concurrency/Thread.h>

@@ -12,7 +12,7 @@
  ***************************************************************************/
 
 #include <gip/canvas/Canvas.h>
-#include <base/mathematics/Math.h>
+#include <base/math/Math.h>
 
 namespace gip {
 

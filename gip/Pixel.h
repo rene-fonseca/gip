@@ -18,7 +18,7 @@
 #include <gip/RGBPixel.h>
 #include <gip/RGBAPixel.h>
 #include <base/Functor.h>
-#include <base/mathematics/Complex.h>
+#include <base/math/Complex.h>
 
 namespace gip {
   

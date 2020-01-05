@@ -15,7 +15,7 @@
 
 #include <gip/transformation/Transformation.h>
 #include <gip/ArrayImage.h>
-#include <base/mathematics/Math.h>
+#include <base/math/Math.h>
 
 namespace gip {
 

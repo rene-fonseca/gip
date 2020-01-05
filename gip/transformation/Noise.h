@@ -14,7 +14,7 @@
 #pragma once
 
 #include <gip/transformation/UnaryTransformation.h>
-#include <base/mathematics/Random.h>
+#include <base/math/Random.h>
 
 namespace gip {
 
