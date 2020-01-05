@@ -70,8 +70,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
   
-  GaussianBlur(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("GaussianBlur"), numberOfArguments, arguments, environment) {
+  GaussianBlur() throw()
+    : Application(MESSAGE("GaussianBlur")) {
   }
   
   void blur(const String& inputFile, const String& outputFile) throw() {
@@ -205,4 +205,4 @@ public:
   }
 };
 
-STUB(GaussianBlur);
+APPLICATION_STUB(GaussianBlur);

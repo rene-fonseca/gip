@@ -58,8 +58,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
   
-  TypesApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("types"), numberOfArguments, arguments, environment) {
+  TypesApplication() throw()
+    : Application(MESSAGE("types")) {
   }
   
   void main() throw() {    
@@ -159,4 +159,4 @@ public:
   }
 };
 
-STUB(TypesApplication);
+APPLICATION_STUB(TypesApplication);

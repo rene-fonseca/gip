@@ -29,8 +29,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  ConvolutionApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("Convolution"), numberOfArguments, arguments, environment) {
+  ConvolutionApplication() throw()
+    : Application(MESSAGE("Convolution")) {
   }
 
   void convolutionTransformation(const String& inputFile, const String& outputFile) throw() {
@@ -86,4 +86,4 @@ public:
   }
 };
 
-STUB(ConvolutionApplication);
+APPLICATION_STUB(ConvolutionApplication);

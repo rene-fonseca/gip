@@ -39,8 +39,8 @@ public:
     };
   };
 
-  ErodeApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("Erode"), numberOfArguments, arguments, environment) {
+  ErodeApplication() throw()
+    : Application(MESSAGE("Erode")) {
   }
 
   void erodeTransformation(const String& inputFile, const String& outputFile) throw() {
@@ -96,4 +96,4 @@ public:
   }
 };
 
-STUB(ErodeApplication);
+APPLICATION_STUB(ErodeApplication);

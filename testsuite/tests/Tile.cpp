@@ -30,8 +30,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  TileApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("Tile"), numberOfArguments, arguments, environment) {
+  TileApplication() throw()
+    : Application(MESSAGE("Tile")) {
   }
 
   void tileTransformation(const Dimension& dimension, const String& inputFile, const String& outputFile) throw() {
@@ -95,4 +95,4 @@ public:
   }
 };
 
-STUB(TileApplication);
+APPLICATION_STUB(TileApplication);

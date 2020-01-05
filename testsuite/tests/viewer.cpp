@@ -13,8 +13,8 @@
 
 #include <base/Application.h>
 #include <base/Version.h>
-#include <base/mathematics/Vector3D.h>
-#include <base/mathematics/Matrix4x4.h>
+#include <base/math/Vector3D.h>
+#include <base/math/Matrix4x4.h>
 #include <base/opengl/OpenGLContext.h>
 #include <base/string/FormatOutputStream.h>
 #include <base/string/StringOutputStream.h>
@@ -757,8 +757,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
   
-  ViewerApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("OpenGL Viewer"), numberOfArguments, arguments, environment) {
+  ViewerApplication() throw()
+    : Application(MESSAGE("OpenGL Viewer")) {
   }
   
   class MyOpenGLContext : public OpenGLContext {
@@ -1990,4 +1990,4 @@ public:
   }
 };
 
-STUB(ViewerApplication);
+APPLICATION_STUB(ViewerApplication);

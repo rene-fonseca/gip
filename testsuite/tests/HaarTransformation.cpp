@@ -23,7 +23,7 @@
 #include <base/Functor.h>
 #include <base/Timer.h>
 #include <base/TypeInfo.h>
-#include <base/mathematics/Random.h>
+#include <base/Random.h>
 
 using namespace com::azure::dev::gip;
 
@@ -65,8 +65,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  HaarApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("HaarTransformation"), numberOfArguments, arguments, environment) {
+  HaarApplication() throw()
+    : Application(MESSAGE("HaarTransformation")) {
   }
 
   void haarTransformation(const String& inputFile, const String& outputFile) throw() {    
@@ -203,4 +203,4 @@ public:
   }
 };
 
-STUB(HaarApplication);
+APPLICATION_STUB(HaarApplication);

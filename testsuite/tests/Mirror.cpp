@@ -28,8 +28,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  MirrorApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("Mirror"), numberOfArguments, arguments, environment) {
+  MirrorApplication() throw()
+    : Application(MESSAGE("Mirror")) {
   }
 
   void mirrorTransformation(const String& inputFile, const String& outputFile) throw() {
@@ -76,4 +76,4 @@ public:
   }
 };
 
-STUB(MirrorApplication);
+APPLICATION_STUB(MirrorApplication);

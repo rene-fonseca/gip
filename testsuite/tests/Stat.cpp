@@ -28,8 +28,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  StatApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("Stat"), numberOfArguments, arguments, environment) {
+  StatApplication() throw()
+    : Application(MESSAGE("Stat")) {
   }
 
   void stat(const String& inputFile) throw() {
@@ -88,4 +88,4 @@ public:
   }
 };
 
-STUB(StatApplication);
+APPLICATION_STUB(StatApplication);

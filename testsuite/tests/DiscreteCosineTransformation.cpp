@@ -26,7 +26,7 @@
 #include <base/Functor.h>
 #include <base/Timer.h>
 #include <base/TypeInfo.h>
-#include <base/mathematics/Constants.h>
+#include <base/math/Constants.h>
 
 using namespace com::azure::dev::gip;
 
@@ -80,8 +80,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  DCTApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("DiscreteCosineTransformation"), numberOfArguments, arguments, environment) {
+  DCTApplication() throw()
+    : Application(MESSAGE("DiscreteCosineTransformation")) {
   }
   
   void dct(const String& inputFile, const String& outputFile) throw() {
@@ -181,4 +181,4 @@ public:
   }
 };
 
-STUB(DCTApplication);
+APPLICATION_STUB(DCTApplication);

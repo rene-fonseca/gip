@@ -55,8 +55,8 @@ public:
     COMMAND_ERROR
   };
   
-  Camera1394Application(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("Camera1394"), numberOfArguments, arguments, environment) {
+  Camera1394Application() throw()
+    : Application(MESSAGE("Camera1394")) {
   }
 
   void listAdapters() throw() {
@@ -842,4 +842,4 @@ public:
   }
 };
 
-STUB(Camera1394Application);
+APPLICATION_STUB(Camera1394Application);

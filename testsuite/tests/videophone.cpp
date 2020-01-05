@@ -575,11 +575,8 @@ public:
   
   String filename;
   
-  VideoPhoneApplication(
-    int numberOfArguments,
-    const char* arguments[],
-    const char* environment[]) throw()
-    : Application("videophone", numberOfArguments, arguments, environment) {
+  VideoPhoneApplication() throw()
+    : Application("videophone") {
     
     verbosity = VERBOSITY_NORMAL;
     
@@ -1675,4 +1672,4 @@ const Literal VideoPhoneApplication::PIXEL_FORMAT_DESCRIPTION[] = {
   Literal("RGB 48bit/pixel")
 };
 
-STUB(VideoPhoneApplication);
+APPLICATION_STUB(VideoPhoneApplication);

@@ -26,8 +26,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  RASEncoderApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("RASEncoder"), numberOfArguments, arguments, environment) {
+  RASEncoderApplication() throw()
+    : Application(MESSAGE("RASEncoder")) {
   }
 
   void main() throw() {
@@ -82,4 +82,4 @@ public:
   }
 };
 
-STUB(RASEncoderApplication);
+APPLICATION_STUB(RASEncoderApplication);

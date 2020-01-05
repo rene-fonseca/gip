@@ -32,8 +32,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  HoughApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("Hough"), numberOfArguments, arguments, environment) {
+  HoughApplication() throw()
+    : Application(MESSAGE("Hough")) {
   }
 
   void houghTransformation(const String& inputFile, const String& outputFile) throw() {
@@ -104,4 +104,4 @@ public:
   }
 };
 
-STUB(HoughApplication);
+APPLICATION_STUB(HoughApplication);

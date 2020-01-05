@@ -25,8 +25,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  GIFEncoderApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("gifio"), numberOfArguments, arguments, environment) {
+  GIFEncoderApplication() throw()
+    : Application(MESSAGE("gifio")) {
   }
 
   void main() throw() {
@@ -88,4 +88,4 @@ public:
   }
 };
 
-STUB(GIFEncoderApplication);
+APPLICATION_STUB(GIFEncoderApplication);

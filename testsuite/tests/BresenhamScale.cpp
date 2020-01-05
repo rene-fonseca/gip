@@ -33,8 +33,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  ScaleApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("BresenhamScale"), numberOfArguments, arguments, environment) {
+  ScaleApplication() throw()
+    : Application(MESSAGE("BresenhamScale")) {
   }
 
   void scaleTransformation(const Dimension& dimension, const String& inputFile, const String& outputFile) throw() {
@@ -104,4 +104,4 @@ public:
   }
 };
 
-STUB(ScaleApplication);
+APPLICATION_STUB(ScaleApplication);

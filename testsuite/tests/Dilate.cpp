@@ -39,8 +39,8 @@ public:
     };
   };
 
-  DilateApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("Dilate"), numberOfArguments, arguments, environment) {
+  DilateApplication() throw()
+    : Application(MESSAGE("Dilate")) {
   }
 
   void dilateTransformation(const String& inputFile, const String& outputFile) throw() {
@@ -96,4 +96,4 @@ public:
   }
 };
 
-STUB(DilateApplication);
+APPLICATION_STUB(DilateApplication);

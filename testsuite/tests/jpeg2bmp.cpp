@@ -26,8 +26,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  JPEG2BMP(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("jpeg2bmp"), numberOfArguments, arguments, environment) {
+  JPEG2BMP() throw()
+    : Application(MESSAGE("jpeg2bmp")) {
   }
 
   void main() throw() {
@@ -82,4 +82,4 @@ public:
   }
 };
 
-STUB(JPEG2BMP);
+APPLICATION_STUB(JPEG2BMP);

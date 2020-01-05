@@ -26,8 +26,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  VersionApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("gip"), numberOfArguments, arguments, environment) {
+  VersionApplication() throw()
+    : Application(MESSAGE("gip")) {
   }
 
   void main() throw() {
@@ -43,4 +43,4 @@ public:
 
 };
 
-STUB(VersionApplication);
+APPLICATION_STUB(VersionApplication);

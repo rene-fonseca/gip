@@ -32,8 +32,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  ScaleApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("Scale"), numberOfArguments, arguments, environment) {
+  ScaleApplication() throw()
+    : Application(MESSAGE("Scale")) {
   }
 
   void scaleTransformation(const Dimension& dimension, const String& inputFile, const String& outputFile) throw() {
@@ -97,4 +97,4 @@ public:
   }
 };
 
-STUB(ScaleApplication);
+APPLICATION_STUB(ScaleApplication);

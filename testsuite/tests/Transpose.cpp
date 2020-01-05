@@ -28,8 +28,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  TransposeApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("Transpose"), numberOfArguments, arguments, environment) {
+  TransposeApplication() throw()
+    : Application(MESSAGE("Transpose")) {
   }
 
   void transposeTransformation(const String& inputFile, const String& outputFile) throw() {
@@ -77,4 +77,4 @@ public:
   }
 };
 
-STUB(TransposeApplication);
+APPLICATION_STUB(TransposeApplication);

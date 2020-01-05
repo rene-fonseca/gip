@@ -19,8 +19,8 @@
 #include <base/string/FormatOutputStream.h>
 #include <base/Timer.h>
 #include <base/TypeInfo.h>
-#include <base/mathematics/Random.h>
-#include <base/mathematics/Constants.h>
+#include <base/Random.h>
+#include <base/math/Constants.h>
 
 #undef minor
 
@@ -33,8 +33,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  CanvasApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("Canvas"), numberOfArguments, arguments, environment) {
+  CanvasApplication() throw()
+    : Application(MESSAGE("Canvas")) {
   }
 
   Point getPoint(const Dimension& dimension) throw() {
@@ -191,4 +191,4 @@ public:
   }
 };
 
-STUB(CanvasApplication);
+APPLICATION_STUB(CanvasApplication);

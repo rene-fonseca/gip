@@ -29,8 +29,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  MedianApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("MedianFilter3x3"), numberOfArguments, arguments, environment) {
+  MedianApplication() throw()
+    : Application(MESSAGE("MedianFilter3x3")) {
   }
 
   void medianTransformation(const String& inputFile, const String& outputFile) throw() {

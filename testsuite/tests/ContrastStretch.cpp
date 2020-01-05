@@ -29,8 +29,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  ContrastStretchApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("ContrastStretch"), numberOfArguments, arguments, environment) {
+  ContrastStretchApplication() throw()
+    : Application(MESSAGE("ContrastStretch")) {
   }
 
   void contrastStretchTransformation(const String& inputFile, const String& outputFile) throw() {
@@ -93,4 +93,4 @@ public:
   }
 };
 
-STUB(ContrastStretchApplication);
+APPLICATION_STUB(ContrastStretchApplication);

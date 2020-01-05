@@ -33,8 +33,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  RotateApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("Rotate"), numberOfArguments, arguments, environment) {
+  RotateApplication() throw()
+    : Application(MESSAGE("Rotate")) {
   }
 
   void transform(const Dimension& dimension, const String& inputFile, const String& outputFile) throw() {
@@ -117,4 +117,4 @@ public:
   }
 };
 
-STUB(RotateApplication);
+APPLICATION_STUB(RotateApplication);

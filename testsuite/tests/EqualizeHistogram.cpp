@@ -29,8 +29,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  EqualizeHistogramApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("EqualizeHistogram"), numberOfArguments, arguments, environment) {
+  EqualizeHistogramApplication() throw()
+    : Application(MESSAGE("EqualizeHistogram")) {
   }
 
   void equalizeHistogramTransformation(const String& inputFile, const String& outputFile) throw() {
@@ -98,4 +98,4 @@ public:
   }
 };
 
-STUB(EqualizeHistogramApplication);
+APPLICATION_STUB(EqualizeHistogramApplication);

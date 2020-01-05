@@ -100,8 +100,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  FourierApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("FourierTransformation"), numberOfArguments, arguments, environment) {
+  FourierApplication() throw()
+    : Application(MESSAGE("FourierTransformation")) {
   }
 
   unsigned int getPowerOf2(unsigned int value) throw(OutOfDomain) {
@@ -207,4 +207,4 @@ public:
   }
 };
 
-STUB(FourierApplication);
+APPLICATION_STUB(FourierApplication);

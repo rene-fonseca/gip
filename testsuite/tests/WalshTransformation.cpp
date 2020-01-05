@@ -55,8 +55,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  WalshApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("WalshTransformation"), numberOfArguments, arguments, environment) {
+  WalshApplication() throw()
+    : Application(MESSAGE("WalshTransformation")) {
   }
 
   void walshTransformation(const String& inputFile, const String& outputFile) throw() {    
@@ -133,4 +133,4 @@ public:
   }
 };
 
-STUB(WalshApplication);
+APPLICATION_STUB(WalshApplication);

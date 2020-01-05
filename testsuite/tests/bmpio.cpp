@@ -25,8 +25,8 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  BMPEncoderApplication(int numberOfArguments, const char* arguments[], const char* environment[]) throw()
-    : Application(MESSAGE("bmpio"), numberOfArguments, arguments, environment) {
+  BMPEncoderApplication() throw()
+    : Application(MESSAGE("bmpio")) {
   }
 
   void main() throw() {
@@ -89,4 +89,4 @@ public:
   }
 };
 
-STUB(BMPEncoderApplication);
+APPLICATION_STUB(BMPEncoderApplication);
