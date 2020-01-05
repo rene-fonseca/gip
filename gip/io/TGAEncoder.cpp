@@ -399,13 +399,13 @@ _COM_AZURE_DEV__BASE__PACKED__END
       throw InvalidFormat(this);
     }
     
-    result["encoder"] = Type::getType(*this);
-    result["description"] = "Truevision Targa";
-    result["x"] = static_cast<unsigned int>(header.image.x);
-    result["y"] = static_cast<unsigned int>(header.image.y);
-    result["width"] = static_cast<unsigned int>(header.image.width);
-    result["height"] = static_cast<unsigned int>(header.image.height);
-    result["depth"] = static_cast<unsigned int>(header.image.pixelDepth);
+    result[(String)"encoder"] = Type::getType(*this);
+    result[(String)"description"] = "Truevision Targa";
+    result[(String)"x"] = static_cast<unsigned int>(header.image.x);
+    result[(String)"y"] = static_cast<unsigned int>(header.image.y);
+    result[(String)"width"] = static_cast<unsigned int>(header.image.width);
+    result[(String)"height"] = static_cast<unsigned int>(header.image.height);
+    result[(String)"depth"] = static_cast<unsigned int>(header.image.pixelDepth);
     return result;
   }
 

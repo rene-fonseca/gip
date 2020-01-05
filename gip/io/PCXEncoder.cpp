@@ -391,21 +391,21 @@ _COM_AZURE_DEV__BASE__PACKED__END
       file.read(Cast::getAddress(header), sizeof(header));
     }
     
-    result["encoder"] = Type::getType(*this);
-    result["description"] = "Zsoft Corporation PC Paintbrush";
-    result["manufacturer"] = static_cast<unsigned int>(header.manufacturer);
-    result["version"] = static_cast<unsigned int>(header.version);
-    result["encoding"] = static_cast<unsigned int>(header.encoding);
-    result["bits per pixel"] = static_cast<unsigned int>(header.bitsPerPixel);
-    result["min x"] = static_cast<unsigned int>(header.minX);
-    result["min y"] = static_cast<unsigned int>(header.minY);
-    result["max x"] = static_cast<unsigned int>(header.maxX);
-    result["max y"] = static_cast<unsigned int>(header.maxY);
-    result["horizontal resolution"] = static_cast<unsigned int>(header.horizontalResolution);
-    result["vertical resolution"] = static_cast<unsigned int>(header.verticalResolution);
-    result["planes"] = static_cast<unsigned int>(header.planes);
-    result["horizontal screen size"] = static_cast<unsigned int>(header.horizontalScreenSize);
-    result["vertical screen size"] = static_cast<unsigned int>(header.verticalScreenSize);
+    result[(String)"encoder"] = Type::getType(*this);
+    result[(String)"description"] = "Zsoft Corporation PC Paintbrush";
+    result[(String)"manufacturer"] = static_cast<unsigned int>(header.manufacturer);
+    result[(String)"version"] = static_cast<unsigned int>(header.version);
+    result[(String)"encoding"] = static_cast<unsigned int>(header.encoding);
+    result[(String)"bits per pixel"] = static_cast<unsigned int>(header.bitsPerPixel);
+    result[(String)"min x"] = static_cast<unsigned int>(header.minX);
+    result[(String)"min y"] = static_cast<unsigned int>(header.minY);
+    result[(String)"max x"] = static_cast<unsigned int>(header.maxX);
+    result[(String)"max y"] = static_cast<unsigned int>(header.maxY);
+    result[(String)"horizontal resolution"] = static_cast<unsigned int>(header.horizontalResolution);
+    result[(String)"vertical resolution"] = static_cast<unsigned int>(header.verticalResolution);
+    result[(String)"planes"] = static_cast<unsigned int>(header.planes);
+    result[(String)"horizontal screen size"] = static_cast<unsigned int>(header.horizontalScreenSize);
+    result[(String)"vertical screen size"] = static_cast<unsigned int>(header.verticalScreenSize);
     return result;
   }
 

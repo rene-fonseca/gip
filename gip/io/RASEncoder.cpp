@@ -550,11 +550,11 @@ namespace gip {
       File file(filename, File::READ, 0);
       file.read(Cast::getAddress(header), sizeof(header));
     }
-    result["encoder"] = Type::getType(*this);
-    result["description"] = "Sun Rasterfile Format";
-    result["width"] = static_cast<unsigned int>(header.width);
-    result["height"] = static_cast<unsigned int>(header.height);
-    result["depth"] = static_cast<unsigned int>(header.depth);
+    result[(String)"encoder"] = Type::getType(*this);
+    result[(String)"description"] = "Sun Rasterfile Format";
+    result[(String)"width"] = static_cast<unsigned int>(header.width);
+    result[(String)"height"] = static_cast<unsigned int>(header.height);
+    result[(String)"depth"] = static_cast<unsigned int>(header.depth);
     return result;
   }
 
