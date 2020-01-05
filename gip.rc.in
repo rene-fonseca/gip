@@ -44,7 +44,7 @@
         VALUE "CompanyName", "Rene Fonseca <https://dev.azure.com/renefonseca/gip>\0"
         VALUE "FileDescription", "C++ framework for developing image processing applications\0"
         VALUE "FileVersion", _VERSION "\0"
-        VALUE "LegalCopyright", "Copyright (C)) 2000-2019 by Rene Fonseca\0"
+        VALUE "LegalCopyright", "Copyright (C)) 2000-2020 by Rene Fonseca\0"
         VALUE "OriginalFilename", "gip.dll\0"
         VALUE "ProductName", "Generic Image Processing (GIP) Framework\0"
         VALUE "ProductVersion", _VERSION "\0"
