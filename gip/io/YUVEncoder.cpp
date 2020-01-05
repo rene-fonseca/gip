@@ -66,14 +66,14 @@ namespace gip {
 //       );
 //      }
 //    }
-    throw InvalidFormat(this); // TAG: fixme
+    _throw InvalidFormat(this); // TAG: fixme
     return 0;
   }
   
   void YUVEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException)
   {
     if (!image) {
-      throw NullPointer(this);
+      _throw NullPointer(this);
     }
     Dimension dimension = image->getDimension();
     
@@ -81,7 +81,7 @@ namespace gip {
   }
   
   void YUVEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
-    throw NotSupported(this);
+    _throw NotSupported(this);
   }
   
   HashTable<String, AnyValue> YUVEncoder::getInformation(const String& filename) throw(IOException) {

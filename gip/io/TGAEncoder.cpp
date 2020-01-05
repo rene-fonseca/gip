@@ -187,7 +187,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     const ColorImage* image) throw(ImageException, IOException)
   {
     if (!image) {
-      throw NullPointer(this);
+      _throw NullPointer(this);
     }
     Dimension dimension = image->getDimension();
     bassert(
@@ -246,7 +246,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     const ColorAlphaImage* image) throw(ImageException, IOException)
   {
     if (!image) {
-      throw NullPointer(this);
+      _throw NullPointer(this);
     }
     Dimension dimension = image->getDimension();
     bassert(
@@ -307,7 +307,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     const GrayImage* image) throw(ImageException, IOException)
   {
     if (!image) {
-      throw NullPointer(this);
+      _throw NullPointer(this);
     }
     Dimension dimension = image->getDimension();
     bassert(
@@ -396,7 +396,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     case TGAEncoderImpl::TYPE_RUN_LENGTH_BLACK_WHITE:
       break;
     default:
-      throw InvalidFormat(this);
+      _throw InvalidFormat(this);
     }
     
     result[(String)"encoder"] = Type::getType(*this);

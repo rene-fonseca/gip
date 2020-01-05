@@ -1416,7 +1416,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     case CAPTURE_QUALITY:
       return featureDescriptors.captureQuality.readable;
     default:
-      throw OutOfDomain(this);
+      _throw OutOfDomain(this);
     }
   }
   
@@ -1459,7 +1459,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     case CAPTURE_QUALITY:
       return featureDescriptors.captureQuality;
     default:
-      throw OutOfDomain(this);
+      _throw OutOfDomain(this);
     }
   }
   
@@ -3211,7 +3211,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       }
       break;
     default:
-      throw ImageException(Type::getType<Camera1394>());
+      _throw ImageException(Type::getType<Camera1394>());
     }
   }
 
@@ -3300,7 +3300,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       }
       break;
     default:
-      throw ImageException(Type::getType<Camera1394>()); 
+      _throw ImageException(Type::getType<Camera1394>()); 
     }
   }
   

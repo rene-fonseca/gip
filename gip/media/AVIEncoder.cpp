@@ -652,7 +652,7 @@ void AVIReader::analyse() throw(IOException) {
         );
         break;
       default:
-        throw Exception("Compression not supported");
+        _throw Exception("Compression not supported");
       }
 
       if (videoStreamDescriptor.bitsPerPixel <= 8) { // do we need to initialize the palette

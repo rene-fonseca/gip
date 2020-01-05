@@ -41,7 +41,7 @@ namespace gip {
   void PGMEncoder::write(
     const String& filename,
     const ColorImage* image) throw(ImageException, IOException) {
-    throw NotSupported(this);
+    _throw NotSupported(this);
   }
   
   void PGMEncoder::writeGray(
@@ -49,7 +49,7 @@ namespace gip {
     const GrayImage* image) throw(ImageException, IOException)
   {
     if (!image) {
-      throw NullPointer(this);
+      _throw NullPointer(this);
     }
     Dimension dimension = image->getDimension();
     

@@ -46,7 +46,7 @@ namespace gip {
 
     static void errorHandler(
       png_structp context, png_const_charp message) throw(InvalidFormat) {
-      throw InvalidFormat();
+      _throw InvalidFormat();
     }    
   };
 #endif
@@ -89,13 +89,13 @@ namespace gip {
     png_infop information = ::png_create_info_struct(context);
     if (!information) {
       ::png_destroy_read_struct(&context, 0, 0);
-      throw MemoryException(this);
+      _throw MemoryException(this);
     }
 
     png_infop endInformation = ::png_create_info_struct(context);
     if (!endInformation) {
       ::png_destroy_read_struct(&context, &information, 0);
-      throw MemoryException(this);
+      _throw MemoryException(this);
     }
 
     // ::png_set_invert_alpha(context);
@@ -193,7 +193,7 @@ namespace gip {
     png_infop information = ::png_create_info_struct(context);
     if (!information) {
       ::png_destroy_write_struct(&context, 0);
-      throw MemoryException(this);
+      _throw MemoryException(this);
     }
 
     try {
@@ -279,7 +279,7 @@ namespace gip {
     png_infop information = ::png_create_info_struct(context);
     if (!information) {
       ::png_destroy_read_struct(&context, 0, 0);
-      throw MemoryException(this);
+      _throw MemoryException(this);
     }
     
     try {

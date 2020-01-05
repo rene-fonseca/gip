@@ -108,7 +108,7 @@ namespace gip {
     }
     
     static void errorHandler(j_common_ptr cinfo) throw(InvalidFormat) {
-      throw InvalidFormat();
+      _throw InvalidFormat();
     }
     
   };
@@ -385,11 +385,11 @@ namespace gip {
       try {
         ::jpeg_read_header(&cinfo, TRUE);
       } catch (...) {
-        throw InvalidFormat(this);
+        _throw InvalidFormat(this);
       }
       ::jpeg_destroy_decompress(&cinfo);
     } catch (...) {
-      throw InvalidFormat(this);
+      _throw InvalidFormat(this);
     }
     
     result[MESSAGE("encoder")] = Type::getType(*this);

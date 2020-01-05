@@ -44,7 +44,7 @@ namespace gip {
     const ColorImage* image) throw(ImageException, IOException)
   {
     if (!image) {
-      throw NullPointer(this);
+      _throw NullPointer(this);
     }
     Dimension dimension = image->getDimension();
     
@@ -84,7 +84,7 @@ namespace gip {
   void PPMEncoder::writeGray(
     const String& filename,
     const GrayImage* image) throw(ImageException, IOException) {
-    throw NotSupported(this);
+    _throw NotSupported(this);
   }
   
   HashTable<String, AnyValue> PPMEncoder::getInformation(const String& filename) throw(IOException) {

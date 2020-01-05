@@ -732,7 +732,7 @@ public:
           } else if (temp == "1.875") { 
             rate = Camera1394::RATE_1_875;
           } else {
-            throw InvalidArgument("Invalid frame rate");
+            _throw InvalidArgument("Invalid frame rate");
           }
           setFrameRate = true;
         } else if (*argument == "--format") {

@@ -162,7 +162,7 @@ namespace gip {
     case RASEncoderImpl::MAP_TYPE_RAW:
       // TAG: fixme
     default:
-      throw InvalidFormat(this);
+      _throw InvalidFormat(this);
     }
 
     ColorImage::Rows::RowIterator row = image.getRows().getEnd();
@@ -272,7 +272,7 @@ namespace gip {
         }
         break;
       default:
-        throw InvalidFormat(this);
+        _throw InvalidFormat(this);
       }
       break;
     case RASEncoderImpl::TYPE_BYTE_ENCODED:
@@ -410,13 +410,13 @@ namespace gip {
         }
         break;
       default:
-        throw InvalidFormat(this);
+        _throw InvalidFormat(this);
       }
       break;
     case RASEncoderImpl::TYPE_TIFF:
     case RASEncoderImpl::TYPE_IFF:
     default:
-      throw InvalidFormat(this);
+      _throw InvalidFormat(this);
     }
 
     return new ColorImage(image);
@@ -425,7 +425,7 @@ namespace gip {
   void RASEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException)
   {
     if (!image) {
-      throw NullPointer(this);
+      _throw NullPointer(this);
     }
     const Dimension dimension = image->getDimension();
     bassert(
@@ -484,7 +484,7 @@ namespace gip {
   void RASEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException)
   {
     if (!image) {
-      throw NullPointer(this);
+      _throw NullPointer(this);
     }
     Dimension dimension = image->getDimension();
     bassert(
