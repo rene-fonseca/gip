@@ -76,9 +76,7 @@ public:
     HLSPixel<unsigned char> HLSArray[1024];
 
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
-         << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
-         << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL
-         << MESSAGE("Copyright (C) 2001-2019 by Rene Moeller Fonseca") << EOL << ENDL;
+         << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL << ENDL;
     
     fout << MESSAGE("Pixel Type Information:") << EOL
          << MESSAGE("  GrayPixel: single=") << sizeof(GrayPixel) << MESSAGE(" array=") << sizeof(grayArray) << EOL

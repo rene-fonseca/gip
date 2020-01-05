@@ -802,10 +802,7 @@ public:
   void dumpHeader() noexcept {
     fout << getFormalName() << " version "
          << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
-         << "Generic Image Processing (GIP) Framework (Test Suite)" << EOL
-         << "https://dev.azure.com/renefonseca/gip" << EOL
-         << "Copyright (C) 2002-2019 by Rene Moeller Fonseca" << EOL
-         << ENDL;
+         << "Generic Image Processing (GIP) Framework (Test Suite)" << EOL << ENDL;
   }
 
   void dumpHelp() noexcept {

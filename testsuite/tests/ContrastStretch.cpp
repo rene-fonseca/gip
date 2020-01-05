@@ -71,9 +71,7 @@ public:
   
   void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
-         << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
-         << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL
-         << MESSAGE("Copyright (C) 2002-2019 by Rene Moeller Fonseca") << EOL << ENDL;
+         << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL << ENDL;
     
     String inputFile;
     String outputFile;
