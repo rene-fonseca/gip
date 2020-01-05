@@ -239,7 +239,7 @@ namespace gip {
       ::png_destroy_write_struct(&context, &information);
     } catch(...) {
       ::png_destroy_write_struct(&context, &information);
-      throw;
+      _rethrow;
     }
 #else
 #endif
