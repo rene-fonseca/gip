@@ -14,7 +14,6 @@
 #include <gip/io/JPEGEncoder.h>
 #include <base/io/File.h>
 #include <base/mem/Allocator.h>
-#include <base/NotImplemented.h>
 
 #include <sys/types.h> // get size_t
 #include <stdio.h> // get FILE (but we do not use this)
@@ -305,8 +304,9 @@ namespace gip {
 #endif
   }
 
-  void JPEGEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
-    throw NotImplemented();
+  void JPEGEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException)
+  {
+    _COM_AZURE_DEV__BASE__NOT_IMPLEMENTED();
   }
 /*
   class Information : public Object {

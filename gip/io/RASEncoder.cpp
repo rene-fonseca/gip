@@ -18,7 +18,6 @@
 #include <base/Primitives.h>
 #include <base/ByteOrder.h>
 #include <base/string/String.h>
-#include <base/NotImplemented.h>
 
 namespace gip {
 

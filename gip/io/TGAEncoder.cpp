@@ -19,7 +19,6 @@
 #include <base/Primitives.h>
 #include <base/ByteOrder.h>
 #include <base/string/String.h>
-#include <base/NotImplemented.h>
 
 namespace gip {
 
@@ -166,7 +165,9 @@ _COM_AZURE_DEV__BASE__PACKED__END
     ColorPixel* dest = image->getElements();
 
     // TAG: look at origin field in header
-    bassert(header.image.origin == 0, NotImplemented(this));
+    if (header.image.origin != 0) {
+      _COM_AZURE_DEV__BASE__NOT_IMPLEMENTED();
+    }
     
     for (unsigned int row = dimension.getHeight(); row > 0; --row) {
       FileReader::ReadIterator src = reader.peek(dimension.getWidth() * 3);

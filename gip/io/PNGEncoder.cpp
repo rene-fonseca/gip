@@ -13,7 +13,6 @@
 
 #include <gip/io/PNGEncoder.h>
 #include <base/io/File.h>
-#include <base/NotImplemented.h>
 
 #if 0
 #include <png.h>
@@ -257,12 +256,14 @@ namespace gip {
   
   void PNGEncoder::writeGray(
     const String& filename,
-    const GrayImage* image) throw(ImageException, IOException) {
-    throw NotImplemented(this);
+    const GrayImage* image) throw(ImageException, IOException)
+  {
+    _COM_AZURE_DEV__BASE__NOT_IMPLEMENTED();
   }
 
   HashTable<String, AnyValue> PNGEncoder::getInformation(
-    const String& filename) throw(IOException) {
+    const String& filename) throw(IOException)
+  {
     HashTable<String, AnyValue> result;
 #if 0
     File file(filename, File::READ, 0);
