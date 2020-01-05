@@ -58,11 +58,11 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
   
-  TypesApplication() throw()
+  TypesApplication() noexcept
     : Application(MESSAGE("types")) {
   }
   
-  void main() throw() {    
+  void main() noexcept {    
     GrayPixel grayArray[1024];
     GrayAlphaPixel8 grayAlpha8Array[1024];
     GrayAlphaPixel16 grayAlpha16Array[1024];

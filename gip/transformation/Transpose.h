@@ -41,7 +41,7 @@ namespace gip {
     /**
       Transpose the image.
     */
-    void operator()() throw();
+    void operator()() noexcept;
   };
 
   template<class DEST, class SRC>
@@ -55,7 +55,7 @@ namespace gip {
   }
 
   template<class DEST, class SRC>
-  void Transpose<DEST, SRC>::operator()() throw() {
+  void Transpose<DEST, SRC>::operator()() noexcept {
     if (!Transformation<DEST, SRC>::destination->getDimension().isProper()) {
       return; // nothing to do
     }

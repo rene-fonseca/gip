@@ -43,21 +43,21 @@ namespace gip {
     /**
       Initializes transformation object.
     */
-    FourierExchange(DestinationImage* destination) throw();
+    FourierExchange(DestinationImage* destination) noexcept;
 
     /**
       Exchange the regions of the image.
     */
-    void operator()() throw();
+    void operator()() noexcept;
   };
 
   template<class DEST>
-  FourierExchange<DEST>::FourierExchange(DestinationImage* destination) throw()
+  FourierExchange<DEST>::FourierExchange(DestinationImage* destination) noexcept
     : UnaryTransformation<DestinationImage>(destination) {
   }
 
   template<class DEST>
-  void FourierExchange<DEST>::operator()() throw() {
+  void FourierExchange<DEST>::operator()() noexcept {
 
     unsigned int halfWidth = UnaryTransformation<DEST>::destination->getDimension().getWidth()/2;
     unsigned int halfHeight = UnaryTransformation<DEST>::destination->getDimension().getHeight()/2;

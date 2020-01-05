@@ -47,7 +47,7 @@ namespace gip {
     /**
       Initializes image.
     */
-    inline Image() throw() {
+    inline Image() noexcept {
     }
     
     /**
@@ -60,10 +60,10 @@ namespace gip {
     /**
       Initializes image from other image.
     */
-    inline Image(const Image& copy) throw() : dimension(copy.dimension) {
+    inline Image(const Image& copy) noexcept : dimension(copy.dimension) {
     }
 
-    Image& operator=(const Image& eq) throw() {
+    Image& operator=(const Image& eq) noexcept {
       dimension = eq.dimension;
       return *this;
     }
@@ -71,21 +71,21 @@ namespace gip {
     /**
       Returns the dimension of the image.
     */
-    inline const Dimension& getDimension() const throw() {
+    inline const Dimension& getDimension() const noexcept {
       return dimension;
     }
 
     /**
       Returns the height (i.e. the number of rows) of the image.
     */
-    inline unsigned int getHeight() const throw() {
+    inline unsigned int getHeight() const noexcept {
       return dimension.getHeight();
     }
 
     /**
       Returns the width (i.e. the number of columns) of the image.
     */
-    inline unsigned int getWidth() const throw() {
+    inline unsigned int getWidth() const noexcept {
       return dimension.getWidth();
     }
   };

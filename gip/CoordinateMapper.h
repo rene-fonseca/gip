@@ -41,12 +41,12 @@ namespace gip {
 
       @param dimension The dimension to be enumerated.
     */
-    CoordinateMapper(const Dimension& dimension) throw();
+    CoordinateMapper(const Dimension& dimension) noexcept;
     
     /**
       Returns the total number of valid indices.
     */
-    virtual unsigned int getSize() const throw() = 0;
+    virtual unsigned int getSize() const noexcept = 0;
 
     /**
       Translates the specified index into a coordinate.
@@ -59,7 +59,7 @@ namespace gip {
     virtual unsigned int translate(const Point2D& coordinate) throw(OutOfRange) = 0;
   };
 
-  inline CoordinateMapper::CoordinateMapper(const Dimension& _dimension) throw()
+  inline CoordinateMapper::CoordinateMapper(const Dimension& _dimension) noexcept
     : dimension(_dimension) {
   }
 

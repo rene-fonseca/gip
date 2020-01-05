@@ -32,11 +32,11 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  ScaleApplication() throw()
+  ScaleApplication() noexcept
     : Application(MESSAGE("Scale")) {
   }
 
-  void scaleTransformation(const Dimension& dimension, const String& inputFile, const String& outputFile) throw() {
+  void scaleTransformation(const Dimension& dimension, const String& inputFile, const String& outputFile) noexcept {
     BMPEncoder encoder;
     
     fout << MESSAGE("Importing image with encoder: ") << encoder.getDescription() << ENDL;
@@ -58,7 +58,7 @@ public:
     encoder.write(outputFile, &finalImage);
   }
 
-  Dimension getDimension(const String& value) const throw() {
+  Dimension getDimension(const String& value) const noexcept {
     // dimension format "123x123"
     int x = value.indexOf('x');
     bassert(x > 0, base::InvalidFormat("Invalid dimension", this));
@@ -71,7 +71,7 @@ public:
     );
   }
   
-  void main() throw() {
+  void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL

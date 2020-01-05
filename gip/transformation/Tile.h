@@ -35,21 +35,21 @@ namespace gip {
     /**
       Initializes transformation object.
     */
-    Tile(DestinationImage* destination, SourceImage* source) throw();
+    Tile(DestinationImage* destination, SourceImage* source) noexcept;
 
     /**
       Tiles the image.
     */
-    void operator()() throw();
+    void operator()() noexcept;
   };
 
   template<class DEST, class SRC>
-  Tile<DEST, SRC>::Tile(DestinationImage* destination, SourceImage* source) throw()
+  Tile<DEST, SRC>::Tile(DestinationImage* destination, SourceImage* source) noexcept
     : Transformation<DestinationImage, SourceImage>(destination, source) {
   }
 
   template<class DEST, class SRC>
-  void Tile<DEST, SRC>::operator()() throw() {
+  void Tile<DEST, SRC>::operator()() noexcept {
     Dimension dimension = Transformation<DEST, SRC>::destination->getDimension();
     if (!dimension.isProper()) {
       return; // nothing to do

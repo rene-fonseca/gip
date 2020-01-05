@@ -55,25 +55,25 @@ public:
     unsigned int rows = 0;
   public:
 
-    inline RowsImpl(Pointer value, const Dimension& dimension) throw() :
+    inline RowsImpl(Pointer value, const Dimension& dimension) noexcept :
       first(value, dimension.getWidth()), rows(dimension.getHeight()) {
     }
     
-    inline RowsImpl(const RowsImpl& copy) throw()
+    inline RowsImpl(const RowsImpl& copy) noexcept
       : first(copy.first), rows(copy.rows) {
     }
     
-    inline RowIterator getFirst() const throw() {
+    inline RowIterator getFirst() const noexcept {
       return first;
     }
     
-    inline RowIterator getEnd() const throw() {
+    inline RowIterator getEnd() const noexcept {
       RowIterator result(first);
       result += rows;
       return result;
     }
 
-    inline RowIterator operator[](unsigned int index) const throw() {
+    inline RowIterator operator[](unsigned int index) const noexcept {
       ASSERT(index < rows);
       RowIterator result(first);
       result += index;
@@ -98,25 +98,25 @@ public:
     unsigned int columns = 0;
   public:
     
-    inline ColumnsImpl(Pointer value, const Dimension& dimension) throw() :
+    inline ColumnsImpl(Pointer value, const Dimension& dimension) noexcept :
       first(value, dimension), columns(dimension.getWidth()) {
     }
     
-    inline ColumnsImpl(const ColumnsImpl& copy) throw()
+    inline ColumnsImpl(const ColumnsImpl& copy) noexcept
       : first(copy.first), columns(copy.columns) {
     }
     
-    inline ColumnIterator getFirst() const throw() {
+    inline ColumnIterator getFirst() const noexcept {
       return first;
     }
 
-    inline ColumnIterator getEnd() const throw() {
+    inline ColumnIterator getEnd() const noexcept {
       ColumnIterator result(first);
       result += columns;
       return result;
     }
 
-    inline ColumnIterator operator[](unsigned int index) const throw() {
+    inline ColumnIterator operator[](unsigned int index) const noexcept {
       ASSERT(index < columns);
       ColumnIterator result(first);
       result += index;
@@ -139,9 +139,9 @@ public:
   /**
     Initializes the image from other image.
   */
-  ArrayImage(const ArrayImage& copy) throw();
+  ArrayImage(const ArrayImage& copy) noexcept;
 
-  ArrayImage& operator=(const ArrayImage& eq) throw() {
+  ArrayImage& operator=(const ArrayImage& eq) noexcept {
     Image<Pixel>::operator=(eq);
     elements = eq.elements;
     return *this;
@@ -159,7 +159,7 @@ public:
   /**
     Returns the rows of the image for non-modifying access.
   */
-  ReadableRows getRows() const throw() {
+  ReadableRows getRows() const noexcept {
     return ReadableRows(elements->getElements(), Image<PIXEL>::getDimension());
   }
 
@@ -175,7 +175,7 @@ public:
   /**
     Returns the rows of the image for non-modifying access.
   */
-  ReadableColumns getColumns() const throw() {
+  ReadableColumns getColumns() const noexcept {
     return ReadableColumns(elements->getElements(), Image<PIXEL>::getDimension());
   }
 
@@ -188,7 +188,7 @@ public:
   /**
     Returns the first element of the image for non-modifying access.
   */
-  const Pixel* getElements() const throw();
+  const Pixel* getElements() const noexcept;
 };
 
 template<class PIXEL>
@@ -202,7 +202,7 @@ ArrayImage<PIXEL>::ArrayImage(const Dimension& dimension) throw(MemoryException)
 }
 
 template<class PIXEL>
-ArrayImage<PIXEL>::ArrayImage(const ArrayImage& copy) throw() :
+ArrayImage<PIXEL>::ArrayImage(const ArrayImage& copy) noexcept :
   Image<Pixel>(copy), elements(copy.elements) {
 }
 
@@ -213,7 +213,7 @@ typename ArrayImage<PIXEL>::Pixel* ArrayImage<PIXEL>::getElements() throw(Memory
 }
 
 template<class PIXEL>
-const typename ArrayImage<PIXEL>::Pixel* ArrayImage<PIXEL>::getElements() const throw() {
+const typename ArrayImage<PIXEL>::Pixel* ArrayImage<PIXEL>::getElements() const noexcept {
   return elements->getElements();
 }
 

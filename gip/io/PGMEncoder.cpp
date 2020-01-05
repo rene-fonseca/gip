@@ -19,14 +19,14 @@
 
 namespace gip {
 
-  PGMEncoder::PGMEncoder() throw() {
+  PGMEncoder::PGMEncoder() noexcept {
   }
 
-  String PGMEncoder::getDescription() const throw() {
+  String PGMEncoder::getDescription() const noexcept {
     return MESSAGE("Portable Graymap Format");
   }
   
-  String PGMEncoder::getDefaultExtension() const throw() {
+  String PGMEncoder::getDefaultExtension() const noexcept {
     return MESSAGE("pgm");
   }
   

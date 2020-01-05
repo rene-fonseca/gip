@@ -33,7 +33,7 @@ namespace gip {
     numberOfRowIterations = Math::iLog2(destination->getDimension().getHeight());
   }
 
-  void HaarTransformation<FloatImage>::operator()() throw() {
+  void HaarTransformation<FloatImage>::operator()() noexcept {
     // Haar transformation row by row
     if (numberOfColumnIterations > 0) {
       PrimitiveArray<Pixel> buffer(static_cast<MemorySize>(1) << (numberOfColumnIterations - 1));
@@ -124,7 +124,7 @@ namespace gip {
     numberOfRowIterations = Math::iLog2(destination->getDimension().getHeight());
   }
 
-  void HaarTransformation<GrayImage>::operator()() throw() {
+  void HaarTransformation<GrayImage>::operator()() noexcept {
     // Haar transformation row by row
     if (numberOfColumnIterations > 0) {
       PrimitiveArray<Pixel> buffer(static_cast<MemorySize>(1) << (numberOfColumnIterations - 1));
@@ -199,7 +199,7 @@ namespace gip {
     }
   }
 
-  void HaarTransformation<GrayImage>::inverse() throw() {
+  void HaarTransformation<GrayImage>::inverse() noexcept {
     // Haar transformation column by column
     if (numberOfRowIterations > 0) {
       PrimitiveArray<Pixel> buffer(static_cast<MemorySize>(1) << (numberOfRowIterations - 1));

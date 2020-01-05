@@ -75,7 +75,7 @@ namespace gip {
 
 
   template<class SRC, class DEST>
-  inline DEST mapToOneDimension(const SRC& value) throw() {
+  inline DEST mapToOneDimension(const SRC& value) noexcept {
     return value;
   }
 
@@ -97,7 +97,7 @@ namespace gip {
     class GetOrder : public UnaryOperation<Pixel, Arithmetic> {
     public:
       
-      inline Arithmetic operator()(const Pixel& pixel) const throw() {
+      inline Arithmetic operator()(const Pixel& pixel) const noexcept {
         return mapToOneDimension(pixel);
       }
     };

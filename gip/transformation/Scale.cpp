@@ -26,7 +26,7 @@ namespace gip {
   }
   
   template<class DEST, class SRC>
-  void Scale<DEST, SRC>::operator()() throw() {    
+  void Scale<DEST, SRC>::operator()() noexcept {    
     unsigned int rows = Transformation<DEST, SRC>::destination->getDimension().getHeight();
     unsigned int columns = Transformation<DEST, SRC>::destination->getDimension().getWidth();
     unsigned int srcRows = Transformation<DEST, SRC>::source->getDimension().getHeight();

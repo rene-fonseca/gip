@@ -15,7 +15,7 @@
 
 namespace gip {
 
-  Array<String> ImageEncoder::getExtensions() const throw() {
+  Array<String> ImageEncoder::getExtensions() const noexcept {
     Array<String> extensions;
     extensions.append(getDefaultExtension());
     return extensions;

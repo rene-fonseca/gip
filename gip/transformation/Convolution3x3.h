@@ -162,7 +162,7 @@ namespace gip {
       typedef typename PixelTraits<typename SourceImage::Pixel>::Arithmetic Arithmetic;
       typedef typename PixelTraits<typename DestinationImage::Pixel>::Arithmetic Result;
       
-      inline Result operator()(Iterator previous, Iterator current, Iterator next) const throw() {
+      inline Result operator()(Iterator previous, Iterator current, Iterator next) const noexcept {
         return static_cast<Result>(KERNEL::M00 * static_cast<Arithmetic>(previous[-1]) +
                                    KERNEL::M01 * static_cast<Arithmetic>(previous[0]) +
                                    KERNEL::M02 * static_cast<Arithmetic>(previous[1]) +
@@ -192,7 +192,7 @@ namespace gip {
       typedef typename PixelTraits<typename SourceImage::Pixel>::Arithmetic Arithmetic;
       typedef GrayAlphaPixel<typename PixelTraits<typename DestinationImage::Pixel>::Arithmetic> Result;
 
-      inline Result operator()(Iterator previous, Iterator current, Iterator next) const throw() {
+      inline Result operator()(Iterator previous, Iterator current, Iterator next) const noexcept {
         Result result;
         result.gray = (KERNEL::M00 * static_cast<Arithmetic>(previous[-1].gray) +
                        KERNEL::M01 * static_cast<Arithmetic>(previous[0].gray) +
@@ -234,7 +234,7 @@ namespace gip {
       typedef typename PixelTraits<typename SourceImage::Pixel>::Arithmetic Arithmetic;
       typedef RGBPixel<typename PixelTraits<typename DestinationImage::Pixel>::Arithmetic> Result;
       
-      inline Result operator()(Iterator previous, Iterator current, Iterator next) const throw() {
+      inline Result operator()(Iterator previous, Iterator current, Iterator next) const noexcept {
         Result result;
         result.red = (KERNEL::M00 * static_cast<Arithmetic>(previous[-1].red) +
                       KERNEL::M01 * static_cast<Arithmetic>(previous[0].red) +
@@ -286,7 +286,7 @@ namespace gip {
       typedef typename PixelTraits<typename SourceImage::Pixel>::Arithmetic Arithmetic;
       typedef RGBAPixel<typename PixelTraits<typename DestinationImage::Pixel>::Arithmetic> Result;
       
-      inline Result operator()(Iterator previous, Iterator current, Iterator next) const throw() {
+      inline Result operator()(Iterator previous, Iterator current, Iterator next) const noexcept {
         Result result;
         result.red = (KERNEL::M00 * static_cast<Arithmetic>(previous[-1].red) +
                       KERNEL::M01 * static_cast<Arithmetic>(previous[0].red) +
@@ -343,7 +343,7 @@ namespace gip {
     /**
       Calculate transformation.
     */
-    void operator()() throw() {
+    void operator()() noexcept {
       typename SourceImage::ReadableRows rowLookup = Transformation<DEST, SRC>::source->getRows();
       typename SourceImage::ReadableRows::RowIterator endRow = rowLookup.getEnd();
       typename SourceImage::ReadableRows::RowIterator previousRow = rowLookup.getFirst();

@@ -35,12 +35,12 @@ private:
   const long double denomY;
 public:
   
-  inline Gaussian(long double deviationX, long double deviationY) throw()
+  inline Gaussian(long double deviationX, long double deviationY) noexcept
     : denomX(-1/(2 * deviationX * deviationX)),
       denomY(-1/(2 * deviationY * deviationY)) {
   }
   
-  inline long double operator()(long double x, long double y) const throw() {
+  inline long double operator()(long double x, long double y) const noexcept {
     return Math::exp(x * x * denomX + y * y * denomY);
   }
 };
@@ -51,14 +51,14 @@ private:
    const long double scale;
 public:
 
-  inline RealToGray(const Dimension& dimension) throw()
+  inline RealToGray(const Dimension& dimension) noexcept
     : scale(1.0/dimension.getSize()) {
   }
   
-  //inline RealToGray(const Dimension& dimension) throw() : scale(255) {
+  //inline RealToGray(const Dimension& dimension) noexcept : scale(255) {
   //}
 
-  inline GrayPixel operator()(const Complex& value) const throw() {
+  inline GrayPixel operator()(const Complex& value) const noexcept {
     return clamp(0, static_cast<GrayPixel>(value.getReal() * scale), 255);
   }
 };
@@ -70,11 +70,11 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
   
-  GaussianBlur() throw()
+  GaussianBlur() noexcept
     : Application(MESSAGE("GaussianBlur")) {
   }
   
-  void blur(const String& inputFile, const String& outputFile) throw() {
+  void blur(const String& inputFile, const String& outputFile) noexcept {
     BMPEncoder encoder;
     
     ColorImage* image = encoder.read(inputFile);
@@ -180,7 +180,7 @@ public:
     encoder.writeGray(outputFile, &grayImage);
   }
   
-  void main() throw() {
+  void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL

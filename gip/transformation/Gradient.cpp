@@ -25,7 +25,7 @@ namespace gip {
     );
   }
 
-  void Gradient::operator()() throw() {
+  void Gradient::operator()() noexcept {
     unsigned int rows = destination->getDimension().getHeight();
     unsigned int columns = destination->getDimension().getWidth();
 

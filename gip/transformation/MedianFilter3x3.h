@@ -44,7 +44,7 @@ namespace gip {
       Component right;
     };
     
-    static inline Elements sort(Component left, Component middle, Component right) throw() {
+    static inline Elements sort(Component left, Component middle, Component right) noexcept {
       if (middle <= right) {
         if (left <= middle) {
           return Elements{left, middle, right};
@@ -58,7 +58,7 @@ namespace gip {
       }
     }
 
-    static inline Elements2 sort(Component left, Component right) throw() {
+    static inline Elements2 sort(Component left, Component right) noexcept {
       if (left <= right) {
         return Elements2{left, right};
       } else {
@@ -66,7 +66,7 @@ namespace gip {
       }
     }
     
-    static inline Component getMedian4(Component a, Component b, Component c, Component d) throw() {
+    static inline Component getMedian4(Component a, Component b, Component c, Component d) noexcept {
       Elements2 left0 = sort(a, b);
       Elements2 right0 = sort(c, d);
       Elements2 left1 = sort(left0.left, right0.left);
@@ -74,7 +74,7 @@ namespace gip {
       return sort(left1.right, right1.left).left;
     }
     
-    static inline Component getMedian6(Component a, Component b, Component c, Component d, Component e, Component f) throw() {
+    static inline Component getMedian6(Component a, Component b, Component c, Component d, Component e, Component f) noexcept {
       Elements left0 = sort(a, b, c);
       Elements right0 = sort(d, e, f);
       return sort(
@@ -84,7 +84,7 @@ namespace gip {
       ).middle;
     }
 
-    static inline Component getMedian9(Component a, Component b, Component c, Component d, Component e, Component f, Component g, Component h, Component i) throw() {
+    static inline Component getMedian9(Component a, Component b, Component c, Component d, Component e, Component f, Component g, Component h, Component i) noexcept {
       Elements left0 = sort(a, b, c);
       Elements middle0 = sort(d, e, f);
       Elements right0 = sort(g, h, i);
@@ -111,7 +111,7 @@ namespace gip {
     /**
       Calculate transformation.
     */
-    void operator()() throw() {
+    void operator()() noexcept {
       /*typename*/ SourceImage::ReadableRows rowLookup = source->getRows();
       /*typename*/ SourceImage::ReadableRows::RowIterator endRow = rowLookup.getEnd();
       /*typename*/ SourceImage::ReadableRows::RowIterator currentRow = rowLookup.getFirst();

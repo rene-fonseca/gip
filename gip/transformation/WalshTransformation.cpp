@@ -54,7 +54,7 @@ namespace gip {
     }
   }
 
-  void WalshTransformation::operator()() throw() {
+  void WalshTransformation::operator()() noexcept {
 
     unsigned int rows = source->getHeight();
     unsigned int columns = source->getWidth();

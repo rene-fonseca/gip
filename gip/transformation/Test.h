@@ -28,9 +28,9 @@ namespace gip {
   class _COM_AZURE_DEV__GIP__API Test : public UnaryTransformation<ColorImage> {
   public:
 
-    Test(DestinationImage* destination) throw();
+    Test(DestinationImage* destination) noexcept;
 
-    void operator()() throw();
+    void operator()() noexcept;
   };
 
 }; // end of gip namespace

@@ -31,22 +31,22 @@ namespace gip {
     /**
       Initializes the encoder.
     */
-    TIFFEncoder() throw();
+    TIFFEncoder() noexcept;
 
     /**
       Returns a description of the encoder.
     */
-    String getDescription() const throw();
+    String getDescription() const noexcept;
     
     /**
       Returns the default extension.
     */
-    String getDefaultExtension() const throw();
+    String getDefaultExtension() const noexcept;
     
     /**
       Returns an array of extensions.
     */
-    Array<String> getExtensions() const throw();
+    Array<String> getExtensions() const noexcept;
   };
   
 }; // end of gip namespace

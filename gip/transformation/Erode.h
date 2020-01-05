@@ -75,7 +75,7 @@ namespace gip {
       
       typedef typename SourceImage::ReadableRows::RowIterator::ElementIterator Iterator;
       
-      inline Pixel operator()(Iterator previous, Iterator current, Iterator next) const throw() {
+      inline Pixel operator()(Iterator previous, Iterator current, Iterator next) const noexcept {
         Pixel minimum;
         if (KERNEL::M00) {
           minimum = previous[-1];
@@ -142,7 +142,7 @@ namespace gip {
       bassert(destination->getDimension() == source->getDimension(), ImageException(this));
     }
 
-    void operator()() const throw() {
+    void operator()() const noexcept {
       typename SourceImage::ReadableRows rowLookup = Transformation<DEST, SRC>::source->getRows();
       typename SourceImage::ReadableRows::RowIterator endRow = rowLookup.getEnd();
       typename SourceImage::ReadableRows::RowIterator previousRow = rowLookup.getFirst();

@@ -28,11 +28,11 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  StatApplication() throw()
+  StatApplication() noexcept
     : Application(MESSAGE("Stat")) {
   }
 
-  void stat(const String& inputFile) throw() {
+  void stat(const String& inputFile) noexcept {
     BMPEncoder encoder;
     
     ColorImage* image = encoder.read(inputFile);
@@ -67,12 +67,12 @@ public:
          << ENDL;
   }
 
-  void help() throw() {
+  void help() noexcept {
     fout << MESSAGE("Usage: ") << getFormalName() << MESSAGE(" input") << EOL
          << ENDL;
   }
   
-  void main() throw() {
+  void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL

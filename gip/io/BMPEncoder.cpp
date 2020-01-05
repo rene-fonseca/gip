@@ -32,7 +32,7 @@ namespace gip {
     inline FullPalette(ColorPixel* _palette) : palette(_palette) {
     }
     
-    inline Result operator()(Argument value) const throw() {
+    inline Result operator()(Argument value) const noexcept {
       return palette[value];
     }
   };
@@ -48,7 +48,7 @@ namespace gip {
       : palette(_palette), maxIndex(_maxIndex) {
     }
     
-    inline Result operator()(Argument value) const throw() {
+    inline Result operator()(Argument value) const noexcept {
       bassert(
         value < maxIndex,
         bindCause(InvalidFormat("Color table index out of range", this), ImageEncoder::INVALID_COLOR)
@@ -103,14 +103,14 @@ _COM_AZURE_DEV__BASE__PACKED__BEGIN
   } _COM_AZURE_DEV__BASE__PACKED;
 _COM_AZURE_DEV__BASE__PACKED__END
 
-  BMPEncoder::BMPEncoder() throw() {
+  BMPEncoder::BMPEncoder() noexcept {
   }
 
-  String BMPEncoder::getDescription() const throw() {
+  String BMPEncoder::getDescription() const noexcept {
     return MESSAGE("Windows Bitmap File Format");
   }
 
-  String BMPEncoder::getDefaultExtension() const throw() {
+  String BMPEncoder::getDefaultExtension() const noexcept {
     return MESSAGE("bmp");
   }
 

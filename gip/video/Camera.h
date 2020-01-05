@@ -36,12 +36,12 @@ namespace gip {
     /**
       Returns the vendor of the camera.
     */
-    virtual String getVendorName() const throw() = 0;
+    virtual String getVendorName() const noexcept = 0;
 
     /**
       Returns the model of the camera.
     */
-    virtual String getModelName() const throw() = 0;
+    virtual String getModelName() const noexcept = 0;
   };
 
 }; // end of gip namespace

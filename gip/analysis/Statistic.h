@@ -70,7 +70,7 @@ namespace gip {
       
       @param image The source image.
     */
-    Statistic(const Image& image) throw()
+    Statistic(const Image& image) noexcept
       : numberOfSamples(image.getDimension().getSize()) {
 
       // count frequency of each pixel value
@@ -137,21 +137,21 @@ namespace gip {
     /**
       Returns the number of values/samples.
     */
-    inline unsigned int getNumberOfSamples() const throw() {
+    inline unsigned int getNumberOfSamples() const noexcept {
       return numberOfSamples;
     }
 
     /**
       Returns the number of used pixel value.
     */
-    inline unsigned int getUsedValues() const throw() {
+    inline unsigned int getUsedValues() const noexcept {
       return used;
     }
 
     /**
       Returns the frequency of the specified pixel value.
     */
-    inline unsigned int getFrequency(Pixel value) const throw() {
+    inline unsigned int getFrequency(Pixel value) const noexcept {
       if ((value >= PixelTraits<Pixel>::MINIMUM) && (value <= PixelTraits<Pixel>::MAXIMUM)) {
         return frequency[value];
       } else {
@@ -162,49 +162,49 @@ namespace gip {
     /**
       Returns the minimum frequency.
     */
-    inline unsigned int getMinimumFrequency() const throw() {
+    inline unsigned int getMinimumFrequency() const noexcept {
       return minimumFrequency;
     }
 
     /**
       Returns the maximum frequency.
     */
-    inline unsigned int getMaximumFrequency() const throw() {
+    inline unsigned int getMaximumFrequency() const noexcept {
       return maximumFrequency;
     }
 
     /**
       Returns the dynamic range.
     */
-    inline unsigned int getDynamicRange() const throw() {
+    inline unsigned int getDynamicRange() const noexcept {
       return maximum - minimum;
     }
     
     /**
       Returns the minimum value.
     */
-    inline Pixel getMinimum() const throw() {
+    inline Pixel getMinimum() const noexcept {
       return minimum;
     }
 
     /**
       Returns the maximum value.
     */
-    inline Pixel getMaximum() const throw() {
+    inline Pixel getMaximum() const noexcept {
       return maximum;
     }
 
     /**
       Returns the mean value.
     */
-    inline double getMean() const throw() {
+    inline double getMean() const noexcept {
       return mean;
     }
 
     /**
       Returns the median (rounded down).
     */
-    inline Pixel getMedian() const throw() {
+    inline Pixel getMedian() const noexcept {
       return median;
     }
     
@@ -212,35 +212,35 @@ namespace gip {
       Returns the mode (the most frequent value) of the image. The mode may not
       exist or be unique.
     */
-    inline Pixel getMode() const throw() {
+    inline Pixel getMode() const noexcept {
       return mode;
     }
 
     /**
       Returns the variance.
     */
-    inline double getVariance() const throw() {
+    inline double getVariance() const noexcept {
       return variance;
     }
 
     /**
       Returns the standard deviation.
     */
-    inline double getDeviation() const throw() {
+    inline double getDeviation() const noexcept {
       return Math::sqrt(variance);
     }
 
     /**
       Returns the dimensionless coefficient-of-variation.
     */
-    inline double getCoefficientOfVariation() const throw() {
+    inline double getCoefficientOfVariation() const noexcept {
       return Math::sqrt(variance)/mean;
     }
     
     /**
       Returns the entropy in binary units.
     */
-    inline double getEntropy() const throw() {
+    inline double getEntropy() const noexcept {
       return entropy;
     }
   };

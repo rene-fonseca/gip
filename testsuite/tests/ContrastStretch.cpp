@@ -29,11 +29,11 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  ContrastStretchApplication() throw()
+  ContrastStretchApplication() noexcept
     : Application(MESSAGE("ContrastStretch")) {
   }
 
-  void contrastStretchTransformation(const String& inputFile, const String& outputFile) throw() {
+  void contrastStretchTransformation(const String& inputFile, const String& outputFile) noexcept {
     BMPEncoder encoder;
 
     fout << MESSAGE("Information:") << ENDL;
@@ -69,7 +69,7 @@ public:
 //    encoder.writeGray(outputFile, &finalImage);
   }
   
-  void main() throw() {
+  void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL

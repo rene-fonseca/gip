@@ -52,7 +52,7 @@ namespace gip {
     public:
 
       // TAG: problem if components are negative
-      inline Arithmetic operator()(const Pixel& pixel) const throw() {
+      inline Arithmetic operator()(const Pixel& pixel) const noexcept {
         return static_cast<Arithmetic>(mapToOneDimension(pixel.red)) +
           static_cast<Arithmetic>(mapToOneDimension(pixel.alpha)); // TAG: alpha should not be included
       }
@@ -61,7 +61,7 @@ namespace gip {
     class Clamp : public UnaryOperation<Arithmetic, Arithmetic> {
     public:
 
-      inline Arithmetic operator()(const Arithmetic& value) const throw() {
+      inline Arithmetic operator()(const Arithmetic& value) const noexcept {
         if (value >= MAXIMUM) {
           return MAXIMUM;
         } else if (value < MINIMUM) {
@@ -133,21 +133,21 @@ _COM_AZURE_DEV__BASE__PACKED__END
   */
 
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> makeGrayAlphaPixel(COMPONENT gray, COMPONENT alpha) throw() {
+  inline GrayAlphaPixel<COMPONENT> makeGrayAlphaPixel(COMPONENT gray, COMPONENT alpha) noexcept {
     GrayAlphaPixel<COMPONENT> result;
     result.gray = gray;
     result.alpha = alpha;
     return result;
   }
 
-  inline GrayAlphaPixel8 makeGrayAlphaPixel8(PixelTraits<GrayAlphaPixel8>::Component gray, PixelTraits<GrayAlphaPixel8>::Component alpha) throw() {
+  inline GrayAlphaPixel8 makeGrayAlphaPixel8(PixelTraits<GrayAlphaPixel8>::Component gray, PixelTraits<GrayAlphaPixel8>::Component alpha) noexcept {
     GrayAlphaPixel8 result;
     result.gray = gray;
     result.alpha = alpha;
     return result;
   }
 
-  inline GrayAlphaPixel16 makeGrayAlphaPixel16(PixelTraits<GrayAlphaPixel16>::Component gray, PixelTraits<GrayAlphaPixel16>::Component alpha) throw() {
+  inline GrayAlphaPixel16 makeGrayAlphaPixel16(PixelTraits<GrayAlphaPixel16>::Component gray, PixelTraits<GrayAlphaPixel16>::Component alpha) noexcept {
     GrayAlphaPixel16 result;
     result.gray = gray;
     result.alpha = alpha;
@@ -165,7 +165,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     @param opacity The opacity level of the new pixel. This must be in the range [0; opaque].
   */
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> blend(GrayAlphaPixel<COMPONENT> back, GrayAlphaPixel<COMPONENT> front, unsigned int opaque, unsigned int opacity) throw() {
+  inline GrayAlphaPixel<COMPONENT> blend(GrayAlphaPixel<COMPONENT> back, GrayAlphaPixel<COMPONENT> front, unsigned int opaque, unsigned int opacity) noexcept {
     GrayAlphaPixel<COMPONENT> result;
     unsigned int transparency = opaque - opacity;
     result.gray = (transparency * static_cast<typename PixelTraits<GrayAlphaPixel<COMPONENT> >::Arithmetic>(back.gray) + opacity * static_cast<typename PixelTraits<GrayAlphaPixel<COMPONENT> >::Arithmetic>(front.red))/opaque;
@@ -176,70 +176,70 @@ _COM_AZURE_DEV__BASE__PACKED__END
   
 
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> operator*(GrayAlphaPixel<COMPONENT> pixel, int factor) throw() {
+  inline GrayAlphaPixel<COMPONENT> operator*(GrayAlphaPixel<COMPONENT> pixel, int factor) noexcept {
     pixel.gray *= factor;
     pixel.alpha *= factor;
     return pixel;
   }
   
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> operator*(GrayAlphaPixel<COMPONENT> pixel, unsigned int factor) throw() {
+  inline GrayAlphaPixel<COMPONENT> operator*(GrayAlphaPixel<COMPONENT> pixel, unsigned int factor) noexcept {
     pixel.gray *= factor;
     pixel.alpha *= factor;
     return pixel;
   }
 
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> operator*(GrayAlphaPixel<COMPONENT> pixel, float factor) throw() {
+  inline GrayAlphaPixel<COMPONENT> operator*(GrayAlphaPixel<COMPONENT> pixel, float factor) noexcept {
     pixel.gray *= factor;
     pixel.alpha *= factor;
     return pixel;
   }
 
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> operator*(GrayAlphaPixel<COMPONENT> pixel, double factor) throw() {
+  inline GrayAlphaPixel<COMPONENT> operator*(GrayAlphaPixel<COMPONENT> pixel, double factor) noexcept {
     pixel.gray *= factor;
     pixel.alpha *= factor;
     return pixel;
   }
 
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> operator*(GrayAlphaPixel<COMPONENT> pixel, long double factor) throw() {
+  inline GrayAlphaPixel<COMPONENT> operator*(GrayAlphaPixel<COMPONENT> pixel, long double factor) noexcept {
     pixel.gray *= factor;
     pixel.alpha *= factor;
     return pixel;
   }
 
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, int divisor) throw() {
+  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, int divisor) noexcept {
     pixel.gray /= divisor;
     pixel.alpha /= divisor;
     return pixel;
   }
 
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, unsigned int divisor) throw() {
+  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, unsigned int divisor) noexcept {
     pixel.gray /= divisor;
     pixel.alpha /= divisor;
     return pixel;
   }
 
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, float divisor) throw() {
+  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, float divisor) noexcept {
     pixel.gray /= divisor;
     pixel.alpha /= divisor;
     return pixel;
   }
 
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, double divisor) throw() {
+  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, double divisor) noexcept {
     pixel.gray /= divisor;
     pixel.alpha /= divisor;
     return pixel;
   }
 
   template<class COMPONENT>
-  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, long double divisor) throw() {
+  inline GrayAlphaPixel<COMPONENT> operator/(GrayAlphaPixel<COMPONENT> pixel, long double divisor) noexcept {
     pixel.gray /= divisor;
     pixel.alpha /= divisor;
     return pixel;

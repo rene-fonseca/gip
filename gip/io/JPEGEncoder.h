@@ -36,24 +36,24 @@ namespace gip {
     /**
       Initializes encoder.
     */
-    JPEGEncoder() throw();
+    JPEGEncoder() noexcept;
 
     /**
       Returns a description of the encoder.
     */
-    String getDescription() const throw();
+    String getDescription() const noexcept;
     
     /**
       Returns the default extension.
     */
-    String getDefaultExtension() const throw();
+    String getDefaultExtension() const noexcept;
     
     /**
       Reads a color image from the specified file.
       
       @param filename The path of the file.
     */
-    Array<String> getExtensions() const throw();
+    Array<String> getExtensions() const noexcept;
 
     /**
       Returns true if the file seems to be a valid.

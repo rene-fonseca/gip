@@ -44,7 +44,7 @@ namespace gip {
     unsigned int numberOfColumnIterations = 0;
     unsigned int numberOfRowIterations = 0;
     
-    static inline RowElementIterator partialTransform(RowElementIterator even, RowElementIterator odd, RowElementIterator src, unsigned int size) throw() {
+    static inline RowElementIterator partialTransform(RowElementIterator even, RowElementIterator odd, RowElementIterator src, unsigned int size) noexcept {
       const RowElementIterator begin = src - size;
       while (src != begin) { // reversed order 'cause we must never overwrite results
         Pixel o = *--src;
@@ -55,7 +55,7 @@ namespace gip {
       return odd;
     }
     
-    static inline ColumnElementIterator partialColumnTransform(ColumnElementIterator even, ColumnElementIterator odd, ColumnElementIterator src, unsigned int size) throw() {
+    static inline ColumnElementIterator partialColumnTransform(ColumnElementIterator even, ColumnElementIterator odd, ColumnElementIterator src, unsigned int size) noexcept {
       const ColumnElementIterator begin = src - size;
       while (src != begin) { // reversed order 'cause we must never overwrite results
         Pixel o = *--src;
@@ -66,7 +66,7 @@ namespace gip {
       return odd;
     }
     
-    static inline RowElementIterator partialITransform(RowElementIterator dest, RowElementIterator even, RowElementIterator odd, unsigned int size) throw() {
+    static inline RowElementIterator partialITransform(RowElementIterator dest, RowElementIterator even, RowElementIterator odd, unsigned int size) noexcept {
       const RowElementIterator end = dest + size;
       while (dest != end) { // reversed order 'cause we must never overwrite results
         Pixel e = *even - *odd/2;
@@ -90,7 +90,7 @@ namespace gip {
     /**
       Calculate transformation.
     */
-    void operator()() throw();
+    void operator()() noexcept;
   };
 
   template<>
@@ -104,7 +104,7 @@ namespace gip {
     unsigned int numberOfColumnIterations = 0;
     unsigned int numberOfRowIterations = 0;
 
-    static inline RowElementIterator partialTransform(RowElementIterator even, RowElementIterator odd, RowElementIterator src, unsigned int size) throw() {
+    static inline RowElementIterator partialTransform(RowElementIterator even, RowElementIterator odd, RowElementIterator src, unsigned int size) noexcept {
       const RowElementIterator begin = src - size;
       while (src != begin) { // reversed order 'cause we must never overwrite results
         int o = *--src;
@@ -115,7 +115,7 @@ namespace gip {
       return odd;
     }
     
-    static inline ColumnElementIterator partialColumnTransform(ColumnElementIterator even, ColumnElementIterator odd, ColumnElementIterator src, unsigned int size) throw() {
+    static inline ColumnElementIterator partialColumnTransform(ColumnElementIterator even, ColumnElementIterator odd, ColumnElementIterator src, unsigned int size) noexcept {
       const ColumnElementIterator begin = src - size;
       while (src != begin) { // reversed order 'cause we must never overwrite results
         int o = *--src;
@@ -126,7 +126,7 @@ namespace gip {
       return odd;
     }
 
-    static inline RowElementIterator partialITransform(RowElementIterator dest, RowElementIterator even, RowElementIterator odd, unsigned int size) throw() {
+    static inline RowElementIterator partialITransform(RowElementIterator dest, RowElementIterator even, RowElementIterator odd, unsigned int size) noexcept {
       const RowElementIterator end = dest;
       dest -= size;
       even -= size/2;
@@ -144,7 +144,7 @@ namespace gip {
       return odd;
     }
 
-    static inline ColumnElementIterator partialIColumnTransform(ColumnElementIterator dest, ColumnElementIterator even, ColumnElementIterator odd, unsigned int size) throw() {
+    static inline ColumnElementIterator partialIColumnTransform(ColumnElementIterator dest, ColumnElementIterator even, ColumnElementIterator odd, unsigned int size) noexcept {
       const ColumnElementIterator end = dest;
       dest -= size;
       even -= size/2;
@@ -165,12 +165,12 @@ namespace gip {
 
     HaarTransformation(DestinationImage* destination) throw(ImageException);
 
-    void operator()() throw();
+    void operator()() noexcept;
     
     /**
       Calculates the inverse Haar transformation.
     */
-    void inverse() throw();
+    void inverse() noexcept;
   };
   
 }; // end of gip namespace

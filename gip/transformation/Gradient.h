@@ -41,7 +41,7 @@ namespace gip {
     /**
       Duplicates the contents of the source image to the destination image.
     */
-    void operator()() throw();
+    void operator()() noexcept;
   };
 
 }; // end of gip namespace

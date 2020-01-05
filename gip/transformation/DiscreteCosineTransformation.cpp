@@ -56,7 +56,7 @@ DiscreteCosineTransformation::DiscreteCosineTransformation(DestinationImage* des
   }
 }
 
-void DiscreteCosineTransformation::operator()() throw() {
+void DiscreteCosineTransformation::operator()() noexcept {
   unsigned int rows = source->getHeight();
   unsigned int columns = source->getWidth();
 

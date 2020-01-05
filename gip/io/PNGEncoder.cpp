@@ -40,7 +40,7 @@ namespace gip {
       ); // could raise exception
     }
 
-    static void flush(png_structp context) throw() {
+    static void flush(png_structp context) noexcept {
       // file.flush(); // TAG: flushed when file is closed
     }
 
@@ -51,14 +51,14 @@ namespace gip {
   };
 #endif
 
-  PNGEncoder::PNGEncoder() throw() {
+  PNGEncoder::PNGEncoder() noexcept {
   }
   
-  String PNGEncoder::getDescription() const throw() {
+  String PNGEncoder::getDescription() const noexcept {
     return Literal("Portable Network Graphics");
   }
   
-  String PNGEncoder::getDefaultExtension() const throw() {
+  String PNGEncoder::getDefaultExtension() const noexcept {
     return Literal("png");
   }
 
@@ -249,9 +249,9 @@ namespace gip {
     need support for encoder specific parameters
     quality, compression, and more
     
-    void hint(enum {SLOWEST, DEFAULT, FASTEST}) throw();
+    void hint(enum {SLOWEST, DEFAULT, FASTEST}) noexcept;
     
-    bool isLossless() const throw() - not static
+    bool isLossless() const noexcept - not static
   */
   
   void PNGEncoder::writeGray(

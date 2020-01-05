@@ -25,11 +25,11 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  BMPEncoderApplication() throw()
+  BMPEncoderApplication() noexcept
     : Application(MESSAGE("bmpio")) {
   }
 
-  void main() throw() {
+  void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL

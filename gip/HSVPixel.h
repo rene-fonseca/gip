@@ -54,7 +54,7 @@ public:
   class Clamp : public UnaryOperation<Arithmetic, Arithmetic> {
   public:
 
-    inline Arithmetic operator()(const Arithmetic& value) const throw() {
+    inline Arithmetic operator()(const Arithmetic& value) const noexcept {
       if (value >= MAXIMUM) {
         return MAXIMUM;
       } else if (value < MINIMUM) {
@@ -91,7 +91,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   @see HSVPixel
 */
 template<class COMPONENT>
-inline HSVPixel<COMPONENT> makeHSVPixel(COMPONENT hue, COMPONENT saturation, COMPONENT value) throw() {
+inline HSVPixel<COMPONENT> makeHSVPixel(COMPONENT hue, COMPONENT saturation, COMPONENT value) noexcept {
   HSVPixel<COMPONENT> result;
   result.hue = hue;
   result.saturation = saturation;
@@ -103,7 +103,7 @@ inline HSVPixel<COMPONENT> makeHSVPixel(COMPONENT hue, COMPONENT saturation, COM
   Converts an RGB pixel into the HSV color space. The components of the RGB pixel must be in the range [0; 1].
 */
 template<class COMPONENT>
-inline HSVPixel<COMPONENT> RGBToHSV(const RGBPixel<COMPONENT>& pixel) throw() {
+inline HSVPixel<COMPONENT> RGBToHSV(const RGBPixel<COMPONENT>& pixel) noexcept {
   typedef typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic Arithmetic;
   HSVPixel<COMPONENT> result;
 
@@ -139,7 +139,7 @@ inline HSVPixel<COMPONENT> RGBToHSV(const RGBPixel<COMPONENT>& pixel) throw() {
   Converts an RGB pixel into the HSV color space. The components will be mapped from the range [0; 255] into [0; 255].
 */
 template<>
-inline HSVPixel<unsigned char> RGBToHSV<unsigned char>(const RGBPixel<unsigned char>& pixel) throw() {
+inline HSVPixel<unsigned char> RGBToHSV<unsigned char>(const RGBPixel<unsigned char>& pixel) noexcept {
   typedef PixelTraits<RGBPixel<unsigned char> >::Arithmetic Arithmetic;
   HSVPixel<unsigned char> result;
 
@@ -179,7 +179,7 @@ inline HSVPixel<unsigned char> RGBToHSV<unsigned char>(const RGBPixel<unsigned c
   Converts an HSV pixel into the RGB color space. The components of the HSV pixel must be in the range [0; 1].
 */
 template<class COMPONENT>
-inline RGBPixel<COMPONENT> HSVToRGB(const HSVPixel<COMPONENT>& pixel) throw() {
+inline RGBPixel<COMPONENT> HSVToRGB(const HSVPixel<COMPONENT>& pixel) noexcept {
   typedef typename PixelTraits<HSVPixel<COMPONENT> >::Arithmetic Arithmetic;
   RGBPixel<COMPONENT> result;
 
@@ -233,7 +233,7 @@ inline RGBPixel<COMPONENT> HSVToRGB(const HSVPixel<COMPONENT>& pixel) throw() {
   Converts an HSV pixel into the RGB color space. The components of the HSV pixel must be in the range [0; 255].
 */
 template<>
-inline RGBPixel<unsigned char> HSVToRGB(const HSVPixel<unsigned char>& pixel) throw() {
+inline RGBPixel<unsigned char> HSVToRGB(const HSVPixel<unsigned char>& pixel) noexcept {
   typedef PixelTraits<HSVPixel<unsigned char> >::Arithmetic Arithmetic;
   RGBPixel<unsigned char> result;
 

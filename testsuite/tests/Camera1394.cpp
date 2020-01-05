@@ -30,10 +30,10 @@ using namespace com::azure::dev::gip;
 class RGB24ToRGB : public UnaryOperation<Camera1394::RGB24Pixel, ColorPixel> {
 public:
   
-  inline RGB24ToRGB() throw() {
+  inline RGB24ToRGB() noexcept {
   }
   
-  inline Result operator()(const Argument& value) const throw() {
+  inline Result operator()(const Argument& value) const noexcept {
     return makeColorPixel(value.red, value.blue, value.green);
   }
 };
@@ -55,11 +55,11 @@ public:
     COMMAND_ERROR
   };
   
-  Camera1394Application() throw()
+  Camera1394Application() noexcept
     : Application(MESSAGE("Camera1394")) {
   }
 
-  void listAdapters() throw() {
+  void listAdapters() noexcept {
     try {
       IEEE1394 ieee1394;
       fout << MESSAGE("Adapters: ") << ieee1394.getAdapters() << ENDL;
@@ -71,12 +71,12 @@ public:
     }
   }
 
-  void openAdapter(IEEE1394& ieee1394, const EUI64& id) throw() {
+  void openAdapter(IEEE1394& ieee1394, const EUI64& id) noexcept {
     fout << MESSAGE("Opening IEEE 1394 adapter (") << id << ')' << ENDL;
     ieee1394.open(id);
   }
   
-  void dumpNodes(IEEE1394& ieee1394) throw() {
+  void dumpNodes(IEEE1394& ieee1394) noexcept {
     fout << MESSAGE("Available nodes: ") << EOL;
     
     for (unsigned int node = 0; node < ieee1394.getNumberOfNodes(); ++node) {
@@ -119,7 +119,7 @@ public:
     fout << EOL << ENDL;
   }
   
-  void listCameras() throw() {
+  void listCameras() noexcept {
     try {
       IEEE1394 ieee1394;
 
@@ -142,7 +142,7 @@ public:
     }
   }
 
-  void dumpFeatureInquery(const String& feature, const Camera1394::GenericFeatureDescriptor& descriptor) const throw() {
+  void dumpFeatureInquery(const String& feature, const Camera1394::GenericFeatureDescriptor& descriptor) const noexcept {
     fout << MESSAGE("Feature: ") << feature << EOL
          << MESSAGE("  Available: ") << descriptor.available << EOL
          << MESSAGE("  Automatic adjustment mode: ") << descriptor.autoAdjustmentMode << EOL
@@ -154,7 +154,7 @@ public:
          << MESSAGE("  Maximum value: ") << descriptor.maximum << ENDL;
   }
   
-  void dumpTriggerFeatureInquery(const String& feature, const Camera1394::TriggerFeatureDescriptor& descriptor) const throw() {
+  void dumpTriggerFeatureInquery(const String& feature, const Camera1394::TriggerFeatureDescriptor& descriptor) const noexcept {
     fout << MESSAGE("Feature: ") << feature << EOL
          << MESSAGE("  Available: ") << descriptor.available << EOL
          << MESSAGE("  Readable: ") << descriptor.readable << EOL
@@ -163,7 +163,7 @@ public:
          << MESSAGE("  Signals: ") << HEX << setWidth(10) << ZEROPAD << descriptor.availableSignals << ENDL;
   }
   
-  void dump() throw() {
+  void dump() noexcept {
     static const Literal PIXEL_FORMAT_DESCRIPTION[] = {
       MESSAGE("Mono 8bit/pixel"),
       MESSAGE("Mono 16bit/pixel"),
@@ -694,7 +694,7 @@ public:
     }
   }
 
-  void dumpRegisterSpace(uint64 firstAddress, uint64 lastAddress /*, EUI64 guid*/) throw() {
+  void dumpRegisterSpace(uint64 firstAddress, uint64 lastAddress /*, EUI64 guid*/) noexcept {
     try {
       IEEE1394 ieee1394;
 
@@ -759,7 +759,7 @@ public:
     }
   }
   
-  void main() throw() {
+  void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL

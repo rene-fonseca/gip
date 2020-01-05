@@ -15,10 +15,10 @@
 
 namespace gip {
 
-//IntensityMapper::IntensityMapper() throw() {
+//IntensityMapper::IntensityMapper() noexcept {
 //}
 //
-//Intensity operator()(Intensity intensity) throw() {
+//Intensity operator()(Intensity intensity) noexcept {
 //  return lookup[intensity];
 //}
 

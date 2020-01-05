@@ -38,7 +38,7 @@ namespace gip {
     /**
       Initializes dummy image.
     */
-    YUV422Image() throw();
+    YUV422Image() noexcept;
     
     /**
       Initializes YUV 422 image. Raises MemoryException if dimension is invalid.
@@ -50,42 +50,42 @@ namespace gip {
     /**
       Initialization of image by image.
     */
-    YUV422Image(const YUV422Image& copy) throw();
+    YUV422Image(const YUV422Image& copy) noexcept;
 
     /**
       Default assigment of image.
     */
-    YUV422Image& operator=(const YUV422Image& eq) throw();
+    YUV422Image& operator=(const YUV422Image& eq) noexcept;
 
     /**
       Returns the Y component frame.
     */
-    ArrayImage<uint8> getY() throw();
+    ArrayImage<uint8> getY() noexcept;
 
     /**
       Returns the Y component frame.
     */
-    const ArrayImage<uint8> getY() const throw();
+    const ArrayImage<uint8> getY() const noexcept;
 
     /**
       Returns the U component frame.
     */
-    ArrayImage<uint8> getU() throw();
+    ArrayImage<uint8> getU() noexcept;
     
     /**
       Returns the U component frame.
     */
-    const ArrayImage<uint8> getU() const throw();
+    const ArrayImage<uint8> getU() const noexcept;
 
     /**
       Returns the V component frame.
     */
-    ArrayImage<uint8> getV() throw();
+    ArrayImage<uint8> getV() noexcept;
     
     /**
       Returns the V component frame.
     */
-    const ArrayImage<uint8> getV() const throw();
+    const ArrayImage<uint8> getV() const noexcept;
   };
   
 }; // end of namespace gip

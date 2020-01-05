@@ -27,7 +27,7 @@ namespace gip {
     typedef typename UnaryOperation<TYPE, TYPE>::Argument Argument;
     typedef typename UnaryOperation<TYPE, TYPE>::Result Result;
     
-    inline Result operator()(const Argument& value) const throw() {
+    inline Result operator()(const Argument& value) const noexcept {
       return value;
     }
   };
@@ -48,19 +48,19 @@ namespace gip {
       @param destination The destination image.
       @param source The source image.
     */
-    Duplicate(DestinationImage* destination, const SourceImage* source) throw();
+    Duplicate(DestinationImage* destination, const SourceImage* source) noexcept;
 
     /**
       Duplicates the contents of the source image to the destination image.
     */
-    void operator()() throw();
+    void operator()() noexcept;
   };
 
-  Duplicate::Duplicate(DestinationImage* destination, const SourceImage* source) throw()
+  Duplicate::Duplicate(DestinationImage* destination, const SourceImage* source) noexcept
     : Transformation<DestinationImage, SourceImage>(destination, source) {
   }
 
-  void Duplicate::operator()() throw() {
+  void Duplicate::operator()() noexcept {
     Same<ColorPixel> operation;
     fillWithUnary(*destination, *source, operation);
   }

@@ -53,7 +53,7 @@ namespace gip {
     /**
       Do slice operation on the specified value.
     */
-    inline Pixel operator()(const Pixel value) const throw() {
+    inline Pixel operator()(const Pixel value) const noexcept {
       return ((value < minimum) || (value > maximum)) ? background : value;
     }
   };

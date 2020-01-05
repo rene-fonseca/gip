@@ -15,7 +15,7 @@
 
 namespace gip {
 
-  Segmentor::Segmentor(const Dimension& _dimension) throw() : dimension(_dimension) {
+  Segmentor::Segmentor(const Dimension& _dimension) noexcept : dimension(_dimension) {
   }
 
 }; // end of gip namespace

@@ -36,15 +36,15 @@ private:
    long double scale;
 public:
 
-  inline CosineToGray(long double _scale) throw()
+  inline CosineToGray(long double _scale) noexcept
     : scale(PixelTraits<GrayPixel>::MAXIMUM * _scale) {
   }
   
-  inline CosineToGray(const Dimension& dimension) throw()
+  inline CosineToGray(const Dimension& dimension) noexcept
     : scale(1.0/dimension.getSize()) {
   }
   
-  inline GrayPixel operator()(const float& value) const throw() {
+  inline GrayPixel operator()(const float& value) const noexcept {
     return clamp<GrayPixel>(
       0,
       static_cast<GrayPixel>(scale * Math::ln(1 + value)),
@@ -60,10 +60,10 @@ private:
   HeatColorMap map;
 public:
 
-  MapToHue(long double _scale) throw() : scale(_scale) {
+  MapToHue(long double _scale) noexcept : scale(_scale) {
   }
 
-  inline ColorPixel operator()(const long double& value) const throw() {
+  inline ColorPixel operator()(const long double& value) const noexcept {
     RGBPixel<long double> temp = map(Math::sqrt(value * scale));
     ColorPixel result;
     result.red = static_cast<PixelTraits<ColorPixel>::Component>(PixelTraits<ColorPixel>::MAXIMUM * temp.red + 0.5);
@@ -80,11 +80,11 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  DCTApplication() throw()
+  DCTApplication() noexcept
     : Application(MESSAGE("DiscreteCosineTransformation")) {
   }
   
-  void dct(const String& inputFile, const String& outputFile) throw() {
+  void dct(const String& inputFile, const String& outputFile) noexcept {
     BMPEncoder encoder;
     
     fout << MESSAGE("Importing image with encoder: ") << encoder.getDescription() << ENDL;
@@ -157,7 +157,7 @@ public:
     encoder.writeGray(outputFile, &finalImage);
   }
   
-  void main() throw() {
+  void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL

@@ -35,11 +35,11 @@ namespace gip {
     Dimension dimension;
   public:
     
-    inline Interpolate(const ArrayImage<Pixel>& image) throw()
+    inline Interpolate(const ArrayImage<Pixel>& image) noexcept
       : elements(image.getElements()), dimension(image.getDimension()) {
     }
     
-    inline double operator()(double x, double y) const throw() {
+    inline double operator()(double x, double y) const noexcept {
       const int x0 = static_cast<int>(Math::floor(x));
       const int y0 = static_cast<int>(Math::floor(y));
       
@@ -87,11 +87,11 @@ namespace gip {
     Dimension dimension;
   public:
     
-    inline Interpolate(const ArrayImage<Pixel>& image) throw()
+    inline Interpolate(const ArrayImage<Pixel>& image) noexcept
       : elements(image.getElements()), dimension(image.getDimension()) {
     }
     
-    inline long double operator()(long double x, long double y) const throw() {
+    inline long double operator()(long double x, long double y) const noexcept {
       const int x0 = static_cast<int>(Math::floor(x));
       const int y0 = static_cast<int>(Math::floor(y));
       
@@ -139,11 +139,11 @@ namespace gip {
     Dimension dimension;
   public:
     
-    inline Interpolate(const ArrayImage<Pixel>& image) throw()
+    inline Interpolate(const ArrayImage<Pixel>& image) noexcept
       : elements(image.getElements()), dimension(image.getDimension()) {
     }
     
-    inline RGBPixel<COMPONENT> operator()(long double x, long double y) const throw() {
+    inline RGBPixel<COMPONENT> operator()(long double x, long double y) const noexcept {
       const int x0 = static_cast<int>(Math::floor(x));
       const int y0 = static_cast<int>(Math::floor(y));
       

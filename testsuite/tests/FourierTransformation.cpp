@@ -35,11 +35,11 @@ private:
    long double scale;
 public:
 
-  inline FourierToGray(const Dimension& dimension) throw()
+  inline FourierToGray(const Dimension& dimension) noexcept
     : scale(1.0/dimension.getSize()) {
   }
 
-  inline GrayPixel operator()(const Complex& value) const throw() {
+  inline GrayPixel operator()(const Complex& value) const noexcept {
     return clamp(
       0,
       static_cast<GrayPixel>(255 * Math::ln(1 + value.getModulus() * scale)),
@@ -55,12 +55,12 @@ private:
    long double max;
 public:
 
-  inline FourierToLogModulus(const Dimension& dimension) throw()
+  inline FourierToLogModulus(const Dimension& dimension) noexcept
      : scale(1.0/dimension.getSize()),
        max(0) {
   }
 
-  inline long double operator()(const Complex& value) throw() {
+  inline long double operator()(const Complex& value) noexcept {
     long double result = Math::ln(1 + value.getModulus() * scale);
     if (result > max) {
       max = result;
@@ -68,7 +68,7 @@ public:
     return result;
   }
 
-  inline long double getMaximum() const throw() {
+  inline long double getMaximum() const noexcept {
     return max;
   }
 };
@@ -80,10 +80,10 @@ private:
   HeatColorMap map;
 public:
 
-  MapToHue(long double _scale) throw() : scale(_scale) {
+  MapToHue(long double _scale) noexcept : scale(_scale) {
   }
 
-  inline ColorPixel operator()(const long double& value) const throw() {
+  inline ColorPixel operator()(const long double& value) const noexcept {
     RGBPixel<long double> temp = map(Math::sqrt(value * scale));
     ColorPixel result;
     result.red = static_cast<PixelTraits<ColorPixel>::Component>(PixelTraits<ColorPixel>::MAXIMUM * temp.red + 0.5);
@@ -100,7 +100,7 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  FourierApplication() throw()
+  FourierApplication() noexcept
     : Application(MESSAGE("FourierTransformation")) {
   }
 
@@ -116,7 +116,7 @@ public:
     return powerOf2;
   }
   
-  void fourierTransformation(const String& inputFile, const String& outputFile) throw() {
+  void fourierTransformation(const String& inputFile, const String& outputFile) noexcept {
     BMPEncoder encoder;
     
     fout << MESSAGE("Importing image with encoder: ") << encoder.getDescription() << ENDL;
@@ -183,7 +183,7 @@ public:
 //    encoder.writeGray(outputFile, &grayImage);
   }
   
-  void main() throw() {
+  void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL

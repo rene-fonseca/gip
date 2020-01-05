@@ -41,12 +41,12 @@ namespace gip {
 
       @param dimension The dimension to be segmented.
     */
-    Segmentor(const Dimension& dimension) throw();
+    Segmentor(const Dimension& dimension) noexcept;
 
     /**
       Returns the dimension being segmented.
     */
-    const Dimension& getDimension() const throw();
+    const Dimension& getDimension() const noexcept;
 
     /**
       Returns the region specified by row and column.
@@ -57,7 +57,7 @@ namespace gip {
     virtual Region getRegion(unsigned int row, unsigned int column) const throw(OutOfRange) = 0;
   };
 
-  inline const Dimension& Segmentor::getDimension() const throw() {
+  inline const Dimension& Segmentor::getDimension() const noexcept {
     return dimension;
   }
 

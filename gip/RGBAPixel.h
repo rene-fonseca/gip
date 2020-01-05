@@ -56,7 +56,7 @@ namespace gip {
     public:
 
       // TAG: problem if components are negative
-      inline Arithmetic operator()(const Pixel& pixel) const throw() {
+      inline Arithmetic operator()(const Pixel& pixel) const noexcept {
         return static_cast<Arithmetic>(mapToOneDimension(pixel.red)) +
           static_cast<Arithmetic>(mapToOneDimension(pixel.green)) +
           static_cast<Arithmetic>(mapToOneDimension(pixel.blue)) +
@@ -67,7 +67,7 @@ namespace gip {
     class Clamp : public UnaryOperation<Arithmetic, Arithmetic> {
     public:
 
-      inline Arithmetic operator()(const Arithmetic& value) const throw() {
+      inline Arithmetic operator()(const Arithmetic& value) const noexcept {
         if (value >= MAXIMUM) {
           return MAXIMUM;
         } else if (value < MINIMUM) {
@@ -115,7 +115,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   */
 
   template<class COMPONENT>
-  inline RGBAPixel<COMPONENT> makeRGBAPixel(COMPONENT red, COMPONENT green, COMPONENT blue, COMPONENT alpha) throw() {
+  inline RGBAPixel<COMPONENT> makeRGBAPixel(COMPONENT red, COMPONENT green, COMPONENT blue, COMPONENT alpha) noexcept {
     RGBAPixel<COMPONENT> result;
     result.red = red;
     result.green = green;
@@ -124,7 +124,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return result;
   }
   
-  inline ColorAlphaPixel makeColorAlphaPixel(PixelTraits<ColorAlphaPixel>::Component red, PixelTraits<ColorAlphaPixel>::Component green, PixelTraits<ColorAlphaPixel>::Component blue, PixelTraits<ColorAlphaPixel>::Component alpha) throw() {
+  inline ColorAlphaPixel makeColorAlphaPixel(PixelTraits<ColorAlphaPixel>::Component red, PixelTraits<ColorAlphaPixel>::Component green, PixelTraits<ColorAlphaPixel>::Component blue, PixelTraits<ColorAlphaPixel>::Component alpha) noexcept {
     ColorAlphaPixel result;
     result.red = red;
     result.green = green;
@@ -144,7 +144,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     @param opacity The opacity level of the new pixel. This must be in the range [0; opaque].
   */
   template<class COMPONENT>
-  inline RGBAPixel<COMPONENT> blend(RGBAPixel<COMPONENT> back, RGBAPixel<COMPONENT> front, unsigned int opaque, unsigned int opacity) throw() {
+  inline RGBAPixel<COMPONENT> blend(RGBAPixel<COMPONENT> back, RGBAPixel<COMPONENT> front, unsigned int opaque, unsigned int opacity) noexcept {
     RGBAPixel<COMPONENT> result;
     unsigned int transparency = opaque - opacity;
     result.red = (transparency * static_cast<typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(back.red) + opacity * static_cast<typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic>(front.red))/opaque;
@@ -157,7 +157,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
 
   template<class COMPONENT>
-  inline RGBAPixel<COMPONENT> operator*(RGBAPixel<COMPONENT> pixel, int factor) throw() {
+  inline RGBAPixel<COMPONENT> operator*(RGBAPixel<COMPONENT> pixel, int factor) noexcept {
     pixel.red *= factor;
     pixel.green *= factor;
     pixel.blue *= factor;
@@ -166,7 +166,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
   
   template<class COMPONENT>
-  inline RGBAPixel<COMPONENT> operator*(RGBAPixel<COMPONENT> pixel, unsigned int factor) throw() {
+  inline RGBAPixel<COMPONENT> operator*(RGBAPixel<COMPONENT> pixel, unsigned int factor) noexcept {
     pixel.red *= factor;
     pixel.green *= factor;
     pixel.blue *= factor;
@@ -175,7 +175,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   template<class COMPONENT>
-  inline RGBAPixel<COMPONENT> operator*(RGBAPixel<COMPONENT> pixel, float factor) throw() {
+  inline RGBAPixel<COMPONENT> operator*(RGBAPixel<COMPONENT> pixel, float factor) noexcept {
     pixel.red *= factor;
     pixel.green *= factor;
     pixel.blue *= factor;
@@ -184,7 +184,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   template<class COMPONENT>
-  inline RGBAPixel<COMPONENT> operator*(RGBAPixel<COMPONENT> pixel, double factor) throw() {
+  inline RGBAPixel<COMPONENT> operator*(RGBAPixel<COMPONENT> pixel, double factor) noexcept {
     pixel.red *= factor;
     pixel.green *= factor;
     pixel.blue *= factor;
@@ -193,7 +193,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   template<class COMPONENT>
-  inline RGBAPixel<COMPONENT> operator*(RGBAPixel<COMPONENT> pixel, long double factor) throw() {
+  inline RGBAPixel<COMPONENT> operator*(RGBAPixel<COMPONENT> pixel, long double factor) noexcept {
     pixel.red *= factor;
     pixel.green *= factor;
     pixel.blue *= factor;
@@ -202,7 +202,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   template<class COMPONENT>
-  inline RGBAPixel<COMPONENT> operator/(RGBAPixel<COMPONENT> pixel, int divisor) throw() {
+  inline RGBAPixel<COMPONENT> operator/(RGBAPixel<COMPONENT> pixel, int divisor) noexcept {
     pixel.red /= divisor;
     pixel.green /= divisor;
     pixel.blue /= divisor;
@@ -211,7 +211,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   template<class COMPONENT>
-  inline RGBAPixel<COMPONENT> operator/(RGBAPixel<COMPONENT> pixel, unsigned int divisor) throw() {
+  inline RGBAPixel<COMPONENT> operator/(RGBAPixel<COMPONENT> pixel, unsigned int divisor) noexcept {
     pixel.red /= divisor;
     pixel.green /= divisor;
     pixel.blue /= divisor;
@@ -220,17 +220,17 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   template<class COMPONENT>
-  inline RGBAPixel<COMPONENT> operator/(RGBAPixel<COMPONENT> pixel, float factor) throw() {
+  inline RGBAPixel<COMPONENT> operator/(RGBAPixel<COMPONENT> pixel, float factor) noexcept {
     return pixel * 1/factor;
   }
 
   template<class COMPONENT>
-  inline RGBAPixel<COMPONENT> operator/(RGBAPixel<COMPONENT> pixel, double factor) throw() {
+  inline RGBAPixel<COMPONENT> operator/(RGBAPixel<COMPONENT> pixel, double factor) noexcept {
     return pixel * 1/factor;
   }
 
   template<class COMPONENT>
-  inline RGBAPixel<COMPONENT> operator/(RGBAPixel<COMPONENT> pixel, long double factor) throw() {
+  inline RGBAPixel<COMPONENT> operator/(RGBAPixel<COMPONENT> pixel, long double factor) noexcept {
     return pixel * 1/factor;
   }
 

@@ -37,7 +37,7 @@ namespace gip {
     /**
       Initializes point as origin (0, 0).
     */
-    inline Point2D() throw() {
+    inline Point2D() noexcept {
     }
 
     /**
@@ -46,19 +46,19 @@ namespace gip {
       @param row The desired row of the point.
       @param column The desired column of the point.
     */
-    Point2D(unsigned int row, unsigned int column) throw();
+    Point2D(unsigned int row, unsigned int column) noexcept;
 
     /**
       Initializes point from other point.
     */
-    inline Point2D(const Point2D& copy) throw()
+    inline Point2D(const Point2D& copy) noexcept
       : row(copy.row), column(copy.column) {
     }
     
     /**
       Assignment of point by point.
     */
-    inline Point2D& operator=(const Point2D& eq) throw() {
+    inline Point2D& operator=(const Point2D& eq) noexcept {
       row = eq.row; // no need to protect against self-assignment
       column = eq.column;
       return *this;
@@ -67,40 +67,40 @@ namespace gip {
     /**
       Returns true if the point is contained within the specified dimension.
     */
-    inline bool isWithin(const Dimension& dimension) const throw() {
+    inline bool isWithin(const Dimension& dimension) const noexcept {
       return (column < dimension.getWidth()) && (row < dimension.getHeight());
     }
 
     /**
       Returns the column of the point.
     */
-    inline unsigned int getColumn() const throw() {
+    inline unsigned int getColumn() const noexcept {
       return column;
     }
 
     /**
       Returns the row of the point.
     */
-    inline unsigned int getRow() const throw() {
+    inline unsigned int getRow() const noexcept {
       return row;
     }
 
     /**
       Sets the column of the point.
     */
-    inline void setColumn(unsigned int column) throw() {
+    inline void setColumn(unsigned int column) noexcept {
       this->column = column;
     }
 
     /**
       Sets the row of the point.
     */
-    inline void setRow(unsigned int row) throw() {
+    inline void setRow(unsigned int row) noexcept {
       this->row = row;
     }
   };
 
-  inline Point2D::Point2D(unsigned int _row, unsigned int _column) throw()
+  inline Point2D::Point2D(unsigned int _row, unsigned int _column) noexcept
     : row(_row), column(_column) {
   }
 

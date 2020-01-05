@@ -34,21 +34,21 @@ namespace gip {
     /**
       Initializes transformation object.
     */
-    Crop(DestinationImage* destination, SourceImage* source) throw();
+    Crop(DestinationImage* destination, SourceImage* source) noexcept;
 
     /**
       Crops the image.
     */
-    void operator()() throw();
+    void operator()() noexcept;
   };
 
   template<class DEST, class SRC>
-  Crop<DEST, SRC>::Crop(DestinationImage* destination, SourceImage* source) throw()
+  Crop<DEST, SRC>::Crop(DestinationImage* destination, SourceImage* source) noexcept
     : Transformation<DestinationImage, SourceImage>(destination, source) {
   }
 
   template<class DEST, class SRC>
-  void Crop<DEST, SRC>::operator()() throw() {
+  void Crop<DEST, SRC>::operator()() noexcept {
     Dimension min(
       minimum(destination->getDimension().getWidth(), source->getDimension().getWidth()),
       minimum(destination->getDimension().getHeight(), source->getDimension().getHeight())

@@ -39,11 +39,11 @@ public:
     };
   };
 
-  DilateApplication() throw()
+  DilateApplication() noexcept
     : Application(MESSAGE("Dilate")) {
   }
 
-  void dilateTransformation(const String& inputFile, const String& outputFile) throw() {
+  void dilateTransformation(const String& inputFile, const String& outputFile) noexcept {
     BMPEncoder encoder;
     
     fout << MESSAGE("Importing image with encoder: ") << encoder.getDescription() << ENDL;
@@ -72,7 +72,7 @@ public:
     encoder.writeGray(outputFile, &finalImage);
   }
   
-  void main() throw() {
+  void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL

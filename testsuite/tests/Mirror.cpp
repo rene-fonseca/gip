@@ -28,11 +28,11 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  MirrorApplication() throw()
+  MirrorApplication() noexcept
     : Application(MESSAGE("Mirror")) {
   }
 
-  void mirrorTransformation(const String& inputFile, const String& outputFile) throw() {
+  void mirrorTransformation(const String& inputFile, const String& outputFile) noexcept {
     BMPEncoder encoder;
     
     fout << MESSAGE("Importing image with encoder: ") << encoder.getDescription() << ENDL;
@@ -52,7 +52,7 @@ public:
     encoder.write(outputFile, &originalImage);
   }
   
-  void main() throw() {
+  void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL

@@ -28,7 +28,7 @@ namespace gip {
 //     IntensityMapper(DestinationImage* destination, const SourceImage* source) : UnaryTransformation<?, ?>() {
 //     }
 
-//     void operator()() const throw() {
+//     void operator()() const noexcept {
 //     }
     
 //   };

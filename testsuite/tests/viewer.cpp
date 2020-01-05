@@ -278,37 +278,37 @@ public:
   long double scale;
 public:
     
-  inline View() throw() {
+  inline View() noexcept {
     resetParameters();
   }
       
-  inline void resetParameters() throw() {
+  inline void resetParameters() noexcept {
     setTranslation(Vector3D<long double>(0, 0, 0));
     setRotation(Vector3D<long double>(0, 0, 0));
     setScale(1);
   }
     
-  inline Vector3D<long double> getTranslation() const throw() {
+  inline Vector3D<long double> getTranslation() const noexcept {
     return translation;
   }
     
-  inline void setTranslation(const Vector3D<long double>& translation) throw() {
+  inline void setTranslation(const Vector3D<long double>& translation) noexcept {
     this->translation = translation;
   }
     
-  inline Vector3D<long double> getRotation() const throw() {
+  inline Vector3D<long double> getRotation() const noexcept {
     return rotation;
   }
     
-  inline void setRotation(const Vector3D<long double>& rotation) throw() {
+  inline void setRotation(const Vector3D<long double>& rotation) noexcept {
     this->rotation = rotation;
   }
     
-  inline long double getScale() const throw() {
+  inline long double getScale() const noexcept {
     return scale;
   }
       
-  inline void setScale(long double scale) throw() {
+  inline void setScale(long double scale) noexcept {
     this->scale = scale;
   }
 };
@@ -326,7 +326,7 @@ private:
   TGAEncoder tga;
 public:
       
-  void addEncoder(ImageEncoder* encoder) throw() {
+  void addEncoder(ImageEncoder* encoder) noexcept {
     StringOutputStream stream;
     Array<String> extensions = encoder->getExtensions();
     Array<String>::ReadEnumerator enu = extensions.getReadEnumerator();
@@ -342,7 +342,7 @@ public:
     filters[filter] = encoder->getDescription() + MESSAGE(" (") + filter + MESSAGE(")");
   }
       
-  EncoderRegistry() throw() {
+  EncoderRegistry() noexcept {
     filters[MESSAGE("*.*")] = MESSAGE("All Files (*.*)"); // TAG: dialog window should support this
     addEncoder(&bmp);
     addEncoder(&jpeg);
@@ -351,11 +351,11 @@ public:
     addEncoder(&tga);
   }
       
-  Map<String, String> getFilters() const throw() {
+  Map<String, String> getFilters() const noexcept {
     return filters;
   }
       
-  ImageEncoder* getEncoderByName(const String& extension) throw() {
+  ImageEncoder* getEncoderByName(const String& extension) noexcept {
     if (!encoders.hasKey(extension)) {
       return 0;
     }
@@ -363,7 +363,7 @@ public:
     return encoder;
   }
       
-  ImageEncoder* getEncoder(const String& filename) throw() {
+  ImageEncoder* getEncoder(const String& filename) noexcept {
     int index = filename.lastIndexOf('.');
     if (index < 0) {
       return 0;
@@ -381,9 +381,9 @@ public:
 class Renderable {
 public:
   
-  virtual void update(const View& view) throw() = 0;
+  virtual void update(const View& view) noexcept = 0;
   
-  virtual ~Renderable() throw() {
+  virtual ~Renderable() noexcept {
   }
 };
 
@@ -407,7 +407,7 @@ private:
   };
 public:
 
-  RenderIntensity(OpenGL& _openGL, const ColorImage& _image) throw()
+  RenderIntensity(OpenGL& _openGL, const ColorImage& _image) noexcept
     : openGL(_openGL),
       image(_image),
       displayLists(_openGL, 1) {
@@ -421,7 +421,7 @@ public:
     makeIntensity();
   }
 
-  void makeIntensity() throw() {
+  void makeIntensity() noexcept {
     const Dimension dimension = image.getDimension();
     // ColorImage* scaled = new ColorImage(dimension);
     // LinearScale scale(scaled, &image);
@@ -553,22 +553,22 @@ public:
     }
   }
 
-  void setDimension(const Dimension& dimension) throw() {
+  void setDimension(const Dimension& dimension) noexcept {
     this->dimension = dimension;
     makeIntensity();
   }
   
-  void setAmplitude(long double amplitude) throw() {
+  void setAmplitude(long double amplitude) noexcept {
     this->amplitude = amplitude;
     makeIntensity();
   }
   
-  void setMode() throw() {
+  void setMode() noexcept {
     mono = true;
     makeIntensity();
   }
   
-  void update(const View& view) throw() {
+  void update(const View& view) noexcept {
     openGL.glClearColor(0.0, 0.0, 0.0, 1.0);
     openGL.glClear(OpenGL::COLOR_BUFFER_BIT | OpenGL::DEPTH_BUFFER_BIT);
     
@@ -587,7 +587,7 @@ public:
     openGL.glCallList(displayLists.getOffset() + Object::INTENSITY);
   }
   
-  ~RenderIntensity() throw() {
+  ~RenderIntensity() noexcept {
   }
 };
 
@@ -608,7 +608,7 @@ private:
   };
 public:
 
-  RenderRGBCloud(OpenGL& _openGL, const ColorImage& _image) throw()
+  RenderRGBCloud(OpenGL& _openGL, const ColorImage& _image) noexcept
     : openGL(_openGL),
       image(_image),
       displayLists(_openGL, 2) {
@@ -624,7 +624,7 @@ public:
     buildCloud();
   }
 
-  void buildCube() throw() {
+  void buildCube() noexcept {
     OpenGL::DisplayList displayList(openGL, displayLists.getOffset() + Object::RGB_CUBE);
     
     // RGB cube
@@ -678,14 +678,14 @@ public:
     unsigned long* fastLookup;
   public:
     
-    CloudOperation(OpenGL& _openGL) throw()
+    CloudOperation(OpenGL& _openGL) noexcept
       : openGL(_openGL),
         lookup(256 * 256 * 256/sizeof(unsigned long)) {      
       fill<unsigned long>(lookup.getElements(), 256 * 256 * 256/sizeof(unsigned long), 0);
       fastLookup = lookup.getElements();
     }
     
-    inline void operator()(const ColorPixel& value) throw() {
+    inline void operator()(const ColorPixel& value) noexcept {
       unsigned int colorIndex = value.rgb & 0xffffff;
       
       unsigned long* colorGroup = fastLookup + colorIndex/sizeof(unsigned long);
@@ -709,7 +709,7 @@ public:
     }
   };
   
-  void buildCloud() throw() {
+  void buildCloud() noexcept {
     CloudOperation cloudOperation(openGL);
     OpenGL::DisplayList displayList(openGL, displayLists.getOffset() + Object::RGB_CLOUD);
     
@@ -719,11 +719,11 @@ public:
     openGL.glEnd();
   }
 
-  void onCommand(unsigned int command) throw() {
+  void onCommand(unsigned int command) noexcept {
     // TAG: fixme
   }
   
-  void update(const View& view) throw() {
+  void update(const View& view) noexcept {
     openGL.glClearColor(0.3f, 0.3f, 0.6f, 1.0f);
     openGL.glClear(OpenGL::COLOR_BUFFER_BIT | OpenGL::DEPTH_BUFFER_BIT);
     
@@ -746,7 +746,7 @@ public:
     openGL.glDepthMask(true);
   }
   
-  ~RenderRGBCloud() throw() {
+  ~RenderRGBCloud() noexcept {
   }
 };
 
@@ -757,7 +757,7 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
   
-  ViewerApplication() throw()
+  ViewerApplication() noexcept
     : Application(MESSAGE("OpenGL Viewer")) {
   }
   
@@ -893,10 +893,10 @@ public:
       makeTorus();
     }
 
-    ~MyOpenGLContext() throw() {
+    ~MyOpenGLContext() noexcept {
     }
     
-    void setQuality(Quality quality) throw() {
+    void setQuality(Quality quality) noexcept {
       // TAG: need attribute
       switch (quality) {
       case QUALITY_WORST:
@@ -932,33 +932,33 @@ public:
       invalidate();
     }
 
-    inline void setVerbosity(Verbosity::Value verbosity) throw() {
+    inline void setVerbosity(Verbosity::Value verbosity) noexcept {
       this->verbosity = verbosity;
     }
     
-    void setTranslation(const Vector3D<long double>& translation) throw() {
+    void setTranslation(const Vector3D<long double>& translation) noexcept {
       view.setTranslation(translation);
       invalidate();
     }
     
-    void setRotation(const Vector3D<long double>& rotation) throw() {
+    void setRotation(const Vector3D<long double>& rotation) noexcept {
       view.setRotation(rotation);
       invalidate();
     }
       
-    void setScale(long double scale) throw() {
+    void setScale(long double scale) noexcept {
       view.setScale(scale);
       invalidate();
     }
     
-    void resetViewParameters() throw() {
+    void resetViewParameters() noexcept {
       view.setTranslation(Vector3D<long double>(0, 0, 0));
       view.setRotation(Vector3D<long double>(0, 0, 0));
       view.setScale(1);
       invalidate();
     }
     
-    void setShadingModel(ShadingModel::Model shadingModel) throw() {
+    void setShadingModel(ShadingModel::Model shadingModel) noexcept {
       if (shadingModel != this->shadingModel) {
         this->shadingModel = shadingModel;
         switch (shadingModel) {
@@ -973,7 +973,7 @@ public:
       }
     }
     
-    void setPolygonMode(PolygonMode::Mode polygonMode) throw() {
+    void setPolygonMode(PolygonMode::Mode polygonMode) noexcept {
       if (polygonMode != this->polygonMode) {
         this->polygonMode = polygonMode;
         switch (polygonMode) {
@@ -991,7 +991,7 @@ public:
       }
     }
     
-    void setBlending(bool blending) throw() {
+    void setBlending(bool blending) noexcept {
       if (blending != this->blending) {
         this->blending = blending;
         if (blending) {
@@ -1005,7 +1005,7 @@ public:
       }
     }
     
-    void setLighting(bool lighting) throw() {
+    void setLighting(bool lighting) noexcept {
       if (lighting != this->lighting) {
         this->lighting = lighting;
         if (lighting) {
@@ -1017,7 +1017,7 @@ public:
       }
     }
     
-    void setMode(Mode mode) throw() {
+    void setMode(Mode mode) noexcept {
       if (renderable) {
         delete renderable;
       }
@@ -1037,7 +1037,7 @@ public:
     }
     
     /** Maps the (x,y)-position into world coordinates. */
-    Vector3D<long double> mapXYToWorld(const Position& position, const int viewPort[4]) const throw() {
+    Vector3D<long double> mapXYToWorld(const Position& position, const int viewPort[4]) const noexcept {
       long double tempX =
         static_cast<long double>(position.getX() - viewPort[0])/
         static_cast<long double>(viewPort[2]);
@@ -1051,7 +1051,7 @@ public:
       );
     }
     
-    void makeSystem() throw() {
+    void makeSystem() noexcept {
       OpenGL::DisplayList displayList(openGL, OBJECT_SYSTEM);
 
       openGL.glColorMaterial(OpenGL::BACK, OpenGL::AMBIENT);
@@ -1079,11 +1079,11 @@ public:
       openGL.glDisable(OpenGL::COLOR_MATERIAL);
     }
     
-    void makeFloor() throw() {
+    void makeFloor() noexcept {
       OpenGL::DisplayList displayList(openGL, OBJECT_FLOOR);
     }
     
-    void makeCube() throw() {
+    void makeCube() noexcept {
       OpenGL::DisplayList displayList(openGL, OBJECT_CUBE);
       
       openGL.glColorMaterial(OpenGL::FRONT, OpenGL::EMISSION);
@@ -1120,7 +1120,7 @@ public:
       openGL.glDisable(OpenGL::COLOR_MATERIAL);
     }
     
-    void makeCone() throw() {
+    void makeCone() noexcept {
       OpenGL::DisplayList displayList(openGL, OBJECT_CONE);
       openGL.glColorMaterial(OpenGL::FRONT, OpenGL::EMISSION);
       openGL.glEnable(OpenGL::COLOR_MATERIAL);
@@ -1129,7 +1129,7 @@ public:
       openGL.glDisable(OpenGL::COLOR_MATERIAL);
     }
     
-    void makeTorus() throw() {
+    void makeTorus() noexcept {
       OpenGL::DisplayList displayList(openGL, OBJECT_TORUS);
       openGL.glColorMaterial(OpenGL::FRONT, OpenGL::EMISSION);
       openGL.glEnable(OpenGL::COLOR_MATERIAL);
@@ -1138,12 +1138,12 @@ public:
       openGL.glDisable(OpenGL::COLOR_MATERIAL);
     }
 
-    void displayBlackness() throw() {
+    void displayBlackness() noexcept {
       openGL.glClearColor(0.0, 0.0, 0.0, 1.0);
       openGL.glClear(OpenGL::COLOR_BUFFER_BIT);
     }
     
-    void displayObject(unsigned int object) throw() {
+    void displayObject(unsigned int object) noexcept {
       openGL.glClearColor(0.0, 0.0, 0.0, 1.0);
       openGL.glClear(OpenGL::COLOR_BUFFER_BIT | OpenGL::DEPTH_BUFFER_BIT);
       
@@ -1160,14 +1160,14 @@ public:
       openGL.glCallList(object);
     }
     
-    void setRenderable(Renderable* renderable) throw() {
+    void setRenderable(Renderable* renderable) noexcept {
       if (this->renderable) {
         delete this->renderable;
       }
       this->renderable = renderable;
     }
     
-    void onDisplay() throw() {
+    void onDisplay() noexcept {
       if (renderable) {
         renderable->update(view);
       } else {
@@ -1198,13 +1198,13 @@ public:
       swap();
     }
     
-    void onMove(const Position& position) throw() {
+    void onMove(const Position& position) noexcept {
       if (verbosity >= Verbosity::ALL_MOUSE_EVENTS) {
         fout << MESSAGE("Window move event: ") << position << ENDL;
       }
     }
     
-    void onResize(const Dimension& dimension) throw() {
+    void onResize(const Dimension& dimension) noexcept {
       if (verbosity >= Verbosity::ALL_MOUSE_EVENTS) {
         fout << MESSAGE("Resize event: ") << dimension << ENDL;
       }
@@ -1235,7 +1235,7 @@ public:
       Literal literal;
     };
     
-    void onMouseMove(const Position& position, unsigned int state) throw() {
+    void onMouseMove(const Position& position, unsigned int state) noexcept {
       const Position difference = position - mouseButtonPosition;
       if (verbosity >= Verbosity::ALL_MOUSE_EVENTS) {
         fout << MESSAGE("Mouse motion event: ") << position << ENDL;
@@ -1296,12 +1296,12 @@ public:
       //         }
     }
 
-    void onMouseScope(bool scope) throw() {
+    void onMouseScope(bool scope) noexcept {
       fout << MESSAGE("Event: mouse scope ")
            << (scope ? MESSAGE("INSIDE SCOPE") : MESSAGE("OUT OF SCOPE")) << ENDL;
     }
     
-    void onMouseButton(const Position& position, Mouse::Button button, Mouse::Event event, unsigned int state) throw() {
+    void onMouseButton(const Position& position, Mouse::Button button, Mouse::Event event, unsigned int state) noexcept {
       static const Flag STATES[] = {
         {Mouse::LEFT, MESSAGE("LEFT")},
         {Mouse::MIDDLE, MESSAGE("MIDDLE")},
@@ -1385,7 +1385,7 @@ public:
       drag.setZ(0);
     }
     
-    void onMouseWheel(const Position& position, int delta, unsigned int buttons) throw() {
+    void onMouseWheel(const Position& position, int delta, unsigned int buttons) noexcept {
       if (verbosity >= Verbosity::ACTIVE_MOUSE_EVENTS) {
         fout << MESSAGE("Mouse wheel") << ENDL;
       }
@@ -1393,7 +1393,7 @@ public:
       invalidate();
     }
     
-    void onKey(unsigned int key, unsigned int flags, unsigned int modifiers) throw() {
+    void onKey(unsigned int key, unsigned int flags, unsigned int modifiers) noexcept {
       if (flags & Key::PRESSED) {
         if (flags & Key::DEAD) {
           return;
@@ -1502,11 +1502,11 @@ public:
       }
     }
     
-    void onIdle() throw() {
+    void onIdle() noexcept {
       invalidate();
     }
     
-    bool onClose() throw() {
+    bool onClose() noexcept {
       fout << MESSAGE("Event: close ") << ENDL;
       MessageDialog dialog(
         MESSAGE("Quit"),
@@ -1520,7 +1520,7 @@ public:
       return dialog.getAnswer() == MessageDialog::YES;
     }
     
-    void onVisibility(Visibility visibility) throw() {
+    void onVisibility(Visibility visibility) noexcept {
       if (verbosity >= Verbosity::ACTIVE_MOUSE_EVENTS) {
         fout << MESSAGE("Visibility event: ")
              << ((visibility == VISIBLE) ? MESSAGE("VISIBLE") : MESSAGE("INVISIBLE"))
@@ -1528,7 +1528,7 @@ public:
       }
     }
     
-    void onFocus(Focus focus) throw() {
+    void onFocus(Focus focus) noexcept {
       if (verbosity >= Verbosity::ACTIVE_MOUSE_EVENTS) {
         fout << MESSAGE("Focus event: ")
              << ((focus == ACQUIRED_FOCUS) ? MESSAGE("ACQUIRED FOCUS") : MESSAGE("LOST FOCUS"))
@@ -1536,7 +1536,7 @@ public:
       }
     }
 
-    void dumpOpenGLInformation() throw() {
+    void dumpOpenGLInformation() noexcept {
       fout << MESSAGE("OpenGL context information: ") << EOL
            << indent(2) << MESSAGE("client vendor: ") << getGLClientVendor() << EOL
            << indent(2) << MESSAGE("client release: ") << getGLClientRelease() << EOL
@@ -1572,7 +1572,7 @@ public:
            << ENDL;
     }
     
-    void openImage() throw() {
+    void openImage() noexcept {
       try {
         if (!openFile.execute()) {
           return; // canceled
@@ -1614,7 +1614,7 @@ public:
       delete frame;
     }
       
-    void saveFrameBuffer() throw() {
+    void saveFrameBuffer() noexcept {
       try {
         if (!saveFile.execute()) {
           return; // canceled
@@ -1664,7 +1664,7 @@ public:
       delete frame;
     }
 
-    void setDisplayMode(DisplayMode displayMode) throw() {
+    void setDisplayMode(DisplayMode displayMode) noexcept {
       if (displayMode != this->displayMode) {
         try {
           // TAG: fixme
@@ -1679,13 +1679,13 @@ public:
       }
     }
     
-    void dumpCommand(const Literal& description) throw() {
+    void dumpCommand(const Literal& description) noexcept {
       if (verbosity >= Verbosity::COMMANDS) {
         fout << MESSAGE("Command: ") << description << ENDL;
       }
     }
      
-    void onCommand(unsigned int identifier) throw() {
+    void onCommand(unsigned int identifier) noexcept {
       switch (identifier) {
       case Command::SELECT_VERBOSITY_NO_INFORMATION:
         dumpCommand(MESSAGE("Set verbosity level to NO_INFORMATION"));
@@ -1917,7 +1917,7 @@ public:
     }
   };
   
-  void main() throw() {
+  void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL

@@ -51,12 +51,12 @@ namespace gip {
     */
     Transformation(
       DestinationImage* destination,
-      const SourceImage* source) throw();
+      const SourceImage* source) noexcept;
   };
 
   template<class DEST, class SRC>
   inline Transformation<DEST, SRC>::Transformation(
-    DestinationImage* dest, const SourceImage* src) throw()
+    DestinationImage* dest, const SourceImage* src) noexcept
     : destination(dest), source(src) {
   }
 

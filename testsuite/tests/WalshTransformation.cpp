@@ -32,11 +32,11 @@ private:
    long double scale = 0;
 public:
 
-  inline WalshToGray(const Dimension& dimension) throw()
+  inline WalshToGray(const Dimension& dimension) noexcept
     : scale(1.0/dimension.getSize()) {
   }
 
-  inline GrayPixel operator()(const float& value) const throw() {
+  inline GrayPixel operator()(const float& value) const noexcept {
     long double temp = 0xff * Math::ln(1 + value * scale);
     if (temp < 0x00) {
       return 0x00;
@@ -55,11 +55,11 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  WalshApplication() throw()
+  WalshApplication() noexcept
     : Application(MESSAGE("WalshTransformation")) {
   }
 
-  void walshTransformation(const String& inputFile, const String& outputFile) throw() {    
+  void walshTransformation(const String& inputFile, const String& outputFile) noexcept {    
     BMPEncoder encoder;
     
     fout << MESSAGE("Importing image with encoder: ") << encoder.getDescription() << ENDL;
@@ -109,7 +109,7 @@ public:
     encoder.writeGray(outputFile, &grayImage);
   }
   
-  void main() throw() {
+  void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL

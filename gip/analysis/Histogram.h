@@ -37,15 +37,15 @@ namespace gip {
       reset();
     }
 
-    inline void operator()(const GrayPixel& value) throw() {
+    inline void operator()(const GrayPixel& value) noexcept {
       ++elements[value];
     }
 
-    void reset() throw() {
+    void reset() noexcept {
       fill<unsigned int>(histogram.getElements(), histogram.getSize(), 0);
     }
 
-    const Array<unsigned int>& getHistogram() const throw() {
+    const Array<unsigned int>& getHistogram() const noexcept {
       return histogram;
     }
   };
@@ -75,15 +75,15 @@ namespace gip {
       reset();
     }
  
-    inline void operator()(const Argument& value) throw() {
+    inline void operator()(const Argument& value) noexcept {
       ++elements[static_cast<unsigned char>(value)];
     }
 
-    void reset() throw() {
+    void reset() noexcept {
       fill<unsigned int>(gray.getElements(), gray.getSize(), 0);
     }
     
-    const Histogram& getHistogram() const throw() {
+    const Histogram& getHistogram() const noexcept {
       return gray;
     }
   };
@@ -127,27 +127,27 @@ namespace gip {
       reset();
     }
     
-    inline void operator()(const Argument& value) throw() {
+    inline void operator()(const Argument& value) noexcept {
       ++redElements[static_cast<unsigned char>(value.red)];
       ++greenElements[static_cast<unsigned char>(value.green)];
       ++blueElements[static_cast<unsigned char>(value.blue)];
     }
 
-    void reset() throw() {
+    void reset() noexcept {
       fill<unsigned int>(red.getElements(), red.getSize(), 0);
       fill<unsigned int>(green.getElements(), green.getSize(), 0);
       fill<unsigned int>(blue.getElements(), blue.getSize(), 0);
     }
 
-    const Histogram& getBlueHistogram() const throw() {
+    const Histogram& getBlueHistogram() const noexcept {
       return blue;
     }
 
-    const Histogram& getGreenHistogram() const throw() {
+    const Histogram& getGreenHistogram() const noexcept {
       return green;
     }
     
-    const Histogram& getRedHistogram() const throw() {
+    const Histogram& getRedHistogram() const noexcept {
       return red;
     }
   };

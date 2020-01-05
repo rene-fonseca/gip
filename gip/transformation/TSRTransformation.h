@@ -42,13 +42,13 @@ namespace gip {
     double matrix[2][3];
   public:
     
-    TSRTransformation(DestinationImage* destination, const SourceImage* source) throw()
+    TSRTransformation(DestinationImage* destination, const SourceImage* source) noexcept
       : Transformation<DestinationImage, SourceImage>(destination, source) {
       // TAG: check dimension of images
       identity();
     }
     
-    void load(double _matrix[2][3]) throw() {
+    void load(double _matrix[2][3]) noexcept {
       matrix[0][0] = _matrix[0][0];
       matrix[0][1] = _matrix[0][1];
       matrix[0][2] = _matrix[0][2];
@@ -57,7 +57,7 @@ namespace gip {
       matrix[1][2] = _matrix[1][2];
     }
   
-    void identity() throw() {
+    void identity() noexcept {
       matrix[0][0] = 1;
       matrix[0][1] = 0;
       matrix[0][2] = 0;
@@ -66,7 +66,7 @@ namespace gip {
       matrix[1][2] = 0;
     }
   
-    void rotate(double alpha) throw() {
+    void rotate(double alpha) noexcept {
       const double cos = Math::cos(alpha);
       const double sin = Math::sin(alpha);
 
@@ -91,7 +91,7 @@ namespace gip {
       matrix[1][2] = temp[1][2];
     }
 
-    void scale(double value) throw() {
+    void scale(double value) noexcept {
       matrix[0][0] *= value;
       matrix[0][1] *= value;
       matrix[0][2] *= value;
@@ -100,12 +100,12 @@ namespace gip {
       matrix[1][2] *= value;
     }
 
-    void translate(double dx, double dy) throw() {
+    void translate(double dx, double dy) noexcept {
       matrix[0][2] += dx;
       matrix[1][2] += dy;
     }
 
-    void operator()() throw() {
+    void operator()() noexcept {
       const unsigned int height = Transformation<DestinationImage, SourceImage>::destination->getDimension().getHeight();
       const unsigned int width = Transformation<DestinationImage, SourceImage>::destination->getDimension().getWidth();
       Pixel* dest = Transformation<DestinationImage, SourceImage>::destination->getElements();

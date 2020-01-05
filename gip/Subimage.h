@@ -40,25 +40,25 @@ public:
     @param image The image.
     @param offset The offset to associate with the image.
   */
-  Subimage(Image<PIXEL>* image, const Point2D& offset) throw();
+  Subimage(Image<PIXEL>* image, const Point2D& offset) noexcept;
 
   /**
     Returns the offset of the image.
   */
-  inline const Point2D& getOffset() const throw() {
+  inline const Point2D& getOffset() const noexcept {
     return offset;
   }
 
   /**
     Returns the region associated with the image.
   */
-  Region getRegion() const throw() {
+  Region getRegion() const noexcept {
     return Region(offset, ShadowImage<PIXEL>::getDimension());
   }
 };
 
 template<class PIXEL>
-inline Subimage<PIXEL>::Subimage(Image<PIXEL>* image, const Point2D& _offset) throw() :
+inline Subimage<PIXEL>::Subimage(Image<PIXEL>* image, const Point2D& _offset) noexcept :
   ShadowImage<PIXEL>(image), offset(_offset) {
 }
 

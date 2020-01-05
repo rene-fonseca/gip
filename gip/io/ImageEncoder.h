@@ -50,18 +50,18 @@ namespace gip {
     /**
       Returns a description of the encoder.
     */
-    virtual String getDescription() const throw() = 0;
+    virtual String getDescription() const noexcept = 0;
     
     /**
       Returns the default extension.
     */
-    virtual String getDefaultExtension() const throw() = 0;
+    virtual String getDefaultExtension() const noexcept = 0;
     
     /**
       Returns an array of extensions. The default is to return the default
       extension.
     */
-    virtual Array<String> getExtensions() const throw();
+    virtual Array<String> getExtensions() const noexcept;
     
     /**
       Returns true if the file seems to be a valid.

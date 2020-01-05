@@ -31,10 +31,10 @@ private:
   TYPE maximum;
 public:
 
-  inline Clamp(const TYPE& _minimum, const TYPE& _maximum) throw() : minimum(_minimum), maximum(_maximum) {
+  inline Clamp(const TYPE& _minimum, const TYPE& _maximum) noexcept : minimum(_minimum), maximum(_maximum) {
   }
 
-  inline TYPE operator()(const TYPE& value) const throw() {
+  inline TYPE operator()(const TYPE& value) const noexcept {
     if (value > minimum) {
       if (value < maximum) {
         return value;
@@ -56,7 +56,7 @@ public:
   @param maximum The maximum value.
 */
 template<class TYPE>
-inline TYPE clamp(const TYPE& minimum, const TYPE& value, const TYPE& maximum) throw() {
+inline TYPE clamp(const TYPE& minimum, const TYPE& value, const TYPE& maximum) noexcept {
   if (value > minimum) {
     if (value < maximum) {
       return value;

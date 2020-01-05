@@ -353,7 +353,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       FEATURE_CAPTURE_QUALITY
     };
 
-    void importGenericFeature(IEEE1394::Quadlet quadlet, Camera1394::GenericFeatureDescriptor& descriptor) throw() {
+    void importGenericFeature(IEEE1394::Quadlet quadlet, Camera1394::GenericFeatureDescriptor& descriptor) noexcept {
       Camera1394Impl::FeatureInquery feature = *reinterpret_cast<const Camera1394Impl::FeatureInquery*>(&quadlet); // Cast::impersonate<Camera1394Impl::FeatureInquery, uint32>(quadlet);
       descriptor.available = feature.presence;
       descriptor.autoAdjustmentMode = feature.onePush;
@@ -406,7 +406,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     Camera1394::PARTIAL_IMAGE_MODE_7
   };
 
-  String Camera1394::getFormatAsString(Mode mode) throw() {
+  String Camera1394::getFormatAsString(Mode mode) noexcept {
     static const Literal FORMATS[] = {
       MESSAGE("Uncompressed VGA"),
       MESSAGE("Uncompressed Super VGA I"),
@@ -420,7 +420,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return FORMATS[Camera1394Impl::MODE_INFORMATION[mode].format]; // TAG: need support for UNSPECIFIED
   }
   
-  String Camera1394::getModeAsString(Mode mode) throw() {
+  String Camera1394::getModeAsString(Mode mode) noexcept {
     static const Literal MODES[] = {
       MESSAGE("YUV (4:4:4) 160x120 24bit/pixel"),
       MESSAGE("YUV (4:2:2) 320x240 16bit/pixel"),
@@ -464,7 +464,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return MODES[mode];
   }
 
-  unsigned int Camera1394::getFrameRateAsValue(FrameRate frameRate) throw() {
+  unsigned int Camera1394::getFrameRateAsValue(FrameRate frameRate) noexcept {
     static const unsigned int RATES[] = {
       15 * 65536/8, 15 * 65536/4, 15 * 65536/2, 15 * 65536, 30 * 65536, 60 * 65536
     };
@@ -485,7 +485,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     readModeSpecificState();
   }
 
-  Camera1394::Camera1394() throw()
+  Camera1394::Camera1394() noexcept
     : camera(IEEE1394::BROADCAST + 1) {
     // TAG: init attributes FIXME
     adapter.open(); // TAG: temporary fix
@@ -1016,7 +1016,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       transmission.unitBytesPerPacket = packetParaInquery >> 16;
       transmission.maximumBytesPerPacket = packetParaInquery & 0xffff;
       transmission.recommendedBytesPerPacket = bytesPerPacket & 0xffff;
-      // TAG: need something like: unsigned int IEEE1394::getMaximumPacketSize() const throw();
+      // TAG: need something like: unsigned int IEEE1394::getMaximumPacketSize() const noexcept;
 //       unsigned int size = adapter.getMaximumPacketSize();
 //       if (size > transmission.maximumBytesPerPacket) {
 //         size = transmission.maximumBytesPerPacket;
@@ -1355,24 +1355,24 @@ _COM_AZURE_DEV__BASE__PACKED__END
     }
   }
   
-  void Camera1394::close() throw() {
+  void Camera1394::close() noexcept {
     adapter.close();
   }
 
-  String Camera1394::getVendorName() const throw() {
+  String Camera1394::getVendorName() const noexcept {
     return vendorName;
   }
   
-  String Camera1394::getModelName() const throw() {
+  String Camera1394::getModelName() const noexcept {
     return modelName;
   }
   
-  bool Camera1394::isFrameRateSupported(FrameRate frameRate) const throw() {
+  bool Camera1394::isFrameRateSupported(FrameRate frameRate) const noexcept {
     // return false for partial image mode and EXIF mode
     return frameRates[currentMode] & (1 << frameRate);
   }
 
-  bool Camera1394::isFeatureReadable(Feature feature) const throw() {
+  bool Camera1394::isFeatureReadable(Feature feature) const noexcept {
     if (!isFeatureSupported(feature)) {
       return false;
     }
@@ -1463,7 +1463,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     }
   }
   
-  const Camera1394::TriggerFeatureDescriptor& Camera1394::getTriggerFeatureDescriptor() const throw() {
+  const Camera1394::TriggerFeatureDescriptor& Camera1394::getTriggerFeatureDescriptor() const noexcept {
     return featureDescriptors.trigger;
   }
   
@@ -2945,12 +2945,12 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   bool Camera1394::AcquisitionListener::onAcquisitionLostSync(
-    unsigned int frame) throw() {
+    unsigned int frame) noexcept {
     return true;
   }
   
   bool Camera1394::AcquisitionListener::onAcquisitionFailure(
-    unsigned int frame) throw() {
+    unsigned int frame) noexcept {
     return true;
   }
   

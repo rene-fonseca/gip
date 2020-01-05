@@ -34,7 +34,7 @@ namespace gip {
 
     Mirror(DestinationImage* destination) throw(ImageException);
 
-    void operator()() throw();
+    void operator()() noexcept;
   };
 
   template<class DEST>
@@ -47,7 +47,7 @@ namespace gip {
   }
 
   template<class DEST>
-  void Mirror<DEST>::operator()() throw() {
+  void Mirror<DEST>::operator()() noexcept {
     unsigned int elementsPerRowToSwap = UnaryTransformation<DestinationImage>::destination->getWidth()/2;
     typename DestinationImage::Rows rowLookup = UnaryTransformation<DestinationImage>::destination->getRows();
     typename DestinationImage::Rows::RowIterator row = rowLookup.getFirst();

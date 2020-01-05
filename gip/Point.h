@@ -37,7 +37,7 @@ namespace gip {
     /**
       Initializes point as origin (0, 0).
     */
-    inline Point() throw() {
+    inline Point() noexcept {
     }
 
     /**
@@ -46,19 +46,19 @@ namespace gip {
       @param x The desired x coordinate.
       @param y The desired y coordinate.
     */
-    inline Point(int _x, int _y) throw() : x(_x), y(_y) {
+    inline Point(int _x, int _y) noexcept : x(_x), y(_y) {
     }
 
     /**
       Initializes point from other point.
     */
-    inline Point(const Point& copy) throw() : x(copy.x), y(copy.y) {
+    inline Point(const Point& copy) noexcept : x(copy.x), y(copy.y) {
     }
     
     /**
       Assignment of point by point.
     */
-    inline Point& operator=(const Point& eq) throw() {
+    inline Point& operator=(const Point& eq) noexcept {
       x = eq.x; // no need to protect against self-assignment
       y = eq.y;
       return *this;
@@ -67,37 +67,37 @@ namespace gip {
     /**
       Returns the x coordinate of the point.
     */
-    inline int getX() const throw() {
+    inline int getX() const noexcept {
       return x;
     }
 
     /**
       Returns the y coordinate of the point.
     */
-    inline int getY() const throw() {
+    inline int getY() const noexcept {
       return y;
     }
 
     /**
       Sets the x coordinate.
     */
-    inline void setX(int x) throw() {
+    inline void setX(int x) noexcept {
       this->x = x;
     }
 
     /**
       Sets the y coordinate.
     */
-    inline void setY(int y) throw() {
+    inline void setY(int y) noexcept {
       this->y = y;
     }
   };
   
-  inline Point operator+(const Point& left, const Point& right) throw() {
+  inline Point operator+(const Point& left, const Point& right) noexcept {
     return Point(left.getX() + right.getX(), left.getY() + right.getY());
   }
   
-  inline Point operator-(const Point& left, const Point& right) throw() {
+  inline Point operator-(const Point& left, const Point& right) noexcept {
     return Point(left.getX() - right.getX(), left.getY() - right.getY());
   }
 

@@ -39,7 +39,7 @@ namespace gip {
     /**
       Flip the image.
     */
-    void operator()() throw();
+    void operator()() noexcept;
   };
 
   template<class DEST>
@@ -53,7 +53,7 @@ namespace gip {
   }
 
   template<class DEST>
-  void Flip<DEST>::operator()() throw() {
+  void Flip<DEST>::operator()() noexcept {
     typename DestinationImage::Rows rowLookup = UnaryTransformation<DEST>::destination->getRows();
 
     typename DestinationImage::Rows::RowIterator topRow = rowLookup.getFirst();

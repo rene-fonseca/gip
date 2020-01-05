@@ -16,10 +16,10 @@
 
 namespace gip {
 
-  Test::Test(DestinationImage* destination) throw() : UnaryTransformation<DestinationImage>(destination) {
+  Test::Test(DestinationImage* destination) noexcept : UnaryTransformation<DestinationImage>(destination) {
   }
 
-  void Test::operator()() throw() {
+  void Test::operator()() noexcept {
     ColorPixel* element = destination->getElements();
 
     Canvas canvas(destination);

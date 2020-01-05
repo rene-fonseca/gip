@@ -43,11 +43,11 @@ namespace gip {
       const Pixel* lookup = nullptr;
     public:
       
-      inline MapPixel(const Allocator<Pixel>& _lookup) throw()
+      inline MapPixel(const Allocator<Pixel>& _lookup) noexcept
         : lookup(_lookup.getElements()) {
       }
       
-      inline Pixel operator()(const Pixel& value) const throw() {
+      inline Pixel operator()(const Pixel& value) const noexcept {
         return lookup[value];
       }
     };
@@ -64,7 +64,7 @@ namespace gip {
       bassert(destination->getDimension() == source->getDimension(), ImageException(this));
     }
 
-    void operator()() const throw() {
+    void operator()() const noexcept {
       GrayHistogram grayHistogram;
       forEach(*source, grayHistogram);
       Array<unsigned int> histogram = grayHistogram.getHistogram();
@@ -105,7 +105,7 @@ namespace gip {
     typedef PixelTraits<Pixel>::Component Component;
     typedef PixelTraits<Pixel>::Arithmetic Arithmetic;
 
-    static void fillLookup(const Array<unsigned int>& histogram, Allocator<Arithmetic>& lookup, unsigned int numberOfPixels) throw() {
+    static void fillLookup(const Array<unsigned int>& histogram, Allocator<Arithmetic>& lookup, unsigned int numberOfPixels) noexcept {
       const unsigned int* src = histogram.getElements();
       const unsigned int* end = src + histogram.getSize();
       Arithmetic* dest = lookup.getElements();
@@ -140,11 +140,11 @@ namespace gip {
         fill<unsigned int>(histogram.getElements(), histogram.getSize(), 0);
       }
 
-      inline void operator()(const ColorPixel& value) throw() {
+      inline void operator()(const ColorPixel& value) noexcept {
         ++elements[static_cast<Arithmetic>(value.red) + static_cast<Arithmetic>(value.green) + static_cast<Arithmetic>(value.blue)];
       }
 
-      inline Array<unsigned int> getHistogram() const throw() {
+      inline Array<unsigned int> getHistogram() const noexcept {
         return histogram;
       }
     };
@@ -157,20 +157,20 @@ namespace gip {
       Arithmetic maxIntensity = 0;
     public:
 
-      inline FindMaximumComponent(const Allocator<Arithmetic>& _lookup) throw() : lookup(_lookup.getElements()) {
+      inline FindMaximumComponent(const Allocator<Arithmetic>& _lookup) noexcept : lookup(_lookup.getElements()) {
         max = 0;
         maxIntensity = 1;
       }
 
-      inline Arithmetic getMaximum() throw() {
+      inline Arithmetic getMaximum() noexcept {
         return max;
       }
 
-      inline Arithmetic getMaximumIntensity() throw() {
+      inline Arithmetic getMaximumIntensity() noexcept {
         return maxIntensity - 1; // return value > 0
       }
 
-      inline void operator()(const Pixel& value) throw() {
+      inline void operator()(const Pixel& value) noexcept {
         Arithmetic red = value.red;
         Arithmetic green = value.green;
         Arithmetic blue = value.blue;
@@ -191,12 +191,12 @@ namespace gip {
       Arithmetic max;
     public:
 
-      inline MapPixel(const Allocator<Arithmetic>& _lookup, Arithmetic _max) throw()
+      inline MapPixel(const Allocator<Arithmetic>& _lookup, Arithmetic _max) noexcept
          : lookup(_lookup.getElements()),
            max(_max) {
       }
 
-      inline Pixel operator()(const Pixel& value) const throw() {
+      inline Pixel operator()(const Pixel& value) const noexcept {
         // 0 < max <= 255 and 0 < maximumIntensity <= 3 * 255
         Arithmetic red = value.red;
         Arithmetic green = value.green;
@@ -224,7 +224,7 @@ namespace gip {
       bassert(destination->getDimension() == source->getDimension(), ImageException(this));
     }
 
-    void operator()() const throw() {
+    void operator()() const noexcept {
       Histogram intensityHistogram; // intensity = red + green + blue <= 3 * 255
       forEach(*source, intensityHistogram);
       Array<unsigned int> histogram = intensityHistogram.getHistogram();

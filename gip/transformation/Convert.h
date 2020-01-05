@@ -22,10 +22,10 @@ namespace gip {
   class RGBToFloat : public UnaryOperation<ColorPixel, float> {
   public:
 
-    inline RGBToFloat() throw() {
+    inline RGBToFloat() noexcept {
     }
 
-    inline Result operator()(const Argument& value) const throw() {
+    inline Result operator()(const Argument& value) const noexcept {
       return float((static_cast<unsigned int>(value.blue) + value.green + value.red)/3);
     }
   };
@@ -33,10 +33,10 @@ namespace gip {
   class RGBToGray : public UnaryOperation<ColorPixel, GrayPixel> {
   public:
 
-    inline RGBToGray() throw() {
+    inline RGBToGray() noexcept {
     }
 
-    inline Result operator()(const Argument& value) const throw() {
+    inline Result operator()(const Argument& value) const noexcept {
       unsigned int temp = static_cast<unsigned int>(value.blue) + value.green + value.red;
       if (temp % 3 == 2) {
         ++temp;
@@ -48,10 +48,10 @@ namespace gip {
   class FloatToGray : public UnaryOperation<float, GrayPixel> {
   public:
 
-    inline FloatToGray() throw() {
+    inline FloatToGray() noexcept {
     }
 
-    inline Result operator()(const Argument& value) const throw() {
+    inline Result operator()(const Argument& value) const noexcept {
       return GrayPixel(static_cast<unsigned char>(value));
     }
   };
@@ -62,10 +62,10 @@ namespace gip {
     double scale = 0;
   public:
 
-    inline FloatToGrayWithScale(double _scale) throw() : scale(_scale) {
+    inline FloatToGrayWithScale(double _scale) noexcept : scale(_scale) {
     }
 
-    inline GrayPixel operator()(const float& value) const throw() {
+    inline GrayPixel operator()(const float& value) const noexcept {
       double temp = scale * value;
       if (temp < 0x00) {
         return 0x00;
@@ -80,10 +80,10 @@ namespace gip {
   class GrayToFloat : public UnaryOperation<GrayPixel, float> {
   public:
 
-    inline GrayToFloat() throw() {
+    inline GrayToFloat() noexcept {
     }
 
-    inline float operator()(const GrayPixel& value) const throw() {
+    inline float operator()(const GrayPixel& value) const noexcept {
       return value;
     }
   };
@@ -94,10 +94,10 @@ namespace gip {
     double scale = 0;
   public:
 
-    inline RGBToComplex(double _scale) throw() : scale(_scale) {
+    inline RGBToComplex(double _scale) noexcept : scale(_scale) {
     }
 
-    inline Complex operator()(const ColorPixel& value) const throw() {
+    inline Complex operator()(const ColorPixel& value) const noexcept {
       RGBToGray opr;
       return Complex(scale * opr(value), 0);
     }
@@ -109,10 +109,10 @@ namespace gip {
     const double scale = 0;
   public:
 
-    inline ComplexToRGB(double _scale) throw() : scale(_scale) {
+    inline ComplexToRGB(double _scale) noexcept : scale(_scale) {
     }
 
-    inline Result operator()(const Argument& value) const throw() {
+    inline Result operator()(const Argument& value) const noexcept {
       double temp = scale * value.getReal();
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
@@ -131,10 +131,10 @@ namespace gip {
     double scale = 0;
   public:
 
-    inline ComplexToRGBImaginary(double _scale) throw() : scale(_scale) {
+    inline ComplexToRGBImaginary(double _scale) noexcept : scale(_scale) {
     }
 
-    inline Result operator()(const Argument& value) const throw() {
+    inline Result operator()(const Argument& value) const noexcept {
       double temp = scale * value.getImaginary();
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
@@ -153,10 +153,10 @@ namespace gip {
     double scale = 0;
   public:
 
-    inline ComplexToRGBSqrModulus(double _scale) throw() : scale(_scale) {
+    inline ComplexToRGBSqrModulus(double _scale) noexcept : scale(_scale) {
     }
 
-    inline Result operator()(const Argument& value) const throw() {
+    inline Result operator()(const Argument& value) const noexcept {
       double temp = scale * value.getSqrModulus();
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
@@ -175,10 +175,10 @@ namespace gip {
     double scale = 0;
   public:
 
-    inline ComplexToRGBModulus(double _scale) throw() : scale(_scale) {
+    inline ComplexToRGBModulus(double _scale) noexcept : scale(_scale) {
     }
 
-    inline Result operator()(const Argument& value) const throw() {
+    inline Result operator()(const Argument& value) const noexcept {
       double temp = scale * value.getModulus();
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
@@ -197,10 +197,10 @@ namespace gip {
     double scale = 0;
   public:
 
-    inline ComplexToRGBLogModulus(double _scale) throw() : scale(_scale) {
+    inline ComplexToRGBLogModulus(double _scale) noexcept : scale(_scale) {
     }
 
-    inline Result operator()(const Argument& value) const throw() {
+    inline Result operator()(const Argument& value) const noexcept {
       double temp = scale * Math::ln(1 + value.getModulus());
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
@@ -237,7 +237,7 @@ namespace gip {
       @param source The source image.
       @param convert The convertion operation.
     */
-    Convert(DestinationImage* destination, const SourceImage* source, const UNARY& _convert) throw() :
+    Convert(DestinationImage* destination, const SourceImage* source, const UNARY& _convert) noexcept :
             Transformation<DestinationImage, SourceImage>(destination, source), convert(_convert) {
       bassert(
         destination->getDimension() == source->getDimension(),
@@ -248,11 +248,11 @@ namespace gip {
     /**
       Duplicates the contents of the source image to the destination image.
     */
-    void operator()() throw() {
+    void operator()() noexcept {
       fillWithUnary(*Transformation<DEST, SRC>::destination, *Transformation<DEST, SRC>::source, convert);
     }
 
-    UNARY getResult() const throw() {
+    UNARY getResult() const noexcept {
       return convert;
     }
   };

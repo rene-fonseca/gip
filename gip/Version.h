@@ -35,44 +35,44 @@ public:
   /**
     Returns the major version of the framework.
   */
-  unsigned int getMajorVersion() const throw();
+  unsigned int getMajorVersion() const noexcept;
 
   /**
     Returns the minor version of the framework.
   */
-  unsigned int getMinorVersion() const throw();
+  unsigned int getMinorVersion() const noexcept;
 
   /**
     Returns the micro version of the framework.
   */
-  unsigned int getMicroVersion() const throw();
+  unsigned int getMicroVersion() const noexcept;
 
   /**
     Returns the release of the framework as a string. The format of the string
     is unspecified.
   */
-  base::String getRelease() const throw();
+  base::String getRelease() const noexcept;
 
   /**
     Returns the version of the framework as a string. The format of the string
     is 'major.minor.micro suffix' where suffix could be anything.
   */
-  base::String getVersion() const throw();
+  base::String getVersion() const noexcept;
 
   /**
     Returns the short commit id.
   */
-  base::String getCommit() const throw();
+  base::String getCommit() const noexcept;
 
   /*
     Returns the build date in seconds since epoch.
   */
-  int64 getBuildDate() const throw();
+  int64 getBuildDate() const noexcept;
 
   /**
     Returns a short banner (multiple lines) describing the framework.
   */
-  base::String getBanner() const throw();
+  base::String getBanner() const noexcept;
 };
  
 }; // end of gip namespace

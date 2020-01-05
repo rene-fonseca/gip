@@ -114,18 +114,18 @@ namespace gip {
   };
 #endif
 
-  JPEGEncoder::JPEGEncoder() throw() {
+  JPEGEncoder::JPEGEncoder() noexcept {
   }
 
-  String JPEGEncoder::getDescription() const throw() {
+  String JPEGEncoder::getDescription() const noexcept {
     return MESSAGE("Joint Photographic Experts Group");
   }
   
-  String JPEGEncoder::getDefaultExtension() const throw() {
+  String JPEGEncoder::getDefaultExtension() const noexcept {
     return MESSAGE("jpg");
   }
 
-  Array<String> JPEGEncoder::getExtensions() const throw() {
+  Array<String> JPEGEncoder::getExtensions() const noexcept {
     Array<String> extensions;
     extensions.append(MESSAGE("jpg"));
     extensions.append(MESSAGE("jpeg"));
@@ -317,40 +317,40 @@ namespace gip {
     unsigned int bitsPerComponent;
   public:
 
-    Dimension getDimension() const throw() {
+    Dimension getDimension() const noexcept {
       return dimension;
     }
     
-    Type getType() const throw() {
+    Type getType() const noexcept {
       return type;
     }
 
-    unsigned int getPlanes() const throw() {
+    unsigned int getPlanes() const noexcept {
       return numberOfComponents;
     }
     
-    unsigned int getComponents() const throw() {
+    unsigned int getComponents() const noexcept {
       return components;
     }
 
-    bool isCompatibleWith(Type type) const throw() {
+    bool isCompatibleWith(Type type) const noexcept {
       return false;
     }
 
-    unsigned int bitsPerComponents() const throw() {
+    unsigned int bitsPerComponents() const noexcept {
       return bitsPerComponent;
     }
 
-    unsigned int bitsPerSample() const throw() {
+    unsigned int bitsPerSample() const noexcept {
       return 0;
     }
     
-    unsigned int getNumberOfImages() const throw() {
+    unsigned int getNumberOfImages() const noexcept {
       return numberOfImages;
     }
   };
   
-  Information getGenralInformation() throw() {
+  Information getGenralInformation() noexcept {
   }
   */
 

@@ -42,7 +42,7 @@ using namespace com::azure::dev::gip;
 class RGB24ToRGB : public UnaryOperation<Camera1394::RGB24Pixel, ColorPixel> {
 public:
   
-  inline Result operator()(const Argument& value) const throw() {
+  inline Result operator()(const Argument& value) const noexcept {
     return makeColorPixel(value.red, value.blue, value.green);
   }
 };
@@ -50,7 +50,7 @@ public:
 class ByteToRGB : public UnaryOperation<uint8, ColorPixel> {
 public:
   
-  inline Result operator()(const Argument& value) const throw() {
+  inline Result operator()(const Argument& value) const noexcept {
     return makeColorPixel(value, value, value);
   }
 };
@@ -64,10 +64,10 @@ public:
     VideoPhoneServlet* videoPhoneServlet;
   public:
 
-    Recorder(VideoPhoneServlet* object) throw() : videoPhoneServlet(object) {
+    Recorder(VideoPhoneServlet* object) noexcept : videoPhoneServlet(object) {
     }
 
-    void run() throw() {
+    void run() noexcept {
       videoPhoneServlet->record();
     }
   };
@@ -78,10 +78,10 @@ public:
     VideoPhoneServlet* videoPhoneServlet;
   public:
 
-    Player(VideoPhoneServlet* object) throw() : videoPhoneServlet(object) {
+    Player(VideoPhoneServlet* object) noexcept : videoPhoneServlet(object) {
     }
   
-    void run() throw() {
+    void run() noexcept {
       videoPhoneServlet->play();
     }
   };
@@ -92,10 +92,10 @@ public:
     VideoPhoneServlet* videoPhoneServlet;
   public:
 
-    Reader(VideoPhoneServlet* object) throw() : videoPhoneServlet(object) {
+    Reader(VideoPhoneServlet* object) noexcept : videoPhoneServlet(object) {
     }
 
-    void run() throw() {
+    void run() noexcept {
       videoPhoneServlet->read();
     }
   };
@@ -106,10 +106,10 @@ public:
     VideoPhoneServlet* videoPhoneServlet;
   public:
 
-    Writer(VideoPhoneServlet* object) throw() : videoPhoneServlet(object) {
+    Writer(VideoPhoneServlet* object) noexcept : videoPhoneServlet(object) {
     }
 
-    void run() throw() {
+    void run() noexcept {
       videoPhoneServlet->write();
     }
   };
@@ -135,7 +135,7 @@ private:
   StreamSocket streamSocket;
 public:
 
-  VideoPhoneServlet(Camera1394& _camera, bool loopback, bool isServer, const InetEndPoint& endPoint) throw()
+  VideoPhoneServlet(Camera1394& _camera, bool loopback, bool isServer, const InetEndPoint& endPoint) noexcept
     : camera(_camera),
       recorder(this),
       player(this),
@@ -147,7 +147,7 @@ public:
   }
 
   
-  bool acquireColorImage(ColorImage& frame) throw() {
+  bool acquireColorImage(ColorImage& frame) noexcept {
     bool success = false;
     try {
       Allocator<uint8> buffer(camera.getRegion().getDimension().getSize() *
@@ -161,7 +161,7 @@ public:
     return success;
   }
 
-  bool onAcquisition(unsigned int frame, uint8* buffer) throw() {
+  bool onAcquisition(unsigned int frame, uint8* buffer) noexcept {
     if (Thread::getThread()->isTerminated()) {
       return false;
     }
@@ -190,12 +190,12 @@ public:
     return true;
   }
 
-  bool onAcquisitionLostSync(unsigned int frame) throw() {
+  bool onAcquisitionLostSync(unsigned int frame) noexcept {
     Trace::message("Lost synchronization with beginning of frame");
     return true;
   }
   
-  void recordContinuously() throw() {
+  void recordContinuously() noexcept {
     // fill cyclic buffer
     const unsigned int NUMBER_OF_FRAMES = 16;
     Array<Allocator<uint8> > frames(NUMBER_OF_FRAMES, Allocator<uint8>());
@@ -214,7 +214,7 @@ public:
     fout << "record: " << success << ENDL;
   }
 
-  void recordSingle() throw() {
+  void recordSingle() noexcept {
     while (!Thread::getThread()->isTerminated()) {
       recordingSemaphore.wait();
       if (Thread::getThread()->isTerminated()) {
@@ -242,12 +242,12 @@ public:
     }
   }
   
-  void record() throw() {
+  void record() noexcept {
     recordContinuously();
     fout << "Acquisition thread terminating" << ENDL;
   }
   
-  void play() throw() {
+  void play() noexcept {
     BMPEncoder encoder;
     unsigned int frameNumber = 0;
     
@@ -283,7 +283,7 @@ public:
     fout << "Update thread terminating" << ENDL;
   }
 
-  void write() throw() {
+  void write() noexcept {
     if (loopback) {
       return;
     }
@@ -316,7 +316,7 @@ public:
     fout << "Writing thread terminating" << ENDL;
   }
 
-  void read() throw() {
+  void read() noexcept {
     if (loopback) {
       return;
     }
@@ -355,12 +355,12 @@ public:
     fout << "Reading thread terminating" << ENDL;
   }
 
-  bool hostAllowed(const InetAddress& host) throw() {
+  bool hostAllowed(const InetAddress& host) noexcept {
     // check address 172.30.* (mask then check if equal)
     return true; // allow every client
   }
 
-  void server() throw() {
+  void server() noexcept {
     fout << "Initializing server socket: " << endPoint << ENDL;
     ServerSocket serverSocket(endPoint.getAddress(), endPoint.getPort(), 1);
 
@@ -379,7 +379,7 @@ public:
     }
   }
 
-  void client() throw() {
+  void client() noexcept {
     fout << "Connecting to server: " << endPoint << ENDL;
     streamSocket.connect(endPoint.getAddress(), endPoint.getPort());
     fout << "Connected to: "
@@ -387,7 +387,7 @@ public:
          << ENDL;
   }
   
-  void run() throw() {
+  void run() noexcept {
     Dimension dimension(camera.getRegion().getDimension());
     const unsigned int NUMBER_OF_BUFFERS = 16;
     
@@ -482,7 +482,7 @@ public:
     fout << "Completed" << ENDL;
   }
   
-  ~VideoPhoneServlet() throw() {
+  ~VideoPhoneServlet() noexcept {
   }
 };
 
@@ -575,7 +575,7 @@ public:
   
   String filename;
   
-  VideoPhoneApplication() throw()
+  VideoPhoneApplication() noexcept
     : Application("videophone") {
     
     verbosity = VERBOSITY_NORMAL;
@@ -602,7 +602,7 @@ public:
   class InvalidArgument : public Exception {
   public:
 
-    inline InvalidArgument(const char* message) throw() : Exception(message) {
+    inline InvalidArgument(const char* message) noexcept : Exception(message) {
     }
   };
   
@@ -799,7 +799,7 @@ public:
     // add constraints here
   }
   
-  void dumpHeader() throw() {
+  void dumpHeader() noexcept {
     fout << getFormalName() << " version "
          << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << "Generic Image Processing (GIP) Framework (Test Suite)" << EOL
@@ -808,7 +808,7 @@ public:
          << ENDL;
   }
 
-  void dumpHelp() throw() {
+  void dumpHelp() noexcept {
     fout << "Usage: " << getFormalName() << " [--adapter EUI-64] [--camera EUI-64] [--host host]" << EOL
          << EOL
          << "Options:" << EOL
@@ -855,11 +855,11 @@ public:
          << ENDL;
   }
 
-  void dumpIdentifier() throw() {
+  void dumpIdentifier() noexcept {
     fout << "https://dev.azure.com/renefonseca/gip/~fonseca/gip/testsuite/videophone" << ENDL;
   }
   
-  void dumpVersion() throw() {
+  void dumpVersion() noexcept {
     fout << MAJOR_VERSION << '.' << MINOR_VERSION << ENDL;
   }
 
@@ -936,7 +936,7 @@ public:
     }
   }
   
-  void dumpFeatureInquery(const String& feature, const Camera1394::GenericFeatureDescriptor& descriptor) const throw() {
+  void dumpFeatureInquery(const String& feature, const Camera1394::GenericFeatureDescriptor& descriptor) const noexcept {
     fout << "Feature: " << feature << EOL
          << "  Available: " << descriptor.available << EOL
          << "  Automatic adjustment mode: " << descriptor.autoAdjustmentMode << EOL
@@ -948,7 +948,7 @@ public:
          << "  Maximum value: " << descriptor.maximum << ENDL;
   }
   
-  void dumpTriggerFeatureInquery(const String& feature, const Camera1394::TriggerFeatureDescriptor& descriptor) const throw() {
+  void dumpTriggerFeatureInquery(const String& feature, const Camera1394::TriggerFeatureDescriptor& descriptor) const noexcept {
     fout << "Feature: " << feature << EOL
          << "  Available: " << descriptor.available << EOL
          << "  Readable: " << descriptor.readable << EOL
@@ -1457,7 +1457,7 @@ public:
          << ENDL;
   }
 
-  bool onAcquisition(unsigned int frame, uint8* buffer) throw() {
+  bool onAcquisition(unsigned int frame, uint8* buffer) noexcept {
     // mark frame for transmission
     ++numberOfFrames;
     fout << "Frame acquired: index=" << frame
@@ -1466,7 +1466,7 @@ public:
     return numberOfFrames < desiredNumberOfFrames;
   }
 
-  bool onAcquisitionLostSync(unsigned int frame) throw() {
+  bool onAcquisitionLostSync(unsigned int frame) noexcept {
     Trace::message("Lost synchronization with beginning of frame");
     return true;
   }
@@ -1594,11 +1594,11 @@ public:
     VideoPhoneServlet(camera, loopback, isServer, endPoint).run();
   }
   
-  void onTermination() throw() {
+  void onTermination() noexcept {
     // override default application termination
   }
 
-  void main() throw() {
+  void main() noexcept {
     try {
       processArguments();
       
@@ -1658,7 +1658,7 @@ public:
     }
   }
 
-  ~VideoPhoneApplication() throw() {
+  ~VideoPhoneApplication() noexcept {
   }
 };
 

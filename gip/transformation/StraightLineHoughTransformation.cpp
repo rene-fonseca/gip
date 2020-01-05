@@ -50,7 +50,7 @@ namespace gip {
     }
   }
 
-  void StraightLineHoughTransformation::operator()() throw() {
+  void StraightLineHoughTransformation::operator()() noexcept {
     const unsigned int height = destination->getDimension().getHeight();
     const unsigned int width = destination->getDimension().getWidth();
     const double halfWidth = width * 0.5;

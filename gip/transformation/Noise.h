@@ -24,7 +24,7 @@ namespace gip {
     
     typedef PIXEL Pixel;
 
-    inline Pixel operator()() const throw() {
+    inline Pixel operator()() const noexcept {
       return Random::random<double>() * PixelTraits<Pixel>::MAXIMUM;
     }
   };
@@ -35,7 +35,7 @@ namespace gip {
 
     typedef RGBPixel<COMPONENT> Pixel;
     
-    inline Pixel operator()() const throw() {
+    inline Pixel operator()() const noexcept {
       return makeRGBPixel(
         Random::random<double>() * PixelTraits<Pixel>::MAXIMUM,
         Random::random<double>() * PixelTraits<Pixel>::MAXIMUM,
@@ -48,7 +48,7 @@ namespace gip {
   class NoiseOperation<ColorPixel> {
   public:
     
-    inline ColorPixel operator()() const throw() {
+    inline ColorPixel operator()() const noexcept {
       ColorPixel result;
       result.rgb = Random::random<int>();
       return result;
@@ -75,14 +75,14 @@ namespace gip {
 
       @param destination The destination image.
     */
-    Noise(DestinationImage* destination) throw()
+    Noise(DestinationImage* destination) noexcept
       : UnaryTransformation<DestinationImage>(destination) {
     }
     
     /**
       Fills the destination image with noise.
     */
-    void operator()() throw() {
+    void operator()() noexcept {
       forEach(
         UnaryTransformation<DEST>::destination->getElements(),
         UnaryTransformation<DEST>::destination->getDimension().getSize(),

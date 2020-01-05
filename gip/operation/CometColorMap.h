@@ -27,7 +27,7 @@ namespace gip {
   class CometColorMap : public UnaryOperation<RGBPixel<long double>, long double> {
   public:
 
-    inline RGBPixel<long double> operator()(const long double& value) const throw() {
+    inline RGBPixel<long double> operator()(const long double& value) const noexcept {
       RGBPixel<long double> result;
       if (value <= 0) { // clamp to black
         result.red = 0;

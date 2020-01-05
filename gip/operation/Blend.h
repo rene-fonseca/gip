@@ -40,12 +40,12 @@ namespace gip {
     const float transparency = 0;
   public:
     
-    inline Blend(const float _opacity, const float _opaque) throw()
+    inline Blend(const float _opacity, const float _opaque) noexcept
       : opacity(_opacity/_opaque),
         transparency(1 - _opacity/_opaque) {
     }
     
-    inline float operator()(const float front, const float back) const throw() {
+    inline float operator()(const float front, const float back) const noexcept {
       return opacity * front + transparency * back;
     }
   };
@@ -58,12 +58,12 @@ namespace gip {
     const double transparency = 0;
   public:
     
-    inline Blend(const double _opacity, const double _opaque) throw()
+    inline Blend(const double _opacity, const double _opaque) noexcept
       : opacity(_opacity/_opaque),
         transparency(1 - _opacity/_opaque) {
     }
     
-    inline double operator()(const double front, const double back) const throw() {
+    inline double operator()(const double front, const double back) const noexcept {
       return opacity * front + transparency * back;
     }
   };
@@ -76,12 +76,12 @@ namespace gip {
     const long double transparency = 0;
   public:
 
-    inline Blend(const long double _opacity, const long double _opaque) throw()
+    inline Blend(const long double _opacity, const long double _opaque) noexcept
       : opacity(_opacity/_opaque),
         transparency(1 - _opacity/_opaque) {
     }
     
-    inline long double operator()(const long double front, const long double back) const throw() {
+    inline long double operator()(const long double front, const long double back) const noexcept {
       return opacity * front + transparency * back;
     }
   };
@@ -97,13 +97,13 @@ namespace gip {
     const Arithmetic opaque = 0;
   public:
     
-    inline Blend(const Arithmetic _opacity, const Arithmetic _opaque) throw()
+    inline Blend(const Arithmetic _opacity, const Arithmetic _opaque) noexcept
       : opacity(_opacity),
         transparency(_opaque - _opacity),
         opaque(_opaque) {
     }
     
-    inline Pixel operator()(const Pixel front, const Pixel back) const throw() {
+    inline Pixel operator()(const Pixel front, const Pixel back) const noexcept {
       Pixel result;
       result.red = (transparency * static_cast<Arithmetic>(back.red) +
                     opacity * static_cast<Arithmetic>(front.red))/opaque;
@@ -126,14 +126,14 @@ namespace gip {
     const Arithmetic doubleOpaque = 0;
   public:
     
-    inline Blend(const Arithmetic _opacity, const Arithmetic _opaque) throw()
+    inline Blend(const Arithmetic _opacity, const Arithmetic _opaque) noexcept
       : opacity(2 * _opacity),
         transparency(2 * _opaque - 2 * _opacity),
         opaque(_opaque),
         doubleOpaque(2 * _opaque) {
     }
     
-    inline ColorPixel operator()(const ColorPixel front, const ColorPixel back) const throw() {
+    inline ColorPixel operator()(const ColorPixel front, const ColorPixel back) const noexcept {
       ColorPixel result;
       result.red = (transparency * static_cast<Arithmetic>(back.red) +
                     opacity * static_cast<Arithmetic>(front.red) +
@@ -158,12 +158,12 @@ namespace gip {
     const Arithmetic transparency;
   public:
     
-    inline Blend(const Arithmetic _opacity, const Arithmetic _opaque) throw()
+    inline Blend(const Arithmetic _opacity, const Arithmetic _opaque) noexcept
       : opacity(_opacity/_opaque),
         transparency(1 - _opacity/_opaque) {
     }
     
-    inline Pixel operator()(const Pixel front, const Pixel back) const throw() {
+    inline Pixel operator()(const Pixel front, const Pixel back) const noexcept {
       Pixel result;
       result.red = transparency * back.red + opacity * front.red;
       result.green = transparency * back.green + opacity * front.green;
@@ -182,12 +182,12 @@ namespace gip {
     const Arithmetic transparency;
   public:
     
-    inline Blend(const Arithmetic _opacity, const Arithmetic _opaque) throw()
+    inline Blend(const Arithmetic _opacity, const Arithmetic _opaque) noexcept
       : opacity(_opacity/_opaque),
         transparency(1 - _opacity/_opaque) {
     }
     
-    inline Pixel operator()(const Pixel front, const Pixel back) const throw() {
+    inline Pixel operator()(const Pixel front, const Pixel back) const noexcept {
       Pixel result;
       result.red = transparency * back.red + opacity * front.red;
       result.green = transparency * back.green + opacity * front.green;
@@ -206,12 +206,12 @@ namespace gip {
     const Arithmetic transparency;
   public:
     
-    inline Blend(const Arithmetic _opacity, const Arithmetic _opaque) throw()
+    inline Blend(const Arithmetic _opacity, const Arithmetic _opaque) noexcept
       : opacity(_opacity/_opaque),
         transparency(1 - _opacity/_opaque) {
     }
     
-    inline Pixel operator()(const Pixel front, const Pixel back) const throw() {
+    inline Pixel operator()(const Pixel front, const Pixel back) const noexcept {
       Pixel result;
       result.red = transparency * back.red + opacity * front.red;
       result.green = transparency * back.green + opacity * front.green;

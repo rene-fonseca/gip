@@ -44,15 +44,15 @@ namespace gip {
       typedef typename UnaryOperation<typename UNOPRARG::Argument, typename UNOPRRES::Result>::Argument Argument;
       typedef typename UnaryOperation<typename UNOPRARG::Argument, typename UNOPRRES::Result>::Result Result;
       
-      inline NestOperations(UNOPRARG inner, UNOPRRES outer) throw()
+      inline NestOperations(UNOPRARG inner, UNOPRRES outer) noexcept
         : innerOperation(inner), outerOperation(outer) {
       }
 
-      inline void operator()(const Argument& value) throw() {
+      inline void operator()(const Argument& value) noexcept {
         outerOperation(innerOperation(value));
       }
 
-      inline Result getResult() const throw() {
+      inline Result getResult() const noexcept {
         return outerOperation.getResult();
       }
     };
@@ -66,19 +66,19 @@ namespace gip {
     class ComplexToSqrModulus : public UnaryOperation<Complex, long double> {
     public:
 
-      inline ComplexToSqrModulus() throw() {
+      inline ComplexToSqrModulus() noexcept {
       }
 
-      inline Result operator()(const Argument& value) throw() {
+      inline Result operator()(const Argument& value) noexcept {
         return value.getSqrModulus();
       }
     };
     
-    FindMaximum(const DestinationImage* destination) throw()
+    FindMaximum(const DestinationImage* destination) noexcept
       : UnaryTransformation<DestinationImage>(destination) {
     }
 
-    double operator()() throw() { // DestinationImage::Pixel
+    double operator()() noexcept { // DestinationImage::Pixel
       ComplexToSqrModulus innerOperation;
       NestOperations<ComplexToSqrModulus, Maximum<double> > operation(
         innerOperation,

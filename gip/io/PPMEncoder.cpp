@@ -19,14 +19,14 @@
 
 namespace gip {
 
-  PPMEncoder::PPMEncoder() throw() {
+  PPMEncoder::PPMEncoder() noexcept {
   }
 
-  String PPMEncoder::getDescription() const throw() {
+  String PPMEncoder::getDescription() const noexcept {
     return MESSAGE("Portable Pixmap Format");
   }
   
-  String PPMEncoder::getDefaultExtension() const throw() {
+  String PPMEncoder::getDefaultExtension() const noexcept {
     return MESSAGE("ppm");
   }
   

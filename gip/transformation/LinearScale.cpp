@@ -20,7 +20,7 @@ namespace gip {
     bassert(source->getDimension().isProper(), ImageException("Unable to scale image", this));
   }
 
-  void LinearScale::operator()() throw() {
+  void LinearScale::operator()() noexcept {
     if (!destination->getDimension().isProper()) {
       return;
     }

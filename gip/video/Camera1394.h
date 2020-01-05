@@ -53,7 +53,7 @@ namespace gip {
       /**
         Initializes the exception object with no message.
       */
-      inline Camera1394Exception() throw() {
+      inline Camera1394Exception() noexcept {
       }
       
       /**
@@ -61,7 +61,7 @@ namespace gip {
         
         @param message The message.
       */
-      inline Camera1394Exception(const char* message) throw()
+      inline Camera1394Exception(const char* message) noexcept
         : Exception(message) {
       }
       
@@ -70,7 +70,7 @@ namespace gip {
         
         @param type The identity of the type.
       */
-      inline Camera1394Exception(Type type) throw() : Exception(type) {
+      inline Camera1394Exception(Type type) noexcept : Exception(type) {
       }
       
       /**
@@ -79,7 +79,7 @@ namespace gip {
         @param message An NULL-terminated string (ASCII).
         @param type The identity of the type.
       */
-      inline Camera1394Exception(const char* message, Type type) throw()
+      inline Camera1394Exception(const char* message, Type type) noexcept
         : Exception(message, type) {
       }
     };
@@ -413,23 +413,23 @@ namespace gip {
     /**
       Returns a string representation of the format of the specified mode.
     */
-    static String getFormatAsString(Mode mode) throw();
+    static String getFormatAsString(Mode mode) noexcept;
 
     /**
       Returns a string representation of the specified mode.
     */
-    static String getModeAsString(Mode mode) throw();
+    static String getModeAsString(Mode mode) noexcept;
 
     /**
       Returns the the frame rate as an unsigned integer scaled with 65536.
     */
-    static unsigned int getFrameRateAsValue(FrameRate frameRate) throw();
+    static unsigned int getFrameRateAsValue(FrameRate frameRate) noexcept;
 
     /**
       Returns the specified frame rate as the frame period in microseconds. The
       result is rounded up to nearest microsecond and scaled with 15.
     */
-    static inline unsigned int getFramePeriod(FrameRate rate) throw() {
+    static inline unsigned int getFramePeriod(FrameRate rate) noexcept {
       unsigned int value = getFrameRateAsValue(rate);
       if (value == 0) {
         return 0;
@@ -441,7 +441,7 @@ namespace gip {
     /**
       Initializes the camera object with the specified IEEE 1394 adapter.
     */
-    Camera1394() throw(); // TAG: fixme
+    Camera1394() noexcept; // TAG: fixme
     
     /**
       Returns true if the specified node is a camera.
@@ -468,7 +468,7 @@ namespace gip {
     /**
       Closes the connection to the camera.
     */
-    void close() throw();
+    void close() noexcept;
     
     /**
       Returns the camera specification implemented by the camera (e.g. "1.30").
@@ -478,31 +478,31 @@ namespace gip {
       
       @see Specification
     */
-    inline uint32 getSpecification() const throw() {
+    inline uint32 getSpecification() const noexcept {
       return specification;
     }
     
     /**
       Returns the vendor of the camera.
     */
-    String getVendorName() const throw();
+    String getVendorName() const noexcept;
 
     /**
       Returns the model of the camera.
     */
-    String getModelName() const throw();
+    String getModelName() const noexcept;
 
     /**
       Returns the base address of the command registers.
     */
-    inline uint64 getCommandRegisters() const throw() {
+    inline uint64 getCommandRegisters() const noexcept {
       return commandRegisters;
     }
     
     /**
       Returns the capabilities of the camera.
     */
-    inline unsigned int getCapabilities() const throw() {
+    inline unsigned int getCapabilities() const noexcept {
       return capabilities;
     }
 
@@ -511,7 +511,7 @@ namespace gip {
       
       @return 0 if advanced features are not supported.
     */
-    inline uint64 getAdvancedFeatureAddress() const throw() {
+    inline uint64 getAdvancedFeatureAddress() const noexcept {
       return advancedFeatureAddress;
     }
     
@@ -523,33 +523,33 @@ namespace gip {
     /**
       Returns true if the feature is supported.
     */
-    inline bool isFormatSupported(Format format) const throw() {
+    inline bool isFormatSupported(Format format) const noexcept {
       return formats & (1 << format);
     }
     
     /**
       Returns true if the mode is supported.
     */
-    inline bool isModeSupported(Mode mode) const throw() {
+    inline bool isModeSupported(Mode mode) const noexcept {
       return supportedModes[mode];
     }
     
     /**
       Returns true if the frame rate is supported.
     */
-    bool isFrameRateSupported(FrameRate frameRate) const throw();
+    bool isFrameRateSupported(FrameRate frameRate) const noexcept;
     
     /**
       Returns true if the specified feature is supported.
     */
-    inline bool isFeatureSupported(Feature feature) const throw() {
+    inline bool isFeatureSupported(Feature feature) const noexcept {
       return features & (1 << feature);
     }
     
     /**
       Returns true if the specified feature is readable (implies supported if true).
     */
-    bool isFeatureReadable(Feature feature) const throw();
+    bool isFeatureReadable(Feature feature) const noexcept;
     
     /**
       Returns the description of the specified feature. Use
@@ -560,12 +560,12 @@ namespace gip {
     /**
       Returns a description of the trigger feature.
     */
-    const TriggerFeatureDescriptor& getTriggerFeatureDescriptor() const throw();
+    const TriggerFeatureDescriptor& getTriggerFeatureDescriptor() const noexcept;
     
     /**
       Returns the current mode.
     */
-    inline Mode getMode() const throw() {
+    inline Mode getMode() const noexcept {
       return currentMode;
     }
     
@@ -584,7 +584,7 @@ namespace gip {
     /**
       Returns the current frame rate.
     */
-    inline FrameRate getFrameRate() const throw() {
+    inline FrameRate getFrameRate() const noexcept {
       return frameRate;
     }
     
@@ -596,14 +596,14 @@ namespace gip {
     /**
       Returns the current isochronous channel.
     */
-    inline unsigned int getIsochronousChannel() const throw() {
+    inline unsigned int getIsochronousChannel() const noexcept {
       return transmission.subchannel;
     }
 
     /**
       Returns the current isochronous transmission speed.
     */
-    inline unsigned int getIsochronousSpeed() const throw() {
+    inline unsigned int getIsochronousSpeed() const noexcept {
       return transmission.speed;
     }
     
@@ -857,28 +857,28 @@ namespace gip {
     /**
       Returns the pixel formats supported by the current mode.
     */
-    inline unsigned int getPixelFormats() const throw() {
+    inline unsigned int getPixelFormats() const noexcept {
       return mode.pixelFormats;
     }
 
     /**
       Returns the selected dimension.
     */
-    inline const Dimension& getDimension() const throw() {
+    inline const Dimension& getDimension() const noexcept {
       return region.getDimension();
     }
 
     /**
       Returns the selected offset.
     */
-    inline const Point2D& getOffset() const throw() {
+    inline const Point2D& getOffset() const noexcept {
       return region.getOffset();
     }
 
     /**
       Returns the selected region.
     */
-    inline const Region& getRegion() const throw() {
+    inline const Region& getRegion() const noexcept {
       return region;
     }
 
@@ -890,14 +890,14 @@ namespace gip {
     /**
       Returns the current pixel format.
     */
-    inline PixelFormat getPixelFormat() const throw() {
+    inline PixelFormat getPixelFormat() const noexcept {
       return pixelFormat;
     }
 
     /**
       Returns the effective number of bits per pixel.
     */
-    static inline unsigned int getBitsPerPixel(PixelFormat pixelFormat) throw() {
+    static inline unsigned int getBitsPerPixel(PixelFormat pixelFormat) noexcept {
       static unsigned int BITS_PER_PIXEL[] = {
         8, // Y_8BIT
         16, // Y_16BIT
@@ -919,7 +919,7 @@ namespace gip {
     /**
       Returns the isochronous transmission parameters.
     */
-    const IsochronousTransmission& getTransmission() const throw() {
+    const IsochronousTransmission& getTransmission() const noexcept {
       return transmission;
     }
 
@@ -987,7 +987,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
         
         @return True if acquisition should continue.
       */
-      virtual bool onAcquisition(unsigned int frame, uint8* buffer) throw() = 0;
+      virtual bool onAcquisition(unsigned int frame, uint8* buffer) noexcept = 0;
       
       /**
         Invoked if synchronization with frame beginning is lost. This method
@@ -997,7 +997,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
         @return True if acquisition should continue.
       */
-      virtual bool onAcquisitionLostSync(unsigned int frame) throw();
+      virtual bool onAcquisitionLostSync(unsigned int frame) noexcept;
       
       /**
         Invoked on acquisition failure. This method returns true by default.
@@ -1006,7 +1006,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
         
         @return True if acquisition should continue.
       */
-      virtual bool onAcquisitionFailure(unsigned int frame) throw();
+      virtual bool onAcquisitionFailure(unsigned int frame) noexcept;
     };
 
     /**
@@ -1026,7 +1026,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       /**
         Initializes frame buffer as invalid.
       */
-      inline FrameBuffer() throw() {
+      inline FrameBuffer() noexcept {
       }
       
       /**
@@ -1035,21 +1035,21 @@ _COM_AZURE_DEV__BASE__PACKED__END
         @param buffer The buffer.
         @param size The number of bytes in the buffer.
       */
-      inline FrameBuffer(uint8* _buffer, unsigned int _size) throw()
+      inline FrameBuffer(uint8* _buffer, unsigned int _size) noexcept
         : buffer(_buffer), size(_size) {
       }
       
       /**
         Returns the buffer.
       */
-      inline uint8* getBuffer() const throw() {
+      inline uint8* getBuffer() const noexcept {
         return buffer;
       }
 
       /**
         Returns the buffer size.
       */
-      inline unsigned int getSize() const throw() {
+      inline unsigned int getSize() const noexcept {
         return size;
       }
     };

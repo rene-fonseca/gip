@@ -30,7 +30,7 @@ using namespace com::azure::dev::gip;
 class HaarToGray : public UnaryOperation<float, GrayPixel> {
 public:
 
-  inline GrayPixel operator()(const float& value) const throw() {
+  inline GrayPixel operator()(const float& value) const noexcept {
     long double temp = value/2 + 128; // -255 <= value <= 255
     if (temp < 0x00) {
       return 0x00;
@@ -45,7 +45,7 @@ public:
 class HaarToGray2 : public UnaryOperation<GrayPixel, GrayPixel> {
 public:
 
-  inline GrayPixel operator()(const GrayPixel& value) const throw() {
+  inline GrayPixel operator()(const GrayPixel& value) const noexcept {
     GrayPixel temp = value + 128; // -255 <= value <= 255
     return static_cast<GrayPixel>(temp);
 //     if (temp < 0x00) {
@@ -65,11 +65,11 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  HaarApplication() throw()
+  HaarApplication() noexcept
     : Application(MESSAGE("HaarTransformation")) {
   }
 
-  void haarTransformation(const String& inputFile, const String& outputFile) throw() {    
+  void haarTransformation(const String& inputFile, const String& outputFile) noexcept {    
 
 
 //     Random random;
@@ -179,7 +179,7 @@ public:
     encoder.writeGray(outputFile, &grayImage);
   }
   
-  void main() throw() {
+  void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL

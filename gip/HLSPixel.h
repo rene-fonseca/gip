@@ -54,7 +54,7 @@ public:
   class Clamp : public UnaryOperation<Arithmetic, Arithmetic> {
   public:
 
-    inline Arithmetic operator()(const Arithmetic& value) const throw() {
+    inline Arithmetic operator()(const Arithmetic& value) const noexcept {
       if (value >= MAXIMUM) {
         return MAXIMUM;
       } else if (value < MINIMUM) {
@@ -91,7 +91,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   @see HLSPixel
 */
 template<class COMPONENT>
-inline HLSPixel<COMPONENT> makeHLSPixel(COMPONENT hue, COMPONENT lightness, COMPONENT saturation) throw() {
+inline HLSPixel<COMPONENT> makeHLSPixel(COMPONENT hue, COMPONENT lightness, COMPONENT saturation) noexcept {
   HLSPixel<COMPONENT> result;
   result.hue = hue;
   result.lightness = lightness;
@@ -103,7 +103,7 @@ inline HLSPixel<COMPONENT> makeHLSPixel(COMPONENT hue, COMPONENT lightness, COMP
   Converts an RGB pixel into the HLS color space. The components of the RGB pixel must be in the range [0; 1].
 */
 template<class COMPONENT>
-inline HLSPixel<COMPONENT> RGBToHLS(const RGBPixel<COMPONENT>& pixel) throw() {
+inline HLSPixel<COMPONENT> RGBToHLS(const RGBPixel<COMPONENT>& pixel) noexcept {
   typedef typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic Arithmetic;
   HLSPixel<COMPONENT> result;
 
@@ -143,7 +143,7 @@ inline HLSPixel<COMPONENT> RGBToHLS(const RGBPixel<COMPONENT>& pixel) throw() {
   Converts an RGB pixel into the HLS color space. The components will be mapped from the range [0; 255] into [0; 255].
 */
 template<>
-inline HLSPixel<unsigned char> RGBToHLS<unsigned char>(const RGBPixel<unsigned char>& pixel) throw() {
+inline HLSPixel<unsigned char> RGBToHLS<unsigned char>(const RGBPixel<unsigned char>& pixel) noexcept {
   typedef PixelTraits<RGBPixel<unsigned char> >::Arithmetic Arithmetic;
   HLSPixel<unsigned char> result;
 
@@ -187,7 +187,7 @@ inline HLSPixel<unsigned char> RGBToHLS<unsigned char>(const RGBPixel<unsigned c
   Converts an HLS pixel into the RGB color space. The components of the HLS pixel must be in the range [0; 1].
 */
 template<class COMPONENT>
-inline RGBPixel<COMPONENT> HLSToRGB(const HLSPixel<COMPONENT>& pixel) throw() {
+inline RGBPixel<COMPONENT> HLSToRGB(const HLSPixel<COMPONENT>& pixel) noexcept {
   typedef typename PixelTraits<HLSPixel<COMPONENT> >::Arithmetic Arithmetic;
   RGBPixel<COMPONENT> result;
 
@@ -248,7 +248,7 @@ inline RGBPixel<COMPONENT> HLSToRGB(const HLSPixel<COMPONENT>& pixel) throw() {
   Converts an HLS pixel into the RGB color space. The components of the HLS pixel must be in the range [0; 255].
 */
 template<>
-inline RGBPixel<unsigned char> HLSToRGB(const HLSPixel<unsigned char>& pixel) throw() {
+inline RGBPixel<unsigned char> HLSToRGB(const HLSPixel<unsigned char>& pixel) noexcept {
   typedef PixelTraits<HLSPixel<unsigned char> >::Arithmetic Arithmetic;
   RGBPixel<unsigned char> result;
 

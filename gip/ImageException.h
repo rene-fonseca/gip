@@ -36,7 +36,7 @@ namespace gip {
     /**
       Initializes the exception object without an associated message.
     */
-    inline ImageException() throw() {
+    inline ImageException() noexcept {
     }
     
     /**
@@ -44,7 +44,7 @@ namespace gip {
 
       @param message The message.
     */
-    inline ImageException(const char* message) throw() : Exception(message) {
+    inline ImageException(const char* message) noexcept : Exception(message) {
     }
     
     /**
@@ -52,7 +52,7 @@ namespace gip {
       
       @param type The identity of the type.
     */
-    inline ImageException(Type type) throw() : Exception(type) {
+    inline ImageException(Type type) noexcept : Exception(type) {
     }
     
     /**
@@ -61,7 +61,7 @@ namespace gip {
       @param message An NULL-terminated string (ASCII).
       @param type The identity of the type.
     */
-    inline ImageException(const char* message, Type type) throw()
+    inline ImageException(const char* message, Type type) noexcept
       : Exception(message, type) {
     }
   };

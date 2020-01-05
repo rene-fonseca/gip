@@ -28,42 +28,42 @@ const char Version::banner[] =
 "Please report bugs to https://dev.azure.com/renefonseca/gip.\n\n"
 "build data: " _COM_AZURE_DEV__GIP__BUILD_DATE "\n";
 
-unsigned int Version::getMajorVersion() const throw()
+unsigned int Version::getMajorVersion() const noexcept
 {
   return _COM_AZURE_DEV__GIP__MAJOR_VERSION;
 }
 
-unsigned int Version::getMinorVersion() const throw()
+unsigned int Version::getMinorVersion() const noexcept
 {
   return _COM_AZURE_DEV__GIP__MINOR_VERSION;
 }
 
-unsigned int Version::getMicroVersion() const throw()
+unsigned int Version::getMicroVersion() const noexcept
 {
   return _COM_AZURE_DEV__GIP__GIT_REVISION;
 }
 
-String Version::getRelease() const throw()
+String Version::getRelease() const noexcept
 {
   return Literal(_COM_AZURE_DEV__GIP__RELEASE);
 }
 
-String Version::getVersion() const throw()
+String Version::getVersion() const noexcept
 {
   return Literal(_COM_AZURE_DEV__GIP__VERSION);
 }
 
-String Version::getCommit() const throw()
+String Version::getCommit() const noexcept
 {
   return Literal(_COM_AZURE_DEV__GIP__GIT_COMMIT_SHORT);
 }
 
-int64 Version::getBuildDate() const throw()
+int64 Version::getBuildDate() const noexcept
 {
   return _COM_AZURE_DEV__GIP__BUILD_DATE_SECONDS;
 }
 
-String Version::getBanner() const throw()
+String Version::getBanner() const noexcept
 {
   return String(banner);
 }

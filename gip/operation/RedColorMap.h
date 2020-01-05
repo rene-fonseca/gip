@@ -27,7 +27,7 @@ namespace gip {
   class RedColorMap : public UnaryOperation<RGBPixel<long double>, long double> {
   public:
 
-    inline void RGBPixel<long double> operator()(const long double& value) const throw() {
+    inline void RGBPixel<long double> operator()(const long double& value) const noexcept {
       RGBPixel<long double> result;
       result.red = clamp(0, value, 1);
       result.green = 0;

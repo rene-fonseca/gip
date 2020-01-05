@@ -15,18 +15,18 @@
 
 namespace gip {
 
-  TIFFEncoder::TIFFEncoder() throw() {
+  TIFFEncoder::TIFFEncoder() noexcept {
   }
   
-  String TIFFEncoder::getDescription() const throw() {
+  String TIFFEncoder::getDescription() const noexcept {
     return MESSAGE("Tag Image File Format");
   }
   
-  String TIFFEncoder::getDefaultExtension() const throw() {
+  String TIFFEncoder::getDefaultExtension() const noexcept {
     return MESSAGE("tiff");
   }
 
-  Array<String> TIFFEncoder::getExtensions() const throw() {
+  Array<String> TIFFEncoder::getExtensions() const noexcept {
     Array<String> extensions;
     extensions.append(MESSAGE("tif"));
     extensions.append(MESSAGE("tiff"));

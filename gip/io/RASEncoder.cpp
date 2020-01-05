@@ -53,18 +53,18 @@ namespace gip {
     } _COM_AZURE_DEV__BASE__PACKED;
   };
   
-  RASEncoder::RASEncoder() throw() {
+  RASEncoder::RASEncoder() noexcept {
   }
 
-  String RASEncoder::getDescription() const throw() {
+  String RASEncoder::getDescription() const noexcept {
     return MESSAGE("Sun Rasterfile Format");
   }
 
-  String RASEncoder::getDefaultExtension() const throw() {
+  String RASEncoder::getDefaultExtension() const noexcept {
     return MESSAGE("ras");
   }
 
-  Array<String> RASEncoder::getExtensions() const throw() {
+  Array<String> RASEncoder::getExtensions() const noexcept {
     Array<String> extensions;
     extensions.append(MESSAGE("ras"));
     extensions.append(MESSAGE("sun"));

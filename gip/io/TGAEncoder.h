@@ -36,23 +36,23 @@ namespace gip {
     /**
       Initializes the encoder.
     */
-    TGAEncoder() throw();
+    TGAEncoder() noexcept;
     
     /**
       Returns a description of the encoder.
     */
-    String getDescription() const throw();
+    String getDescription() const noexcept;
     
     /**
       Returns the default extension.
     */
-    String getDefaultExtension() const throw();
+    String getDefaultExtension() const noexcept;
     
     /**
       Returns an array of extensions. The default is to return the default
       extension.
     */
-    Array<String> getExtensions() const throw();
+    Array<String> getExtensions() const noexcept;
     
     /**
       Returns true if the file seems to be a valid.

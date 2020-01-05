@@ -15,7 +15,7 @@
 
 namespace gip {
 
-  YUV422Image::YUV422Image() throw() {
+  YUV422Image::YUV422Image() noexcept {
   }
     
   YUV422Image::YUV422Image(const Dimension& dimension) throw(MemoryException)
@@ -25,38 +25,38 @@ namespace gip {
     v = ArrayImage<uint8>(d);
   }
 
-  YUV422Image::YUV422Image(const YUV422Image& copy) throw()
+  YUV422Image::YUV422Image(const YUV422Image& copy) noexcept
           : y(copy.y), u(copy.u), v(copy.v) {
   }
 
-  YUV422Image& YUV422Image::operator=(const YUV422Image& eq) throw() {
+  YUV422Image& YUV422Image::operator=(const YUV422Image& eq) noexcept {
     y = eq.y;
     u = eq.u;
     v = eq.v;
     return *this;
   }
 
-  ArrayImage<uint8> YUV422Image::getY() throw() {
+  ArrayImage<uint8> YUV422Image::getY() noexcept {
     return y;
   }
 
-  const ArrayImage<uint8> YUV422Image::getY() const throw() {
+  const ArrayImage<uint8> YUV422Image::getY() const noexcept {
     return y;
   }
 
-  ArrayImage<uint8> YUV422Image::getU() throw() {
+  ArrayImage<uint8> YUV422Image::getU() noexcept {
     return u;
   }
 
-  const ArrayImage<uint8> YUV422Image::getU() const throw() {
+  const ArrayImage<uint8> YUV422Image::getU() const noexcept {
     return u;
   }
 
-  ArrayImage<uint8> YUV422Image::getV() throw() {
+  ArrayImage<uint8> YUV422Image::getV() noexcept {
     return v;
   }
   
-  const ArrayImage<uint8> YUV422Image::getV() const throw() {
+  const ArrayImage<uint8> YUV422Image::getV() const noexcept {
     return v;
   }
   

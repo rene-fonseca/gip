@@ -19,14 +19,14 @@
 
 namespace gip {
 
-  YUVEncoder::YUVEncoder() throw() {
+  YUVEncoder::YUVEncoder() noexcept {
   }
 
-  String YUVEncoder::getDescription() const throw() {
+  String YUVEncoder::getDescription() const noexcept {
     return MESSAGE("Abekas YUV");
   }
   
-  String YUVEncoder::getDefaultExtension() const throw() {
+  String YUVEncoder::getDefaultExtension() const noexcept {
     return MESSAGE("yuv");
   }
   

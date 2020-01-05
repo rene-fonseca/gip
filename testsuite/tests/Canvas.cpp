@@ -33,25 +33,25 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  CanvasApplication() throw()
+  CanvasApplication() noexcept
     : Application(MESSAGE("Canvas")) {
   }
 
-  Point getPoint(const Dimension& dimension) throw() {
+  Point getPoint(const Dimension& dimension) noexcept {
     return Point(
       Random::random<int>() % dimension.getWidth(),
       Random::random<int>() % dimension.getHeight()
     );
   }
 
-  Point getPoint2(const Dimension& dimension) throw() {
+  Point getPoint2(const Dimension& dimension) noexcept {
     return Point(
       Random::random<int>() % 10000 - 5000,
       Random::random<int>() % 10000 - 5000
     );
   }
 
-  void canvasTransformation(const String& inputFile, const String& outputFile) throw() {
+  void canvasTransformation(const String& inputFile, const String& outputFile) noexcept {
     BMPEncoder encoder;
     
     fout << MESSAGE("Importing image with encoder: ") << encoder.getDescription() << ENDL;
@@ -167,7 +167,7 @@ public:
     delete image;
   }
   
-  void main() throw() {
+  void main() noexcept {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << MESSAGE("https://dev.azure.com/renefonseca/gip") << EOL

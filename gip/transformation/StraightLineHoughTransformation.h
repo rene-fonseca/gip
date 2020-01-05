@@ -51,7 +51,7 @@ namespace gip {
     /**
       Calculate transformation.
     */
-    void operator()() throw();
+    void operator()() noexcept;
   };
 
 }; // end of gip namespace

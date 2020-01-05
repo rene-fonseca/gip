@@ -90,7 +90,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       uint8 dataBlockData[255];
     public:
 
-      inline unsigned int getNextCode() throw() {
+      inline unsigned int getNextCode() noexcept {
         static const unsigned int mask[13] = {0x000, 0x001, 0x003, 0x007, 0x00f, 0x01f, 0x03f, 0x07f, 0x0ff, 0x1ff, 0x3ff, 0x7ff, 0xfff};
 
         while (bitsAvailable < currentCodeSize) {
@@ -248,16 +248,16 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
 
 
-  GIFEncoder::GIFEncoder() throw() {
+  GIFEncoder::GIFEncoder() noexcept {
     ASSERT(sizeof(GIFImpl::Header) == 6);
     ASSERT(sizeof(GIFImpl::LogicalScreenDescriptor) == 7);
   }
 
-  String GIFEncoder::getDescription() const throw() {
+  String GIFEncoder::getDescription() const noexcept {
     return MESSAGE("Graphics Interchange Format");
   }
 
-  String GIFEncoder::getDefaultExtension() const throw() {
+  String GIFEncoder::getDefaultExtension() const noexcept {
     return MESSAGE("gif");
   }
 

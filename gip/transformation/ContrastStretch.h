@@ -46,7 +46,7 @@ namespace gip {
       Pixel* lookup = nullptr;
     public:
 
-      inline MapPixel(const Pixel& minimum, const Pixel& maximum) throw()
+      inline MapPixel(const Pixel& minimum, const Pixel& maximum) noexcept
         : allocatorLookup(static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + 1) {
           lookup = allocatorLookup.getElements();
           lookup += minimum;
@@ -57,7 +57,7 @@ namespace gip {
           lookup = allocatorLookup.getElements();
       }
       
-      inline Pixel operator()(const Pixel& value) const throw() {
+      inline Pixel operator()(const Pixel& value) const noexcept {
         return lookup[value];
       }
     };
@@ -74,7 +74,7 @@ namespace gip {
       bassert(destination->getDimension() == source->getDimension(), ImageException(this));
     }
 
-    void operator()() const throw() {
+    void operator()() const noexcept {
       MinimumMaximum<Pixel> minmax;
       forEach(*source, minmax);
       MapPixel mapPixel(minmax.getMinimum(), minmax.getMaximum());
@@ -102,7 +102,7 @@ namespace gip {
       Component* blueLookup = nullptr;
     public:
 
-      inline MapPixel(const Pixel& minimum, const Pixel& maximum) throw()
+      inline MapPixel(const Pixel& minimum, const Pixel& maximum) noexcept
         : redAllocatorLookup(static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + 1),
           greenAllocatorLookup(static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + 1),
           blueAllocatorLookup(static_cast<Arithmetic>(PixelTraits<Pixel>::MAXIMUM) + 1) {
@@ -134,7 +134,7 @@ namespace gip {
 
       }
 
-      inline Pixel operator()(const Pixel& value) const throw() {
+      inline Pixel operator()(const Pixel& value) const noexcept {
         return makeColorPixel(redLookup[value.red], greenLookup[value.green], blueLookup[value.blue]);
       }
     };
@@ -151,7 +151,7 @@ namespace gip {
       bassert(destination->getDimension() == source->getDimension(), ImageException(this));
     }
 
-    void operator()() const throw() {
+    void operator()() const noexcept {
       MinimumMaximum<Pixel> minmax;
       forEach(*source, minmax);
       MapPixel mapPixel(minmax.getMinimum(), minmax.getMaximum());

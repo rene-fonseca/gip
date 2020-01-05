@@ -53,7 +53,7 @@ public:
   class Clamp : public UnaryOperation<Arithmetic, Arithmetic> {
   public:
 
-    inline Arithmetic operator()(const Arithmetic& value) const throw() {
+    inline Arithmetic operator()(const Arithmetic& value) const noexcept {
       if (value >= MAXIMUM) {
         return MAXIMUM;
       } else if (value < MINIMUM) {
@@ -90,7 +90,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   @see YCbCrPixel
 */
 template<class COMPONENT>
-inline YCbCrPixel<COMPONENT> makeYCbCrPixel(COMPONENT luma, COMPONENT cb, COMPONENT cr) throw() {
+inline YCbCrPixel<COMPONENT> makeYCbCrPixel(COMPONENT luma, COMPONENT cb, COMPONENT cr) noexcept {
   YCbCrPixel<COMPONENT> result;
   result.luma = luma;
   result.cb = cb;
@@ -102,7 +102,7 @@ inline YCbCrPixel<COMPONENT> makeYCbCrPixel(COMPONENT luma, COMPONENT cb, COMPON
   Converts an RGB pixel into the Y'CbCr color space. The components of the RGB pixel must be in the range [0; 1].
 */
 template<class COMPONENT>
-inline YCbCrPixel<COMPONENT> RGBToYCbCr(const RGBPixel<COMPONENT>& pixel) throw() {
+inline YCbCrPixel<COMPONENT> RGBToYCbCr(const RGBPixel<COMPONENT>& pixel) noexcept {
   YCbCrPixel<COMPONENT> result;
   typedef typename PixelTraits<RGBPixel<COMPONENT> >::Arithmetic Arithmetic;
 
@@ -118,7 +118,7 @@ inline YCbCrPixel<COMPONENT> RGBToYCbCr(const RGBPixel<COMPONENT>& pixel) throw(
   Converts an RGB pixel into the Y'CbCr color space. The components will be mapped from the range [0; 255] into [0; 255].
 */
 template<>
-inline YCbCrPixel<unsigned char> RGBToYCbCr<unsigned char>(const RGBPixel<unsigned char>& pixel) throw() {
+inline YCbCrPixel<unsigned char> RGBToYCbCr<unsigned char>(const RGBPixel<unsigned char>& pixel) noexcept {
   YCbCrPixel<unsigned char> result;
   typedef PixelTraits<RGBPixel<unsigned char> >::Arithmetic Arithmetic;
   // we know that overflow isn't possible: (299 + 587 + 114) * 255 * 255 <= PrimitiveTraits<PixelTraits<ColorPixel>::Arithmetic>::MAXIMUM
@@ -134,7 +134,7 @@ inline YCbCrPixel<unsigned char> RGBToYCbCr<unsigned char>(const RGBPixel<unsign
   Converts an Y'CbCr pixel into the RGB color space. The components of the Y'CbCr pixel must be in the range [0; 1].
 */
 template<class COMPONENT>
-inline RGBPixel<COMPONENT> YCbCrToRGB(const YCbCrPixel<COMPONENT>& pixel) throw() {
+inline RGBPixel<COMPONENT> YCbCrToRGB(const YCbCrPixel<COMPONENT>& pixel) noexcept {
   typedef typename PixelTraits<YCbCrPixel<COMPONENT> >::Arithmetic Arithmetic;
   RGBPixel<COMPONENT> result;
    // map components into range [0; 1]
@@ -148,7 +148,7 @@ inline RGBPixel<COMPONENT> YCbCrToRGB(const YCbCrPixel<COMPONENT>& pixel) throw(
   Converts an Y'CbCr pixel into the RGB color space. The components will be mapped from the range [0; 255] into [0; 255].
 */
 template<>
-inline RGBPixel<unsigned char> YCbCrToRGB(const YCbCrPixel<unsigned char>& pixel) throw() {
+inline RGBPixel<unsigned char> YCbCrToRGB(const YCbCrPixel<unsigned char>& pixel) noexcept {
   typedef PixelTraits<YCbCrPixel<unsigned char> >::Arithmetic Arithmetic;
   RGBPixel<unsigned char> result;
   Arithmetic temp;

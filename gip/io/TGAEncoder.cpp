@@ -70,18 +70,18 @@ _COM_AZURE_DEV__BASE__PACKED__BEGIN
 _COM_AZURE_DEV__BASE__PACKED__END
   };
   
-  TGAEncoder::TGAEncoder() throw() {
+  TGAEncoder::TGAEncoder() noexcept {
   }
 
-  String TGAEncoder::getDescription() const throw() {
+  String TGAEncoder::getDescription() const noexcept {
     return Literal("Truevision Targa");
   }
 
-  String TGAEncoder::getDefaultExtension() const throw() {
+  String TGAEncoder::getDefaultExtension() const noexcept {
     return Literal("tga");
   }
 
-  Array<String> TGAEncoder::getExtensions() const throw() {
+  Array<String> TGAEncoder::getExtensions() const noexcept {
     Array<String> extensions;
     extensions.append("tga");
     extensions.append("tpic");

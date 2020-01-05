@@ -44,7 +44,7 @@ struct Chunk {
 } _COM_AZURE_DEV__BASE__PACKED;
 _COM_AZURE_DEV__BASE__PACKED__END
 
-inline ChunkId makeChunkId(char a, char b, char c, char d) throw() {
+inline ChunkId makeChunkId(char a, char b, char c, char d) noexcept {
   ChunkId result;
   result.id = d << 24 | c << 16 | b << 8 | a; // TAG: fixme
 //   result.chars[0] = a;
@@ -85,15 +85,15 @@ FormatOutputStream& operator<<(
   return stream;
 }
 
-inline bool operator==(const ChunkId& left, const ChunkId& right) throw() {
+inline bool operator==(const ChunkId& left, const ChunkId& right) noexcept {
   return left.id == right.id;
 }
 
-inline bool operator!=(const ChunkId& left, const ChunkId& right) throw() {
+inline bool operator!=(const ChunkId& left, const ChunkId& right) noexcept {
   return left.id != right.id;
 }
 
-int getStreamId(const ChunkId& value) throw() {
+int getStreamId(const ChunkId& value) noexcept {
   int high = static_cast<int>(value.id & 0xff - '0');
   int low = static_cast<int>((value.id >> 8) & 0xff - '0');
 //   int high = static_cast<int>(value.chars[0] - '0');
@@ -104,7 +104,7 @@ int getStreamId(const ChunkId& value) throw() {
   return high * 256 + low;
 }
 
-unsigned int getStreamType(const ChunkId& value) throw() {
+unsigned int getStreamType(const ChunkId& value) noexcept {
   return static_cast<unsigned int>(((value.id >> 16) & 0xff) << 8) + (static_cast<unsigned int>((value.id >> 24) & 0xff));
 //  return static_cast<unsigned int>(value.chars[2]) << 8 + static_cast<unsigned int>(value.chars[3]);
 }
@@ -222,11 +222,11 @@ AVIEncoder::AVIEncoder(const String& _filename) throw(IOException)
   : filename(_filename) {
 }
 
-String AVIEncoder::getDescription() const throw() {
+String AVIEncoder::getDescription() const noexcept {
   return Literal("Microsoft Audio/Video Interleaved format");
 }
 
-String AVIEncoder::getDefaultExtension() const throw() {
+String AVIEncoder::getDefaultExtension() const noexcept {
   return Literal("avi");
 }
 
@@ -715,7 +715,7 @@ AVIReader::AVIReader(const String& filename) throw(IOException) : file(filename,
   analyse();
 }
 
-void AVIReader::decodeFrame(ColorImage& frame, const byte* src, unsigned int size, FrameType type) throw() {
+void AVIReader::decodeFrame(ColorImage& frame, const byte* src, unsigned int size, FrameType type) noexcept {
   ColorPixel* dest = frame.getElements();
   const Dimension dimension = globalDescriptor.dimension;
 

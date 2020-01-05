@@ -37,18 +37,18 @@ public:
 
     @param image The image.
   */
-  ShadowImage(Image<PIXEL>* i) throw()
+  ShadowImage(Image<PIXEL>* i) noexcept
     : Image<PIXEL>(i->getDimension()), image(i) {
   }
 
   /**
     Returns the dimension of the image.
   */
-  const Dimension& getDimension() const throw();
+  const Dimension& getDimension() const noexcept;
 };
 
 template<class PIXEL>
-inline const Dimension& ShadowImage<PIXEL>::getDimension() const throw() {
+inline const Dimension& ShadowImage<PIXEL>::getDimension() const noexcept {
   return image->getDimension();
 }
 

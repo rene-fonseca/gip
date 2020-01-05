@@ -31,12 +31,12 @@ namespace gip {
     /**
       Returns the dimension of the frames within the movie.
     */
-    virtual Dimension getDimension() const throw() = 0;
+    virtual Dimension getDimension() const noexcept = 0;
 
     /**
       Returns the number of frames within the movie.
     */
-    virtual unsigned int getNumberOfFrames() const throw() = 0;
+    virtual unsigned int getNumberOfFrames() const noexcept = 0;
   };
 
 
@@ -74,12 +74,12 @@ namespace gip {
     /**
       Returns a description of the encoder.
     */
-    String getDescription() const throw();
+    String getDescription() const noexcept;
 
     /**
       Returns the default extension.
     */
-    String getDefaultExtension() const throw();
+    String getDefaultExtension() const noexcept;
 
     /**
       Returns true if the format is valid.
@@ -167,7 +167,7 @@ namespace gip {
       unsigned int length = 0;
     public:
 
-      inline unsigned int getTotalNumberOfFrames() const throw() {
+      inline unsigned int getTotalNumberOfFrames() const noexcept {
         return totalFrames;
       }
     };
@@ -268,7 +268,7 @@ namespace gip {
       @param size The size of the encoded frame data.
       @param type The encoding.
     */
-    void decodeFrame(ColorImage& frame, const byte* src, unsigned int size, FrameType type) throw();
+    void decodeFrame(ColorImage& frame, const byte* src, unsigned int size, FrameType type) noexcept;
   public:
 
     /**
@@ -286,7 +286,7 @@ namespace gip {
     /**
       Returns the dimension of the video stream.
     */
-    Dimension getDimension() const throw() {
+    Dimension getDimension() const noexcept {
       return Dimension(
         videoStreamDescriptor.width,
         videoStreamDescriptor.height
@@ -296,21 +296,21 @@ namespace gip {
     /**
       Returns the total number of frames within the stream.
     */
-    inline unsigned int getNumberOfFrames() const throw() {
+    inline unsigned int getNumberOfFrames() const noexcept {
       return globalDescriptor.totalFrames;
     }
 
     /**
       Returns the current frame index.
     */
-    inline unsigned int getPosition() const throw() {
+    inline unsigned int getPosition() const noexcept {
       return frameIndex;
     }
 
     /**
       Returns true if the AVI file is valid.
     */
-    inline bool isValid() const throw() {
+    inline bool isValid() const noexcept {
       return valid;
     }
   };

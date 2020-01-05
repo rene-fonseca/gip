@@ -52,7 +52,7 @@ namespace gip {
     public:
       
       // TAG: problem if components are negative
-      inline Arithmetic operator()(const Pixel& pixel) const throw() {
+      inline Arithmetic operator()(const Pixel& pixel) const noexcept {
         return static_cast<Arithmetic>(mapToOneDimension(pixel.cyan)) +
           static_cast<Arithmetic>(mapToOneDimension(pixel.magenta)) +
           static_cast<Arithmetic>(mapToOneDimension(pixel.yellow));
@@ -62,7 +62,7 @@ namespace gip {
     class Clamp : public UnaryOperation<Arithmetic, Arithmetic> {
     public:
 
-      inline Arithmetic operator()(const Arithmetic& value) const throw() {
+      inline Arithmetic operator()(const Arithmetic& value) const noexcept {
         if (value >= MAXIMUM) {
           return MAXIMUM;
         } else if (value < MINIMUM) {
@@ -110,7 +110,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   */
 
   template<class COMPONENT>
-  inline CMYPixel<COMPONENT> makeCMYPixel(COMPONENT cyan, COMPONENT magenta, COMPONENT yellow) throw() {
+  inline CMYPixel<COMPONENT> makeCMYPixel(COMPONENT cyan, COMPONENT magenta, COMPONENT yellow) noexcept {
     CMYPixel<COMPONENT> result;
     result.cyan = cyan;
     result.magenta = magenta;
@@ -118,7 +118,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return result;
   }
 
-  inline CMYKPixel<COMPONENT> makeCMYKPixel(COMPONENT cyan, COMPONENT magenta, COMPONENT yellow, COMPONENT black) throw() {
+  inline CMYKPixel<COMPONENT> makeCMYKPixel(COMPONENT cyan, COMPONENT magenta, COMPONENT yellow, COMPONENT black) noexcept {
     CMYKPixel<COMPONENT> result;
     result.cyan = cyan;
     result.magenta = magenta;
@@ -129,7 +129,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
   // TAG: replace this with conversion function/class
   template<class COMPONENT>
-  inline CMYKPixel<COMPONENT> makeCMYKPixel(COMPONENT cyan, COMPONENT magenta, COMPONENT yellow) throw() {
+  inline CMYKPixel<COMPONENT> makeCMYKPixel(COMPONENT cyan, COMPONENT magenta, COMPONENT yellow) noexcept {
     CMYKPixel<COMPONENT> result;
     result.black = minimum(cyan, magenta, yellow);
     result.cyan = (cyan - result.black)/(1 - result.black);
@@ -149,7 +149,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     @param opacity The opacity level of the new pixel. This must be in the range [0; opaque].
   */
   template<class COMPONENT>
-  inline CMYPixel<COMPONENT> blend(CMYPixel<COMPONENT> back, CMYPixel<COMPONENT> front, unsigned int opaque, unsigned int opacity) throw() {
+  inline CMYPixel<COMPONENT> blend(CMYPixel<COMPONENT> back, CMYPixel<COMPONENT> front, unsigned int opaque, unsigned int opacity) noexcept {
     CMYPixel<COMPONENT> result;
     unsigned int transparency = opaque - opacity;
     result.cyan = (transparency * static_cast<PixelTraits<CMYPixel<COMPONENT> >::Arithmetic>(back.cyan) + opacity * static_cast<PixelTraits<CMYPixel<COMPONENT> >::Arithmetic>(front.cyan))/opaque;
@@ -172,13 +172,13 @@ _COM_AZURE_DEV__BASE__PACKED__END
     Arithmetic transparency;
   public:
 
-    inline Blend(Arithmetic _opaque, Arithmetic _opacity) throw()
+    inline Blend(Arithmetic _opaque, Arithmetic _opacity) noexcept
        : opaque(_opaque),
          opacity(_opacity),
          transparency(opaque - opacity) {
     }
 
-    inline CMYPixel<COMPONENT> operator()(CMYPixel<COMPONENT> back, CMYPixel<COMPONENT> front) const throw() {
+    inline CMYPixel<COMPONENT> operator()(CMYPixel<COMPONENT> back, CMYPixel<COMPONENT> front) const noexcept {
       CMYPixel<COMPONENT> result;
       result.cyan = (transparency * static_cast<PixelTraits<CMYPixel<COMPONENT> >::Arithmetic>(back.cyan) + opacity * static_cast<PixelTraits<CMYPixel<COMPONENT> >::Arithmetic>(front.cyan))/opaque;
       result.magenta = (transparency * static_cast<PixelTraits<CMYPixel<COMPONENT> >::Arithmetic>(back.magenta) + opacity * static_cast<PixelTraits<CMYPixel<COMPONENT> >::Arithmetic>(front.magenta))/opaque;
@@ -190,7 +190,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
 
   template<class COMPONENT>
-  inline CMYPixel<COMPONENT> operator*(CMYPixel<COMPONENT> pixel, int factor) throw() {
+  inline CMYPixel<COMPONENT> operator*(CMYPixel<COMPONENT> pixel, int factor) noexcept {
     pixel.cyan *= factor;
     pixel.magenta *= factor;
     pixel.yellow *= factor;
@@ -198,7 +198,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
   
   template<class COMPONENT>
-  inline CMYPixel<COMPONENT> operator*(CMYPixel<COMPONENT> pixel, unsigned int factor) throw() {
+  inline CMYPixel<COMPONENT> operator*(CMYPixel<COMPONENT> pixel, unsigned int factor) noexcept {
     pixel.cyan *= factor;
     pixel.magenta *= factor;
     pixel.yellow *= factor;
@@ -206,7 +206,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   template<class COMPONENT>
-  inline CMYPixel<COMPONENT> operator*(CMYPixel<COMPONENT> pixel, float factor) throw() {
+  inline CMYPixel<COMPONENT> operator*(CMYPixel<COMPONENT> pixel, float factor) noexcept {
     pixel.cyan *= factor;
     pixel.magenta *= factor;
     pixel.yellow *= factor;
@@ -214,7 +214,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   template<class COMPONENT>
-  inline CMYPixel<COMPONENT> operator*(CMYPixel<COMPONENT> pixel, double factor) throw() {
+  inline CMYPixel<COMPONENT> operator*(CMYPixel<COMPONENT> pixel, double factor) noexcept {
     pixel.cyan *= factor;
     pixel.magenta *= factor;
     pixel.yellow *= factor;
@@ -222,7 +222,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   template<class COMPONENT>
-  inline CMYPixel<COMPONENT> operator*(CMYPixel<COMPONENT> pixel, long double factor) throw() {
+  inline CMYPixel<COMPONENT> operator*(CMYPixel<COMPONENT> pixel, long double factor) noexcept {
     pixel.cyan *= factor;
     pixel.magenta *= factor;
     pixel.yellow *= factor;
@@ -230,7 +230,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   template<class COMPONENT>
-  inline CMYPixel<COMPONENT> operator/(CMYPixel<COMPONENT> pixel, int divisor) throw() {
+  inline CMYPixel<COMPONENT> operator/(CMYPixel<COMPONENT> pixel, int divisor) noexcept {
     pixel.cyan /= divisor;
     pixel.magenta /= divisor;
     pixel.yellow /= divisor;
@@ -238,7 +238,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   template<class COMPONENT>
-  inline CMYPixel<COMPONENT> operator/(CMYPixel<COMPONENT> pixel, unsigned int divisor) throw() {
+  inline CMYPixel<COMPONENT> operator/(CMYPixel<COMPONENT> pixel, unsigned int divisor) noexcept {
     pixel.cyan /= divisor;
     pixel.magenta /= divisor;
     pixel.yellow /= divisor;
@@ -246,17 +246,17 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   template<class COMPONENT>
-  inline CMYPixel<COMPONENT> operator/(CMYPixel<COMPONENT> pixel, float factor) throw() {
+  inline CMYPixel<COMPONENT> operator/(CMYPixel<COMPONENT> pixel, float factor) noexcept {
     return pixel * 1/factor;
   }
 
   template<class COMPONENT>
-  inline CMYPixel<COMPONENT> operator/(CMYPixel<COMPONENT> pixel, double factor) throw() {
+  inline CMYPixel<COMPONENT> operator/(CMYPixel<COMPONENT> pixel, double factor) noexcept {
     return pixel * 1/factor;
   }
 
   template<class COMPONENT>
-  inline CMYPixel<COMPONENT> operator/(CMYPixel<COMPONENT> pixel, long double factor) throw() {
+  inline CMYPixel<COMPONENT> operator/(CMYPixel<COMPONENT> pixel, long double factor) noexcept {
     return pixel * 1/factor;
   }
 

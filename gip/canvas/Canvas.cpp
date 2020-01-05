@@ -16,17 +16,17 @@
 
 namespace gip {
 
-  Canvas::Canvas(ColorImage* _canvas) throw()
+  Canvas::Canvas(ColorImage* _canvas) noexcept
      : canvas(_canvas),
        dimension(_canvas->getDimension()),
        rows(_canvas->getRows()) {
   }
 
-  Dimension Canvas::getDimension() const throw() {
+  Dimension Canvas::getDimension() const noexcept {
     return dimension;
   }
 
-  bool Canvas::clip(Point& p1, Point& p2) const throw() {
+  bool Canvas::clip(Point& p1, Point& p2) const noexcept {
     // Cohen-Sutherland line clipping
     enum {BOTTOM = 1, TOP = 2, LEFT = 4, RIGHT = 8};
 
@@ -110,7 +110,7 @@ namespace gip {
     return true;
   }
 
-  void Canvas::image(const Point& offset, const ColorImage& image) throw() {
+  void Canvas::image(const Point& offset, const ColorImage& image) noexcept {
     Dimension srcDimension = image.getDimension();
 
     if (
@@ -158,7 +158,7 @@ namespace gip {
     }
   }
 
-  void Canvas::circle(const Point& center, unsigned int radius, Pixel color, unsigned int options) throw() {
+  void Canvas::circle(const Point& center, unsigned int radius, Pixel color, unsigned int options) noexcept {
     int d = 3 - 2 * radius;
     int x = 0;
     int y = radius;
@@ -378,7 +378,7 @@ namespace gip {
     }
   }
 
-  void Canvas::ring(const Point& center, unsigned int innerRadius, unsigned int outerRadius, Pixel color, unsigned int options) throw() {
+  void Canvas::ring(const Point& center, unsigned int innerRadius, unsigned int outerRadius, Pixel color, unsigned int options) noexcept {
     unsigned int radiusInner = minimum(innerRadius, outerRadius);
     unsigned int radiusOuter = maximum(innerRadius, outerRadius);
 
@@ -655,7 +655,7 @@ namespace gip {
     }
   }
 
-  void Canvas::ellipse(const Point& center, const Dimension& dimension, Pixel color, unsigned int options) throw() {
+  void Canvas::ellipse(const Point& center, const Dimension& dimension, Pixel color, unsigned int options) noexcept {
 //    if ((point.getX() >= 0) && (point.getY() >= 0) && (point.getX() < dimension.getWidth()) && (point.getY() < dimension.getHeight())) {
 //      rows[point.getY()][point.getX()] = color;
 //    }
@@ -1025,7 +1025,7 @@ namespace gip {
     }
   }
 
-  void Canvas::rectangle(const Point& p1, const Point& p2, Pixel color, unsigned int options) throw() {
+  void Canvas::rectangle(const Point& p1, const Point& p2, Pixel color, unsigned int options) noexcept {
     if (options & FILL) {
       Point clipped1 = p1;
       Point clipped2 = p2;
@@ -1053,13 +1053,13 @@ namespace gip {
     }
   }
 
-  void Canvas::pixel(const Point& point, Pixel color) throw() {
+  void Canvas::pixel(const Point& point, Pixel color) noexcept {
     if (isPointInsideDimension(point, dimension)) {
       rows[point.getY()][point.getX()] = color;
     }
   }
 
-  Canvas::Pixel Canvas::getPixel(const Point& point) const throw() {
+  Canvas::Pixel Canvas::getPixel(const Point& point) const noexcept {
     Canvas::Pixel result;
     if (isPointInsideDimension(point, dimension)) {
       return rows[point.getY()][point.getX()];
@@ -1068,7 +1068,7 @@ namespace gip {
     return result;
   }
 
-  void Canvas::lineClipped(const Point& p1, const Point& p2, Pixel color) throw() {
+  void Canvas::lineClipped(const Point& p1, const Point& p2, Pixel color) noexcept {
     // TAG: need initial error (when clipping)
     // the basic formula: y = dy/dx * (x - x1) + y1 where dy = y2-y1 and dx = x2-x1
     Point first = p1;
@@ -1185,7 +1185,7 @@ namespace gip {
     }
   }
 
-  void Canvas::lineClippedAntiAliased(const Point& p1, const Point& p2, Pixel color) throw() {
+  void Canvas::lineClippedAntiAliased(const Point& p1, const Point& p2, Pixel color) noexcept {
     // TAG: need initial error (when clipping)
     // the basic formula: y = dy/dx * (x - x1) + y1 where dy = y2-y1 and dx = x2-x1
     Point first = p1;
@@ -1315,7 +1315,7 @@ namespace gip {
     }
   }
 
-  void Canvas::line(const Point& p1, const Point& p2, Pixel color, unsigned int options) throw() {
+  void Canvas::line(const Point& p1, const Point& p2, Pixel color, unsigned int options) noexcept {
     Point clipped1 = p1;
     Point clipped2 = p2;
     if (!clip(clipped1, clipped2)) {
@@ -1328,7 +1328,7 @@ namespace gip {
     }
   }
 
-  void Canvas::line(const Point& p1, const Point& p2, ColorAlphaPixel color, unsigned int options) throw() {
+  void Canvas::line(const Point& p1, const Point& p2, ColorAlphaPixel color, unsigned int options) noexcept {
     Point clipped1 = p1;
     Point clipped2 = p2;
     if (!clip(clipped1, clipped2)) {
@@ -1341,21 +1341,21 @@ namespace gip {
     }
   }
 
-  void Canvas::setFont(const String& name) throw() {
+  void Canvas::setFont(const String& name) noexcept {
     fontName = name;
   }
 
-  String Canvas::getFont() const throw() {
+  String Canvas::getFont() const noexcept {
     return fontName;
   }
 
-  Dimension Canvas::getDimensionOfText(const String& message) const throw() {
+  Dimension Canvas::getDimensionOfText(const String& message) const noexcept {
     return Dimension(message.getLength() * 8, 16);
   }
 
   // width, height, bytesPerLine, bytesPerCharacter
 
-  void Canvas::write(const Point& position, const String& message) throw() {
+  void Canvas::write(const Point& position, const String& message) noexcept {
     const unsigned char* fontBitmap = nullptr; // fill me
     const unsigned int bytesPerRow = 1;
     const unsigned int bytesPerCharacter = 16;

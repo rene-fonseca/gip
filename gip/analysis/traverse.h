@@ -24,7 +24,7 @@ namespace gip {
     @version 1.0
   */
   template<class IMAGE, class UNOPR>
-  inline void forEach(const IMAGE& image, UNOPR& function) throw() {
+  inline void forEach(const IMAGE& image, UNOPR& function) noexcept {
     typename IMAGE::ReadableRows rows = image.getRows();
     typename IMAGE::ReadableRows::RowIterator row = rows.getFirst();
     for (; row != rows.getEnd(); ++row) {
@@ -145,25 +145,25 @@ namespace gip {
 //
 //    typedef ArrayIteratorImpl<TRAITS> ElementIterator;
 //
-//    inline RowIteratorImpl(Pointer value, unsigned int columns) throw()
+//    inline RowIteratorImpl(Pointer value, unsigned int columns) noexcept
 //      : InterleavedIteratorImpl<TRAITS>(value, columns) {
 //    }
 //
-//    inline RowIteratorImpl(const RowIteratorImpl& copy) throw()
+//    inline RowIteratorImpl(const RowIteratorImpl& copy) noexcept
 //      : InterleavedIteratorImpl<TRAITS>(copy) {
 //    }
 //
-//    inline ElementIterator getFirst() const throw() {
+//    inline ElementIterator getFirst() const noexcept {
 //      return ElementIterator(current);
 //    }
 //
-//    inline ElementIterator getEnd() const throw() {
+//    inline ElementIterator getEnd() const noexcept {
 //      ElementIterator result(current);
 //      result += step;
 //      return result;
 //    }
 //
-//    inline ElementIterator operator[](unsigned int index) const throw() {
+//    inline ElementIterator operator[](unsigned int index) const noexcept {
 //      ASSERT(index < step);
 //      ElementIterator result(current);
 //      result += index;

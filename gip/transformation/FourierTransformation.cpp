@@ -56,7 +56,7 @@ FourierTransformation::FourierTransformation(DestinationImage* destination, cons
   }
 }
 
-void FourierTransformation::operator()() throw() {
+void FourierTransformation::operator()() noexcept {
 
   unsigned int rows = source->getHeight();
   unsigned int columns = source->getWidth();

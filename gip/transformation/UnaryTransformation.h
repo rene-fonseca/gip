@@ -36,11 +36,11 @@ namespace gip {
     DestinationImage* destination = nullptr;
   public:
 
-    UnaryTransformation(DestinationImage* destination) throw();
+    UnaryTransformation(DestinationImage* destination) noexcept;
   };
 
   template<class DEST>
-  inline UnaryTransformation<DEST>::UnaryTransformation(DestinationImage* dest) throw()
+  inline UnaryTransformation<DEST>::UnaryTransformation(DestinationImage* dest) noexcept
     : destination(dest) {
   }
 

@@ -27,7 +27,7 @@ namespace gip {
   class ColdHotColorMap : public UnaryOperation<RGBPixel<long double>, long double> {
   public:
 
-    inline RGBPixel<long double> operator()(const long double& value) const throw() {
+    inline RGBPixel<long double> operator()(const long double& value) const noexcept {
       RGBPixel<long double> result;
       if (value <= 0) {
         result.red = 0;

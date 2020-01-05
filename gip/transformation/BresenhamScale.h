@@ -52,7 +52,7 @@ namespace gip {
     /**
       Scale the source image to the destination image.
     */
-    void operator()() throw() {
+    void operator()() noexcept {
       const unsigned int destWidth = Transformation<DEST, SRC>::destination->getDimension().getWidth();
       const unsigned int destHeight = Transformation<DEST, SRC>::destination->getDimension().getHeight();
       const unsigned int srcWidth = Transformation<DEST, SRC>::source->getDimension().getWidth();

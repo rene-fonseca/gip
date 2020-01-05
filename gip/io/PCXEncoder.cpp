@@ -43,14 +43,14 @@ _COM_AZURE_DEV__BASE__PACKED__BEGIN
   } _COM_AZURE_DEV__BASE__PACKED;
 _COM_AZURE_DEV__BASE__PACKED__END
 
-  PCXEncoder::PCXEncoder() throw() {
+  PCXEncoder::PCXEncoder() noexcept {
   }
 
-  String PCXEncoder::getDescription() const throw() {
+  String PCXEncoder::getDescription() const noexcept {
     return Literal("Zsoft Corporation PC Paintbrush");
   }
 
-  String PCXEncoder::getDefaultExtension() const throw() {
+  String PCXEncoder::getDefaultExtension() const noexcept {
     return Literal("pcx");
   }
 

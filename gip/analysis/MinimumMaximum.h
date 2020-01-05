@@ -36,12 +36,12 @@ namespace gip {
     Pixel maximumValue;
   public:
     
-    inline MinimumMaximum() throw()
+    inline MinimumMaximum() noexcept
       : minimumValue(PixelTraits<Pixel>::MAXIMUM),
         maximumValue(PixelTraits<Pixel>::MINIMUM) {
     }
     
-    inline void operator()(const Pixel& value) throw() {
+    inline void operator()(const Pixel& value) noexcept {
       if (value > maximumValue) {
         maximumValue = value;
       } else if (value < minimumValue) {
@@ -49,11 +49,11 @@ namespace gip {
       }
     }
     
-    inline Pixel getMinimum() const throw() {
+    inline Pixel getMinimum() const noexcept {
       return minimumValue;
     }
     
-    inline Pixel getMaximum() const throw() {
+    inline Pixel getMaximum() const noexcept {
       return maximumValue;
     }
   };
@@ -68,7 +68,7 @@ namespace gip {
     Pixel maximumValue;
   public:
 
-    inline MinimumMaximum() throw()
+    inline MinimumMaximum() noexcept
       : minimumValue(
           makeRGBPixel<COMPONENT>(
             PixelTraits<Pixel>::MAXIMUM,
@@ -85,7 +85,7 @@ namespace gip {
         ) {
     }
 
-    inline void operator()(const Pixel& value) throw() {
+    inline void operator()(const Pixel& value) noexcept {
       if (value.red > maximumValue.red) {
         maximumValue.red = value.red;
       } else if (value.red < minimumValue.red) {
@@ -103,11 +103,11 @@ namespace gip {
       }
     }
 
-    inline Pixel getMinimum() const throw() {
+    inline Pixel getMinimum() const noexcept {
       return minimumValue;
     }
 
-    inline Pixel getMaximum() const throw() {
+    inline Pixel getMaximum() const noexcept {
       return maximumValue;
     }
   };

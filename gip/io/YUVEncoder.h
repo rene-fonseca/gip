@@ -37,17 +37,17 @@ namespace gip {
     /**
       Initializes the encoder.
     */
-    YUVEncoder() throw();
+    YUVEncoder() noexcept;
     
     /**
       Returns a description of the encoder.
     */
-    String getDescription() const throw();
+    String getDescription() const noexcept;
     
     /**
       Returns the default extension.
     */
-    String getDefaultExtension() const throw();
+    String getDefaultExtension() const noexcept;
     
     /**
       Returns true if the file seems to be a valid.
