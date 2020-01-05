@@ -498,9 +498,9 @@ _COM_AZURE_DEV__BASE__PACKED__END
     file.write(Cast::getAddress(header), sizeof(header));
 
     const ColorPixel* sourceElement = image->getElements();
-    Allocator<uint8>* buffer = Thread::getLocalStorage();
-    uint8* beginOfBuffer = buffer->getElements();
-    uint8* endOfBuffer = beginOfBuffer + buffer->getSize();
+    Allocator<uint8> buffer(16 * 1024);
+    uint8* beginOfBuffer = buffer.getElements();
+    uint8* endOfBuffer = beginOfBuffer + buffer.getSize();
     uint8* p = beginOfBuffer;
 
     for (unsigned int row = 0; row < header.height; ++row) {
