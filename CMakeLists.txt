@@ -88,6 +88,15 @@ message("Revision: ${GIT_REVISION}")
 # generate configuration header
 configure_file(${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 
+if (PNG_FOUND)
+option(_COM_AZURE_DEV__GIP__USE_PNG "Enable PNG" ON)
+endif ()
+if (JPEG_FOUND)
+option(_COM_AZURE_DEV__GIP__USE_JPEG "Enable JPEG" ON)
+endif ()
+
+configure_file(${CMAKE_SOURCE_DIR}/build.h.in ${CMAKE_BINARY_DIR}/generated/gip/build.h)
+
 set(gip_ADDITIONAL "")
 if (MSVC)
   configure_file(${CMAKE_SOURCE_DIR}/gip.rc.in ${CMAKE_BINARY_DIR}/generated/gip/gip.rc)
