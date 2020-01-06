@@ -51,18 +51,18 @@ public:
     Returns the release of the framework as a string. The format of the string
     is unspecified.
   */
-  base::String getRelease() const noexcept;
+  String getRelease() const noexcept;
 
   /**
     Returns the version of the framework as a string. The format of the string
     is 'major.minor.micro suffix' where suffix could be anything.
   */
-  base::String getVersion() const noexcept;
+  String getVersion() const noexcept;
 
   /**
     Returns the short commit id.
   */
-  base::String getCommit() const noexcept;
+  String getCommit() const noexcept;
 
   /*
     Returns the build date in seconds since epoch.
@@ -72,7 +72,7 @@ public:
   /**
     Returns a short banner (multiple lines) describing the framework.
   */
-  base::String getBanner() const noexcept;
+  String getBanner() const noexcept;
 };
  
 }; // end of gip namespace
