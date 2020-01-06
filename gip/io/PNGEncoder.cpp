@@ -213,8 +213,12 @@ namespace gip {
       );
       
       //::png_set_invert_alpha(context);
+#if defined(Z_BEST_COMPRESSION)
       ::png_set_compression_level(context, Z_BEST_COMPRESSION);
-      
+#elif defined(PNG_Z_DEFAULT_COMPRESSION)
+      ::png_set_compression_level(context, PNG_Z_DEFAULT_COMPRESSION);
+#endif
+
       ::png_write_info(context, information);
       
       ::png_set_filler(context, 0, PNG_FILLER_AFTER);
