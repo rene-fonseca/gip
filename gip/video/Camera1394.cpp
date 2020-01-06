@@ -471,7 +471,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return RATES[frameRate];
   }
 
-  void Camera1394::reset() throw(IEEE1394Exception) {
+  void Camera1394::reset() {
     BigEndian<uint32> buffer;
     buffer = 1 << 31;
     adapter.write(
@@ -492,7 +492,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     readChannel = adapter.getReadChannel(4096 /*transmission.packetsPerFrame*/, Camera1394::ISOCHRONOUS_SUBCHANNELS);
   }
   
-  bool Camera1394::isCamera(unsigned int node) throw(OutOfDomain, IEEE1394Exception) {
+  bool Camera1394::isCamera(unsigned int node) {
     bassert(node < IEEE1394::BROADCAST, OutOfDomain(this));
     try {
       Camera1394Impl::ConfigurationIntro config;
@@ -536,7 +536,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return false;
   }
   
-  bool Camera1394::isCamera(const EUI64& guid) throw(Camera1394Exception, IEEE1394Exception) {
+  bool Camera1394::isCamera(const EUI64& guid) {
     int node = adapter.getPhysicalId(guid);
     bassert(
       node >= 0,
@@ -545,7 +545,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return isCamera(node);
   }
 
-  Array<EUI64> Camera1394::getCameras() throw(IEEE1394Exception) {
+  Array<EUI64> Camera1394::getCameras() {
     Array<EUI64> cameras;
 
     for (unsigned int node = 0; node < adapter.getNumberOfNodes(); ++node) {      
@@ -593,7 +593,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return cameras;
   }
 
-  void Camera1394::open(const EUI64& guid) throw(Camera1394Exception, IEEE1394Exception) {
+  void Camera1394::open(const EUI64& guid) {
     int node = adapter.getPhysicalId(guid);
     bassert(
       node >= 0,
@@ -891,7 +891,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     readModeSpecificState();
   }
 
-  void Camera1394::readModeSpecificState() throw(IEEE1394Exception) {
+  void Camera1394::readModeSpecificState() {
     // TAG: remember to check for errors
     // TAG: if error then reset?
     
@@ -1420,7 +1420,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     }
   }
   
-  const Camera1394::GenericFeatureDescriptor& Camera1394::getFeatureDescriptor(Feature feature) const throw(OutOfDomain) {
+  const Camera1394::GenericFeatureDescriptor& Camera1394::getFeatureDescriptor(Feature feature) const {
     switch (feature) {
     case BRIGHTNESS_CONTROL:
       return featureDescriptors.brightness;
@@ -1467,7 +1467,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return featureDescriptors.trigger;
   }
   
-  void Camera1394::setMode(Mode mode) throw(NotSupported, IEEE1394Exception) {
+  void Camera1394::setMode(Mode mode) {
     bassert(
       isModeSupported(mode),
       bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
@@ -1539,7 +1539,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     readModeSpecificState();
   }
   
-  unsigned int Camera1394::getFrameRates(Mode mode) throw(NotSupported) {
+  unsigned int Camera1394::getFrameRates(Mode mode) {
     bassert(
       isModeSupported(mode),
       bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
@@ -1547,7 +1547,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return frameRates[mode];
   }
 
-  void Camera1394::setFrameRate(FrameRate frameRate) throw(NotSupported) {
+  void Camera1394::setFrameRate(FrameRate frameRate) {
     bassert(
       frameRates[currentMode] & (1 << frameRate),
       bindCause(NotSupported(this), Camera1394::FRAME_RATE_NOT_SUPPORTED)
@@ -1570,7 +1570,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     
   }
 
-  void Camera1394::enable() throw(IEEE1394Exception) {
+  void Camera1394::enable() {
     IEEE1394::Quadlet quadlet;
     quadlet = 1 << 31;
     adapter.write(
@@ -1581,7 +1581,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     );
   }
   
-  void Camera1394::disable() throw(IEEE1394Exception) {
+  void Camera1394::disable() {
     IEEE1394::Quadlet quadlet;
     quadlet = 0 << 31;
     adapter.write(
@@ -1592,7 +1592,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     );
   }
   
-  bool Camera1394::isUpAndRunning() const throw(IEEE1394Exception) {
+  bool Camera1394::isUpAndRunning() const {
     if ((capabilities & POWER_CONTROL) == 0) { // TAG: check if this is ok
       return true;
     }
@@ -1602,7 +1602,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 //     return quadlet >> 31;
   }
     
-  bool Camera1394::getFeatureStatus(Feature feature) throw(IEEE1394Exception) {
+  bool Camera1394::getFeatureStatus(Feature feature) {
     if ((capabilities & Camera1394::FEATURE_ERROR_STATUS) == 0) {
       return true; // assume ok
     }
@@ -1623,7 +1623,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return (status >> BIT[feature]) == 0; // check if error or warning
   }
 
-  Camera1394::FeatureOperatingMode Camera1394::getFeatureOperatingMode(Feature feature) const throw(NotSupported) {
+  Camera1394::FeatureOperatingMode Camera1394::getFeatureOperatingMode(Feature feature) const {
     bool available = false;
     switch (feature) {
     case BRIGHTNESS_CONTROL:
@@ -1718,7 +1718,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     }
   }
   
-  void Camera1394::setFeatureOperatingMode(Feature feature, FeatureOperatingMode operatingMode) throw(NotSupported) {
+  void Camera1394::setFeatureOperatingMode(Feature feature, FeatureOperatingMode operatingMode) {
     bool available = false;
     bool autoAdjustmentMode = false;
     bool switchable = false;
@@ -1829,7 +1829,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     }
   }
   
-  void Camera1394::setGenericFeature(Feature feature, const GenericFeatureDescriptor& descriptor, int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setGenericFeature(Feature feature, const GenericFeatureDescriptor& descriptor, int value) {
     bassert(
       descriptor.available,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_SUPPORTED)
@@ -1868,7 +1868,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     }
   }
   
-  int Camera1394::getBrightness() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getBrightness() const {
     bassert(
       featureDescriptors.brightness.available && featureDescriptors.brightness.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -1883,11 +1883,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setBrightness(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setBrightness(int value) {
     setGenericFeature(BRIGHTNESS_CONTROL, featureDescriptors.brightness, value);
   }
 
-  int Camera1394::getAutoExposure() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getAutoExposure() const {
     bassert(
       featureDescriptors.autoExposure.available && featureDescriptors.autoExposure.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -1902,11 +1902,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setAutoExposure(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setAutoExposure(int value) {
     setGenericFeature(AUTO_EXPOSURE_CONTROL, featureDescriptors.autoExposure, value);
   }
 
-  int Camera1394::getSharpness() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getSharpness() const {
     bassert(
       featureDescriptors.sharpness.available && featureDescriptors.sharpness.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -1921,11 +1921,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setSharpness(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setSharpness(int value) {
     setGenericFeature(SHARPNESS_CONTROL, featureDescriptors.sharpness, value);
   }
 
-  int Camera1394::getWhiteBalanceBlueRatio() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getWhiteBalanceBlueRatio() const {
     bassert(
       featureDescriptors.whiteBalance.available && featureDescriptors.whiteBalance.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -1940,7 +1940,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::WhiteBalanceFeatureControl*>(&quadlet)->blueRatio; // Cast::impersonate<Camera1394Impl::WhiteBalanceFeatureControl, uint32>(quadlet).blueRatio;
   }
 
-  int Camera1394::getWhiteBalanceRedRatio() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getWhiteBalanceRedRatio() const {
     bassert(
       featureDescriptors.whiteBalance.available && featureDescriptors.whiteBalance.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -1957,7 +1957,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   
   void Camera1394::setWhiteBalance(
     int blueRatio,
-    int redRatio) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+    int redRatio) {
     bassert(
       featureDescriptors.whiteBalance.available,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_SUPPORTED)
@@ -1999,7 +1999,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     }
   }
 
-  int Camera1394::getHue() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getHue() const {
     bassert(
       featureDescriptors.hue.available && featureDescriptors.hue.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2014,11 +2014,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setHue(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setHue(int value) {
     setGenericFeature(HUE_CONTROL, featureDescriptors.hue, value);
   }
 
-  int Camera1394::getSaturation() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getSaturation() const {
     bassert(
       featureDescriptors.saturation.available && featureDescriptors.saturation.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2033,11 +2033,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setSaturation(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setSaturation(int value) {
     setGenericFeature(SATURATION_CONTROL, featureDescriptors.saturation, value);
   }
 
-  int Camera1394::getGamma() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getGamma() const {
     bassert(
       featureDescriptors.gamma.available && featureDescriptors.gamma.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2052,11 +2052,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setGamma(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setGamma(int value) {
     setGenericFeature(GAMMA_CONTROL, featureDescriptors.gamma, value);
   }
 
-  int Camera1394::getShutter() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getShutter() const {
     bassert(
       featureDescriptors.shutter.available && featureDescriptors.shutter.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2071,11 +2071,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setShutter(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setShutter(int value) {
     setGenericFeature(SHUTTER_CONTROL, featureDescriptors.shutter, value);
   }
 
-  int Camera1394::getGain() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getGain() const {
     bassert(
       featureDescriptors.gain.available && featureDescriptors.gain.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2090,11 +2090,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setGain(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setGain(int value) {
     setGenericFeature(GAIN_CONTROL, featureDescriptors.gain, value);
   }
 
-  int Camera1394::getIRIS() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getIRIS() const {
     bassert(
       featureDescriptors.iris.available && featureDescriptors.iris.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2109,11 +2109,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setIRIS(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setIRIS(int value) {
     setGenericFeature(IRIS_CONTROL, featureDescriptors.iris, value);
   }
 
-  int Camera1394::getFocus() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getFocus() const {
     bassert(
       featureDescriptors.focus.available && featureDescriptors.focus.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2128,11 +2128,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setFocus(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setFocus(int value) {
     setGenericFeature(FOCUS_CONTROL, featureDescriptors.focus, value);
   }
 
-  int Camera1394::getTemperature() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getTemperature() const {
     bassert(
       featureDescriptors.temperature.available && featureDescriptors.temperature.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2147,7 +2147,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::TemperatureFeatureControl*>(&quadlet)->currentValue; // Cast::impersonate<Camera1394Impl::TemperatureFeatureControl, uint32>(quadlet).currentValue;
   }
 
-  int Camera1394::getTargetTemperature() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getTargetTemperature() const {
     bassert(
       featureDescriptors.temperature.available && featureDescriptors.temperature.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2162,7 +2162,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::TemperatureFeatureControl*>(&quadlet)->targetValue; // Cast::impersonate<Camera1394Impl::TemperatureFeatureControl, uint32>(quadlet).targetValue;
   }
 
-  void Camera1394::setTemperature(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setTemperature(int value) {
     bassert(
       featureDescriptors.temperature.available,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_SUPPORTED)
@@ -2207,9 +2207,9 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
   // TAG: getTrigger..???
   // TAG: setTriggerParam...??
-  // TAG: setTriggerPolatity(bool polatiry) throw(NotSupported, IEEE1394Exception) {} bassert(POLARITY_INQ...
+  // TAG: setTriggerPolatity(bool polatiry) {} bassert(POLARITY_INQ...
   
-  int Camera1394::getZoom() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getZoom() const {
     bassert(
       featureDescriptors.zoom.available && featureDescriptors.zoom.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2224,11 +2224,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setZoom(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setZoom(int value) {
     setGenericFeature(ZOOM_CONTROL, featureDescriptors.zoom, value);
   }
 
-  int Camera1394::getPan() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getPan() const {
     bassert(
       featureDescriptors.pan.available && featureDescriptors.pan.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2243,11 +2243,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setPan(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setPan(int value) {
     setGenericFeature(PAN_CONTROL, featureDescriptors.pan, value);
   }
 
-  int Camera1394::getTilt() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getTilt() const {
     bassert(
       featureDescriptors.tilt.available && featureDescriptors.tilt.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2262,11 +2262,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setTilt(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) { // TAG: Camera1394Exception
+  void Camera1394::setTilt(int value) { // TAG: Camera1394Exception
     setGenericFeature(TILT_CONTROL, featureDescriptors.tilt, value);
   }
 
-  int Camera1394::getOpticalFilter() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getOpticalFilter() const {
     bassert(
       featureDescriptors.opticalFilter.available && featureDescriptors.opticalFilter.readable,
       bindCause(NotSupported(this), Camera1394::FEATURE_NOT_READABLE)
@@ -2281,11 +2281,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setOpticalFilter(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setOpticalFilter(int value) {
     setGenericFeature(OPTICAL_FILTER_CONTROL, featureDescriptors.opticalFilter, value);
   }
 
-  int Camera1394::getCaptureSize() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getCaptureSize() const {
     bassert(
       featureDescriptors.captureSize.available &&
       featureDescriptors.captureSize.readable,
@@ -2301,11 +2301,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setCaptureSize(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setCaptureSize(int value) {
     setGenericFeature(CAPTURE_SIZE, featureDescriptors.captureSize, value);
   }
 
-  int Camera1394::getCaptureQuality() const throw(NotSupported, IEEE1394Exception) {
+  int Camera1394::getCaptureQuality() const {
     bassert(
       featureDescriptors.captureQuality.available &&
       featureDescriptors.captureQuality.readable,
@@ -2321,11 +2321,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return reinterpret_cast<const Camera1394Impl::FeatureControl*>(&quadlet)->value; // Cast::impersonate<Camera1394Impl::FeatureControl, uint32>(quadlet).value;
   }
 
-  void Camera1394::setCaptureQuality(int value) throw(NotSupported, OutOfRange, IEEE1394Exception) {
+  void Camera1394::setCaptureQuality(int value) {
     setGenericFeature(CAPTURE_QUALITY, featureDescriptors.captureQuality, value);
   }
 
-  Dimension Camera1394::getMaximumDimension(Mode mode) const throw(NotSupported) {
+  Dimension Camera1394::getMaximumDimension(Mode mode) const {
     bassert(
       isModeSupported(mode),
       bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
@@ -2343,7 +2343,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     }
   }
 
-  Dimension Camera1394::getUnitDimension(Mode mode) const throw(NotSupported) {
+  Dimension Camera1394::getUnitDimension(Mode mode) const {
     bassert(
       isModeSupported(mode),
       bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
@@ -2360,7 +2360,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     }
   }
 
-  Point2D Camera1394::getUnitOffset(Mode mode) const throw(NotSupported) {
+  Point2D Camera1394::getUnitOffset(Mode mode) const {
     bassert(
       isModeSupported(mode),
       bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
@@ -2377,7 +2377,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     }
   }
 
-  unsigned int Camera1394::getPixelFormats(Mode mode) const throw(NotSupported) {
+  unsigned int Camera1394::getPixelFormats(Mode mode) const {
     bassert(
       isModeSupported(mode),
       bindCause(NotSupported(this), Camera1394::MODE_NOT_SUPPORTED)
@@ -2390,7 +2390,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     }
   }
 
-  void Camera1394::setRegion(const Region& region) throw(OutOfDomain, IEEE1394Exception) {
+  void Camera1394::setRegion(const Region& region) {
     bassert(
       (region.getOffset().getColumn() % mode.unitOffset.getColumn() == 0) &&
       (region.getOffset().getRow() % mode.unitOffset.getRow() == 0) &&
@@ -2426,7 +2426,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     readModeSpecificState(); // reloads new region
   }
 
-  void Camera1394::setPixelFormat(PixelFormat pixelFormat) throw(NotSupported, IEEE1394Exception) {
+  void Camera1394::setPixelFormat(PixelFormat pixelFormat) {
     if (pixelFormat != this->pixelFormat) {
       bassert(
         mode.pixelFormats & (1 << pixelFormat),
@@ -2440,7 +2440,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
   bool Camera1394::acquire(
     uint8* buffer,
-    unsigned int size) throw(ImageException, IEEE1394Exception) {
+    unsigned int size) {
     bassert(
       size == transmission.totalBytesPerFrame,
       bindCause(ImageException(this), Camera1394::FRAME_DIMENSION_MISMATCH)
@@ -2553,7 +2553,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return success;
   }
 
-  bool Camera1394::acquire(ArrayImage<uint8>& frame) throw(NotSupported, ImageException, IEEE1394Exception) {
+  bool Camera1394::acquire(ArrayImage<uint8>& frame) {
     if (pixelFormat != Camera1394::Y_8BIT) {
       setPixelFormat(Camera1394::Y_8BIT);
     }
@@ -2696,7 +2696,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return success;
   }
 
-  bool Camera1394::acquire(ArrayImage<uint16>& frame) throw(NotSupported, ImageException, IEEE1394Exception) {
+  bool Camera1394::acquire(ArrayImage<uint16>& frame) {
     if (pixelFormat != Camera1394::Y_16BIT) {
       setPixelFormat(Camera1394::Y_16BIT);
     }
@@ -2818,7 +2818,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return success;
   }
 
-  bool Camera1394::acquire(ArrayImage<RGB24Pixel>& frame) throw(NotSupported, ImageException, IEEE1394Exception) {
+  bool Camera1394::acquire(ArrayImage<RGB24Pixel>& frame) {
     if (pixelFormat != Camera1394::RGB_8BIT) {
       setPixelFormat(Camera1394::RGB_8BIT);
     }
@@ -2957,7 +2957,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   bool Camera1394::acquireContinuously(
     Array<FrameBuffer> frames,
     AcquisitionListener* listener
-  ) throw(NotSupported, ImageException, Camera1394Exception, IEEE1394Exception) {
+  ) {
     if ((frames.getSize() == 0) || (listener == 0)) { // empty frame buffer or no listener
       return true; // nothing to do
     }

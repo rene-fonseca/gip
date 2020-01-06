@@ -370,8 +370,7 @@ namespace gip {
 
       @param offset The offset of the register.
     */
-    inline uint32 getCommandRegister(
-      uint32 offset) const throw(IEEE1394Exception) {
+    inline uint32 getCommandRegister(uint32 offset) const {
       IEEE1394::Quadlet quadlet;
       adapter.read(
         camera,
@@ -389,7 +388,7 @@ namespace gip {
       @param value The desired value of the register.
     */
     inline void setCommandRegister(
-      uint32 offset, uint32 value) throw(IEEE1394Exception) {
+      uint32 offset, uint32 value) {
       IEEE1394::Quadlet quadlet = value;
       adapter.write(
         camera,
@@ -402,12 +401,12 @@ namespace gip {
     /**
       Reads the mode specific state of the camera.
     */
-    void readModeSpecificState() throw(IEEE1394Exception);
+    void readModeSpecificState();
 
     /**
       Sets the value of the specified feature.
     */
-    void setGenericFeature(Feature feature, const GenericFeatureDescriptor& descriptor, int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setGenericFeature(Feature feature, const GenericFeatureDescriptor& descriptor, int value);
   public:
 
     /**
@@ -446,24 +445,24 @@ namespace gip {
     /**
       Returns true if the specified node is a camera.
     */
-    bool isCamera(unsigned int node) throw(OutOfDomain, IEEE1394Exception);
+    bool isCamera(unsigned int node);
     
     /**
       Returns true if the specified device is available and is a camera.
     */
-    bool isCamera(const EUI64& guid) throw(Camera1394Exception, IEEE1394Exception);
+    bool isCamera(const EUI64& guid);
     
     /**
       Returns the available cameras.
     */
-    Array<EUI64> getCameras() throw(IEEE1394Exception);
+    Array<EUI64> getCameras();
     
     /**
       Opens a connection to the specified camera.
 
       @param guid The identifier of the camera device.
     */
-    void open(const EUI64& guid) throw(Camera1394Exception, IEEE1394Exception);
+    void open(const EUI64& guid);
     
     /**
       Closes the connection to the camera.
@@ -518,7 +517,7 @@ namespace gip {
     /**
       Resets the camera to the factory default.
     */
-    void reset() throw(IEEE1394Exception);
+    void reset();
 
     /**
       Returns true if the feature is supported.
@@ -555,7 +554,7 @@ namespace gip {
       Returns the description of the specified feature. Use
       getTriggerFeatureDescriptor for the trigger feature.
     */
-    const GenericFeatureDescriptor& getFeatureDescriptor(Feature feature) const throw(OutOfDomain);
+    const GenericFeatureDescriptor& getFeatureDescriptor(Feature feature) const;
 
     /**
       Returns a description of the trigger feature.
@@ -572,14 +571,14 @@ namespace gip {
     /**
       Sets the mode.
     */
-    void setMode(Mode mode) throw(NotSupported, IEEE1394Exception);
+    void setMode(Mode mode);
 
     /**
       Returns the frame rates supported by the specified mode.
 
       @return 0 if supported frame rates are unknown.
     */
-    unsigned int getFrameRates(Mode mode) throw(NotSupported);
+    unsigned int getFrameRates(Mode mode);
     
     /**
       Returns the current frame rate.
@@ -591,7 +590,7 @@ namespace gip {
     /**
       Sets the frame rate.
     */
-    void setFrameRate(FrameRate frameRate) throw(NotSupported);
+    void setFrameRate(FrameRate frameRate);
 
     /**
       Returns the current isochronous channel.
@@ -610,24 +609,24 @@ namespace gip {
     /**
       Power up camera.
     */
-    void enable() throw(IEEE1394Exception);
+    void enable();
     
     /**
       Power down camera.
     */
-    void disable() throw(IEEE1394Exception);
+    void disable();
     
     /**
       Returns true if the camera is powered up.
     */
-    bool isUpAndRunning() const throw(IEEE1394Exception);
+    bool isUpAndRunning() const;
     
     /**
       Returns the operating mode of the specified feature.
       
       @param feature The feature to query.
     */
-    FeatureOperatingMode getFeatureOperatingMode(Feature feature) const throw(NotSupported);
+    FeatureOperatingMode getFeatureOperatingMode(Feature feature) const;
 
     /**
       Sets the operating mode of the specified feature.
@@ -635,224 +634,224 @@ namespace gip {
       @param feature The feature to set.
       @param mode The desired mode.
     */
-    void setFeatureOperatingMode(Feature feature, FeatureOperatingMode mode) throw(NotSupported);
+    void setFeatureOperatingMode(Feature feature, FeatureOperatingMode mode);
 
     /**
       Returns true if the feature is working properly.
     */
-    bool getFeatureStatus(Feature feature) throw(IEEE1394Exception);
+    bool getFeatureStatus(Feature feature);
 
     /**
       Returns the current brightness level.
     */
-    int getBrightness() const throw(NotSupported, IEEE1394Exception);
+    int getBrightness() const;
     
     /**
       Sets the brightness level.
     */
-    void setBrightness(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setBrightness(int value);
 
     /**
       Returns the current auto exposure level.
     */
-    int getAutoExposure() const throw(NotSupported, IEEE1394Exception);
+    int getAutoExposure() const;
 
     /**
       Sets the auto exposure level.
     */
-    void setAutoExposure(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setAutoExposure(int value);
 
     /**
       Returns the current sharpness level.
     */
-    int getSharpness() const throw(NotSupported, IEEE1394Exception);
+    int getSharpness() const;
 
     /**
       Sets the sharpness level.
     */
-    void setSharpness(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setSharpness(int value);
 
     /**
       Returns the current white balance level.
     */
-    int getWhiteBalanceBlueRatio() const throw(NotSupported, IEEE1394Exception);
+    int getWhiteBalanceBlueRatio() const;
     
     /**
       Returns the current white balance level.
     */
-    int getWhiteBalanceRedRatio() const throw(NotSupported, IEEE1394Exception);
+    int getWhiteBalanceRedRatio() const;
     
     /**
       Sets the white balance level.
     */
-    void setWhiteBalance(int blueRatio, int redRatio) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setWhiteBalance(int blueRatio, int redRatio);
 
     /**
       Returns the current hue level.
     */
-    int getHue() const throw(NotSupported, IEEE1394Exception);
+    int getHue() const;
 
     /**
       Sets the hue level.
     */
-    void setHue(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setHue(int value);
     
     /**
       Returns the current saturation level.
     */
-    int getSaturation() const throw(NotSupported, IEEE1394Exception);
+    int getSaturation() const;
 
     /**
       Sets the saturation level.
     */
-    void setSaturation(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setSaturation(int value);
 
     /**
       Returns the current gamma level.
     */
-    int getGamma() const throw(NotSupported, IEEE1394Exception);
+    int getGamma() const;
 
     /**
       Sets the gamma level.
     */
-    void setGamma(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setGamma(int value);
 
     /**
       Returns the current shutter integration time.
     */
-    int getShutter() const throw(NotSupported, IEEE1394Exception);
+    int getShutter() const;
 
     /**
       Sets the shutter integration time.
     */
-    void setShutter(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setShutter(int value);
 
     /**
       Returns the current gain level.
     */
-    int getGain() const throw(NotSupported, IEEE1394Exception);
+    int getGain() const;
 
     /**
       Sets the gain level.
     */
-    void setGain(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setGain(int value);
 
     /**
       Returns the current IRIS level.
     */
-    int getIRIS() const throw(NotSupported, IEEE1394Exception);
+    int getIRIS() const;
 
     /**
       Sets the IRIS level.
     */
-    void setIRIS(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setIRIS(int value);
 
     /**
       Returns the current focus level.
     */
-    int getFocus() const throw(NotSupported, IEEE1394Exception);
+    int getFocus() const;
 
     /**
       Sets the focus level.
     */
-    void setFocus(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setFocus(int value);
 
     /**
       Returns the current temperature level.
     */
-    int getTemperature() const throw(NotSupported, IEEE1394Exception);
+    int getTemperature() const;
     
     /**
       Returns the target temperature.
     */
-    int getTargetTemperature() const throw(NotSupported, IEEE1394Exception);
+    int getTargetTemperature() const;
     
     /**
       Sets the temperature level.
     */
-    void setTemperature(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setTemperature(int value);
 
     /**
       Returns the current zoom level.
     */
-    int getZoom() const throw(NotSupported, IEEE1394Exception);
+    int getZoom() const;
     
     /**
       Sets the zoom level.
     */
-    void setZoom(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setZoom(int value);
 
     /**
       Returns the current pan level.
     */
-    int getPan() const throw(NotSupported, IEEE1394Exception);
+    int getPan() const;
     
     /**
       Sets the pan level.
     */
-    void setPan(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setPan(int value);
 
     /**
       Returns the current tilt level.
     */
-    int getTilt() const throw(NotSupported, IEEE1394Exception);
+    int getTilt() const;
     
     /**
       Sets the tilt level.
     */
-    void setTilt(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setTilt(int value);
     
     /**
       Returns the current optical filter level.
     */
-    int getOpticalFilter() const throw(NotSupported, IEEE1394Exception);
+    int getOpticalFilter() const;
 
     /**
       Sets the optical filter level.
     */
-    void setOpticalFilter(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setOpticalFilter(int value);
     
     /**
       Returns the current capture size.
     */
-    int getCaptureSize() const throw(NotSupported, IEEE1394Exception);
+    int getCaptureSize() const;
     
     /**
       Sets the capture size.
     */
-    void setCaptureSize(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setCaptureSize(int value);
     
     /**
       Returns the current capture quality.
     */
-    int getCaptureQuality() const throw(NotSupported, IEEE1394Exception);
+    int getCaptureQuality() const;
 
     /**
       Sets the capture quality.
     */
-    void setCaptureQuality(int value) throw(NotSupported, OutOfRange, IEEE1394Exception);
+    void setCaptureQuality(int value);
     
     
     
     /**
       Returns the maximum dimension for the specified mode.
     */
-    Dimension getMaximumDimension(Mode mode) const throw(NotSupported);
+    Dimension getMaximumDimension(Mode mode) const;
     
     /**
       Returns the unit dimension for the specified mode.
     */
-    Dimension getUnitDimension(Mode mode) const throw(NotSupported);
+    Dimension getUnitDimension(Mode mode) const;
     
     /**
       Returns the unit offset for the specified mode.
     */
-    Point2D getUnitOffset(Mode mode) const throw(NotSupported);
+    Point2D getUnitOffset(Mode mode) const;
     
     /**
       Returns the pixel formats supported by the specified mode.
     */
-    unsigned int getPixelFormats(Mode mode) const throw(NotSupported);
+    unsigned int getPixelFormats(Mode mode) const;
       
     /**
       Returns the pixel formats supported by the current mode.
@@ -885,7 +884,7 @@ namespace gip {
     /**
       Sets the region.
     */
-    void setRegion(const Region& region) throw(OutOfDomain, IEEE1394Exception);
+    void setRegion(const Region& region);
     
     /**
       Returns the current pixel format.
@@ -914,7 +913,7 @@ namespace gip {
       Sets the pixel format. The is only required if the mode supports multiple
       pixel formats.
     */
-    void setPixelFormat(PixelFormat pixelFormat) throw(NotSupported, IEEE1394Exception);
+    void setPixelFormat(PixelFormat pixelFormat);
 
     /**
       Returns the isochronous transmission parameters.
@@ -930,7 +929,7 @@ namespace gip {
     */
     bool acquire(
       uint8* buffer,
-      unsigned int size) throw(ImageException, IEEE1394Exception);
+      unsigned int size);
     
     /**
       Acquires a single frame. The current mode must support the 8 bit mono
@@ -940,17 +939,13 @@ namespace gip {
 
       @return True if acquisition succeeded.
     */
-    bool acquire(
-      ArrayImage<uint8>& frame)
-      throw(NotSupported, ImageException, IEEE1394Exception);
+    bool acquire(ArrayImage<uint8>& frame);
     
     /**
       Acquires a single frame. The current mode must support the 16 bit mono
       pixel format. Implicit switch to Y_16BIT pixel format if supported.
     */
-    bool acquire(
-      ArrayImage<uint16>& frame)
-      throw(NotSupported, ImageException, IEEE1394Exception);
+    bool acquire(ArrayImage<uint16>& frame);
     
 _COM_AZURE_DEV__BASE__PACKED__BEGIN
     struct RGB24Pixel {
@@ -967,9 +962,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       
       @return True if acquisition succeeded.
     */
-    bool acquire(
-      ArrayImage<RGB24Pixel>& frame)
-      throw(NotSupported, ImageException, IEEE1394Exception);
+    bool acquire(ArrayImage<RGB24Pixel>& frame);
 
     /**
       Interface implemented by camera acquisition listeners.
@@ -1064,8 +1057,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     */
     bool acquireContinuously(
       Array<FrameBuffer> frames,
-      AcquisitionListener* listener)
-      throw(NotSupported, ImageException, Camera1394Exception, IEEE1394Exception);
+      AcquisitionListener* listener);
 
     /**
       Convert the frame of the specified pixel format to a GrayImage.
