@@ -65,13 +65,12 @@ private:
   static const unsigned int MINOR_VERSION = 0;
 public:
 
-  HaarApplication() noexcept
+  HaarApplication()
     : Application(MESSAGE("HaarTransformation")) {
   }
 
-  void haarTransformation(const String& inputFile, const String& outputFile) noexcept {    
-
-
+  void haarTransformation(const String& inputFile, const String& outputFile)
+  {
 //     Random random;
 //     for (long long i = 0; i < 32*256*256*256; ++i) {
 //       int origo = random.getInteger()%256;
