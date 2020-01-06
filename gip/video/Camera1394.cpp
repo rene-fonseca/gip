@@ -3072,7 +3072,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
         success &= (request[0].getStatus() == IEEE1394::COMPLETED); // first request
         success &= (request[1].getStatus() == IEEE1394::COMPLETED); // last request
         
-        if (success && ((headers[0] & 1) == 0)) { // if sync is lost
+        if (success && ((headers[static_cast<MemorySize>(0)] & 1) == 0)) { // if sync is lost
           IEEE1394::Quadlet quadlet = 0; // disable continuous transmission
           adapter.write(
             camera,
