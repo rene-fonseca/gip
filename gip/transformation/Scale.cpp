@@ -28,13 +28,14 @@ namespace gip {
   }
   
   template<class DEST, class SRC>
-  void Scale<DEST, SRC>::operator()() noexcept {    
+  void Scale<DEST, SRC>::operator()() noexcept
+  {    
     unsigned int rows = Transformation<DEST, SRC>::destination->getDimension().getHeight();
     unsigned int columns = Transformation<DEST, SRC>::destination->getDimension().getWidth();
     unsigned int srcRows = Transformation<DEST, SRC>::source->getDimension().getHeight();
     unsigned int srcColumns = Transformation<DEST, SRC>::source->getDimension().getWidth();
-    double rowRatio = static_cast<long double>(srcRows)/rows;
-    double columnRatio = static_cast<long double>(srcColumns)/columns;
+    double rowRatio = static_cast<double>(srcRows)/rows;
+    double columnRatio = static_cast<double>(srcColumns)/columns;
     
     typename DestinationImage::Rows rowsLookup = Transformation<DEST, SRC>::destination->getRows();
     typename SourceImage::ReadableRows srcRowsLookup = Transformation<DEST, SRC>::source->getRows();

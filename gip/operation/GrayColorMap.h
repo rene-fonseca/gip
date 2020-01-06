@@ -24,11 +24,12 @@ namespace gip {
     @ingroup colormaps
     @version 1.0
   */
-  class GrayColorMap : public UnaryOperation<RGBPixel<long double>, long double> {
+  class GrayColorMap : public UnaryOperation<RGBPixel<double>, double> {
   public:
 
-    inline void RGBPixel<long double> operator()(const long double& value) const noexcept {
-      RGBPixel<long double> result;
+    inline void RGBPixel<double> operator()(const double value) const noexcept
+    {
+      RGBPixel<double> result;
       result.red = clamp(0, value, 1);
       result.green = clamp(0, value, 1);
       result.blue = clamp(0, value, 1);

@@ -30,8 +30,9 @@ using namespace com::azure::dev::gip;
 class HaarToGray : public UnaryOperation<float, GrayPixel> {
 public:
 
-  inline GrayPixel operator()(const float& value) const noexcept {
-    long double temp = value/2 + 128; // -255 <= value <= 255
+  inline GrayPixel operator()(const float value) const noexcept
+  {
+    float temp = value/2 + 128; // -255 <= value <= 255
     if (temp < 0x00) {
       return 0x00;
     } else if (temp > 0xff) {
@@ -45,7 +46,8 @@ public:
 class HaarToGray2 : public UnaryOperation<GrayPixel, GrayPixel> {
 public:
 
-  inline GrayPixel operator()(const GrayPixel& value) const noexcept {
+  inline GrayPixel operator()(const GrayPixel& value) const noexcept
+  {
     GrayPixel temp = value + 128; // -255 <= value <= 255
     return static_cast<GrayPixel>(temp);
 //     if (temp < 0x00) {

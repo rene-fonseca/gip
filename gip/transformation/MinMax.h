@@ -63,7 +63,7 @@ namespace gip {
       return NestOperations<UNOPRARG, UNOPRRES>(inner, outer);
     }
 
-    class ComplexToSqrModulus : public UnaryOperation<Complex, long double> {
+    class ComplexToSqrModulus : public UnaryOperation<Complex, double> {
     public:
 
       inline ComplexToSqrModulus() noexcept {

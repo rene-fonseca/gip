@@ -24,20 +24,20 @@ namespace gip {
     @ingroup colormaps
     @version 1.0
   */
-  class ColdHotColorMap : public UnaryOperation<RGBPixel<long double>, long double> {
+  class ColdHotColorMap : public UnaryOperation<RGBPixel<double>, double> {
   public:
 
-    inline RGBPixel<long double> operator()(const long double& value) const noexcept {
-      RGBPixel<long double> result;
+    inline RGBPixel<double> operator()(const double value) const noexcept {
+      RGBPixel<double> result;
       if (value <= 0) {
         result.red = 0;
         result.green = 0;
         result.blue = 1;
         return result;
       }
-      long double temp = value * 4;
+      double temp = value * 4;
       int section = static_cast<int>(temp);
-      long double fraction = temp - section;
+      double fraction = temp - section;
       switch (section) { // floor
       case 0: // blue -> cyan
         result.red = 0;

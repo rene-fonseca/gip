@@ -59,8 +59,8 @@ public:
       TSRTransformation<ColorImage, ColorImage> transform(&finalImage, &originalImage);
       transform.identity();
       transform.translate(
-        -static_cast<long double>(originalImage.getDimension().getWidth()/2),
-        -static_cast<long double>(originalImage.getDimension().getHeight()/2)
+        -static_cast<double>(originalImage.getDimension().getWidth()/2),
+        -static_cast<double>(originalImage.getDimension().getHeight()/2)
       );
       transform.scale(1.5);
       transform.rotate(33.333 * constant::PI/180);

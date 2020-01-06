@@ -32,7 +32,7 @@ using namespace com::azure::dev::gip;
 class FourierToGray : public UnaryOperation<Complex, GrayPixel> {
 private:
 
-   long double scale;
+   double scale = 0;
 public:
 
   inline FourierToGray(const Dimension& dimension) noexcept
@@ -48,43 +48,46 @@ public:
   }
 };
 
-class FourierToLogModulus : public UnaryOperation<Complex, long double> {
+class FourierToLogModulus : public UnaryOperation<Complex, double> {
 private:
 
-   long double scale;
-   long double max;
+   double scale = 0;
+   double max = 0;
 public:
 
   inline FourierToLogModulus(const Dimension& dimension) noexcept
      : scale(1.0/dimension.getSize()),
-       max(0) {
+       max(0)
+  {
   }
 
-  inline long double operator()(const Complex& value) noexcept {
-    long double result = Math::ln(1 + value.getModulus() * scale);
+  inline double operator()(const Complex& value) noexcept
+  {
+    double result = Math::ln(1 + value.getModulus() * scale);
     if (result > max) {
       max = result;
     }
     return result;
   }
 
-  inline long double getMaximum() const noexcept {
+  inline double getMaximum() const noexcept {
     return max;
   }
 };
 
-class MapToHue : public UnaryOperation<ColorPixel, long double> {
+class MapToHue : public UnaryOperation<ColorPixel, double> {
 private:
 
-  long double scale;
+  double scale = 0;
   HeatColorMap map;
 public:
 
-  MapToHue(long double _scale) noexcept : scale(_scale) {
+  MapToHue(double _scale) noexcept : scale(_scale) {
   }
 
-  inline ColorPixel operator()(const long double& value) const noexcept {
-    RGBPixel<long double> temp = map(Math::sqrt(value * scale));
+  inline ColorPixel operator()(const double& value) const noexcept
+  {
+    RGBPixel<double> temp = map(Math::sqrt(value * scale));
     ColorPixel result;
     result.red = static_cast<PixelTraits<ColorPixel>::Component>(PixelTraits<ColorPixel>::MAXIMUM * temp.red + 0.5);
     result.green = static_cast<PixelTraits<ColorPixel>::Component>(PixelTraits<ColorPixel>::MAXIMUM * temp.green + 0.5);
@@ -159,10 +162,10 @@ public:
 //      transform();
 //    }
 
-    ArrayImage<long double> modulusImage(fourierImage.getDimension());
-    long double maximumModulus;
+    ArrayImage<double> modulusImage(fourierImage.getDimension());
+    double maximumModulus = 0;
     {
-      Convert<ArrayImage<long double>, ComplexImage, FourierToLogModulus> transform(&modulusImage, &fourierImage, FourierToLogModulus(fourierImage.getDimension()));
+      Convert<ArrayImage<double>, ComplexImage, FourierToLogModulus> transform(&modulusImage, &fourierImage, FourierToLogModulus(fourierImage.getDimension()));
       fout << MESSAGE("Converting image: ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
       transform();
       maximumModulus = transform.getResult().getMaximum();

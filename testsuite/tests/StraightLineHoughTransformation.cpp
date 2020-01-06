@@ -58,9 +58,9 @@ public:
       fout << MESSAGE("Time elapsed for scale: ") << timer.getLiveMicroseconds() << MESSAGE(" microseconds") << EOL;
     }
     
-    long double maximum;
+    double maximum = 0;
     {
-      MinimumMaximum<long double> minimumMaximum;
+      MinimumMaximum<double> minimumMaximum;
       forEach(houghImage, minimumMaximum);
       maximum = minimumMaximum.getMaximum();
     }

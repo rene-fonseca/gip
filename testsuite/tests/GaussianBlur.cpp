@@ -28,19 +28,19 @@
 
 using namespace com::azure::dev::gip;
 
-class Gaussian : public BinaryOperation<long double, long double, long double> {
+class Gaussian : public BinaryOperation<double, double, double> {
 private:
   
-  const long double denomX;
-  const long double denomY;
+  const double denomX = 0;
+  const double denomY = 0;
 public:
   
-  inline Gaussian(long double deviationX, long double deviationY) noexcept
+  inline Gaussian(double deviationX, double deviationY) noexcept
     : denomX(-1/(2 * deviationX * deviationX)),
       denomY(-1/(2 * deviationY * deviationY)) {
   }
   
-  inline long double operator()(long double x, long double y) const noexcept {
+  inline double operator()(double x, double y) const noexcept {
     return Math::exp(x * x * denomX + y * y * denomY);
   }
 };
@@ -48,7 +48,7 @@ public:
 class RealToGray : public UnaryOperation<Complex, GrayPixel> {
 private:
 
-   const long double scale;
+   const double scale;
 public:
 
   inline RealToGray(const Dimension& dimension) noexcept
@@ -118,13 +118,13 @@ public:
            << timer.getLiveMicroseconds() << MESSAGE(" microseconds") << EOL;
     }
     
-    /*ArrayImage<long double>*/ ComplexImage filterImage(fourierImage.getDimension());
+    /*ArrayImage<double>*/ ComplexImage filterImage(fourierImage.getDimension());
     {
       Gaussian gaussian(
         8192/512*filterImage.getDimension().getWidth(),
         8192/512*filterImage.getDimension().getHeight()
       );
-      //typedef ArrayImage<long double> DestinationImage;
+      //typedef ArrayImage<double> DestinationImage;
       typedef ComplexImage DestinationImage;
       
       const unsigned int rows = filterImage.getDimension().getHeight()/2;
@@ -141,7 +141,7 @@ public:
         DestinationImage::Rows::RowIterator::ElementIterator c3 = bottom.getEnd();
         unsigned int x = 0;
         while (c0 < c1) {
-          long double temp = gaussian(x++, y++);
+          double temp = gaussian(x++, y++);
           *c0++ = temp;
           *--c1 = temp;
           *c2++ = temp;

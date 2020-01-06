@@ -33,10 +33,10 @@ using namespace com::azure::dev::gip;
 class CosineToGray : public UnaryOperation<float, GrayPixel> {
 private:
 
-   long double scale;
+   double scale = 0;
 public:
 
-  inline CosineToGray(long double _scale) noexcept
+  inline CosineToGray(double _scale) noexcept
     : scale(PixelTraits<GrayPixel>::MAXIMUM * _scale) {
   }
   
@@ -53,18 +53,21 @@ public:
   }
 };
 
-class MapToHue : public UnaryOperation<ColorPixel, long double> {
+class MapToHue : public UnaryOperation<ColorPixel, double> {
 private:
 
-  long double scale;
+  double scale = 0;
   HeatColorMap map;
 public:
 
-  MapToHue(long double _scale) noexcept : scale(_scale) {
+  MapToHue(double _scale) noexcept
+    : scale(_scale)
+  {
   }
 
-  inline ColorPixel operator()(const long double& value) const noexcept {
-    RGBPixel<long double> temp = map(Math::sqrt(value * scale));
+  inline ColorPixel operator()(const double& value) const noexcept
+  {
+    RGBPixel<double> temp = map(Math::sqrt(value * scale));
     ColorPixel result;
     result.red = static_cast<PixelTraits<ColorPixel>::Component>(PixelTraits<ColorPixel>::MAXIMUM * temp.red + 0.5);
     result.green = static_cast<PixelTraits<ColorPixel>::Component>(PixelTraits<ColorPixel>::MAXIMUM * temp.green + 0.5);
@@ -122,9 +125,9 @@ public:
       fout << MESSAGE("Time elapsed for transformation: ") << timer.getLiveMicroseconds() << MESSAGE(" microseconds") << EOL;
     }
 
-    long double maximum;
+    double maximum = 0;
     {
-      MinimumMaximum<long double> minimumMaximum;
+      MinimumMaximum<double> minimumMaximum;
       forEach(cosineImage, minimumMaximum);
       maximum = minimumMaximum.getMaximum();
     }
@@ -140,10 +143,10 @@ public:
       transform();
     }
     
-//     ArrayImage<long double> modulusImage(cosineImage.getDimension());
-//     long double maximumModulus;
+//     ArrayImage<double> modulusImage(cosineImage.getDimension());
+//     double maximumModulus = 0;
 //     {
-//       Convert<ArrayImage<long double>, FloatImage, FourierToLogModulus> transform(&modulusImage, &cosineImage, FourierToLogModulus(cosineImage.getDimension()));
+//       Convert<ArrayImage<double>, FloatImage, FourierToLogModulus> transform(&modulusImage, &cosineImage, FourierToLogModulus(cosineImage.getDimension()));
 //       fout << MESSAGE("Converting image: ") << '(' << TypeInfo::getTypename(transform) << ')' << ENDL;
 //       transform();
 //       maximumModulus = transform.getResult().getMaximum();

@@ -29,7 +29,7 @@ using namespace com::azure::dev::gip;
 class WalshToGray : public UnaryOperation<float, GrayPixel> {
 private:
 
-   long double scale = 0;
+   double scale = 0;
 public:
 
   inline WalshToGray(const Dimension& dimension) noexcept
@@ -37,7 +37,7 @@ public:
   }
 
   inline GrayPixel operator()(const float& value) const noexcept {
-    long double temp = 0xff * Math::ln(1 + value * scale);
+    double temp = 0xff * Math::ln(1 + value * scale);
     if (temp < 0x00) {
       return 0x00;
     } else if (temp > 0xff) {

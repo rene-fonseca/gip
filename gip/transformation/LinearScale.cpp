@@ -16,7 +16,8 @@
 namespace gip {
 
   LinearScale::LinearScale(DestinationImage* destination, const SourceImage* source) 
-    : Transformation<DestinationImage, SourceImage>(destination, source) {
+    : Transformation<DestinationImage, SourceImage>(destination, source)
+  {
     bassert(source->getDimension().isProper(), ImageException("Unable to scale image", this));
   }
 
@@ -29,8 +30,8 @@ namespace gip {
     unsigned int columns = destination->getDimension().getWidth();
     unsigned int srcRows = source->getDimension().getHeight();
     unsigned int srcColumns = source->getDimension().getWidth();
-    double stepPerRow = static_cast<long double>(srcRows - 1)/(rows - 1);
-    double stepPerColumn = static_cast<long double>(srcColumns - 1)/(columns - 1);
+    double stepPerRow = static_cast<double>(srcRows - 1)/(rows - 1);
+    double stepPerColumn = static_cast<double>(srcColumns - 1)/(columns - 1);
 
     DestinationImage::Rows rowsLookup = destination->getRows();
     SourceImage::ReadableRows srcRowsLookup = source->getRows();
