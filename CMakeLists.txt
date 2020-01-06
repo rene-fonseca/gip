@@ -6,6 +6,10 @@ set(CMAKE_VERBOSE_MAKEFILE OFF)
 
 project(gip)
 
+if (COLOR)
+  set (ENV{CLICOLOR_FORCE} 1)
+endif ()
+
 set(gip_VERSION_MAJOR 0)
 set(gip_VERSION_MINOR 9)
 set(gip_VERSION_MICRO 0)
@@ -20,21 +24,42 @@ if (MSVC)
   add_definitions(-D_UNICODE)
 endif ()
 
+if (CMAKE_CXX_COMPILER MATCHES "/wasic\\+\\+")
+  set (CMAKE_CXX_COMPILER_ID "WASI")
+endif ()
+
+message("System: ${CMAKE_SYSTEM_NAME}")
+message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
+
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_COM_AZURE_DEV__BASE__DEBUG")
 
 if (MSVC)
-  # TAG: need to fix all exception specifications
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8") # force UTF-8 encoding for compiler
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP") # build in parallel
+  if ("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "AMD64")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc") # required for AMD64
+  endif ()
+
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /WX") # no warnings allowed
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4290 /wd4838 /wd4244 /wd4267 /wd4996 /wd4297")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4251") # TAG: DLL export issue  
 else ()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+if (("${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang") OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") OR
+  EMSCRIPTEN OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "WASI"))
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror") # no warnings allowed
+
+  if (COLOR OR ("$ENV{CLICOLOR_FORCE}" STREQUAL "1"))
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics -fansi-escape-codes") # ansi colors
+  endif ()
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated") # exception specifications
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror") # no warnings allowed
+
+  if (COLOR OR ("$ENV{CLICOLOR_FORCE}" STREQUAL "1"))
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color") # ansi colors
+  endif ()
 endif ()
 
 endif ()
