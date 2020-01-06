@@ -22,7 +22,7 @@ namespace gip {
   template _COM_AZURE_DEV__GIP__API class Scale<ColorAlphaImage, ColorAlphaImage>;
   
   template<class DEST, class SRC>
-  Scale<DEST, SRC>::Scale(DestinationImage* destination, const SourceImage* source) throw(ImageException)
+  Scale<DEST, SRC>::Scale(DestinationImage* destination, const SourceImage* source) 
     : Transformation<DEST, SRC>(destination, source) {
     bassert(source->getDimension().isProper(), ImageException("Unable to scale image", this));
   }

@@ -18,7 +18,7 @@ namespace gip {
   YUV422Image::YUV422Image() noexcept {
   }
     
-  YUV422Image::YUV422Image(const Dimension& dimension) throw(MemoryException)
+  YUV422Image::YUV422Image(const Dimension& dimension) 
           : Image<uint8>(dimension), y(dimension) {
     Dimension d = Dimension(dimension.getWidth()/2, dimension.getHeight()/2);
     u = ArrayImage<uint8>(d);

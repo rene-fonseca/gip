@@ -1073,7 +1073,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     static void convert(
       GrayImage& image,
       PixelFormat pixelFormat,
-      const uint8* buffer) throw(ImageException);
+      const uint8* buffer);
 
     /**
       Convert the frame of the specified pixel format to a ColorImage.
@@ -1081,7 +1081,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     static void convert(
       ColorImage& image,
       PixelFormat pixelFormat,
-      const uint8* buffer) throw(ImageException);
+      const uint8* buffer);
   };
 
 }; // end of gip namespace

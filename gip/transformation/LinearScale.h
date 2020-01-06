@@ -37,7 +37,7 @@ namespace gip {
       @param destination The destination image.
       @param source The source image.
     */
-    LinearScale(DestinationImage* destination, const SourceImage* source) throw(ImageException);
+    LinearScale(DestinationImage* destination, const SourceImage* source);
 
     /**
       Scale the source image to the destination image.

@@ -68,7 +68,7 @@ namespace gip {
       @param destination The destination image.
       @param source The source image.
     */
-    ContrastStretch(DestinationImage* destination, const SourceImage* source) throw(ImageException)
+    ContrastStretch(DestinationImage* destination, const SourceImage* source) 
       : Transformation<GrayImage, GrayImage>(destination, source) {
       
       bassert(destination->getDimension() == source->getDimension(), ImageException(this));
@@ -145,7 +145,7 @@ namespace gip {
       @param destination The destination image.
       @param source The source image.
     */
-    ContrastStretch(DestinationImage* destination, const SourceImage* source) throw(ImageException)
+    ContrastStretch(DestinationImage* destination, const SourceImage* source) 
       : Transformation<ColorImage, ColorImage>(destination, source) {
 
       bassert(destination->getDimension() == source->getDimension(), ImageException(this));

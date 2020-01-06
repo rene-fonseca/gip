@@ -15,7 +15,7 @@
 
 namespace gip {
 
-  WalshTransformation::WalshTransformation(DestinationImage* destination, const SourceImage* source) throw(ImageException)
+  WalshTransformation::WalshTransformation(DestinationImage* destination, const SourceImage* source) 
     : Transformation<DestinationImage, SourceImage>(destination, source) {
 
     bassert(

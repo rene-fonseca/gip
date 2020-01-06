@@ -45,7 +45,7 @@ namespace gip {
 
       @param dimension The dimension of the image.
     */
-    YUV422Image(const Dimension& dimension) throw(MemoryException);
+    YUV422Image(const Dimension& dimension);
 
     /**
       Initialization of image by image.

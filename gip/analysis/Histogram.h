@@ -32,16 +32,19 @@ namespace gip {
     unsigned int* elements = nullptr;
   public:
 
-    Histogram() throw(MemoryException)
-      : histogram(PixelTraits<GrayPixel>::MAXIMUM + 1, 0), elements(histogram.getElements()) {
+    Histogram()
+      : histogram(PixelTraits<GrayPixel>::MAXIMUM + 1, 0), elements(histogram.getElements())
+    {
       reset();
     }
 
-    inline void operator()(const GrayPixel& value) noexcept {
+    inline void operator()(const GrayPixel& value) noexcept
+    {
       ++elements[value];
     }
 
-    void reset() noexcept {
+    void reset() noexcept
+    {
       fill<unsigned int>(histogram.getElements(), histogram.getSize(), 0);
     }
 
@@ -70,7 +73,7 @@ namespace gip {
     unsigned int* elements = nullptr;
   public:
 
-    GrayHistogram() throw(MemoryException)
+    GrayHistogram()
       : gray(PixelTraits<GrayPixel>::MAXIMUM + 1, 0), elements(gray.getElements()) {
       reset();
     }
@@ -117,7 +120,7 @@ namespace gip {
     unsigned int* blueElements = nullptr;
   public:
 
-    ColorHistogram() throw(MemoryException)
+    ColorHistogram()
       : red(PixelTraits<ColorPixel>::MAXIMUM + 1, 0),
         green(PixelTraits<ColorPixel>::MAXIMUM + 1, 0),
         blue(PixelTraits<ColorPixel>::MAXIMUM + 1, 0),

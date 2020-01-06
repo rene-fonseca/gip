@@ -58,7 +58,7 @@ namespace gip {
       @param destination The destination image.
       @param source The source image.
     */
-    EqualizeHistogram(DestinationImage* destination, const SourceImage* source) throw(ImageException)
+    EqualizeHistogram(DestinationImage* destination, const SourceImage* source) 
       : Transformation<DestinationImage, SourceImage>(destination, source) {
       
       bassert(destination->getDimension() == source->getDimension(), ImageException(this));
@@ -135,7 +135,7 @@ namespace gip {
       unsigned int* elements;
     public:
 
-      inline Histogram() throw(MemoryException)
+      inline Histogram() 
         : histogram(3 * PixelTraits<ColorPixel>::MAXIMUM + 1, 0), elements(histogram.getElements()) {
         fill<unsigned int>(histogram.getElements(), histogram.getSize(), 0);
       }
@@ -218,7 +218,7 @@ namespace gip {
       @param destination The destination image.
       @param source The source image.
     */
-    EqualizeHistogram(DestinationImage* destination, const SourceImage* source) throw(ImageException)
+    EqualizeHistogram(DestinationImage* destination, const SourceImage* source) 
       : Transformation<DestinationImage, SourceImage>(destination, source) {
 
       bassert(destination->getDimension() == source->getDimension(), ImageException(this));

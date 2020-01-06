@@ -17,7 +17,7 @@
 
 namespace gip {
 
-  StraightLineHoughTransformation::StraightLineHoughTransformation(DestinationImage* destination, const SourceImage* source) throw(ImageException)
+  StraightLineHoughTransformation::StraightLineHoughTransformation(DestinationImage* destination, const SourceImage* source) 
     : Transformation<DestinationImage, SourceImage>(destination, source) {
     
     bassert(

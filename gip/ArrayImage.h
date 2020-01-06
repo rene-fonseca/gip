@@ -127,14 +127,14 @@ public:
   typedef ColumnsImpl<IteratorTraits<Pixel> > Columns;
   typedef ColumnsImpl<ReadIteratorTraits<Pixel> > ReadableColumns;
   
-  ArrayImage() throw(MemoryException);
+  ArrayImage();
   
   /**
     Initializes the image to the specified dimension. The elements are not initialized.
 
     @param dimension The desired dimension of the image.
   */
-  ArrayImage(const Dimension& dimension) throw(MemoryException);
+  ArrayImage(const Dimension& dimension);
 
   /**
     Initializes the image from other image.
@@ -151,7 +151,7 @@ public:
     Returns the rows of the image for modifying access. This will force the
     image to be copied if shared by multiple image objects.
   */
-  Rows getRows() throw(MemoryException) {
+  Rows getRows()  {
     elements.copyOnWrite();
     return Rows(elements->getElements(), Image<PIXEL>::getDimension());
   }
@@ -167,7 +167,7 @@ public:
     Returns the columns of the image for modifying access. This will force the
     image to be copied if shared by multiple image objects.
   */
-  Columns getColumns() throw(MemoryException) {
+  Columns getColumns()  {
     elements.copyOnWrite();
     return Columns(elements->getElements(), Image<PIXEL>::getDimension());
   }
@@ -183,7 +183,7 @@ public:
     Returns the first element of the image for modifying access. This will
     force the image to be copied if shared by multiple image objects.
   */
-  Pixel* getElements() throw(MemoryException);
+  Pixel* getElements();
 
   /**
     Returns the first element of the image for non-modifying access.
@@ -192,12 +192,12 @@ public:
 };
 
 template<class PIXEL>
-ArrayImage<PIXEL>::ArrayImage() throw(MemoryException) :
+ArrayImage<PIXEL>::ArrayImage()  :
   Image<PIXEL>(Dimension(0, 0)), elements(new ReferenceCountedAllocator<Pixel>(0)) {
 }
 
 template<class PIXEL>
-ArrayImage<PIXEL>::ArrayImage(const Dimension& dimension) throw(MemoryException) :
+ArrayImage<PIXEL>::ArrayImage(const Dimension& dimension)  :
   Image<Pixel>(dimension), elements(new ReferenceCountedAllocator<Pixel>(dimension.getSize())) {
 }
 
@@ -207,7 +207,7 @@ ArrayImage<PIXEL>::ArrayImage(const ArrayImage& copy) noexcept :
 }
 
 template<class PIXEL>
-typename ArrayImage<PIXEL>::Pixel* ArrayImage<PIXEL>::getElements() throw(MemoryException) {
+typename ArrayImage<PIXEL>::Pixel* ArrayImage<PIXEL>::getElements()  {
   elements.copyOnWrite();
   return elements->getElements();
 }

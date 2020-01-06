@@ -17,7 +17,7 @@
 
 namespace gip {
 
-  Gradient::Gradient(DestinationImage* destination, const SourceImage* source) throw(ImageException)
+  Gradient::Gradient(DestinationImage* destination, const SourceImage* source) 
     : Transformation<DestinationImage, SourceImage>(destination, source) {
     bassert(
       destination->getDimension() == source->getDimension(),

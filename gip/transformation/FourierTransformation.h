@@ -46,7 +46,7 @@ namespace gip {
       @param source The source image.
       @param forward Requests a forward Fourier transformation (inverse transformation if false). Default is true.
     */
-    FourierTransformation(DestinationImage* destination, const SourceImage* source, bool forward = true) throw(ImageException);
+    FourierTransformation(DestinationImage* destination, const SourceImage* source, bool forward = true);
 
     /**
       Fast Fourier transformation.

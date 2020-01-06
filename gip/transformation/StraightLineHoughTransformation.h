@@ -46,7 +46,7 @@ namespace gip {
       @param destination The destination image.
       @param source The source image.
     */
-    StraightLineHoughTransformation(DestinationImage* destination, const SourceImage* source) throw(ImageException);
+    StraightLineHoughTransformation(DestinationImage* destination, const SourceImage* source);
 
     /**
       Calculate transformation.

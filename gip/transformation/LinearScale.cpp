@@ -15,7 +15,7 @@
 
 namespace gip {
 
-  LinearScale::LinearScale(DestinationImage* destination, const SourceImage* source) throw(ImageException)
+  LinearScale::LinearScale(DestinationImage* destination, const SourceImage* source) 
     : Transformation<DestinationImage, SourceImage>(destination, source) {
     bassert(source->getDimension().isProper(), ImageException("Unable to scale image", this));
   }

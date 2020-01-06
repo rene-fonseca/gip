@@ -32,13 +32,13 @@ namespace gip {
 
     typedef typename UnaryTransformation<DEST>::DestinationImage DestinationImage;
 
-    Mirror(DestinationImage* destination) throw(ImageException);
+    Mirror(DestinationImage* destination);
 
     void operator()() noexcept;
   };
 
   template<class DEST>
-  Mirror<DEST>::Mirror(DestinationImage* destination) throw(ImageException)
+  Mirror<DEST>::Mirror(DestinationImage* destination) 
     : UnaryTransformation<DestinationImage>(destination) {
     bassert(
       destination->getDimension().isProper(),

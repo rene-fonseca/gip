@@ -40,7 +40,7 @@ namespace gip {
       @param destination The destination image.
       @param source The source image.
     */
-    BresenhamScale(DestinationImage* destination, const SourceImage* source) throw(ImageException)
+    BresenhamScale(DestinationImage* destination, const SourceImage* source) 
       : Transformation<DEST, SRC>(destination, source) {
       bassert(source->getDimension().isProper(), ImageException("Unable to scale image", this));
       bassert(

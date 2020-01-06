@@ -55,7 +55,7 @@ namespace gip {
 
       @param dimension The dimension of the image.
     */
-    Image(const Dimension& dimension) throw(ImageException);
+    Image(const Dimension& dimension);
 
     /**
       Initializes image from other image.
@@ -91,7 +91,7 @@ namespace gip {
   };
 
   template<class PIXEL>
-  inline Image<PIXEL>::Image(const Dimension& _dimension) throw(ImageException) : dimension(_dimension) {
+  inline Image<PIXEL>::Image(const Dimension& _dimension)  : dimension(_dimension) {
     bassert(
       (dimension.getWidth() <= 0xffff) && (dimension.getHeight() <= 0xffff),
       ImageException("Image dimension limit exceeded", this)

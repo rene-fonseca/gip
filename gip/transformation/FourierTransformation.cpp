@@ -17,7 +17,7 @@
 
 namespace gip {
 
-FourierTransformation::FourierTransformation(DestinationImage* destination, const SourceImage* source, bool _forward) throw(ImageException) :
+FourierTransformation::FourierTransformation(DestinationImage* destination, const SourceImage* source, bool _forward)  :
   Transformation<DestinationImage, SourceImage>(destination, source), forward(_forward) {
 
   bassert(

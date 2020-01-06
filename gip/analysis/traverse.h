@@ -54,7 +54,7 @@ namespace gip {
   }
 
   template<class LEFT, class RIGHT, class BINOPR>
-  inline void transform(LEFT& left, const RIGHT& right, BINOPR& function) throw(ImageException) {
+  inline void transform(LEFT& left, const RIGHT& right, BINOPR& function)  {
     // check if function is binary and write nice error if not???
     bassert(
       left.getDimension() == right.getDimension(),
@@ -82,7 +82,7 @@ namespace gip {
     @version 1.0
   */
   template<class DEST, class SRC, class UNOPR>
-  inline void fillWithUnary(DEST& destination, const SRC& source, UNOPR& function) throw(ImageException) {
+  inline void fillWithUnary(DEST& destination, const SRC& source, UNOPR& function)  {
     bassert(
       destination.getDimension() == source.getDimension(),
       ImageException("Images must have identical dimension")
@@ -106,7 +106,7 @@ namespace gip {
   /**
   */
 //template<class DEST, class LEFT, class RIGHT, class BINOPR>
-//inline void fillWithBinary(DEST& destination, const LSRC& left, const RSRC& right, BINOPR& function) throw(ImageException) {
+//inline void fillWithBinary(DEST& destination, const LSRC& left, const RSRC& right, BINOPR& function)  {
 //  // check if function is binary and write nice error if not???
 //  // typedef typename function::Result Result
 //  // typedef typename function::LeftArgument LeftArgument

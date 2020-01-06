@@ -148,7 +148,7 @@ namespace gip {
       @param destination The destination image.
       @param source The source image.
     */
-    Convolution3x3(DestinationImage* destination, const SourceImage* source) throw(ImageException)
+    Convolution3x3(DestinationImage* destination, const SourceImage* source) 
       : Transformation<DestinationImage, SourceImage>(destination, source) {
       
       bassert(destination->getDimension() == source->getDimension(), ImageException(this));

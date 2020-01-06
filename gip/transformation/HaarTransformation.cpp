@@ -16,7 +16,7 @@
 namespace gip {
 
   HaarTransformation<FloatImage>::HaarTransformation(
-    DestinationImage* destination) throw(ImageException)
+    DestinationImage* destination) 
     : UnaryTransformation<FloatImage>(destination) {
 
     bassert(
@@ -107,7 +107,7 @@ namespace gip {
   }
 
   HaarTransformation<GrayImage>::HaarTransformation(
-    DestinationImage* destination) throw(ImageException)
+    DestinationImage* destination) 
     : UnaryTransformation<GrayImage>(destination) {
     
     bassert(

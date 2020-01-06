@@ -3144,7 +3144,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   void Camera1394::convert(
     GrayImage& image,
     PixelFormat pixelFormat,
-    const uint8* buffer) throw(ImageException) {
+    const uint8* buffer)  {
     GrayImage::Rows rowLookup = image.getRows();
     GrayImage::Rows::RowIterator row = rowLookup.getEnd();
     const GrayImage::Rows::RowIterator endRow = rowLookup.getFirst();
@@ -3218,7 +3218,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   void Camera1394::convert(
     ColorImage& image,
     PixelFormat pixelFormat,
-    const uint8* buffer) throw(ImageException) {
+    const uint8* buffer)  {
     ColorImage::Rows rowLookup = image.getRows();
     ColorImage::Rows::RowIterator row = rowLookup.getEnd();
     const ColorImage::Rows::RowIterator endRow = rowLookup.getFirst();

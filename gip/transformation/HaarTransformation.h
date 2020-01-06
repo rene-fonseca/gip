@@ -85,7 +85,7 @@ namespace gip {
 
       @param destination The destination image.
     */
-    HaarTransformation(DestinationImage* destination) throw(ImageException);
+    HaarTransformation(DestinationImage* destination);
 
     /**
       Calculate transformation.
@@ -163,7 +163,7 @@ namespace gip {
     }
   public:
 
-    HaarTransformation(DestinationImage* destination) throw(ImageException);
+    HaarTransformation(DestinationImage* destination);
 
     void operator()() noexcept;
     

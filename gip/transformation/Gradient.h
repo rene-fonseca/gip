@@ -36,7 +36,7 @@ namespace gip {
       @param destination The destination image.
       @param source The source image.
     */
-    Gradient(DestinationImage* destination, const SourceImage* source) throw(ImageException);
+    Gradient(DestinationImage* destination, const SourceImage* source);
 
     /**
       Duplicates the contents of the source image to the destination image.

@@ -47,7 +47,7 @@ namespace gip {
       @param source The source image.
       @param forward Requests a forward transformation (inverse transformation if false). Default is true.
     */
-    DiscreteCosineTransformation(DestinationImage* destination, const SourceImage* source, bool forward = true) throw(ImageException);
+    DiscreteCosineTransformation(DestinationImage* destination, const SourceImage* source, bool forward = true);
 
     /**
       Discrete cosine transformation.

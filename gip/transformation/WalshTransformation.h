@@ -43,7 +43,7 @@ namespace gip {
       @param destination The destination image.
       @param source The source image.
     */
-    WalshTransformation(DestinationImage* destination, const SourceImage* source) throw(ImageException);
+    WalshTransformation(DestinationImage* destination, const SourceImage* source);
 
     /**
       Calculate transformation.

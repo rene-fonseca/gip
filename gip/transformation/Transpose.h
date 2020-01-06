@@ -36,7 +36,7 @@ namespace gip {
     /**
       Initializes transformation object.
     */
-    Transpose(DestinationImage* destination, SourceImage* source) throw(ImageException);
+    Transpose(DestinationImage* destination, SourceImage* source);
 
     /**
       Transpose the image.
@@ -45,7 +45,7 @@ namespace gip {
   };
 
   template<class DEST, class SRC>
-  Transpose<DEST, SRC>::Transpose(DestinationImage* destination, SourceImage* source) throw(ImageException)
+  Transpose<DEST, SRC>::Transpose(DestinationImage* destination, SourceImage* source) 
     : Transformation<DestinationImage, SourceImage>(destination, source) {
     bassert(
       (destination->getDimension().getWidth() == source->getDimension().getHeight()) &&

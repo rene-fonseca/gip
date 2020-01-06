@@ -34,7 +34,7 @@ namespace gip {
     /**
       Initializes transformation object.
     */
-    Flip(DestinationImage* destination) throw(ImageException);
+    Flip(DestinationImage* destination);
 
     /**
       Flip the image.
@@ -43,7 +43,7 @@ namespace gip {
   };
 
   template<class DEST>
-  Flip<DEST>::Flip(DestinationImage* destination) throw(ImageException)
+  Flip<DEST>::Flip(DestinationImage* destination) 
     : UnaryTransformation<DestinationImage>(destination) {
 
     bassert(
