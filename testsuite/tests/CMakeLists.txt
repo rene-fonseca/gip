@@ -37,3 +37,16 @@ endif ()
   )
 
 endforeach()
+
+enable_testing()
+
+set (EXTENSION "")
+set (CTEST_EXE "")
+if (EMSCRIPTEN)
+  set (EXTENSION ".js")
+  set (CTEST_EXE node --experimental-wasm-threads --experimental-wasm-bulk-memory)
+elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Wasm")
+  set (CTEST_EXE wasmtime)
+endif ()
+
+add_test(NAME test_gip COMMAND ${CTEST_EXE} ${CMAKE_CURRENT_BINARY_DIR}/test_gip${EXTENSION})
