@@ -164,7 +164,7 @@ namespace gip {
 //    }
 //
 //    inline ElementIterator operator[](unsigned int index) const noexcept {
-//      ASSERT(index < step);
+//      BASSERT(index < step);
 //      ElementIterator result(current);
 //      result += index;
 //      return result;

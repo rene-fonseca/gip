@@ -74,7 +74,7 @@ public:
     }
 
     inline RowIterator operator[](unsigned int index) const noexcept {
-      ASSERT(index < rows);
+      BASSERT(index < rows);
       RowIterator result(first);
       result += index;
       return result;
@@ -117,7 +117,7 @@ public:
     }
 
     inline ColumnIterator operator[](unsigned int index) const noexcept {
-      ASSERT(index < columns);
+      BASSERT(index < columns);
       ColumnIterator result(first);
       result += index;
       return result;

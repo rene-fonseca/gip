@@ -170,7 +170,7 @@ inline HSVPixel<unsigned char> RGBToHSV<unsigned char>(const RGBPixel<unsigned c
   } else { // pixel.blue == max
     temp = ((6/2 + 255 * 4) * diff + 255 * (static_cast<Arithmetic>(pixel.red) - static_cast<Arithmetic>(pixel.green)))/(6 * diff);
   }
-  ASSERT((temp >= 0) && (temp <= 255));
+  BASSERT((temp >= 0) && (temp <= 255));
   result.hue = temp;
   return result;
 }

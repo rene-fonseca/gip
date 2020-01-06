@@ -697,7 +697,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       sizeof(quadlet)
     );
     unsigned int vendorLeafSize = quadlet >> 16;
-    ASSERT(vendorLeafSize >= 2);
+    BASSERT(vendorLeafSize >= 2);
     if (vendorLeafSize > 2) {
       PrimitiveArray<char> leaf(vendorLeafSize * sizeof(IEEE1394::Quadlet));
       adapter.read(
@@ -721,7 +721,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       sizeof(quadlet)
     );
     unsigned int modelLeafSize = quadlet >> 16;
-    ASSERT(modelLeafSize >= 2);
+    BASSERT(modelLeafSize >= 2);
     if (modelLeafSize > 2) {
       PrimitiveArray<char> leaf(modelLeafSize * sizeof(IEEE1394::Quadlet));
       adapter.read(
@@ -1065,7 +1065,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       }
       
     } else {
-      ASSERT((info.pixelFormat >= 0) && info.width && info.height);
+      BASSERT((info.pixelFormat >= 0) && info.width && info.height);
 
       this->mode.maximumDimension = Dimension(info.width, info.height);
       this->mode.unitDimension = this->mode.maximumDimension;
@@ -1482,7 +1482,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       region.setDimension(partialImageMode[info.mode].maximumDimension);
       // TAG: also set register if partial image mode (or should we get)
     } else {
-      ASSERT(info.width && info.height);
+      BASSERT(info.width && info.height);
       region.setDimension(Dimension(info.width, info.height));
     }
 
@@ -1613,7 +1613,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       63-8, 63-9, 63-10, 63-11, 63-12, 63-32, 63-33, 63-34,
       63-35, 63-48, 63-49
     };
-    ASSERT(features < getArraySize(BIT));
+    BASSERT(features < getArraySize(BIT));
     BigEndian<uint64> status;
     adapter.read(
       camera,
@@ -1840,7 +1840,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       OutOfDomain(this)
     );
     // TAG: mode must be manual
-    ASSERT(feature < getArraySize(Camera1394Impl::FEATURE_CONTROL_REGISTER));
+    BASSERT(static_cast<MemorySize>(feature) < getArraySize(Camera1394Impl::FEATURE_CONTROL_REGISTER));
     uint64 featureRegister = commandRegisters + Camera1394Impl::FEATURE_CONTROL_REGISTER[feature];
     IEEE1394::Quadlet original;
     adapter.read(
@@ -2386,7 +2386,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     if (Camera1394Impl::MODE_INFORMATION[mode].format == Camera1394::PARTIAL_IMAGE) {
       return partialImageMode[Camera1394Impl::MODE_INFORMATION[mode].mode].pixelFormats;
     } else {
-      ASSERT(Camera1394Impl::MODE_INFORMATION[mode].pixelFormat >= 0);
+      BASSERT(Camera1394Impl::MODE_INFORMATION[mode].pixelFormat >= 0);
       return 1 << Camera1394Impl::MODE_INFORMATION[mode].pixelFormat;
     }
   }
@@ -2433,7 +2433,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
         mode.pixelFormats & (1 << pixelFormat),
         bindCause(NotSupported(this), Camera1394::PIXEL_FORMAT_NOT_SUPPORTED)
       );
-      ASSERT(Camera1394Impl::MODE_INFORMATION[currentMode].format == Camera1394::PARTIAL_IMAGE); // TAG: what about EXIF
+      BASSERT(Camera1394Impl::MODE_INFORMATION[currentMode].format == Camera1394::PARTIAL_IMAGE); // TAG: what about EXIF
       // TAG: write to register
       this->pixelFormat = pixelFormat;
     }

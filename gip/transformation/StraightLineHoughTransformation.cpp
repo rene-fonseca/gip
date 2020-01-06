@@ -73,8 +73,8 @@ namespace gip {
           DestinationImage::Pixel* destRow = dest;
           for (int theta = 0; trigo < endOfTrigo; ++trigo, ++theta, destRow += width) { // vote for lines
             int rho = static_cast<int>(x * trigo->cosine + y * trigo->sine + halfWidth);
-            ASSERT(static_cast<unsigned int>(rho) < width);
-            ASSERT(rho >= 0);
+            BASSERT(static_cast<unsigned int>(rho) < width);
+            BASSERT(rho >= 0);
             ++destRow[rho]; // TAG: alternatively use gradient as weight
           }
         }

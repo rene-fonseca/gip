@@ -249,8 +249,8 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
 
   GIFEncoder::GIFEncoder() noexcept {
-    ASSERT(sizeof(GIFImpl::Header) == 6);
-    ASSERT(sizeof(GIFImpl::LogicalScreenDescriptor) == 7);
+    BASSERT(sizeof(GIFImpl::Header) == 6);
+    BASSERT(sizeof(GIFImpl::LogicalScreenDescriptor) == 7);
   }
 
   String GIFEncoder::getDescription() const noexcept {

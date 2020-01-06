@@ -212,7 +212,7 @@ namespace gip {
         JSAMPLE row[cinfo.output_width * cinfo.output_components];
         JSAMPROW prow = Cast::pointer<JSAMPROW>(row);
         
-        ASSERT(sizeof(JSAMPLE) == 1);
+        BASSERT(sizeof(JSAMPLE) == 1);
         
         while (cinfo.output_scanline < cinfo.output_height) {
           ::jpeg_read_scanlines(&cinfo, &prow, 1);
@@ -279,7 +279,7 @@ namespace gip {
       try {
         ::jpeg_start_compress(&cinfo, TRUE);
     
-        ASSERT(sizeof(JSAMPLE) == 1);
+        BASSERT(sizeof(JSAMPLE) == 1);
         JSAMPLE row[cinfo.image_width * cinfo.num_components];
         JSAMPROW prow = Cast::pointer<JSAMPROW>(row);
         const ColorPixel* src = image->getElements();
