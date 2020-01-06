@@ -17,9 +17,9 @@
 #include <base/features.h>
 
 #define _COM_AZURE_DEV__GIP__MAJOR_VERSION 0
-#define _COM_AZURE_DEV__GIP__MINOR_VERSION 1
-#define _COM_AZURE_DEV__GIP__MICRO_VERSION 2
-#define _COM_AZURE_DEV__GIP__VERSION "0.1.2"
+#define _COM_AZURE_DEV__GIP__MINOR_VERSION 2
+#define _COM_AZURE_DEV__GIP__MICRO_VERSION 1
+#define _COM_AZURE_DEV__GIP__VERSION "0.2.1"
 
 #define _COM_AZURE_DEV__GIP__REQUIRE(major, minor, micro) \
   ((major <= _COM_AZURE_DEV__GIP__MAJOR_VERSION) && \
@@ -48,14 +48,14 @@ namespace gip {
   
   // this framework depends on the base framework
   using namespace com::azure::dev::base;
-};
+}
 
 namespace com {
   namespace azure {
     namespace dev {
       namespace gip {
         using namespace ::gip;
-      };
-    };
-  };
-};
+      }
+    }
+  }
+}

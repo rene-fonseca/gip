@@ -11,8 +11,8 @@ if (COLOR)
 endif ()
 
 set(gip_VERSION_MAJOR 0)
-set(gip_VERSION_MINOR 9)
-set(gip_VERSION_MICRO 0)
+set(gip_VERSION_MINOR 2)
+set(gip_VERSION_MICRO 1)
 
 # set(CMAKE_FIND_PACKAGE_PREFER_CONFIG 1)
 find_package(base REQUIRED)
