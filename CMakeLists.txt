@@ -177,6 +177,11 @@ endif ()
 
 add_subdirectory("testsuite/tests")
 
+include(CTest)
+enable_testing()
+
+# TAG: add natvis
+
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "C++ framework for developing image processing applications.")
 SET(CPACK_PACKAGE_VENDOR "René Fonseca")
 #SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.txt")
