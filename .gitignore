@@ -6,6 +6,11 @@ generated/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
+gipConfig.cmake
+CPackConfig.cmake
+CPackSourceConfig.cmake
+gip-*.sh
+gip-*.tar.gz
 install_manifest.txt
 Makefile
 bin/
