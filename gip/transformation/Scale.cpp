@@ -13,6 +13,8 @@
 
 #include <gip/transformation/Scale.h>
 
+_COM_AZURE_DEV__BASE__DUMMY_SYMBOL
+
 namespace gip {
   
   template _COM_AZURE_DEV__GIP__API class Scale<GrayImage, GrayImage>;

@@ -14,6 +14,4 @@
 #include <gip/transformation/Convert.h>
 #include <gip/analysis/traverse.h>
 
-namespace gip {
-
-}; // end of gip namespace
+_COM_AZURE_DEV__BASE__DUMMY_SYMBOL

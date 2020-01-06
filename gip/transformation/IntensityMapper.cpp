@@ -13,6 +13,8 @@
 
 #include <gip/transformation/IntensityMapper.h>
 
+_COM_AZURE_DEV__BASE__DUMMY_SYMBOL
+
 namespace gip {
 
 //IntensityMapper::IntensityMapper() noexcept {

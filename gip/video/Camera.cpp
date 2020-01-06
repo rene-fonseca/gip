@@ -13,6 +13,4 @@
 
 #include <gip/video/Camera.h>
 
-namespace gip {
-
-}; // end of gip namespace
+_COM_AZURE_DEV__BASE__DUMMY_SYMBOL

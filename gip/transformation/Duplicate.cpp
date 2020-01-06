@@ -12,3 +12,5 @@
  ***************************************************************************/
 
 #include <gip/transformation/Duplicate.h>
+
+_COM_AZURE_DEV__BASE__DUMMY_SYMBOL
