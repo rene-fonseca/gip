@@ -59,14 +59,14 @@ namespace gip {
       
       @param filename The path of the file.
     */
-    bool isValid(const String& filename) throw(IOException);
+    bool isValid(const String& filename);
     
     /**
       Reads a color image from the specified file.
       
       @param filename The path of the file.
     */
-    ColorImage* read(const String& filename) throw(InvalidFormat, IOException);
+    ColorImage* read(const String& filename);
     
     /**
       Writes the specified image to the specified file.
@@ -74,7 +74,7 @@ namespace gip {
       @param filename The path of the file.
       @param image The image to be written.
     */
-    void write(const String& filename, const ColorImage* image) throw(ImageException, IOException);
+    void write(const String& filename, const ColorImage* image);
     
     /**
       Writes the specified image to the specified file.
@@ -82,7 +82,7 @@ namespace gip {
       @param filename The path of the file.
       @param image The image to be written.
     */
-    void write(const String& filename, const ColorAlphaImage* image) throw(ImageException, IOException);
+    void write(const String& filename, const ColorAlphaImage* image);
     
     /**
       Writes the specified image to the specified file.
@@ -90,12 +90,12 @@ namespace gip {
       @param filename The path of the file.
       @param image The image to be written.
     */
-    void writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException);
+    void writeGray(const String& filename, const GrayImage* image);
     
     /**
       Returns information about the specified image.
     */
-    HashTable<String, AnyValue> getInformation(const String& filename) throw(IOException);
+    HashTable<String, AnyValue> getInformation(const String& filename);
   };
   
 }; // end of gip namespace

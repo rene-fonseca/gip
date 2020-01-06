@@ -114,7 +114,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return MESSAGE("bmp");
   }
 
-  bool BMPEncoder::isValid(const String& filename) throw(IOException) {
+  bool BMPEncoder::isValid(const String& filename) {
     BMPHeader header;
     unsigned int size;
 
@@ -159,7 +159,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return result;
   }
 
-  ColorImage* BMPEncoder::read(const String& filename) throw(InvalidFormat, IOException) {
+  ColorImage* BMPEncoder::read(const String& filename) {
     File file(filename, File::READ, 0);
 
     BMPHeader header;
@@ -463,7 +463,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return 0;
   }
 
-  void BMPEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException) {
+  void BMPEncoder::write(const String& filename, const ColorImage* image) {
     BMPHeader header;
 
     File file(filename, File::WRITE, File::CREATE);
@@ -542,7 +542,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     file.truncate(sizeOfFile);
   }
 
-  void BMPEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
+  void BMPEncoder::writeGray(const String& filename, const GrayImage* image) {
     BMPHeader header;
 
     File file(filename, File::WRITE, File::CREATE);
@@ -635,7 +635,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   HashTable<String, AnyValue> BMPEncoder::getInformation(
-    const String& filename) throw(IOException) {
+    const String& filename) {
     HashTable<String, AnyValue> result;
     BMPHeader header;
     

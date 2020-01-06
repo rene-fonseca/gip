@@ -71,7 +71,7 @@ namespace gip {
     return extensions;
   }
 
-  bool RASEncoder::isValid(const String& filename) throw(IOException) {
+  bool RASEncoder::isValid(const String& filename) {
     RASEncoderImpl::Header header;
 
     File file(filename, File::READ, 0);
@@ -118,7 +118,7 @@ namespace gip {
   }
   
   ColorImage* RASEncoder::read(
-    const String& filename) throw(InvalidFormat, IOException) {
+    const String& filename) {
     RASEncoderImpl::Header header;
 
     File file(filename, File::READ, 0);
@@ -422,7 +422,7 @@ namespace gip {
     return new ColorImage(image);
   }
   
-  void RASEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException)
+  void RASEncoder::write(const String& filename, const ColorImage* image)
   {
     if (!image) {
       _throw NullPointer(this);
@@ -481,7 +481,7 @@ namespace gip {
     file.truncate(sizeof(header) + static_cast<unsigned long long>(bytesPerLine) * dimension.getHeight());
   }
 
-  void RASEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException)
+  void RASEncoder::writeGray(const String& filename, const GrayImage* image)
   {
     if (!image) {
       _throw NullPointer(this);
@@ -543,7 +543,7 @@ namespace gip {
     );
   }
 
-  HashTable<String, AnyValue> RASEncoder::getInformation(const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> RASEncoder::getInformation(const String& filename) {
     HashTable<String, AnyValue> result;
     RASEncoderImpl::Header header;
     {

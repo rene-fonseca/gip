@@ -30,23 +30,23 @@ namespace gip {
     return MESSAGE("pgm");
   }
   
-  bool PGMEncoder::isValid(const String& filename) throw(IOException) {
+  bool PGMEncoder::isValid(const String& filename) {
     return true;
   }
   
-  ColorImage* PGMEncoder::read(const String& filename) throw(InvalidFormat, IOException) {
+  ColorImage* PGMEncoder::read(const String& filename) {
     return 0;
   }
   
   void PGMEncoder::write(
     const String& filename,
-    const ColorImage* image) throw(ImageException, IOException) {
+    const ColorImage* image) {
     _throw NotSupported(this);
   }
   
   void PGMEncoder::writeGray(
     const String& filename,
-    const GrayImage* image) throw(ImageException, IOException)
+    const GrayImage* image)
   {
     if (!image) {
       _throw NullPointer(this);
@@ -81,7 +81,7 @@ namespace gip {
     }
   }
   
-  HashTable<String, AnyValue> PGMEncoder::getInformation(const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> PGMEncoder::getInformation(const String& filename) {
     HashTable<String, AnyValue> result;
     result[MESSAGE("encoder")] = Type::getType(*this);
     result[MESSAGE("description")] = MESSAGE("Portable Graymap Format");

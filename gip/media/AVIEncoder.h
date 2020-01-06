@@ -69,7 +69,7 @@ namespace gip {
 
       @param filename The filename.
     */
-    AVIEncoder(const String& filename) throw(IOException);
+    AVIEncoder(const String& filename);
 
     /**
       Returns a description of the encoder.
@@ -84,14 +84,14 @@ namespace gip {
     /**
       Returns true if the format is valid.
     */
-    bool isValid() throw(IOException);
+    bool isValid();
 
     /**
       Reads a color image from the stream.
 
       @param stream The input stream.
     */
-    ArrayImage<ColorPixel>* read() throw(IOException);
+    ArrayImage<ColorPixel>* read();
 
     /**
       Writes the specified image to the stream.
@@ -99,12 +99,12 @@ namespace gip {
       @param stream The output stream.
       @param image The image to be written.
     */
-    void write(const ArrayImage<ColorPixel>* image) throw(IOException);
+    void write(const ArrayImage<ColorPixel>* image);
 
     /**
       Returns a description of the object.
     */
-    FormatOutputStream& getInfo(FormatOutputStream& stream) throw(IOException);
+    FormatOutputStream& getInfo(FormatOutputStream& stream);
 
     /**
       Destroys the encoder.
@@ -260,7 +260,7 @@ namespace gip {
     /**
       Analyses the AVI file.
     */
-    void analyse() throw(IOException);
+    void analyse();
     
     /**
       @param frame The image to receive the elements.
@@ -276,12 +276,12 @@ namespace gip {
 
       @param filename The name of the AVI file.
     */
-    AVIReader(const String& filename) throw(IOException);
+    AVIReader(const String& filename);
 
     /**
       Fills the specified image with the next frame and advances the position.
     */
-    void getFrame(ColorImage& frame) throw(IOException);
+    void getFrame(ColorImage& frame);
 
     /**
       Returns the dimension of the video stream.

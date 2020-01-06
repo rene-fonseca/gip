@@ -271,7 +271,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
   /** Writes the specified RGB color space pixel to the format stream using the format '(red, green, blue)'. */
   template<class COMPONENT>
-  FormatOutputStream& operator<<(FormatOutputStream& stream, const RGBPixel<COMPONENT>& value) throw(IOException) {
+  FormatOutputStream& operator<<(FormatOutputStream& stream, const RGBPixel<COMPONENT>& value) {
     FormatOutputStream::PushContext pushContext(stream); // make current context the default context
     return stream << '(' << value.red << ',' << value.green << ',' << value.blue << ')';
   }

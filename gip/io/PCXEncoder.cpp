@@ -54,7 +54,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return Literal("pcx");
   }
 
-  bool PCXEncoder::isValid(const String& filename) throw(IOException) {
+  bool PCXEncoder::isValid(const String& filename) {
     PCXHeader header;
     unsigned int size;
 
@@ -74,7 +74,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       (header.paletteType == 1);
   }
 
-  ColorImage* PCXEncoder::read(const String& filename) throw(InvalidFormat, IOException) {
+  ColorImage* PCXEncoder::read(const String& filename) {
 
     File file(filename, File::READ, 0);
 
@@ -230,7 +230,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return new ColorImage(image);
   }
 
-  void PCXEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException) {
+  void PCXEncoder::write(const String& filename, const ColorImage* image) {
     PCXHeader header;
     File file(filename, File::WRITE, File::CREATE);
 
@@ -301,7 +301,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     file.truncate(file.getPosition());
   }
 
-  void PCXEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
+  void PCXEncoder::writeGray(const String& filename, const GrayImage* image) {
     PCXHeader header;
     File file(filename, File::WRITE, File::CREATE);
 
@@ -381,7 +381,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   HashTable<String, AnyValue> PCXEncoder::getInformation(
-    const String& filename) throw(IOException) {
+    const String& filename) {
     HashTable<String, AnyValue> result;
     
     PCXHeader header;

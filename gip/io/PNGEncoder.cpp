@@ -46,7 +46,7 @@ namespace gip {
     }
 
     static void errorHandler(
-      png_structp context, png_const_charp message) throw(InvalidFormat) {
+      png_structp context, png_const_charp message) {
       _throw InvalidFormat();
     }    
   };
@@ -63,7 +63,7 @@ namespace gip {
     return Literal("png");
   }
 
-  bool PNGEncoder::isValid(const String& filename) throw(IOException) {
+  bool PNGEncoder::isValid(const String& filename) {
 #if defined(_COM_AZURE_DEV__GIP__USE_PNG)
     uint8 signature[8]; // size of signature is 8
     File file(filename, File::READ, 0);
@@ -75,7 +75,7 @@ namespace gip {
   }
 
   ColorImage* PNGEncoder::read(
-    const String& filename) throw(InvalidFormat, IOException) {
+    const String& filename) {
 #if defined(_COM_AZURE_DEV__GIP__USE_PNG)
     File file(filename, File::READ, 0);
 
@@ -172,7 +172,7 @@ namespace gip {
 
   void PNGEncoder::write(
     const String& filename,
-    const ColorImage* image) throw(ImageException, IOException) {
+    const ColorImage* image) {
 #if defined(_COM_AZURE_DEV__GIP__USE_PNG)
     unsigned int width = image->getDimension().getWidth();
     unsigned int height = image->getDimension().getHeight();
@@ -257,13 +257,13 @@ namespace gip {
   
   void PNGEncoder::writeGray(
     const String& filename,
-    const GrayImage* image) throw(ImageException, IOException)
+    const GrayImage* image)
   {
     _COM_AZURE_DEV__BASE__NOT_IMPLEMENTED();
   }
 
   HashTable<String, AnyValue> PNGEncoder::getInformation(
-    const String& filename) throw(IOException)
+    const String& filename)
   {
     HashTable<String, AnyValue> result;
 #if defined(_COM_AZURE_DEV__GIP__USE_PNG)

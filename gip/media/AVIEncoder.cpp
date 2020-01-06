@@ -54,28 +54,28 @@ inline ChunkId makeChunkId(char a, char b, char c, char d) noexcept {
   return result;
 }
 
-inline FormatOutputStream& operator<<(FormatOutputStream& stream, const LittleEndian<int16>& value) throw(IOException)
+inline FormatOutputStream& operator<<(FormatOutputStream& stream, const LittleEndian<int16>& value)
 {
   return stream << static_cast<uint16>(value);
 }
 
-inline FormatOutputStream& operator<<(FormatOutputStream& stream, const LittleEndian<uint16>& value) throw(IOException)
+inline FormatOutputStream& operator<<(FormatOutputStream& stream, const LittleEndian<uint16>& value)
 {
   return stream << static_cast<uint16>(value);
 }
 
-inline FormatOutputStream& operator<<(FormatOutputStream& stream, const LittleEndian<int32>& value) throw(IOException)
+inline FormatOutputStream& operator<<(FormatOutputStream& stream, const LittleEndian<int32>& value)
 {
   return stream << static_cast<uint32>(value);
 }
 
-inline FormatOutputStream& operator<<(FormatOutputStream& stream, const LittleEndian<uint32>& value) throw(IOException)
+inline FormatOutputStream& operator<<(FormatOutputStream& stream, const LittleEndian<uint32>& value)
 {
   return stream << static_cast<uint32>(value);
 }
 
 FormatOutputStream& operator<<(
-  FormatOutputStream& stream, const ChunkId& value) throw(IOException) {
+  FormatOutputStream& stream, const ChunkId& value) {
   unsigned int temp = value.id;
   stream << static_cast<char>(temp)
          << static_cast<char>(temp >> 8)
@@ -218,7 +218,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
 enum {BMP_RGB = 0, BMP_RLE8 = 1, BMP_RLE4 = 2, BMP_BITFIELDS = 3};
 
-AVIEncoder::AVIEncoder(const String& _filename) throw(IOException)
+AVIEncoder::AVIEncoder(const String& _filename)
   : filename(_filename) {
 }
 
@@ -230,19 +230,19 @@ String AVIEncoder::getDefaultExtension() const noexcept {
   return Literal("avi");
 }
 
-bool AVIEncoder::isValid() throw(IOException) {
+bool AVIEncoder::isValid() {
   return false;
 }
 
-ArrayImage<ColorPixel>* AVIEncoder::read() throw(IOException) {
+ArrayImage<ColorPixel>* AVIEncoder::read() {
   return 0;
 }
 
-void AVIEncoder::write(const ArrayImage<ColorPixel>* image) throw(IOException) {
+void AVIEncoder::write(const ArrayImage<ColorPixel>* image) {
 }
 
 FormatOutputStream& AVIEncoder::getInfo(
-  FormatOutputStream& stream) throw(IOException) {
+  FormatOutputStream& stream) {
   stream << "AVIEncoder (Microsoft Audio/Video Interleaved format):" << EOL;
 
   {
@@ -480,7 +480,7 @@ AVIEncoder::~AVIEncoder() {
 
 
 
-void AVIReader::analyse() throw(IOException) {
+void AVIReader::analyse() {
 #if 0
   {
     Chunk riff;
@@ -711,7 +711,7 @@ void AVIReader::analyse() throw(IOException) {
   }
 }
 
-AVIReader::AVIReader(const String& filename) throw(IOException) : file(filename, File::READ, 0), valid(false) {
+AVIReader::AVIReader(const String& filename) : file(filename, File::READ, 0), valid(false) {
   analyse();
 }
 
@@ -880,7 +880,7 @@ void AVIReader::decodeFrame(ColorImage& frame, const byte* src, unsigned int siz
   }
 }
 
-void AVIReader::getFrame(ColorImage& frame) throw(IOException) {
+void AVIReader::getFrame(ColorImage& frame) {
   bassert(
     frame.getDimension() == globalDescriptor.dimension,
     Exception("Invalid arg")

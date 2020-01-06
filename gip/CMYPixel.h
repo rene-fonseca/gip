@@ -264,7 +264,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
   /** Writes the specified CMY color space pixel to the format stream using the format '(cyan, magenta, yellow)'. */
   template<class COMPONENT>
-  FormatOutputStream& operator<<(FormatOutputStream& stream, const CMYPixel<COMPONENT>& value) throw(IOException) {
+  FormatOutputStream& operator<<(FormatOutputStream& stream, const CMYPixel<COMPONENT>& value) {
     FormatOutputStream::PushContext pushContext(stream); // make current context the default context
     return stream << '(' << value.cyan << ',' << value.magenta << ',' << value.yellow << ')';
   }

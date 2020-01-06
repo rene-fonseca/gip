@@ -104,7 +104,7 @@ namespace gip {
   /**
     Writes the specified point to the stream (e.g. "(x,y)").
   */
-  _COM_AZURE_DEV__GIP__API FormatOutputStream& operator<<(FormatOutputStream& stream, const Point& value) throw(IOException);
+  _COM_AZURE_DEV__GIP__API FormatOutputStream& operator<<(FormatOutputStream& stream, const Point& value);
 
 }; // end of gip namespace
 

@@ -51,12 +51,12 @@ namespace gip {
     /**
       Translates the specified index into a coordinate.
     */
-    virtual Point2D translate(unsigned int index) throw(OutOfRange) = 0;
+    virtual Point2D translate(unsigned int index) = 0;
 
     /**
       Translates the specified coordinate into an index.
     */
-    virtual unsigned int translate(const Point2D& coordinate) throw(OutOfRange) = 0;
+    virtual unsigned int translate(const Point2D& coordinate) = 0;
   };
 
   inline CoordinateMapper::CoordinateMapper(const Dimension& _dimension) noexcept

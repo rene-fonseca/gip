@@ -30,11 +30,11 @@ namespace gip {
     return MESSAGE("yuv");
   }
   
-  bool YUVEncoder::isValid(const String& filename) throw(IOException) {
+  bool YUVEncoder::isValid(const String& filename) {
     return true;
   }
   
-  ColorImage* YUVEncoder::read(const String& filename) throw(InvalidFormat, IOException) {
+  ColorImage* YUVEncoder::read(const String& filename) {
 //    for (y = 0; y < height/2; ++y) {
 //      for (x = 0; x < width/2; ++x) {
 //        U[y][x] = orig_cb[y][x] - 128;
@@ -70,7 +70,7 @@ namespace gip {
     return 0;
   }
   
-  void YUVEncoder::write(const String& filename, const ColorImage* image) throw(ImageException, IOException)
+  void YUVEncoder::write(const String& filename, const ColorImage* image)
   {
     if (!image) {
       _throw NullPointer(this);
@@ -80,11 +80,11 @@ namespace gip {
 //    FileOutputStream file(filename, FileOutputStream::CREATE | FileOutputStream::TRUNCATE);
   }
   
-  void YUVEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException) {
+  void YUVEncoder::writeGray(const String& filename, const GrayImage* image) {
     _throw NotSupported(this);
   }
   
-  HashTable<String, AnyValue> YUVEncoder::getInformation(const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> YUVEncoder::getInformation(const String& filename) {
     HashTable<String, AnyValue> result;
     result[MESSAGE("encoder")] = Type::getType(*this);
     result[MESSAGE("description")] = MESSAGE("Abekas YUV");

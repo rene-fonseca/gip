@@ -308,7 +308,7 @@ inline RGBPixel<unsigned char> HLSToRGB(const HLSPixel<unsigned char>& pixel) no
 
 /** Writes the specified HLS color space pixel to the format stream using the format '(hue, lightness, saturation)'. */
 template<class COMPONENT>
-FormatOutputStream& operator<<(FormatOutputStream& stream, const HLSPixel<COMPONENT>& value) throw(IOException) {
+FormatOutputStream& operator<<(FormatOutputStream& stream, const HLSPixel<COMPONENT>& value) {
   FormatOutputStream::PushContext pushContext(stream); // make current context the default context
   return stream << '(' << value.hue << ',' << value.lightness << ',' << value.saturation << ')';
 }

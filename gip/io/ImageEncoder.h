@@ -68,14 +68,14 @@ namespace gip {
       
       @param filename The path of the file.
     */
-    virtual bool isValid(const String& filename) throw(IOException) = 0;
+    virtual bool isValid(const String& filename) = 0;
     
     /**
       Reads a color image from the specified file.
       
       @param filename The path of the file.
     */
-    virtual ArrayImage<ColorPixel>* read(const String& filename) throw(InvalidFormat, IOException) = 0;
+    virtual ArrayImage<ColorPixel>* read(const String& filename) = 0;
     
     /**
       Writes the specified image to the specified file.
@@ -83,7 +83,7 @@ namespace gip {
       @param filename The path of the file.
       @param image The image to be written.
     */
-    virtual void write(const String& filename, const ArrayImage<ColorPixel>* image) throw(ImageException, IOException) = 0;
+    virtual void write(const String& filename, const ArrayImage<ColorPixel>* image) = 0;
     
     /**
       Returns a description of the object.
@@ -91,7 +91,7 @@ namespace gip {
       @param stream The stream to write the information to.
       @param filename The path of the file.
     */
-    virtual HashTable<String, AnyValue> getInformation(const String& filename) throw(IOException) = 0;
+    virtual HashTable<String, AnyValue> getInformation(const String& filename) = 0;
   };
   
 }; // end of gip namespace

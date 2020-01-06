@@ -54,7 +54,7 @@ namespace gip {
       @param row The row of the desired region.
       @param columns The column of the desired region.
     */
-    virtual Region getRegion(unsigned int row, unsigned int column) const throw(OutOfRange) = 0;
+    virtual Region getRegion(unsigned int row, unsigned int column) const = 0;
   };
 
   inline const Dimension& Segmentor::getDimension() const noexcept {

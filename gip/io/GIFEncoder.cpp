@@ -112,7 +112,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
         return code;
       }
 
-      void readImage(ColorImage& image, const ColorPixel* colorTable, bool interlaced) throw(InvalidFormat, IOException) {
+      void readImage(ColorImage& image, const ColorPixel* colorTable, bool interlaced) {
         static const unsigned int lookupRowIndex[4] = {0, 4, 2, 1};
         static const unsigned int lookupRowStep[4] = {8, 8, 4, 2};
         unsigned int width = image.getWidth();
@@ -261,7 +261,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return MESSAGE("gif");
   }
 
-  bool GIFEncoder::isValid(const String& filename) throw(IOException) {
+  bool GIFEncoder::isValid(const String& filename) {
     GIFImpl::Header header;
     unsigned int size;
 
@@ -276,7 +276,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
        ((header.version[0] == '8') && (header.version[1] == '9') && (header.version[2] == 'a')));
   }
 
-  ColorImage* GIFEncoder::read(const String& filename) throw(InvalidFormat, IOException) {
+  ColorImage* GIFEncoder::read(const String& filename) {
 
     File file(filename, File::READ, 0);
 
@@ -341,7 +341,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return new ColorImage(image);
   }
 
-  void GIFEncoder::write(const String& filename, const ColorImage* image) throw(IOException) {
+  void GIFEncoder::write(const String& filename, const ColorImage* image) {
     GIFImpl::Header header;
 
     File file(filename, File::WRITE, File::CREATE);
@@ -357,7 +357,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     file.truncate(sizeof(header));
   }
 
-  HashTable<String, AnyValue> GIFEncoder::getInformation(const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> GIFEncoder::getInformation(const String& filename) {
     HashTable<String, AnyValue> result;
     GIFImpl::Header header;
 

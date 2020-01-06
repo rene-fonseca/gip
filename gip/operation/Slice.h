@@ -43,7 +43,7 @@ namespace gip {
       @param maximum The maximum value.
       @param background The value to return for pixel value which fall outside the slice. The default is 0.
     */
-    inline Slice(const Pixel _minimum, const Pixel _maximum, const Pixel background = 0) throw(OutOfDomain)
+    inline Slice(const Pixel _minimum, const Pixel _maximum, const Pixel background = 0)
       : minimum(_minimum),
         maximum(_maximum),
         background(_background) {

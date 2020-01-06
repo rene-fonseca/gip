@@ -15,7 +15,7 @@
 
 namespace gip {
 
-  FormatOutputStream& operator<<(FormatOutputStream& stream, const Point& value) throw(IOException) {
+  FormatOutputStream& operator<<(FormatOutputStream& stream, const Point& value) {
     FormatOutputStream::PushContext pushContext(stream); // make current context the default context
     return stream << '(' << value.getX() << ',' << value.getY() << ')';
   }

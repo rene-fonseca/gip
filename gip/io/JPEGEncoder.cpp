@@ -108,7 +108,7 @@ namespace gip {
       // does nothing
     }
     
-    static void errorHandler(j_common_ptr cinfo) throw(InvalidFormat) {
+    static void errorHandler(j_common_ptr cinfo) {
       _throw InvalidFormat();
     }
     
@@ -133,7 +133,7 @@ namespace gip {
     return extensions;
   }
 
-  bool JPEGEncoder::isValid(const String& filename) throw(IOException) {
+  bool JPEGEncoder::isValid(const String& filename) {
 #if defined(_COM_AZURE_DEV__GIP__USE_JPEG)
     JPEGEncoderImpl::JPEGSource source;
     struct jpeg_decompress_struct cinfo;
@@ -172,7 +172,7 @@ namespace gip {
   }
 
   ColorImage* JPEGEncoder::read(
-    const String& filename) throw(InvalidFormat, IOException) {
+    const String& filename) {
 #if defined(_COM_AZURE_DEV__GIP__USE_JPEG)
     JPEGEncoderImpl::JPEGSource source;
     struct jpeg_decompress_struct cinfo;
@@ -242,7 +242,7 @@ namespace gip {
   
   void JPEGEncoder::write(
     const String& filename,
-    const ColorImage* image) throw(ImageException, IOException) {
+    const ColorImage* image) {
 #if defined(_COM_AZURE_DEV__GIP__USE_JPEG)
     struct JPEGEncoderImpl::JPEGDestination dest;
     struct jpeg_compress_struct cinfo;
@@ -305,7 +305,7 @@ namespace gip {
 #endif
   }
 
-  void JPEGEncoder::writeGray(const String& filename, const GrayImage* image) throw(ImageException, IOException)
+  void JPEGEncoder::writeGray(const String& filename, const GrayImage* image)
   {
     _COM_AZURE_DEV__BASE__NOT_IMPLEMENTED();
   }
@@ -356,7 +356,7 @@ namespace gip {
   */
 
   HashTable<String, AnyValue> JPEGEncoder::getInformation(
-    const String& filename) throw(IOException) {
+    const String& filename) {
 #if defined(_COM_AZURE_DEV__GIP__USE_JPEG)
     HashTable<String, AnyValue> result;
     

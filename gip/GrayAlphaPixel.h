@@ -269,7 +269,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
   /** Writes the specified GrayAlpha pixel to the format stream using the format '(gray, alpha)'. */
   template<class COMPONENT>
-  FormatOutputStream& operator<<(FormatOutputStream& stream, const GrayAlphaPixel<COMPONENT>& value) throw(IOException) {
+  FormatOutputStream& operator<<(FormatOutputStream& stream, const GrayAlphaPixel<COMPONENT>& value) {
     FormatOutputStream::PushContext pushContext(stream); // make current context the default context
     return stream << '(' << value.gray << ',' << value.alpha << ')';
   }

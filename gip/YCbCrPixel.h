@@ -168,7 +168,7 @@ inline RGBPixel<unsigned char> YCbCrToRGB(const YCbCrPixel<unsigned char>& pixel
 
 /** Writes the specified Y'CbCR color space pixel to the format stream using the format '(luma, cb, cr)'. */
 template<class COMPONENT>
-FormatOutputStream& operator<<(FormatOutputStream& stream, const YCbCrPixel<COMPONENT>& value) throw(IOException) {
+FormatOutputStream& operator<<(FormatOutputStream& stream, const YCbCrPixel<COMPONENT>& value) {
   FormatOutputStream::PushContext pushContext(stream); // make current context the default context
   return stream << '(' << value.luma << ',' << value.cb << ',' << value.cr << ')';
 }

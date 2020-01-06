@@ -30,18 +30,18 @@ namespace gip {
     return MESSAGE("ppm");
   }
   
-  bool PPMEncoder::isValid(const String& filename) throw(IOException) {
+  bool PPMEncoder::isValid(const String& filename) {
     return true;
   }
   
   ColorImage* PPMEncoder::read(
-    const String& filename) throw(InvalidFormat, IOException) {
+    const String& filename) {
     return 0;
   }
   
   void PPMEncoder::write(
     const String& filename,
-    const ColorImage* image) throw(ImageException, IOException)
+    const ColorImage* image)
   {
     if (!image) {
       _throw NullPointer(this);
@@ -83,11 +83,11 @@ namespace gip {
   
   void PPMEncoder::writeGray(
     const String& filename,
-    const GrayImage* image) throw(ImageException, IOException) {
+    const GrayImage* image) {
     _throw NotSupported(this);
   }
   
-  HashTable<String, AnyValue> PPMEncoder::getInformation(const String& filename) throw(IOException) {
+  HashTable<String, AnyValue> PPMEncoder::getInformation(const String& filename) {
     HashTable<String, AnyValue> result;
     result[MESSAGE("encoder")] = Type::getType(*this);
     result[MESSAGE("description")] = MESSAGE("Portable Pixmap Format");

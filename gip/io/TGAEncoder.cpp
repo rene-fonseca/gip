@@ -88,7 +88,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     return extensions;
   }
   
-  bool TGAEncoder::isValid(const String& filename) throw(IOException) {    
+  bool TGAEncoder::isValid(const String& filename) {    
     bool newFormat = false;
     TGAEncoderImpl::Header header;
     TGAEncoderImpl::Footer footer;    
@@ -125,7 +125,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
   
   ColorImage* TGAEncoder::read(
-    const String& filename) throw(InvalidFormat, IOException) {    
+    const String& filename) {    
     bool newFormat = false;
     TGAEncoderImpl::Header header;
     TGAEncoderImpl::Footer footer;    
@@ -184,7 +184,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   
   void TGAEncoder::write(
     const String& filename,
-    const ColorImage* image) throw(ImageException, IOException)
+    const ColorImage* image)
   {
     if (!image) {
       _throw NullPointer(this);
@@ -243,7 +243,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
   void TGAEncoder::write(
     const String& filename,
-    const ColorAlphaImage* image) throw(ImageException, IOException)
+    const ColorAlphaImage* image)
   {
     if (!image) {
       _throw NullPointer(this);
@@ -304,7 +304,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
   void TGAEncoder::writeGray(
     const String& filename,
-    const GrayImage* image) throw(ImageException, IOException)
+    const GrayImage* image)
   {
     if (!image) {
       _throw NullPointer(this);
@@ -361,7 +361,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
   }
 
   HashTable<String, AnyValue> TGAEncoder::getInformation(
-    const String& filename) throw(IOException) {
+    const String& filename) {
     HashTable<String, AnyValue> result;
     static const Literal signature("TRUEVISION-XFILE");
     
