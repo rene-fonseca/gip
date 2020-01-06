@@ -969,7 +969,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
       
       @short Acquisition listener.
     */
-    class AcquisitionListener {
+    class _COM_AZURE_DEV__GIP__API AcquisitionListener {
     public:
 
       /**

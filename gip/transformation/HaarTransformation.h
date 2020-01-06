@@ -34,7 +34,7 @@ namespace gip {
   };
 
   template<>
-  class HaarTransformation<FloatImage> : public UnaryTransformation<FloatImage> {
+  class _COM_AZURE_DEV__GIP__API HaarTransformation<FloatImage> : public UnaryTransformation<FloatImage> {
   private:
 
     typedef DestinationImage::Rows::RowIterator::ElementIterator RowElementIterator;
@@ -94,7 +94,7 @@ namespace gip {
   };
 
   template<>
-  class HaarTransformation<GrayImage> : public UnaryTransformation<GrayImage> {
+  class _COM_AZURE_DEV__GIP__API HaarTransformation<GrayImage> : public UnaryTransformation<GrayImage> {
   private:
     
     typedef DestinationImage::Rows::RowIterator::ElementIterator RowElementIterator;
