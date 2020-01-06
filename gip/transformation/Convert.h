@@ -237,8 +237,9 @@ namespace gip {
       @param source The source image.
       @param convert The convertion operation.
     */
-    Convert(DestinationImage* destination, const SourceImage* source, const UNARY& _convert) noexcept :
-            Transformation<DestinationImage, SourceImage>(destination, source), convert(_convert) {
+    Convert(DestinationImage* destination, const SourceImage* source, const UNARY& _convert)
+      : Transformation<DestinationImage, SourceImage>(destination, source), convert(_convert)
+    {
       bassert(
         destination->getDimension() == source->getDimension(),
         Exception("Images must have identical dimensions", this)

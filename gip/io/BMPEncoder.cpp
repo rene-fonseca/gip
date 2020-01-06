@@ -48,7 +48,7 @@ namespace gip {
       : palette(_palette), maxIndex(_maxIndex) {
     }
     
-    inline Result operator()(Argument value) const noexcept {
+    inline Result operator()(Argument value) const {
       bassert(
         value < maxIndex,
         bindCause(InvalidFormat("Color table index out of range", this), ImageEncoder::INVALID_COLOR)

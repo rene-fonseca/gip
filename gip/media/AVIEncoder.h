@@ -268,7 +268,7 @@ namespace gip {
       @param size The size of the encoded frame data.
       @param type The encoding.
     */
-    void decodeFrame(ColorImage& frame, const byte* src, unsigned int size, FrameType type) noexcept;
+    void decodeFrame(ColorImage& frame, const byte* src, unsigned int size, FrameType type);
   public:
 
     /**

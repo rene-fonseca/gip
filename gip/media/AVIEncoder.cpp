@@ -715,7 +715,7 @@ AVIReader::AVIReader(const String& filename) throw(IOException) : file(filename,
   analyse();
 }
 
-void AVIReader::decodeFrame(ColorImage& frame, const byte* src, unsigned int size, FrameType type) noexcept {
+void AVIReader::decodeFrame(ColorImage& frame, const byte* src, unsigned int size, FrameType type) {
   ColorPixel* dest = frame.getElements();
   const Dimension dimension = globalDescriptor.dimension;
 

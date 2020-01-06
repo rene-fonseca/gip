@@ -78,7 +78,8 @@ public:
     encoder.write(outputFile, &finalImage);
   }
 
-  Dimension getDimension(const String& value) const noexcept {
+  Dimension getDimension(const String& value) const
+  {
     // dimension format "123x123"
     int x = value.indexOf('x');
     bassert(x > 0, base::InvalidFormat("Invalid dimension", this));
