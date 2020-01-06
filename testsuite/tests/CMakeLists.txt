@@ -50,3 +50,7 @@ elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Wasm")
 endif ()
 
 add_test(NAME test_gip COMMAND ${CTEST_EXE} ${CMAKE_CURRENT_BINARY_DIR}/test_gip${EXTENSION})
+if (WIN32)
+  message("SET PATH ENV: PATH=${CMAKE_SOURCE_DIR}/base/bin/${CONFIG};$ENV{PATH}")
+  set_tests_properties(test_gip PROPERTIES ENVIRONMENT "PATH=${CMAKE_SOURCE_DIR}/base/bin/${CONFIG};$ENV{PATH}")
+endif ()
