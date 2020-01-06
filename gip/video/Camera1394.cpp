@@ -1416,7 +1416,8 @@ _COM_AZURE_DEV__BASE__PACKED__END
     case CAPTURE_QUALITY:
       return featureDescriptors.captureQuality.readable;
     default:
-      _throw OutOfDomain(this);
+      BASSERT(!"Invalid feature.");
+      return false;
     }
   }
   
