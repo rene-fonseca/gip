@@ -7,44 +7,211 @@ pr:
 variables:
   CLICOLOR_FORCE: 1 # used by tools
 
-pool:
-  vmImage: 'windows-latest'
+jobs:
+- job: windows-x64
+  pool:
+    vmImage: 'windows-latest'
 
-steps:
-- task: DownloadPipelineArtifact@1
-  inputs:
-    buildType: 'specific'
-    project: 'base'
-    definition: 2
-    buildVersionToDownload: 'latestFromBranch'
-    branchName: 'refs/heads/master'
-    artifactName: 'base-windows'
-    targetPath: $(Build.SourcesDirectory)/base
+  steps:
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      buildType: 'specific'
+      project: 'base'
+      definition: 2
+      buildVersionToDownload: 'latestFromBranch'
+      branchName: 'refs/heads/master'
+      artifactName: 'base-windows'
+      targetPath: $(Build.SourcesDirectory)/base
 
-- task: CMake@1
-  inputs:
-    cmakeArgs: '.. -DCOLOR=1 -DCMAKE_PREFIX_PATH=base -DCMAKE_INSTALL_PREFIX=install'
+  - task: CMake@1
+    inputs:
+      cmakeArgs: '.. -DCOLOR=1 -DCMAKE_PREFIX_PATH=base -DCMAKE_INSTALL_PREFIX=install'
 
-- task: CMake@1
-  inputs:
-    cmakeArgs: '--build . --config Debug --target install'
+  - task: CMake@1
+    inputs:
+      cmakeArgs: '--build . --config Debug --target install'
 
-- task: CmdLine@2
-  displayName: 'Run tests'
-  continueOnError: true
-  inputs:
-    script: |
-      ctest -T Test -C Debug
-    workingDirectory: $(System.DefaultWorkingDirectory)/build
+  - task: CmdLine@2
+    displayName: 'Run tests'
+    continueOnError: true
+    inputs:
+      script: |
+        ctest -T Test -C Debug
+      workingDirectory: $(System.DefaultWorkingDirectory)/build
 
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'cTest'
-    testResultsFiles: '**/Test.xml'
-    testRunTitle: 'Test results for CTest'
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'cTest'
+      testResultsFiles: '**/Test.xml'
+      testRunTitle: 'Test results for CTest'
 
-- task: PublishPipelineArtifact@1
-  inputs:
-    artifactName: 'base-windows-x64'
-    targetPath: 'artifacts'
-    path: $(System.DefaultWorkingDirectory)/build/install
+  - task: PublishPipelineArtifact@1
+    inputs:
+      artifactName: 'gip-windows-x64'
+      targetPath: 'artifacts'
+      path: $(System.DefaultWorkingDirectory)/build/install
+
+- job: windows-x86
+  pool:
+    vmImage: 'windows-latest'
+
+  steps:
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      buildType: 'specific'
+      project: 'base'
+      definition: 2
+      buildVersionToDownload: 'latestFromBranch'
+      branchName: 'refs/heads/master'
+      artifactName: 'base-windows-x86'
+      targetPath: $(Build.SourcesDirectory)/base
+
+  - task: CMake@1
+    inputs:
+      cmakeArgs: '.. -A Win32 -DCOLOR=1 -DCMAKE_PREFIX_PATH=base -DCMAKE_INSTALL_PREFIX=install'
+
+  - task: CMake@1
+    inputs:
+      cmakeArgs: '--build . --config Debug --target install'
+
+  - task: CmdLine@2
+    displayName: 'Run tests'
+    continueOnError: true
+    inputs:
+      script: |
+        ctest -T Test -C Debug
+      workingDirectory: $(System.DefaultWorkingDirectory)/build
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'cTest'
+      testResultsFiles: '**/Test.xml'
+      testRunTitle: 'Test results for CTest'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      artifactName: 'gip-windows-x86'
+      targetPath: 'artifacts'
+      path: $(System.DefaultWorkingDirectory)/build/install
+
+- job: ubuntu18_04
+  pool:
+    vmImage: 'ubuntu-18.04'
+  steps:
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      buildType: 'specific'
+      project: 'base'
+      definition: 2
+      buildVersionToDownload: 'latestFromBranch'
+      branchName: 'refs/heads/master'
+      artifactName: 'base-ubuntu18'
+      targetPath: $(Build.SourcesDirectory)/base
+
+  - task: CMake@1
+    displayName: 'Config'
+    inputs:
+      cmakeArgs: '.. -DCOLOR=1 -DCMAKE_PREFIX_PATH=base -DCMAKE_INSTALL_PREFIX=install'
+  
+  - task: CMake@1
+    displayName: 'Build'
+    inputs:
+      cmakeArgs: '--build . --config Debug --target install -- -j 4'
+
+  - task: CmdLine@2
+    displayName: 'Run tests'
+    continueOnError: true
+    inputs:
+      script: |
+        ctest -T Test
+      workingDirectory: $(System.DefaultWorkingDirectory)/build
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'cTest'
+      testResultsFiles: '**/Test.xml'
+      testRunTitle: 'Test results for CTest'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      artifactName: 'gip-ubuntu18'
+      targetPath: 'artifacts'
+      path: $(System.DefaultWorkingDirectory)/build/install
+
+- job: ubuntu16_04
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      buildType: 'specific'
+      project: 'base'
+      definition: 2
+      buildVersionToDownload: 'latestFromBranch'
+      branchName: 'refs/heads/master'
+      artifactName: 'base-ubuntu16'
+      targetPath: $(Build.SourcesDirectory)/base
+
+  - task: CMake@1
+    displayName: 'Config'
+    inputs:
+      cmakeArgs: '.. -DCOLOR=1 -DCMAKE_PREFIX_PATH=base -DCMAKE_INSTALL_PREFIX=install'
+  
+  - task: CMake@1
+    displayName: 'Build'
+    inputs:
+      cmakeArgs: '--build . --config Debug --target install -- -j 4'
+
+  - task: CmdLine@2
+    displayName: 'Run tests'
+    continueOnError: true
+    inputs:
+      script: |
+        ctest -T Test
+      workingDirectory: $(System.DefaultWorkingDirectory)/build
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'cTest'
+      testResultsFiles: '**/Test.xml'
+      testRunTitle: 'Test results for CTest'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      artifactName: 'gip-ubuntu16'
+      targetPath: 'artifacts'
+      path: $(System.DefaultWorkingDirectory)/build/install
+
+- job: macos
+  pool:
+    vmImage: 'macOS-latest'
+  steps:
+  - task: CMake@1
+    displayName: 'Config'
+    inputs:
+      cmakeArgs: '.. -DCOLOR=1 -DCMAKE_PREFIX_PATH=base -DCMAKE_INSTALL_PREFIX=install'
+
+  - task: CMake@1
+    displayName: 'Build'
+    inputs:
+      cmakeArgs: '--build . --config Debug --target install -- -j 4'
+
+  - task: CmdLine@2
+    displayName: 'Run tests'
+    continueOnError: true
+    inputs:
+      script: |
+        ctest -T Test
+      workingDirectory: $(System.DefaultWorkingDirectory)/build
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'cTest'
+      testResultsFiles: '**/Test.xml'
+      testRunTitle: 'Test results for CTest'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      artifactName: 'gip-macos'
+      targetPath: 'artifacts'
+      path: $(System.DefaultWorkingDirectory)/build/install
