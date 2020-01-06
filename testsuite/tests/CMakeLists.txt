@@ -10,31 +10,30 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 foreach(sourcefile ${TEST_SOURCES})
   string(REPLACE ".cpp" "" name ${sourcefile})
   add_executable("test_${name}" ${sourcefile})
-if (0 AND MSVC)
+if (0)
   add_dependencies("test_${name}" gip_STATIC)
   target_link_libraries("test_${name}" gip_STATIC)
-  target_link_libraries("test_${name}" ${BASE_LIB_STATIC})
-  target_link_libraries("test_${name}" Ws2_32 Netapi32 Winmm)
+  target_link_libraries("test_${name}" base_STATIC)
 else ()
   add_dependencies("test_${name}" gip)
   target_compile_definitions("test_${name}" PRIVATE _COM_AZURE_DEV__GIP__SHARED_LIBRARY)
   target_compile_definitions("test_${name}" PRIVATE _COM_AZURE_DEV__BASE__SHARED_LIBRARY)
-  target_link_libraries("test_${name}" gip ${BASE_LIB})
+  target_link_libraries("test_${name}" gip base)
 endif ()
   set_target_properties("test_${name}" PROPERTIES FOLDER testsuite)
 
   install(TARGETS "test_${name}"
     CONFIGURATIONS Debug
-    ARCHIVE DESTINATION "${CMAKE_BINARY_DIR}/install/bin/debug"
-    LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/install/bin/debug"
-    RUNTIME DESTINATION "${CMAKE_BINARY_DIR}/install/bin/debug"
+    ARCHIVE DESTINATION "bin/debug"
+    LIBRARY DESTINATION "bin/debug"
+    RUNTIME DESTINATION "bin/debug"
   )
 
   install(TARGETS "test_${name}"
     CONFIGURATIONS Release
-    ARCHIVE DESTINATION "${CMAKE_BINARY_DIR}/install/bin/release"
-    LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/install/bin/release"
-    RUNTIME DESTINATION "${CMAKE_BINARY_DIR}/install/bin/release"
+    ARCHIVE DESTINATION "bin/release"
+    LIBRARY DESTINATION "bin/release"
+    RUNTIME DESTINATION "bin/release"
   )
 
 endforeach()
