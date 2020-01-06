@@ -9,8 +9,11 @@ cmake_install.cmake
 gipConfig.cmake
 CPackConfig.cmake
 CPackSourceConfig.cmake
+DartConfiguration.tcl
 gip-*.sh
 gip-*.tar.gz
+Testing/
+*.cmake
 install_manifest.txt
 Makefile
 bin/
