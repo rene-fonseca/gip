@@ -165,7 +165,7 @@ namespace gip {
 
     if (options & ANTIALIASING) {
       unsigned int yExactSquared = radius * radius; // calculated incrementally: radius * radius - x * x
-      int otherY = 0; // selects inner or outer pixel
+      // int otherY = 0; // selects inner or outer pixel
 
       if (options & FILL) { // anti aliased filled circle
         int yLast = Math::iSqrt(radius * radius/2); // TAG: rounding problem
@@ -1357,7 +1357,7 @@ namespace gip {
 
   void Canvas::write(const Point& position, const String& message) noexcept {
     const unsigned char* fontBitmap = nullptr; // fill me
-    const unsigned int bytesPerRow = 1;
+    // const unsigned int bytesPerRow = 1;
     const unsigned int bytesPerCharacter = 16;
     const unsigned int characterWidth = 8;
     const unsigned int characterHeight = 16;

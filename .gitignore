@@ -4,6 +4,8 @@ Debug/
 Release/
 generated/
 CMakeFiles/
+CMakeScripts/
+*.xcodeproj/
 CMakeCache.txt
 cmake_install.cmake
 gipConfig.cmake
