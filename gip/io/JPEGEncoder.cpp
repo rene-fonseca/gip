@@ -14,11 +14,12 @@
 #include <gip/io/JPEGEncoder.h>
 #include <base/io/File.h>
 #include <base/mem/Allocator.h>
+#include <gip/build.h>
 
 #include <sys/types.h> // get size_t
 #include <stdio.h> // get FILE (but we do not use this)
 
-#if 0
+#if defined(_COM_AZURE_DEV__GIP__USE_JPEG)
 extern "C" {
 #include <jpeglib.h>
 };
@@ -26,7 +27,7 @@ extern "C" {
 
 namespace gip {
 
-#if 0
+#if defined(_COM_AZURE_DEV__GIP__USE_JPEG)
   class JPEGEncoderImpl {
   public:
 
@@ -133,7 +134,7 @@ namespace gip {
   }
 
   bool JPEGEncoder::isValid(const String& filename) throw(IOException) {
-#if 0
+#if defined(_COM_AZURE_DEV__GIP__USE_JPEG)
     JPEGEncoderImpl::JPEGSource source;
     struct jpeg_decompress_struct cinfo;
     struct jpeg_error_mgr jerr;
@@ -172,7 +173,7 @@ namespace gip {
 
   ColorImage* JPEGEncoder::read(
     const String& filename) throw(InvalidFormat, IOException) {
-#if 0
+#if defined(_COM_AZURE_DEV__GIP__USE_JPEG)
     JPEGEncoderImpl::JPEGSource source;
     struct jpeg_decompress_struct cinfo;
     struct jpeg_error_mgr jerr;
@@ -242,7 +243,7 @@ namespace gip {
   void JPEGEncoder::write(
     const String& filename,
     const ColorImage* image) throw(ImageException, IOException) {
-#if 0
+#if defined(_COM_AZURE_DEV__GIP__USE_JPEG)
     struct JPEGEncoderImpl::JPEGDestination dest;
     struct jpeg_compress_struct cinfo;
     struct jpeg_error_mgr jerr;
@@ -356,7 +357,7 @@ namespace gip {
 
   HashTable<String, AnyValue> JPEGEncoder::getInformation(
     const String& filename) throw(IOException) {
-#if 0
+#if defined(_COM_AZURE_DEV__GIP__USE_JPEG)
     HashTable<String, AnyValue> result;
     
     JPEGEncoderImpl::JPEGSource source;

@@ -13,14 +13,15 @@
 
 #include <gip/io/PNGEncoder.h>
 #include <base/io/File.h>
+#include <gip/build.h>
 
-#if 0
+#if defined(_COM_AZURE_DEV__GIP__USE_PNG)
 #include <png.h>
 #endif
 
 namespace gip {
 
-#if 0
+#if defined(_COM_AZURE_DEV__GIP__USE_PNG)
   class PNGEncoderImpl {
   public:
 
@@ -63,7 +64,7 @@ namespace gip {
   }
 
   bool PNGEncoder::isValid(const String& filename) throw(IOException) {
-#if 0
+#if defined(_COM_AZURE_DEV__GIP__USE_PNG)
     uint8 signature[8]; // size of signature is 8
     File file(filename, File::READ, 0);
     unsigned int result = file.read(signature, sizeof(signature));
@@ -75,7 +76,7 @@ namespace gip {
 
   ColorImage* PNGEncoder::read(
     const String& filename) throw(InvalidFormat, IOException) {
-#if 0
+#if defined(_COM_AZURE_DEV__GIP__USE_PNG)
     File file(filename, File::READ, 0);
 
     png_structp context = ::png_create_read_struct(
@@ -136,7 +137,7 @@ namespace gip {
       
       if (!((bitDepth == 8) && (colorType == PNG_COLOR_TYPE_RGB))) {
         ::png_destroy_read_struct(&context, &information, &endInformation);
-        return 0;
+        return nullptr;
       }
       
       ColorImage* image = new ColorImage(Dimension(width, height));
@@ -172,7 +173,7 @@ namespace gip {
   void PNGEncoder::write(
     const String& filename,
     const ColorImage* image) throw(ImageException, IOException) {
-#if 0
+#if defined(_COM_AZURE_DEV__GIP__USE_PNG)
     unsigned int width = image->getDimension().getWidth();
     unsigned int height = image->getDimension().getHeight();
     bassert(
@@ -265,7 +266,7 @@ namespace gip {
     const String& filename) throw(IOException)
   {
     HashTable<String, AnyValue> result;
-#if 0
+#if defined(_COM_AZURE_DEV__GIP__USE_PNG)
     File file(filename, File::READ, 0);
     
     png_structp context = ::png_create_read_struct(
@@ -305,15 +306,15 @@ namespace gip {
         &filterType
       );
 
-      result["encoder"] = Type::getType(*this);
-      result["description"] = "Portable Network Graphics";
-      result["width"] = width;
-      result["height"] = height;
-      result["bit depth"] = bitDepth;
-      result["color type"] = colorType;
-      result["interlaced type"] = interlaceType;
-      result["compression type"] = compressionType;
-      result["filter type"] = filterType;
+      result[(String)"encoder"] = Type::getType(*this);
+      result[(String)"description"] = "Portable Network Graphics";
+      result[(String)"width"] = width;
+      result[(String)"height"] = height;
+      result[(String)"bit depth"] = bitDepth;
+      result[(String)"color type"] = colorType;
+      result[(String)"interlaced type"] = interlaceType;
+      result[(String)"compression type"] = compressionType;
+      result[(String)"filter type"] = filterType;
       
       ::png_destroy_read_struct(&context, &information, 0);
     } catch(IOException&) {
