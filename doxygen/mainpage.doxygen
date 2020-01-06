@@ -1,7 +1,7 @@
 /** \mainpage The Generic Image Processing (GIP) Framework
 
 \section legal Legal Notice
-Copyright &copy; 2001, 2002 by Ren&eacute; Moeller Fonseca
+Copyright &copy; 2001-2002, 2019-2020 by René Møller Fonseca <rene.m.fonseca+gip@gmail.com>
 
 Warning and Disclaimer: Every effort has been made to make this documentation
 as complete and accurate as possible, but no warranty or fitness is implied.
@@ -13,6 +13,6 @@ the use of any software that may accompany it.
 
 \section intro Introduction
 This is the API documentation of <strong>The Generic Image Processing (GIP)
-Framework</strong>. A framework for developing image processing applications.
+Framework</strong>. A C++ framework for developing image processing applications.
 The home of this project is <a href="https://dev.azure.com/renefonseca/gip">https://dev.azure.com/renefonseca/gip</a>.
 */
