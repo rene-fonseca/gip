@@ -186,6 +186,16 @@ jobs:
   pool:
     vmImage: 'macOS-latest'
   steps:
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      buildType: 'specific'
+      project: 'base'
+      definition: 2
+      buildVersionToDownload: 'latestFromBranch'
+      branchName: 'refs/heads/master'
+      artifactName: 'base-macos'
+      targetPath: $(Build.SourcesDirectory)/base
+
   - task: CMake@1
     displayName: 'Config'
     inputs:
