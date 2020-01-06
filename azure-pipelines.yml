@@ -12,7 +12,7 @@ steps:
     definition: 2
     buildVersionToDownload: 'latestFromBranch'
     branchName: 'refs/heads/master'
-    artifactName: 'base'
+    artifactName: 'base-windows'
     targetPath: $(Build.SourcesDirectory)/base
 
 - task: CMake@1
