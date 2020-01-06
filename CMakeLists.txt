@@ -2,18 +2,23 @@ cmake_minimum_required(VERSION 3.1)
 
 # see https://cmake.org/cmake-tutorial/
 
+set(CMAKE_VERBOSE_MAKEFILE OFF)
+
 project(gip)
 
 set(gip_VERSION_MAJOR 0)
 set(gip_VERSION_MINOR 9)
 set(gip_VERSION_MICRO 0)
 
+# set(CMAKE_FIND_PACKAGE_PREFER_CONFIG 1)
+find_package(base REQUIRED)
+
 if (MSVC)
   add_definitions(-DUNICODE)
   add_definitions(-D_UNICODE)
 endif ()
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_COM_AZURE_DEV__BASE__DEBUG") # TAG: gets set for release MSC release build!
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_COM_AZURE_DEV__BASE__DEBUG")
 
 if (MSVC)
   # TAG: need to fix all exception specifications
@@ -32,9 +37,6 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 endif ()
 
 endif ()
-
-include_directories("${PROJECT_SOURCE_DIR}")
-include_directories("${PROJECT_SOURCE_DIR}/../base") # TAG: need depend on base lib
 
 file(GLOB_RECURSE gip_SRC
   "gip/*.h"
@@ -66,11 +68,18 @@ if (MSVC)
   set(gip_ADDITIONAL ${CMAKE_BINARY_DIR}/generated/gip/gip.rc)
 endif ()
 
-include_directories(${CMAKE_BINARY_DIR}/generated)
-
 add_library(gip SHARED ${gip_SRC} ${gip_ADDITIONAL} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 target_compile_definitions(gip PRIVATE _COM_AZURE_DEV__GIP__SHARED_LIBRARY_BUILD)
 target_compile_definitions(gip PRIVATE _COM_AZURE_DEV__BASE__SHARED_LIBRARY) # TAG: define in header instead
+
+target_include_directories(gip PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:include> # <prefix>/include
+)
+target_include_directories(gip PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated>
+  $<INSTALL_INTERFACE:include> # <prefix>/include
+)
 
 # macOS requires all values to be less than 1024
 set_target_properties(gip
@@ -81,19 +90,17 @@ set_target_properties(gip
 add_library(gip_STATIC STATIC ${gip_SRC} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 set_target_properties(gip_STATIC PROPERTIES OUTPUT_NAME gip_static)
 
-# TAG: need to handle Debug/Release
-find_library(BASE_LIB NAMES base libbase libbase.dylib PATHS base ../base ../base/build/Debug)
-message("BASE_LIB: ${BASE_LIB}")
+target_include_directories(gip_STATIC PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:include> # <prefix>/include
+)
+target_include_directories(gip_STATIC PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated>
+  $<INSTALL_INTERFACE:include> # <prefix>/include
+)
 
-find_library(BASE_LIB_STATIC NAMES base_static libbase_static libbase_static.lib PATHS base ../base ../base/build/Debug)
-message("BASE_LIB_STATIC: ${BASE_LIB_STATIC}")
-
-#add_dependencies(gip base)
-target_link_libraries(gip ${BASE_LIB})
-
-if (MSVC)
-# target_link_libraries(gip Ws2_32 Netapi32 Winmm)
-endif ()
+target_link_libraries(gip PUBLIC base)
+target_link_libraries(gip_STATIC PUBLIC base_STATIC)
 
 foreach(source IN ITEMS ${gip_SRC})
   get_filename_component(source_path "${source}" PATH)
@@ -112,27 +119,53 @@ endif ()
 # preserve folder structure
 install(
   DIRECTORY "${CMAKE_SOURCE_DIR}/gip" # source directory
-  DESTINATION "${CMAKE_BINARY_DIR}/install/include" # target directory
+  DESTINATION "include" # target directory
   FILES_MATCHING PATTERN "*.h" # select header files
 )
 install(
   DIRECTORY "${CMAKE_BINARY_DIR}/generated/gip" # source directory
-  DESTINATION "${CMAKE_BINARY_DIR}/install/include" # target directory
+  DESTINATION "include" # target directory
   FILES_MATCHING PATTERN "*.h" # select header files
 )
 
+set_target_properties(gip PROPERTIES PUBLIC_HEADER "") # ${gip_HEADERS}
+
 install(TARGETS gip gip_STATIC
   CONFIGURATIONS Debug
-  ARCHIVE DESTINATION "${CMAKE_BINARY_DIR}/install/lib/debug"
-  LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/install/lib/debug"
-  RUNTIME DESTINATION "${CMAKE_BINARY_DIR}/install/bin/debug"
+  EXPORT gipConfigDebug
+  PUBLIC_HEADER DESTINATION "include/gip"
+  ARCHIVE DESTINATION "lib/debug"
+  LIBRARY DESTINATION "lib/debug"
+  RUNTIME DESTINATION "bin/debug"
 )
 
 install(TARGETS gip gip_STATIC
   CONFIGURATIONS Release
-  ARCHIVE DESTINATION "${CMAKE_BINARY_DIR}/install/lib/release"
-  LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/install/lib/release"
-  RUNTIME DESTINATION "${CMAKE_BINARY_DIR}/install/bin/release"
+  EXPORT gipConfigRelease
+  PUBLIC_HEADER DESTINATION "include/gip"
+  ARCHIVE DESTINATION "lib/release"
+  LIBRARY DESTINATION "lib/release"
+  RUNTIME DESTINATION "bin/release"
 )
+
+if (1)
+export(TARGETS gip gip_STATIC
+##  NAMESPACE gip::
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/gipConfig.cmake"
+)
+
+install(EXPORT gipConfigDebug
+  DESTINATION "lib/cmake/gip"
+  CONFIGURATIONS Debug
+##  NAMESPACE gip::
+  FILE gipConfig.cmake
+)
+install(EXPORT gipConfigRelease
+  DESTINATION "lib/cmake/gip"
+  CONFIGURATIONS Release
+##  NAMESPACE gip::
+  FILE gipConfig.cmake
+)
+endif ()
 
 add_subdirectory("testsuite/tests")
