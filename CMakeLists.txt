@@ -12,6 +12,8 @@ set(gip_VERSION_MICRO 0)
 
 # set(CMAKE_FIND_PACKAGE_PREFER_CONFIG 1)
 find_package(base REQUIRED)
+find_package(PNG)
+find_package(JPEG)
 
 if (MSVC)
   add_definitions(-DUNICODE)
@@ -101,6 +103,12 @@ target_include_directories(gip_STATIC PUBLIC
 
 target_link_libraries(gip PUBLIC base)
 target_link_libraries(gip_STATIC PUBLIC base_STATIC)
+if (PNG_FOUND)
+target_link_libraries(gip PRIVATE PNG::PNG)
+endif ()
+if (JPEG_FOUND)
+target_link_libraries(gip PRIVATE JPEG::JPEG)
+endif ()
 
 foreach(source IN ITEMS ${gip_SRC})
   get_filename_component(source_path "${source}" PATH)
