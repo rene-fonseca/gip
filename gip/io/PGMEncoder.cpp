@@ -66,7 +66,7 @@ namespace gip {
 
     const GrayPixel* end = image->getElements();
     const GrayPixel* src = end + dimension.getSize();
-    unsigned int row = 0;
+    // unsigned int row = 0;
     while (src > end) {
       const GrayPixel* endOfRow = src;
       src -= dimension.getWidth();

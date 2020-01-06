@@ -19,14 +19,17 @@ namespace gip {
   Canvas::Canvas(ColorImage* _canvas) noexcept
      : canvas(_canvas),
        dimension(_canvas->getDimension()),
-       rows(_canvas->getRows()) {
+       rows(_canvas->getRows())
+  {
   }
 
-  Dimension Canvas::getDimension() const noexcept {
+  Dimension Canvas::getDimension() const noexcept
+  {
     return dimension;
   }
 
-  bool Canvas::clip(Point& p1, Point& p2) const noexcept {
+  bool Canvas::clip(Point& p1, Point& p2) const noexcept
+  {
     // Cohen-Sutherland line clipping
     enum {BOTTOM = 1, TOP = 2, LEFT = 4, RIGHT = 8};
 
@@ -378,7 +381,8 @@ namespace gip {
     }
   }
 
-  void Canvas::ring(const Point& center, unsigned int innerRadius, unsigned int outerRadius, Pixel color, unsigned int options) noexcept {
+  void Canvas::ring(const Point& center, unsigned int innerRadius, unsigned int outerRadius, Pixel color, unsigned int options) noexcept
+  {
     unsigned int radiusInner = minimum(innerRadius, outerRadius);
     unsigned int radiusOuter = maximum(innerRadius, outerRadius);
 
@@ -1025,7 +1029,8 @@ namespace gip {
     }
   }
 
-  void Canvas::rectangle(const Point& p1, const Point& p2, Pixel color, unsigned int options) noexcept {
+  void Canvas::rectangle(const Point& p1, const Point& p2, Pixel color, unsigned int options) noexcept
+  {
     if (options & FILL) {
       Point clipped1 = p1;
       Point clipped2 = p2;
@@ -1053,13 +1058,15 @@ namespace gip {
     }
   }
 
-  void Canvas::pixel(const Point& point, Pixel color) noexcept {
+  void Canvas::pixel(const Point& point, Pixel color) noexcept
+  {
     if (isPointInsideDimension(point, dimension)) {
       rows[point.getY()][point.getX()] = color;
     }
   }
 
-  Canvas::Pixel Canvas::getPixel(const Point& point) const noexcept {
+  Canvas::Pixel Canvas::getPixel(const Point& point) const noexcept
+  {
     Canvas::Pixel result;
     if (isPointInsideDimension(point, dimension)) {
       return rows[point.getY()][point.getX()];
@@ -1068,7 +1075,8 @@ namespace gip {
     return result;
   }
 
-  void Canvas::lineClipped(const Point& p1, const Point& p2, Pixel color) noexcept {
+  void Canvas::lineClipped(const Point& p1, const Point& p2, Pixel color) noexcept
+  {
     // TAG: need initial error (when clipping)
     // the basic formula: y = dy/dx * (x - x1) + y1 where dy = y2-y1 and dx = x2-x1
     Point first = p1;
@@ -1185,7 +1193,8 @@ namespace gip {
     }
   }
 
-  void Canvas::lineClippedAntiAliased(const Point& p1, const Point& p2, Pixel color) noexcept {
+  void Canvas::lineClippedAntiAliased(const Point& p1, const Point& p2, Pixel color) noexcept
+  {
     // TAG: need initial error (when clipping)
     // the basic formula: y = dy/dx * (x - x1) + y1 where dy = y2-y1 and dx = x2-x1
     Point first = p1;
@@ -1315,7 +1324,8 @@ namespace gip {
     }
   }
 
-  void Canvas::line(const Point& p1, const Point& p2, Pixel color, unsigned int options) noexcept {
+  void Canvas::line(const Point& p1, const Point& p2, Pixel color, unsigned int options) noexcept
+  {
     Point clipped1 = p1;
     Point clipped2 = p2;
     if (!clip(clipped1, clipped2)) {
@@ -1328,7 +1338,8 @@ namespace gip {
     }
   }
 
-  void Canvas::line(const Point& p1, const Point& p2, ColorAlphaPixel color, unsigned int options) noexcept {
+  void Canvas::line(const Point& p1, const Point& p2, ColorAlphaPixel color, unsigned int options) noexcept
+  {
     Point clipped1 = p1;
     Point clipped2 = p2;
     if (!clip(clipped1, clipped2)) {
@@ -1349,13 +1360,15 @@ namespace gip {
     return fontName;
   }
 
-  Dimension Canvas::getDimensionOfText(const String& message) const noexcept {
+  Dimension Canvas::getDimensionOfText(const String& message) const noexcept
+  {
     return Dimension(message.getLength() * 8, 16);
   }
 
   // width, height, bytesPerLine, bytesPerCharacter
 
-  void Canvas::write(const Point& position, const String& message) noexcept {
+  void Canvas::write(const Point& position, const String& message) noexcept
+  {
     const unsigned char* fontBitmap = nullptr; // fill me
     // const unsigned int bytesPerRow = 1;
     const unsigned int bytesPerCharacter = 16;
