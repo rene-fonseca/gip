@@ -394,9 +394,9 @@ private:
   ColorImage image;
   OpenGL::ReserveDisplayLists displayLists;
   Dimension dimension;
-  double amplitude;
-  bool mono;
-  unsigned int objectOffset;
+  double amplitude = 1;
+  bool mono = false;
+  unsigned int objectOffset = 0;
   
   class Object {
   public:
@@ -410,10 +410,9 @@ public:
   RenderIntensity(OpenGL& _openGL, const ColorImage& _image) noexcept
     : openGL(_openGL),
       image(_image),
-      displayLists(_openGL, 1) {
+      displayLists(_openGL, 1)
+  {
     dimension = image.getDimension();
-    amplitude = 1.0;
-    mono = false;
     
 //     openGL.glEnable(OpenGL::RESCALE_NORMAL);
 //     openGL.glEnable(OpenGL::NORMALIZE);
@@ -778,24 +777,24 @@ public:
     
     ShadingModel::Model shadingModel;
     PolygonMode::Mode polygonMode;
-    bool blending;
-    bool lighting;
+    bool blending = false;
+    bool lighting = false;
     
     Vector3D<double> translationBegin;
     Vector3D<double> rotationBegin;
-    double scaleBegin;
+    double scaleBegin = 0;
     
-    double orthoLeft;
-    double orthoRight;
-    double orthoBottom;
-    double orthoTop;
-    double orthoNear;
-    double orthoFar;
+    double orthoLeft = 0;
+    double orthoRight = 0;
+    double orthoBottom = 0;
+    double orthoTop = 0;
+    double orthoNear = 0;
+    double orthoFar = 0;
     
     Position mouseButtonPosition;
-    bool mouseLeftButtonPressed;
-    bool mouseMiddleButtonPressed;
-    bool mouseRightButtonPressed;
+    bool mouseLeftButtonPressed = false;
+    bool mouseMiddleButtonPressed = false;
+    bool mouseRightButtonPressed = false;
     
     Vector3D<double> drag;
     Matrix4x4<OpenGL::GLdouble> modelViewMatrix;
@@ -819,7 +818,8 @@ public:
       : OpenGLContext(position, dimension, format),
         verbosity(Verbosity::DEFAULT),
         mode(MODE_DEFAULT),
-        renderable(0) {
+        renderable(0)
+    {
       
       setTitle(title);
       setIconTitle(title);

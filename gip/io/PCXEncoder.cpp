@@ -56,7 +56,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
   bool PCXEncoder::isValid(const String& filename) {
     PCXHeader header;
-    unsigned int size;
+    unsigned int size = 0;
 
     {
       File file(filename, File::READ, 0);

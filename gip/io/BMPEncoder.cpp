@@ -40,8 +40,8 @@ namespace gip {
   class PartialPalette : public UnaryOperation<uint8, ColorPixel> {
   private:
     
-    ColorPixel* palette;
-    unsigned int maxIndex;
+    ColorPixel* palette = nullptr;
+    unsigned int maxIndex = 0;
   public:
     
     inline PartialPalette(ColorPixel* _palette, unsigned int _maxIndex)
@@ -116,7 +116,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
   bool BMPEncoder::isValid(const String& filename) {
     BMPHeader header;
-    unsigned int size;
+    unsigned int size = 0;
 
     {
       File file(filename, File::READ, 0);

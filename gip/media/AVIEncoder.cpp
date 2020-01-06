@@ -261,7 +261,7 @@ FormatOutputStream& AVIEncoder::getInfo(
       }
     }
 
-    unsigned int listTotalSize;
+    unsigned int listTotalSize = 0;
     unsigned int listTotalRead = 0;
     {
       Chunk chunk;

@@ -927,9 +927,7 @@ namespace gip {
       
       @return True if acquisition succeeded.
     */
-    bool acquire(
-      uint8* buffer,
-      unsigned int size);
+    bool acquire(uint8* buffer, unsigned int size);
     
     /**
       Acquires a single frame. The current mode must support the 8 bit mono

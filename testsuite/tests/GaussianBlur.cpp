@@ -48,7 +48,7 @@ public:
 class RealToGray : public UnaryOperation<Complex, GrayPixel> {
 private:
 
-   const double scale;
+   const double scale = 0;
 public:
 
   inline RealToGray(const Dimension& dimension) noexcept

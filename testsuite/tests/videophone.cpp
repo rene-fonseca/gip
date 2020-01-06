@@ -129,8 +129,8 @@ private:
   Semaphore readingSemaphore;
   Semaphore writingSemaphore;
   MutualExclusion guard;
-  bool isServer;
-  bool loopback;
+  bool isServer = false;
+  bool loopback = false;
   InetEndPoint endPoint;
   StreamSocket streamSocket;
 public:
@@ -496,17 +496,17 @@ private:
   
   static const Literal PIXEL_FORMAT_DESCRIPTION[7];
   
-  bool loopback;
-  bool isServer;
+  bool loopback = false;
+  bool isServer = false;
   String host;
-  unsigned short port;
-  VideoPhoneServlet* videoPhoneServlet;
+  unsigned short port = 0;
+  VideoPhoneServlet* videoPhoneServlet = nullptr;
   IEEE1394 ieee1394;
   Camera1394 camera;
 
   Timer timer;
-  unsigned int desiredNumberOfFrames;
-  unsigned int numberOfFrames;
+  unsigned int desiredNumberOfFrames = 0;
+  unsigned int numberOfFrames = 0;
 public:
   
   /** The default port. */
@@ -547,36 +547,37 @@ public:
   EUI64 cameraGuid;
 
   // Camera mode settings
-  bool setMode;
+  bool setMode = false;
   Camera1394::Mode mode;
-  bool setFrameRate;
+  bool setFrameRate = false;
   Camera1394::FrameRate rate;
-  bool setPixelFormat;
+  bool setPixelFormat = false;
   Camera1394::PixelFormat pixelFormat;
   Dimension frameDimension;
   Point2D frameOffset;
-  bool setBrightness;
-  unsigned int brightnessValue;
-  bool setAutoExposure;
-  unsigned int autoExposureValue;
-  bool setWhiteBalance;
-  unsigned int blueRatioValue;
-  unsigned int redRatioValue;
-  bool setHue;
-  unsigned int hueValue;
-  bool setSaturation;
-  unsigned int saturationValue;
-  bool setGamma;
-  unsigned int gammaValue;
-  bool setShutter;
-  unsigned int shutterValue;
-  bool setGain;
-  unsigned int gainValue;
+  bool setBrightness = false;
+  unsigned int brightnessValue = 0;
+  bool setAutoExposure = false;
+  unsigned int autoExposureValue = 0;
+  bool setWhiteBalance = false;
+  unsigned int blueRatioValue = 0;
+  unsigned int redRatioValue = 0;
+  bool setHue = false;
+  unsigned int hueValue = 0;
+  bool setSaturation = false;
+  unsigned int saturationValue = 0;
+  bool setGamma = false;
+  unsigned int gammaValue = 0;
+  bool setShutter = false;
+  unsigned int shutterValue = 0;
+  bool setGain = false;
+  unsigned int gainValue = 0;
   
   String filename;
   
   VideoPhoneApplication() noexcept
-    : Application("videophone") {
+    : Application("videophone")
+  {
     
     verbosity = VERBOSITY_NORMAL;
     

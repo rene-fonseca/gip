@@ -315,7 +315,7 @@ namespace gip {
     Dimension dimension;
     enum Type {GRAY, RGB, RGBA};
     enum Component {INTENSITY = 1, RED = 2, GREEN = 4, BLUE = 8, ALPHA = 16};
-    unsigned int bitsPerComponent;
+    unsigned int bitsPerComponent = 0;
   public:
 
     Dimension getDimension() const noexcept {

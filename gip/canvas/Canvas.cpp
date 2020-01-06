@@ -395,7 +395,7 @@ namespace gip {
     if (options & ANTIALIASING) {
       // case 1: draw vertical lines between inner and outer circles (i.e. for first octant)
       while (x < yInner) {
-        int error;
+        int error = 0;
 
         unsigned int yOuterExact = Math::iSqrt8Round(radiusOuter*radiusOuter - x*x); // scaled with 256 // TAG: could be optimized
         error = yOuterExact & 0xff; // use fraction
@@ -676,9 +676,9 @@ namespace gip {
     if (options & ANTIALIASING) {
       if (options & FILL) {
         while (xStopping >= yStopping) {
-          unsigned int opacity;
-          unsigned int otherOpacity;
-          int otherX;
+          unsigned int opacity = 0;
+          unsigned int otherOpacity = 0;
+          int otherX = 0;
           int xExact = dimension.getWidth() * Math::iSqrt8(dimension.getHeight()*dimension.getHeight() - y * y)/dimension.getHeight(); // TAG: rounding problem
           if (xExact < 256 * x) {
             otherOpacity = 256 * x - xExact; // use fraction
@@ -748,9 +748,9 @@ namespace gip {
         y = dimension.getHeight();
 
         while (xStopping <= yStopping) {
-          unsigned int opacity;
-          unsigned int otherOpacity;
-          int otherY;
+          unsigned int opacity = 0;
+          unsigned int otherOpacity = 0;
+          int otherY = 0;
           int yExact = dimension.getHeight() * Math::iSqrt8(dimension.getWidth()*dimension.getWidth() - x * x)/dimension.getWidth(); // TAG: rounding problem
           if (yExact < y * 256) {
             otherOpacity = 256 * y - yExact;
@@ -815,9 +815,9 @@ namespace gip {
         }
       } else { // anti aliased ellipsed
         while (xStopping >= yStopping) {
-          unsigned int opacity;
-          unsigned int otherOpacity;
-          int otherX;
+          unsigned int opacity = 0;
+          unsigned int otherOpacity = 0;
+          int otherX = 0;
           int xExact = dimension.getWidth() * Math::iSqrt8(dimension.getHeight()*dimension.getHeight() - y * y)/dimension.getHeight(); // TAG: rounding problem
           if (xExact < 256 * x) {
             otherOpacity = 256 * x - xExact; // use fraction
@@ -882,9 +882,9 @@ namespace gip {
         y = dimension.getHeight();
 
         while (xStopping <= yStopping) {
-          unsigned int opacity;
-          unsigned int otherOpacity;
-          int otherY;
+          unsigned int opacity = 0;
+          unsigned int otherOpacity = 0;
+          int otherY = 0;
           int yExact = dimension.getHeight() * Math::iSqrt8(dimension.getWidth()*dimension.getWidth() - x * x)/dimension.getWidth(); // TAG: rounding problem
           if (yExact < y * 256) {
             otherOpacity = 256 * y - yExact; // use fraction

@@ -82,11 +82,11 @@ _COM_AZURE_DEV__BASE__PACKED__END
     private:
 
       File file;
-      unsigned int currentCodeSize;
-      unsigned int bitsAvailable;
-      unsigned int unreadBits;
-      unsigned int dataBlockIndex;
-      uint8 dataBlockSize;
+      unsigned int currentCodeSize = 0;
+      unsigned int bitsAvailable = 0;
+      unsigned int unreadBits = 0;
+      unsigned int dataBlockIndex = 0;
+      uint8 dataBlockSize = 0;
       uint8 dataBlockData[255];
     public:
 
@@ -151,10 +151,10 @@ _COM_AZURE_DEV__BASE__PACKED__END
         unreadBits = 0;
         bool limitReached = false;
 
-        unsigned int code;
-        unsigned int oldCode;
-        unsigned int slot;
-        unsigned int topSlot;
+        unsigned int code = 0;
+        unsigned int oldCode = 0;
+        unsigned int slot = 0;
+        unsigned int topSlot = 0;
 
         while (!done) {
           code = getNextCode();
@@ -263,7 +263,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
 
   bool GIFEncoder::isValid(const String& filename) {
     GIFImpl::Header header;
-    unsigned int size;
+    unsigned int size = 0;
 
     {
       File file(filename, File::READ, 0);

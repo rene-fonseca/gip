@@ -105,13 +105,13 @@ namespace gip {
       ::png_set_read_fn(context, &file, PNGEncoderImpl::read);
       ::png_read_info(context, information);
       
-      png_uint_32 width;
-      png_uint_32 height;
-      int bitDepth;
-      int colorType;
-      int interlaceType;
-      int compressionType;
-      int filterType;      
+      png_uint_32 width = 0;
+      png_uint_32 height = 0;
+      int bitDepth = 0;
+      int colorType = 0;
+      int interlaceType = 0;
+      int compressionType = 0;
+      int filterType = 0;
       ::png_get_IHDR(context, information, &width, &height, &bitDepth, &colorType, &interlaceType, &compressionType, &filterType);
 
       //if ((colorType == PNG_COLOR_TYPE_RGB) || (colorType == PNG_COLOR_TYPE_RGB_ALPHA)) {
@@ -287,13 +287,13 @@ namespace gip {
       ::png_set_read_fn(context, &file, PNGEncoderImpl::read);
       ::png_read_info(context, information);
       
-      png_uint_32 width;
-      png_uint_32 height;
-      int bitDepth;
-      int colorType;
-      int interlaceType;
-      int compressionType;
-      int filterType;      
+      png_uint_32 width = 0;
+      png_uint_32 height = 0;
+      int bitDepth = 0;
+      int colorType = 0;
+      int interlaceType = 0;
+      int compressionType = 0;
+      int filterType = 0;
       ::png_get_IHDR(
         context,
         information,
