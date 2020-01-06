@@ -8,7 +8,7 @@ variables:
   CLICOLOR_FORCE: 1 # used by tools
 
 jobs:
-- job: windows-x64
+- job: windows_x64
   pool:
     vmImage: 'windows-latest'
 
@@ -51,7 +51,7 @@ jobs:
       targetPath: 'artifacts'
       path: $(System.DefaultWorkingDirectory)/build/install
 
-- job: windows-x86
+- job: windows_x86
   pool:
     vmImage: 'windows-latest'
 
