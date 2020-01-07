@@ -11,7 +11,7 @@ Reference API documentation is hosted at https://rene-fonseca.github.io/gip-api
 
 ## Status
 
-[![Windows x64](https://dev.azure.com/renefonseca/gip/_apis/build/status/rene-fonseca.gip?branchName=master&jobName=windows&label=Windows%20x64)](https://dev.azure.com/renefonseca/gip/_build/latest?definitionId=6&branchName=master)
+[![Windows x64](https://dev.azure.com/renefonseca/gip/_apis/build/status/rene-fonseca.gip?branchName=master&jobName=windows_x64&label=Windows%20x64)](https://dev.azure.com/renefonseca/gip/_build/latest?definitionId=6&branchName=master)
 [![Windows x86](https://dev.azure.com/renefonseca/gip/_apis/build/status/rene-fonseca.gip?branchName=master&jobName=windows_x86&label=Windows%20x86)](https://dev.azure.com/renefonseca/gip/_build/latest?definitionId=6&branchName=master)
 [![Windows ARM64](https://dev.azure.com/renefonseca/gip/_apis/build/status/rene-fonseca.gip?branchName=master&jobName=windows_arm64&label=Windows%20ARM64)](https://dev.azure.com/renefonseca/gip/_build/latest?definitionId=6&branchName=master)
 [![Windows ARM32](https://dev.azure.com/renefonseca/gip/_apis/build/status/rene-fonseca.gip?branchName=master&jobName=windows_arm32&label=Windows%20ARM32)](https://dev.azure.com/renefonseca/gip/_build/latest?definitionId=6&branchName=master)
