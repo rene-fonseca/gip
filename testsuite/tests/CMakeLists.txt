@@ -39,7 +39,7 @@ endif ()
 endforeach()
 
 if (WIN32)
-  list(APPEND CMAKE_PROGRAM_PATH "${CMAKE_SOURCE_DIR}/base/bin/${CMAKE_BUILD_TYPE}")
+  set($env{PATH} "${CMAKE_SOURCE_DIR}/base/bin/${CMAKE_BUILD_TYPE};$env{PATH}")
 endif ()
 
 enable_testing()
