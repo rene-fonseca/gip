@@ -22,4 +22,41 @@ Reference API documentation is hosted at https://rene-fonseca.github.io/gip-api
 
 ## Dependencies
 
-PNG and JPEG are optional packages.
+PNG and JPEG are optional packages. For Ubuntu install:
+
+```shell
+sudo apt-get install libpng-dev
+sudo apt-get install libjpeg-dev
+```
+
+## Build
+
+Make sure GIT, cmake, make, and compiler (e.g. g++) are installed.
+
+### Debug build
+
+Use -DCMAKE_PREFIX_PATH to set location of base install folder.
+
+```shell
+git clone https://dev.azure.com/renefonseca/gip/_git/gip
+cd gip
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=base -DCMAKE_INSTALL_PREFIX=install
+cmake --build .. --config Debug --target install -- -j 4
+ctest . -C Debug
+```
+
+### Release build
+
+Use -DCMAKE_PREFIX_PATH to set location of base install folder.
+
+```shell
+git clone https://dev.azure.com/renefonseca/gip/_git/gip
+cd gip
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=base -DCMAKE_INSTALL_PREFIX=install
+cmake --build .. --config Release --target install -- -j 4
+ctest . -C Release
+```
