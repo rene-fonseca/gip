@@ -22,6 +22,8 @@ Reference API documentation is hosted at https://rene-fonseca.github.io/gip-api
 
 ## Dependencies
 
+Base Framework at https://dev.azure.com/renefonseca/base
+
 PNG and JPEG are optional packages. For Ubuntu install:
 
 ```shell
