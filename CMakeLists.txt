@@ -98,6 +98,11 @@ if (JPEG_FOUND)
 option(_COM_AZURE_DEV__GIP__USE_JPEG "Enable JPEG" ON)
 endif ()
 
+set (USE_SHARED 1)
+if (IOS OR EMSCRIPTEN OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "Wasm") OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "WASI"))
+  set (USE_SHARED 0)
+endif ()
+
 configure_file(${CMAKE_SOURCE_DIR}/build.h.in ${CMAKE_BINARY_DIR}/generated/gip/build.h)
 
 set(gip_ADDITIONAL "")
@@ -106,6 +111,9 @@ if (MSVC)
   set(gip_ADDITIONAL ${CMAKE_BINARY_DIR}/generated/gip/gip.rc)
 endif ()
 
+if (NOT USE_SHARED)
+add_library(gip STATIC ${CMAKE_SOURCE_DIR}/gip/dummy.cpp)
+else ()
 add_library(gip SHARED ${gip_SRC} ${gip_ADDITIONAL} ${CMAKE_BINARY_DIR}/generated/gip/config.h)
 target_compile_definitions(gip PRIVATE _COM_AZURE_DEV__GIP__SHARED_LIBRARY_BUILD)
 target_compile_definitions(gip PRIVATE _COM_AZURE_DEV__BASE__SHARED_LIBRARY) # TAG: define in header instead
@@ -118,6 +126,7 @@ target_include_directories(gip PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated>
   $<INSTALL_INTERFACE:include> # <prefix>/include
 )
+endif ()
 
 # macOS requires all values to be less than 1024
 set_target_properties(gip
