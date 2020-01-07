@@ -38,6 +38,10 @@ endif ()
 
 endforeach()
 
+if (WIN32)
+  list(APPEND CMAKE_PROGRAM_PATH "${CMAKE_SOURCE_DIR}/base/bin/${CMAKE_BUILD_TYPE}")
+endif ()
+
 enable_testing()
 
 set (EXTENSION "")
@@ -50,7 +54,3 @@ elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Wasm")
 endif ()
 
 add_test(NAME test_gip COMMAND ${CTEST_EXE} ${CMAKE_CURRENT_BINARY_DIR}/test_gip${EXTENSION})
-if (WIN32)
-  message("SET PATH ENV: PATH=${CMAKE_SOURCE_DIR}/base/bin/${CMAKE_BUILD_TYPE};$ENV{PATH}")
-  set_tests_properties(test_gip PROPERTIES ENVIRONMENT "PATH=${CMAKE_SOURCE_DIR}/base/bin/${CMAKE_BUILD_TYPE};$ENV{PATH}")
-endif ()
