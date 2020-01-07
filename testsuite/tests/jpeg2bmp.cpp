@@ -51,7 +51,7 @@ public:
     JPEGEncoder readEncoder;
 
     fout << MESSAGE("Information:") << ENDL;
-    HashTable<String, AnyValue> information = readEncoder.getInformation(inputFile);
+    ArrayMap<String, AnyValue> information = readEncoder.getInformation(inputFile);
     fout << information << ENDL;
     
     if (readEncoder.isValid(inputFile)) {

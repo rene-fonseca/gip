@@ -51,7 +51,7 @@ public:
     BMPEncoder readEncoder;
     
     fout << MESSAGE("Information:") << ENDL;
-    HashTable<String, AnyValue> information = readEncoder.getInformation(filename);
+    ArrayMap<String, AnyValue> information = readEncoder.getInformation(filename);
     fout << information << ENDL;
     
     if (readEncoder.isValid(filename)) {

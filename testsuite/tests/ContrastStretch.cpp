@@ -37,7 +37,7 @@ public:
     BMPEncoder encoder;
 
     fout << MESSAGE("Information:") << ENDL;
-    HashTable<String, AnyValue> information = encoder.getInformation(inputFile);
+    ArrayMap<String, AnyValue> information = encoder.getInformation(inputFile);
     fout << information << ENDL;
 
     fout << MESSAGE("Importing image with encoder: ") << encoder.getDescription() << ENDL;
