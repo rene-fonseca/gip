@@ -87,14 +87,15 @@ namespace gip {
     _throw NotSupported(this);
   }
   
-  HashTable<String, AnyValue> PPMEncoder::getInformation(const String& filename) {
-    HashTable<String, AnyValue> result;
-    result[MESSAGE("encoder")] = Type::getType(*this);
-    result[MESSAGE("description")] = MESSAGE("Portable Pixmap Format");
-//     result[MESSAGE("bits per pixel")] = static_cast<unsigned int>(header.pixelDepth);
-//     result[MESSAGE("width")] = static_cast<unsigned int>(header.width);
-//     result[MESSAGE("height")] = static_cast<unsigned int>(header.height);
-    return result;
+  ArrayMap<String, AnyValue> PPMEncoder::getInformation(const String& filename)
+  {
+    return {
+      {MESSAGE("encoder"), Type::getType(*this)},
+      {MESSAGE("description"), MESSAGE("Portable Pixmap Format")}
+    };
+    // result[MESSAGE("bits per pixel")] = static_cast<unsigned int>(header.pixelDepth);
+    // result[MESSAGE("width")] = static_cast<unsigned int>(header.width);
+    // result[MESSAGE("height")] = static_cast<unsigned int>(header.height);
   }
 
 }; // end of gip namespace

@@ -82,7 +82,7 @@ namespace gip {
     /**
       Returns information about the specified image.
     */
-    HashTable<String, AnyValue> getInformation(const String& filename);
+    ArrayMap<String, AnyValue> getInformation(const String& filename);
   };
   
 }; // end of gip namespace

@@ -18,7 +18,7 @@
 #include <base/io/InputStream.h>
 #include <base/io/OutputStream.h>
 #include <base/collection/Array.h>
-#include <base/collection/HashTable.h>
+#include <base/collection/ArrayMap.h>
 #include <base/string/InvalidFormat.h>
 #include <gip/ArrayImage.h>
 #include <gip/ImageException.h>
@@ -91,7 +91,7 @@ namespace gip {
       @param stream The stream to write the information to.
       @param filename The path of the file.
     */
-    virtual HashTable<String, AnyValue> getInformation(const String& filename) = 0;
+    virtual ArrayMap<String, AnyValue> getInformation(const String& filename) = 0;
   };
   
 }; // end of gip namespace

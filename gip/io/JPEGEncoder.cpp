@@ -355,11 +355,9 @@ namespace gip {
   }
   */
 
-  HashTable<String, AnyValue> JPEGEncoder::getInformation(
-    const String& filename) {
+  ArrayMap<String, AnyValue> JPEGEncoder::getInformation(const String& filename)
+  {
 #if defined(_COM_AZURE_DEV__GIP__USE_JPEG)
-    HashTable<String, AnyValue> result;
-    
     JPEGEncoderImpl::JPEGSource source;
     struct jpeg_decompress_struct cinfo;
     struct jpeg_error_mgr jerr;
@@ -393,14 +391,15 @@ namespace gip {
       _throw InvalidFormat(this);
     }
     
-    result[MESSAGE("encoder")] = Type::getType(*this);
-    result[MESSAGE("description")] = MESSAGE("Joint Photographic Experts Group File Format");
-    result[MESSAGE("width")] = cinfo.image_width;
-    result[MESSAGE("height")] = cinfo.image_height;
-    result[MESSAGE("components")] = cinfo.num_components;
-    return result;
+    return {
+      {MESSAGE("encoder"), Type::getType(*this)},
+      {MESSAGE("description"), MESSAGE("Joint Photographic Experts Group File Format")},
+      {MESSAGE("width"), cinfo.image_width},
+      {MESSAGE("height"), cinfo.image_height},
+      {MESSAGE("components"), cinfo.num_components},
+    };
 #else
-    return HashTable<String, AnyValue>();
+    return {};
 #endif
   }
 

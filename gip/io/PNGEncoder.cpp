@@ -266,10 +266,8 @@ namespace gip {
     _COM_AZURE_DEV__BASE__NOT_IMPLEMENTED();
   }
 
-  HashTable<String, AnyValue> PNGEncoder::getInformation(
-    const String& filename)
+  ArrayMap<String, AnyValue> PNGEncoder::getInformation(const String& filename)
   {
-    HashTable<String, AnyValue> result;
 #if defined(_COM_AZURE_DEV__GIP__USE_PNG)
     File file(filename, File::READ, 0);
     
@@ -290,7 +288,7 @@ namespace gip {
     try {
       ::png_set_read_fn(context, &file, PNGEncoderImpl::read);
       ::png_read_info(context, information);
-      
+
       png_uint_32 width = 0;
       png_uint_32 height = 0;
       int bitDepth = 0;
@@ -309,23 +307,24 @@ namespace gip {
         &compressionType,
         &filterType
       );
-
-      result[(String)"encoder"] = Type::getType(*this);
-      result[(String)"description"] = "Portable Network Graphics";
-      result[(String)"width"] = width;
-      result[(String)"height"] = height;
-      result[(String)"bit depth"] = bitDepth;
-      result[(String)"color type"] = colorType;
-      result[(String)"interlaced type"] = interlaceType;
-      result[(String)"compression type"] = compressionType;
-      result[(String)"filter type"] = filterType;
-      
       ::png_destroy_read_struct(&context, &information, 0);
+
+      return {
+        {MESSAGE("encoder"), Type::getType(*this)},
+        {MESSAGE("description"), MESSAGE("Portable Network Graphics")},
+        {MESSAGE("width"), width},
+        {MESSAGE("height"), height},
+        {MESSAGE("bit depth"), bitDepth},
+        {MESSAGE("color type"), colorType},
+        {MESSAGE("interlaced type"), interlaceType},
+        {MESSAGE("compression type"), compressionType},
+        {MESSAGE("filter type"), filterType}
+      };
     } catch(IOException&) {
       ::png_destroy_read_struct(&context, &information, 0);
     }
 #endif
-    return result;
+    return {};
   }
 
 }; // end of gip namespace

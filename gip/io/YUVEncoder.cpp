@@ -84,13 +84,14 @@ namespace gip {
     _throw NotSupported(this);
   }
   
-  HashTable<String, AnyValue> YUVEncoder::getInformation(const String& filename) {
-    HashTable<String, AnyValue> result;
-    result[MESSAGE("encoder")] = Type::getType(*this);
-    result[MESSAGE("description")] = MESSAGE("Abekas YUV");
-    result[MESSAGE("width")] = static_cast<unsigned int>(WIDTH);
-    result[MESSAGE("height")] = static_cast<unsigned int>(HEIGHT);
-    return result;
+  ArrayMap<String, AnyValue> YUVEncoder::getInformation(const String& filename)
+  {
+    return {
+      {MESSAGE("encoder"), Type::getType(*this)},
+      {MESSAGE("description"), MESSAGE("Abekas YUV")},
+      {MESSAGE("width"), static_cast<unsigned int>(WIDTH)},
+      {MESSAGE("height"), static_cast<unsigned int>(HEIGHT)}
+    };
   }
 
 }; // end of gip namespace

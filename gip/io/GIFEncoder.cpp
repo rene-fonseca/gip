@@ -357,8 +357,8 @@ _COM_AZURE_DEV__BASE__PACKED__END
     file.truncate(sizeof(header));
   }
 
-  HashTable<String, AnyValue> GIFEncoder::getInformation(const String& filename) {
-    HashTable<String, AnyValue> result;
+  ArrayMap<String, AnyValue> GIFEncoder::getInformation(const String& filename)
+  {
     GIFImpl::Header header;
 
     {
@@ -371,15 +371,15 @@ _COM_AZURE_DEV__BASE__PACKED__END
     version += header.version[1];
     version += header.version[2];
     
-    result[MESSAGE("encoder")] = Type::getType(*this);
-    result[MESSAGE("description")] = MESSAGE("Graphics Interchange Format");
-    result[MESSAGE("version")] = version;
+    return {
+      {MESSAGE("encoder"), Type::getType(*this)},
+      {MESSAGE("description"), MESSAGE("Graphics Interchange Format")},
+      {MESSAGE("version"), version}
+    };
     //result[MESSAGE("width")] = ;
     //result[MESSAGE("height")] = ;
     //result[MESSAGE("compression")] = ;
     //result[MESSAGE("colors")] = ;
-    
-    return result;
   }
 
 }; // end of gip namespace

@@ -634,9 +634,8 @@ _COM_AZURE_DEV__BASE__PACKED__END
     file.truncate(sizeOfFile);
   }
 
-  HashTable<String, AnyValue> BMPEncoder::getInformation(
-    const String& filename) {
-    HashTable<String, AnyValue> result;
+  ArrayMap<String, AnyValue> BMPEncoder::getInformation(const String& filename)
+  {
     BMPHeader header;
     
     {
@@ -644,19 +643,19 @@ _COM_AZURE_DEV__BASE__PACKED__END
       file.read(Cast::getAddress(header), sizeof(header));
     }
     
-    result[MESSAGE("encoder")] = Type::getType(*this);
-    result[MESSAGE("description")] = AnyValue(MESSAGE("Windows Bitmap File Format"));
-    result[MESSAGE("width")] = static_cast<unsigned int>(header.width);
-    result[MESSAGE("height")] = static_cast<unsigned int>(header.height);
-    result[MESSAGE("planes")] = static_cast<unsigned int>(header.planes);
-    result[MESSAGE("bits per pixel")] = static_cast<unsigned int>(header.bitsPerPixel);
-    result[MESSAGE("compression")] = static_cast<unsigned int>(header.compression);
-    result[MESSAGE("horizontal resolution")] = static_cast<unsigned int>(header.horizontalResolution);
-    result[MESSAGE("vertical resolution")] = static_cast<unsigned int>(header.verticalResolution);
-    result[MESSAGE("colors")] = static_cast<unsigned int>(header.colorsUsed);
-    result[MESSAGE("important colors")] = static_cast<unsigned int>(header.importantColors);
-    
-    return result;
+    return {
+      {MESSAGE("encoder"), Type::getType(*this)},
+      {MESSAGE("description"), MESSAGE("Windows Bitmap File Format")},
+      {MESSAGE("width"), static_cast<unsigned int>(header.width)},
+      {MESSAGE("height"), static_cast<unsigned int>(header.height)},
+      {MESSAGE("planes"), static_cast<unsigned int>(header.planes)},
+      {MESSAGE("bits per pixel"), static_cast<unsigned int>(header.bitsPerPixel)},
+      {MESSAGE("compression"), static_cast<unsigned int>(header.compression)},
+      {MESSAGE("horizontal resolution"), static_cast<unsigned int>(header.horizontalResolution)},
+      {MESSAGE("vertical resolution"), static_cast<unsigned int>(header.verticalResolution)},
+      {MESSAGE("colors"), static_cast<unsigned int>(header.colorsUsed)},
+      {MESSAGE("important colors"), static_cast<unsigned int>(header.importantColors)}
+    };
   }
 
 }; // end of gip namespace

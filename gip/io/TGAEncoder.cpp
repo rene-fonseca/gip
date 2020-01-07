@@ -360,9 +360,8 @@ _COM_AZURE_DEV__BASE__PACKED__END
     file.truncate(sizeof(header) + dimension.getSize() * 1 + sizeof(footer));
   }
 
-  HashTable<String, AnyValue> TGAEncoder::getInformation(
-    const String& filename) {
-    HashTable<String, AnyValue> result;
+  ArrayMap<String, AnyValue> TGAEncoder::getInformation(const String& filename)
+  {
     static const Literal signature("TRUEVISION-XFILE");
     
     bool newFormat = false;
@@ -399,14 +398,15 @@ _COM_AZURE_DEV__BASE__PACKED__END
       _throw InvalidFormat(this);
     }
     
-    result[(String)"encoder"] = Type::getType(*this);
-    result[(String)"description"] = "Truevision Targa";
-    result[(String)"x"] = static_cast<unsigned int>(header.image.x);
-    result[(String)"y"] = static_cast<unsigned int>(header.image.y);
-    result[(String)"width"] = static_cast<unsigned int>(header.image.width);
-    result[(String)"height"] = static_cast<unsigned int>(header.image.height);
-    result[(String)"depth"] = static_cast<unsigned int>(header.image.pixelDepth);
-    return result;
+    return {
+      {MESSAGE("encoder"), Type::getType(*this)},
+      {MESSAGE("description"), MESSAGE("Truevision Targa")},
+      {MESSAGE("x"), static_cast<unsigned int>(header.image.x)},
+      {MESSAGE("y"), static_cast<unsigned int>(header.image.y)},
+      {MESSAGE("width"), static_cast<unsigned int>(header.image.width)},
+      {MESSAGE("height"), static_cast<unsigned int>(header.image.height)},
+      {MESSAGE("depth"), static_cast<unsigned int>(header.image.pixelDepth)}
+    };
   }
 
 }; // end of gip namespace

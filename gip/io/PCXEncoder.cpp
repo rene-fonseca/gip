@@ -380,7 +380,7 @@ _COM_AZURE_DEV__BASE__PACKED__END
     file.truncate(file.getPosition());
   }
 
-  HashTable<String, AnyValue> PCXEncoder::getInformation(const String& filename)
+  ArrayMap<String, AnyValue> PCXEncoder::getInformation(const String& filename)
   {
     
     PCXHeader header;
@@ -390,24 +390,23 @@ _COM_AZURE_DEV__BASE__PACKED__END
       file.read(Cast::getAddress(header), sizeof(header));
     }
     
-    HashTable<String, AnyValue> result = {
-      {"encoder", Type::getType(*this)},
-      {"description", "Zsoft Corporation PC Paintbrush"},
-      {"manufacturer", static_cast<unsigned int>(header.manufacturer)},
-      {"version", static_cast<unsigned int>(header.version)},
-      {"encoding", static_cast<unsigned int>(header.encoding)},
-      {"bits per pixel", static_cast<unsigned int>(header.bitsPerPixel)},
-      {"min x", static_cast<unsigned int>(header.minX)},
-      {"min y", static_cast<unsigned int>(header.minY)},
-      {"max x", static_cast<unsigned int>(header.maxX)},
-      {"max y", static_cast<unsigned int>(header.maxY)},
-      {"horizontal resolution", static_cast<unsigned int>(header.horizontalResolution)},
-      {"vertical resolution", static_cast<unsigned int>(header.verticalResolution)},
-      {"planes", static_cast<unsigned int>(header.planes)},
-      {"horizontal screen size", static_cast<unsigned int>(header.horizontalScreenSize)},
-      {"vertical screen size", static_cast<unsigned int>(header.verticalScreenSize)}
+    return {
+      {MESSAGE("encoder"), Type::getType(*this)},
+      {MESSAGE("description"), MESSAGE("Zsoft Corporation PC Paintbrush")},
+      {MESSAGE("manufacturer"), static_cast<unsigned int>(header.manufacturer)},
+      {MESSAGE("version"), static_cast<unsigned int>(header.version)},
+      {MESSAGE("encoding"), static_cast<unsigned int>(header.encoding)},
+      {MESSAGE("bits per pixel"), static_cast<unsigned int>(header.bitsPerPixel)},
+      {MESSAGE("min x"), static_cast<unsigned int>(header.minX)},
+      {MESSAGE("min y"), static_cast<unsigned int>(header.minY)},
+      {MESSAGE("max x"), static_cast<unsigned int>(header.maxX)},
+      {MESSAGE("max y"), static_cast<unsigned int>(header.maxY)},
+      {MESSAGE("horizontal resolution"), static_cast<unsigned int>(header.horizontalResolution)},
+      {MESSAGE("vertical resolution"), static_cast<unsigned int>(header.verticalResolution)},
+      {MESSAGE("planes"), static_cast<unsigned int>(header.planes)},
+      {MESSAGE("horizontal screen size"), static_cast<unsigned int>(header.horizontalScreenSize)},
+      {MESSAGE("vertical screen size"), static_cast<unsigned int>(header.verticalScreenSize)}
     };
-    return result;
   }
 
 }; // end of gip namespace

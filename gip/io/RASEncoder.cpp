@@ -543,19 +543,20 @@ namespace gip {
     );
   }
 
-  HashTable<String, AnyValue> RASEncoder::getInformation(const String& filename) {
-    HashTable<String, AnyValue> result;
+  ArrayMap<String, AnyValue> RASEncoder::getInformation(const String& filename)
+  {
     RASEncoderImpl::Header header;
     {
       File file(filename, File::READ, 0);
       file.read(Cast::getAddress(header), sizeof(header));
     }
-    result[(String)"encoder"] = Type::getType(*this);
-    result[(String)"description"] = "Sun Rasterfile Format";
-    result[(String)"width"] = static_cast<unsigned int>(header.width);
-    result[(String)"height"] = static_cast<unsigned int>(header.height);
-    result[(String)"depth"] = static_cast<unsigned int>(header.depth);
-    return result;
+    return {
+      {MESSAGE("encoder"), Type::getType(*this)},
+      {MESSAGE("description"), MESSAGE("Sun Rasterfile Format")},
+      {MESSAGE("width"), static_cast<unsigned int>(header.width)},
+      {MESSAGE("height"), static_cast<unsigned int>(header.height)},
+      {MESSAGE("depth"), static_cast<unsigned int>(header.depth)}
+    };
   }
 
 }; // end of gip namespace
