@@ -380,9 +380,8 @@ _COM_AZURE_DEV__BASE__PACKED__END
     file.truncate(file.getPosition());
   }
 
-  HashTable<String, AnyValue> PCXEncoder::getInformation(
-    const String& filename) {
-    HashTable<String, AnyValue> result;
+  HashTable<String, AnyValue> PCXEncoder::getInformation(const String& filename)
+  {
     
     PCXHeader header;
     
@@ -391,21 +390,23 @@ _COM_AZURE_DEV__BASE__PACKED__END
       file.read(Cast::getAddress(header), sizeof(header));
     }
     
-    result[(String)"encoder"] = Type::getType(*this);
-    result[(String)"description"] = "Zsoft Corporation PC Paintbrush";
-    result[(String)"manufacturer"] = static_cast<unsigned int>(header.manufacturer);
-    result[(String)"version"] = static_cast<unsigned int>(header.version);
-    result[(String)"encoding"] = static_cast<unsigned int>(header.encoding);
-    result[(String)"bits per pixel"] = static_cast<unsigned int>(header.bitsPerPixel);
-    result[(String)"min x"] = static_cast<unsigned int>(header.minX);
-    result[(String)"min y"] = static_cast<unsigned int>(header.minY);
-    result[(String)"max x"] = static_cast<unsigned int>(header.maxX);
-    result[(String)"max y"] = static_cast<unsigned int>(header.maxY);
-    result[(String)"horizontal resolution"] = static_cast<unsigned int>(header.horizontalResolution);
-    result[(String)"vertical resolution"] = static_cast<unsigned int>(header.verticalResolution);
-    result[(String)"planes"] = static_cast<unsigned int>(header.planes);
-    result[(String)"horizontal screen size"] = static_cast<unsigned int>(header.horizontalScreenSize);
-    result[(String)"vertical screen size"] = static_cast<unsigned int>(header.verticalScreenSize);
+    HashTable<String, AnyValue> result = {
+      {"encoder", Type::getType(*this)},
+      {"description", "Zsoft Corporation PC Paintbrush"},
+      {"manufacturer", static_cast<unsigned int>(header.manufacturer)},
+      {"version", static_cast<unsigned int>(header.version)},
+      {"encoding", static_cast<unsigned int>(header.encoding)},
+      {"bits per pixel", static_cast<unsigned int>(header.bitsPerPixel)},
+      {"min x", static_cast<unsigned int>(header.minX)},
+      {"min y", static_cast<unsigned int>(header.minY)},
+      {"max x", static_cast<unsigned int>(header.maxX)},
+      {"max y", static_cast<unsigned int>(header.maxY)},
+      {"horizontal resolution", static_cast<unsigned int>(header.horizontalResolution)},
+      {"vertical resolution", static_cast<unsigned int>(header.verticalResolution)},
+      {"planes", static_cast<unsigned int>(header.planes)},
+      {"horizontal screen size", static_cast<unsigned int>(header.horizontalScreenSize)},
+      {"vertical screen size", static_cast<unsigned int>(header.verticalScreenSize)}
+    };
     return result;
   }
 
