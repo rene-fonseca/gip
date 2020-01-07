@@ -38,9 +38,9 @@ endif ()
 
 endforeach()
 
-if (WIN32)
-  set($ENV{PATH} "${CMAKE_SOURCE_DIR}/base/bin/${CMAKE_BUILD_TYPE};$ENV{PATH}")
-endif ()
+#if (WIN32)
+#  set($ENV{PATH} "${CMAKE_SOURCE_DIR}/base/bin/${CMAKE_BUILD_TYPE};$ENV{PATH}")
+#endif ()
 
 enable_testing()
 
@@ -53,4 +53,6 @@ elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Wasm")
   set (CTEST_EXE wasmtime)
 endif ()
 
+if (not WIN32) # TAG: need base.dll in PATH
 add_test(NAME test_gip COMMAND ${CTEST_EXE} ${CMAKE_CURRENT_BINARY_DIR}/test_gip${EXTENSION})
+endif ()
