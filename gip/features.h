@@ -38,7 +38,7 @@
   this rule will put your application at risk of clashing with a future release
   of this framework. You should therefore consider this namespace reserved
   solely for this project just like the 'std' namespace is allocated for the
-  <strong>Standard Template Library</strong> (and <strong>C++</strong>
+  <strong>Standard C++ Library</strong> (and <strong>C++</strong>
   language).
 
   @short The root namespace of the framework
