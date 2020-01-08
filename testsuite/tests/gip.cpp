@@ -40,11 +40,13 @@ public:
          << EOL
          << base::Version().getBanner() << ENDL;
 
+#if 0 // turn off for now
     auto& manager = ModuleManager::getManager();
     if (!manager.traverseModules()) {
       setExitCode(1);
       return;
     }
+#endif
   }
 
 };
