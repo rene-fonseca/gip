@@ -26,7 +26,8 @@ const char Version::banner[] =
 "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
 "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 "Please report bugs to https://dev.azure.com/renefonseca/gip.\n\n"
-"build data: " _COM_AZURE_DEV__GIP__BUILD_DATE "\n";
+"Version: " _COM_AZURE_DEV__GIP__VERSION "\n"
+"Build date: " _COM_AZURE_DEV__GIP__BUILD_DATE "\n";
 
 unsigned int Version::getMajorVersion() const noexcept
 {
