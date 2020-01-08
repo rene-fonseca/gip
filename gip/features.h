@@ -29,7 +29,7 @@
   {"PREFIX=com.azure.dev", \
    "NAME=gip", \
    "VERSION=" _COM_AZURE_DEV__GIP__VERSION, \
-   "URL=https://dev.azure.com/renefonseca/gip/" \
+   "URL=https://dev.azure.com/renefonseca/gip/", \
    "LICENSE=GPL-2.0"}
 
 #define _COM_AZURE_DEV__GIP__REQUIRE(major, minor, micro) \

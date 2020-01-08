@@ -13,9 +13,9 @@
 
 #include <base/Application.h>
 #include <base/string/FormatOutputStream.h>
+#include <base/Module.h>
 #include <base/Version.h>
 #include <gip/Version.h>
-#include <gip/io/BMPEncoder.h>
 
 using namespace com::azure::dev::gip;
 
@@ -27,16 +27,24 @@ private:
 public:
 
   VersionApplication() noexcept
-    : Application(MESSAGE("gip")) {
+    : Application(MESSAGE("gip"))
+  {
   }
 
-  void main() noexcept {
+  void main() noexcept
+  {
     fout << getFormalName() << MESSAGE(" version ") << MAJOR_VERSION << '.' << MINOR_VERSION << EOL
          << MESSAGE("Generic Image Processing Framework (Test Suite)") << EOL
          << EOL
          << gip::Version().getBanner() << EOL
          << EOL
          << base::Version().getBanner() << ENDL;
+
+    auto& manager = ModuleManager::getManager();
+    if (!manager.traverseModules()) {
+      setExitCode(1);
+      return;
+    }
   }
 
 };
