@@ -12,3 +12,6 @@
  ***************************************************************************/
 
 #include <gip/features.h>
+#include <base/Module.h>
+
+MODULE_REGISTER(_COM_AZURE_DEV__GIP__THIS_MODULE, _COM_AZURE_DEV__BASE__MODULE_INFO);
