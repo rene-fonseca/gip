@@ -15,6 +15,7 @@
 #include <base/io/File.h>
 #include <base/mem/Allocator.h>
 #include <gip/build.h>
+#include <base/Module.h>
 
 #include <sys/types.h> // get size_t
 #include <stdio.h> // get FILE (but we do not use this)
@@ -26,6 +27,12 @@ extern "C" {
 #endif
 
 namespace gip {
+
+// TAG: if embedded (includes if distributed with application) - then add version
+
+#if defined(_COM_AZURE_DEV__GIP__USE_JPEG)
+MODULE_REGISTER_EXPLICIT(_COM_AZURE_DEV__GIP__THIS_MODULE, "net.sourceforge.libjpeg", "libjpeg", _COM_AZURE_DEV__BASE__STRINGIFY(JPEG_LIB_VERSION), "http://libjpeg.sourceforge.net/");
+#endif
 
 #if defined(_COM_AZURE_DEV__GIP__USE_JPEG)
   class JPEGEncoderImpl {

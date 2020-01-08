@@ -13,6 +13,7 @@
 
 #include <gip/io/PNGEncoder.h>
 #include <base/io/File.h>
+#include <base/Module.h>
 #include <gip/build.h>
 
 #if defined(_COM_AZURE_DEV__GIP__USE_PNG)
@@ -20,6 +21,10 @@
 #endif
 
 namespace gip {
+
+#if defined(_COM_AZURE_DEV__GIP__USE_PNG)
+MODULE_REGISTER_EXPLICIT(_COM_AZURE_DEV__GIP__THIS_MODULE, "org.libpng", "libpng", PNG_LIBPNG_VER_STRING, "http://www.libpng.org/");
+#endif
 
 #if defined(_COM_AZURE_DEV__GIP__USE_PNG)
   class PNGEncoderImpl {

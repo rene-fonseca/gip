@@ -21,6 +21,8 @@
 #define _COM_AZURE_DEV__GIP__MICRO_VERSION 1
 #define _COM_AZURE_DEV__GIP__VERSION "0.2.1"
 
+#define _COM_AZURE_DEV__GIP__THIS_MODULE "com.azure.dev:renefonseca_gip"
+
 #define _COM_AZURE_DEV__GIP__REQUIRE(major, minor, micro) \
   ((major <= _COM_AZURE_DEV__GIP__MAJOR_VERSION) && \
    (minor <= _COM_AZURE_DEV__GIP__MINOR_VERSION) && \
