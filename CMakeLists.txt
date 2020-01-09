@@ -72,18 +72,26 @@ file(GLOB_RECURSE gip_SRC
   "gip/*.cpp"
 )
 
-execute_process(OUTPUT_VARIABLE GIT_BRANCH COMMAND git symbolic-ref --short HEAD)
+# Alternatively use Azure variables like Build.Repository.Uri
+execute_process(OUTPUT_VARIABLE GIT_REMOTE_URL COMMAND git -C "${CMAKE_CURRENT_SOURCE_DIR}" remote get-url origin)
+string(REGEX REPLACE "\n$" "" GIT_REMOTE_URL "${GIT_REMOTE_URL}")
+execute_process(OUTPUT_VARIABLE GIT_BRANCH COMMAND git -C "${CMAKE_CURRENT_SOURCE_DIR}" symbolic-ref --short HEAD)
 string(REGEX REPLACE "\n$" "" GIT_BRANCH "${GIT_BRANCH}")
-execute_process(OUTPUT_VARIABLE GIT_COMMIT COMMAND git rev-parse HEAD)
+execute_process(OUTPUT_VARIABLE GIT_COMMIT COMMAND git -C "${CMAKE_CURRENT_SOURCE_DIR}" rev-parse HEAD)
 string(REGEX REPLACE "\n$" "" GIT_COMMIT "${GIT_COMMIT}")
-execute_process(OUTPUT_VARIABLE GIT_COMMIT_SHORT COMMAND git rev-parse --short HEAD)
+execute_process(OUTPUT_VARIABLE GIT_COMMIT_SHORT COMMAND git -C "${CMAKE_CURRENT_SOURCE_DIR}" rev-parse --short HEAD)
 string(REGEX REPLACE "\n$" "" GIT_COMMIT_SHORT "${GIT_COMMIT_SHORT}")
-execute_process(OUTPUT_VARIABLE GIT_REVISION COMMAND git rev-list HEAD --count)
+execute_process(OUTPUT_VARIABLE GIT_REVISION COMMAND git -C "${CMAKE_CURRENT_SOURCE_DIR}" rev-list HEAD --count)
 string(REGEX REPLACE "\n$" "" GIT_REVISION "${GIT_REVISION}")
 
 string(TIMESTAMP BUILD_DATE "%Y-%m-%d" UTC)
-string(TIMESTAMP BUILD_DATE_SECONDS "%s" UTC)
+if (CMAKE_VERSION VERSION_GREATER 3.5.99)
+  string(TIMESTAMP BUILD_DATE_SECONDS "%s" UTC)
+else ()
+  set(BUILD_DATE_SECONDS "0")
+endif ()
 
+message("Remote: ${GIT_REMOTE_URL}")
 message("Branch: ${GIT_BRANCH}")
 message("Commit: ${GIT_COMMIT}")
 message("Revision: ${GIT_REVISION}")

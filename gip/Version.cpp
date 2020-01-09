@@ -56,12 +56,27 @@ String Version::getVersion() const noexcept
 
 String Version::getCommit() const noexcept
 {
+  return Literal(_COM_AZURE_DEV__GIP__GIT_COMMIT);
+}
+
+String Version::getCommitShort() const noexcept
+{
   return Literal(_COM_AZURE_DEV__GIP__GIT_COMMIT_SHORT);
 }
 
 int64 Version::getBuildDate() const noexcept
 {
   return _COM_AZURE_DEV__GIP__BUILD_DATE_SECONDS;
+}
+
+String Version::getBranch() const noexcept
+{
+  return Literal(_COM_AZURE_DEV__GIP__GIT_BRANCH);
+}
+
+String Version::getRemoteUrl() const noexcept
+{
+  return Literal(_COM_AZURE_DEV__GIP__GIT_REMOTE_URL);
 }
 
 String Version::getBanner() const noexcept

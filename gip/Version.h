@@ -35,44 +35,59 @@ public:
   /**
     Returns the major version of the framework.
   */
-  unsigned int getMajorVersion() const noexcept;
+  unsigned int getMajorVersion() const noexcept override;
 
   /**
     Returns the minor version of the framework.
   */
-  unsigned int getMinorVersion() const noexcept;
+  unsigned int getMinorVersion() const noexcept override;
 
   /**
     Returns the micro version of the framework.
   */
-  unsigned int getMicroVersion() const noexcept;
+  unsigned int getMicroVersion() const noexcept override;
 
   /**
     Returns the release of the framework as a string. The format of the string
     is unspecified.
   */
-  String getRelease() const noexcept;
+  String getRelease() const noexcept override;
 
   /**
     Returns the version of the framework as a string. The format of the string
     is 'major.minor.micro suffix' where suffix could be anything.
   */
-  String getVersion() const noexcept;
+  String getVersion() const noexcept override;
+
+  /**
+    Returns the full commit id.
+  */
+  String getCommit() const noexcept override;
 
   /**
     Returns the short commit id.
   */
-  String getCommit() const noexcept;
+  String getCommitShort() const noexcept override;
 
   /*
     Returns the build date in seconds since epoch.
   */
-  int64 getBuildDate() const noexcept;
+  int64 getBuildDate() const noexcept override;
+
+  /**
+    Returns the source control branch.
+  */
+  String getBranch() const noexcept override;
+
+  /**
+    Returns the source control remote url.
+  */
+  String getRemoteUrl() const noexcept override;
 
   /**
     Returns a short banner (multiple lines) describing the framework.
   */
-  String getBanner() const noexcept;
+  String getBanner() const noexcept override;
 };
  
 }; // end of gip namespace
