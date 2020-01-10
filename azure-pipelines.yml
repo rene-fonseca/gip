@@ -20,7 +20,7 @@ jobs:
       definition: 2
       buildVersionToDownload: 'latestFromBranch'
       branchName: 'refs/heads/master'
-      artifactName: 'base-windows'
+      artifactName: 'base-windows-x64'
       targetPath: $(Build.SourcesDirectory)/base
 
   - task: CMake@1
