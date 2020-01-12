@@ -109,10 +109,11 @@ private:
 public:
 
   FourierApplication() noexcept
-    : Application(MESSAGE("FourierTransformation")) {
+    : Application(MESSAGE("FourierTransformation"))
+  {
   }
 
-  unsigned int getPowerOf2(unsigned int value) throw(OutOfDomain)
+  unsigned int getPowerOf2(unsigned int value)
   {
     bassert(value <= (1 << 31), OutOfDomain(this));
     unsigned int powerOf2 = 1 << 31;

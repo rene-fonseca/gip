@@ -21,32 +21,32 @@
 
 using namespace com::azure::dev::gip;
 
-void writeHLSTest(const String& prefix, const RGBPixel<long double>& rgb) throw(IOException) {
+void writeHLSTest(const String& prefix, const RGBPixel<long double>& rgb) {
   HLSPixel<long double> hls = RGBToHLS(rgb);
   fout << prefix << ": " << rgb << " HLS:" << setPrecision(3) << hls << " HLS->RGB:" << setPrecision(1) << HLSToRGB(hls) << EOL;
 }
 
-void writeHLSTest(const String& prefix, const RGBPixel<unsigned char>& rgb) throw(IOException) {
+void writeHLSTest(const String& prefix, const RGBPixel<unsigned char>& rgb) {
   HLSPixel<unsigned char> hls = RGBToHLS(rgb);
   fout << prefix << ": " << rgb << " HLS:" << hls << " HLS->RGB:" << HLSToRGB(hls) << EOL;
 }
 
-void writeHSVTest(const String& prefix, const RGBPixel<long double>& rgb) throw(IOException) {
+void writeHSVTest(const String& prefix, const RGBPixel<long double>& rgb) {
   HSVPixel<long double> hsv = RGBToHSV(rgb);
   fout << prefix << ": " << rgb << " HSV:" << setPrecision(3) << hsv << " HSV->RGB:" << setPrecision(1) << HSVToRGB(hsv) << EOL;
 }
 
-void writeHSVTest(const String& prefix, const RGBPixel<unsigned char>& rgb) throw(IOException) {
+void writeHSVTest(const String& prefix, const RGBPixel<unsigned char>& rgb) {
   HSVPixel<unsigned char> hsv = RGBToHSV(rgb);
   fout << prefix << ": " << rgb << " HSV:" << hsv << " HSV->RGB:" << HSVToRGB(hsv) << EOL;
 }
 
-void writeYCbCrTest(const String& prefix, const RGBPixel<long double>& rgb) throw(IOException) {
+void writeYCbCrTest(const String& prefix, const RGBPixel<long double>& rgb) {
   YCbCrPixel<long double> ycbcr = RGBToYCbCr(rgb);
   fout << prefix << ": " << rgb << " Y'CbCr:" << setPrecision(3) << ycbcr << " Y'CbCr->RGB:" << setPrecision(3) << YCbCrToRGB(ycbcr) << EOL;
 }
 
-void writeYCbCrTest(const String& prefix, const RGBPixel<unsigned char>& rgb) throw(IOException) {
+void writeYCbCrTest(const String& prefix, const RGBPixel<unsigned char>& rgb) {
   YCbCrPixel<unsigned char> ycbcr = RGBToYCbCr(rgb);
   fout << prefix << ": " << rgb << " Y'CbCr:" << ycbcr << " Y'CbCr->RGB:" << YCbCrToRGB(ycbcr) << EOL;
 }

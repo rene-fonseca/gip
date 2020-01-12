@@ -603,11 +603,14 @@ public:
   class InvalidArgument : public Exception {
   public:
 
-    inline InvalidArgument(const char* message) noexcept : Exception(message) {
+    inline InvalidArgument(const char* message) noexcept
+      : Exception(message)
+    {
     }
   };
   
-  void processArguments() throw(InvalidArgument, InvalidFormat) {
+  void processArguments()
+  {
     Array<String> arguments = getArguments();
     
     if (arguments.getSize() == 0) {
@@ -857,11 +860,13 @@ public:
     fout << "https://dev.azure.com/renefonseca/gip/~fonseca/gip/testsuite/videophone" << ENDL;
   }
   
-  void dumpVersion() noexcept {
+  void dumpVersion() noexcept
+  {
     fout << MAJOR_VERSION << '.' << MINOR_VERSION << ENDL;
   }
 
-  void listAdapters() throw(IEEE1394Exception) {
+  void listAdapters()
+  {
     Array<EUI64> adapters = ieee1394.getAdapters();
     if (adapters.getSize() == 0) {
       fout << "No IEEE 1394 adapters available" << ENDL;
@@ -875,7 +880,8 @@ public:
     }
   }
   
-  void listNodes() throw(IEEE1394Exception) {
+  void listNodes()
+  {
     if (adapterGuid.isInvalid()) {
       ieee1394.open();
     } else {
@@ -918,7 +924,7 @@ public:
     }
   }
   
-  void listCameras() throw(Camera1394::Camera1394Exception, IEEE1394Exception) {
+  void listCameras() {
     Array<EUI64> cameras = camera.getCameras();
     
     if (cameras.getSize() == 0) {
@@ -955,7 +961,7 @@ public:
          << "  Signals: " << HEX << setWidth(10) << ZEROPAD << descriptor.availableSignals << ENDL;
   }
 
-  void dumpCameraMode() throw(Camera1394::Camera1394Exception) {
+  void dumpCameraMode() {
     dumpCamera();
     
     if (setMode) {
@@ -1213,7 +1219,7 @@ public:
     fout << ENDL;
   }
 
-  void setupCamera(bool fast = false) throw(Camera1394::Camera1394Exception) {
+  void setupCamera(bool fast = false) {
     if (cameraGuid.isInvalid()) { // check if EUI-64 has been specified
       Array<EUI64> cameras = camera.getCameras();
       bassert(cameras.getSize() > 0, Camera1394::Camera1394Exception("No cameras available", this));
@@ -1317,7 +1323,7 @@ public:
     }
   }
   
-  void dumpCamera() throw(Camera1394::Camera1394Exception) {
+  void dumpCamera() {
     setupCamera(true);
     
     unsigned int specification = camera.getSpecification();
@@ -1469,7 +1475,8 @@ public:
     return true;
   }
   
-  void acquire() throw(Camera1394::Camera1394Exception) {
+  void acquire()
+  {
     setupCamera();
     
     bool success = true;
@@ -1577,7 +1584,8 @@ public:
     
   }
   
-  void connect() throw(Camera1394::Camera1394Exception) {
+  void connect()
+  {
     setupCamera();
     
     InetEndPoint endPoint;
