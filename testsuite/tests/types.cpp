@@ -71,7 +71,7 @@ public:
     float floatArray[1024];
     double doubleArray[1024];
     long double longDoubleArray[1024];
-    Complex complexArray[1024];
+    Complex<float> complexArray[1024];
     YCbCrPixel<unsigned char> YCbCrArray[1024];
     HLSPixel<unsigned char> HLSArray[1024];
 
@@ -87,7 +87,7 @@ public:
          << MESSAGE("  float: single=") << sizeof(float) << MESSAGE(" array=") << sizeof(floatArray) << EOL
          << MESSAGE("  double: single=") << sizeof(double) << MESSAGE(" array=") << sizeof(doubleArray) << EOL
          << MESSAGE("  long double: single=") << sizeof(long double) << MESSAGE(" array=") << sizeof(longDoubleArray) << EOL
-         << MESSAGE("  Complex: single=") << sizeof(Complex) << MESSAGE(" array=") << sizeof(complexArray) << EOL
+         << MESSAGE("  Complex: single=") << sizeof(Complex<float>) << MESSAGE(" array=") << sizeof(complexArray) << EOL
          << MESSAGE("  YCbCrPixel<unsigned char>: single=") << sizeof(YCbCrPixel<unsigned char>) << MESSAGE(" array=") << sizeof(YCbCrArray) << EOL
          << MESSAGE("  HLSPixel<unsigned char>: single=") << sizeof(HLSPixel<unsigned char>) << MESSAGE(" array=") << sizeof(HLSArray) << EOL;
 

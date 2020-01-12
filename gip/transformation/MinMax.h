@@ -63,22 +63,25 @@ namespace gip {
       return NestOperations<UNOPRARG, UNOPRRES>(inner, outer);
     }
 
-    class ComplexToSqrModulus : public UnaryOperation<Complex, double> {
+    class ComplexToSqrModulus : public UnaryOperation<Complex<float>, double> {
     public:
 
       inline ComplexToSqrModulus() noexcept {
       }
 
-      inline Result operator()(const Argument& value) noexcept {
+      inline Result operator()(const Argument& value) noexcept
+      {
         return value.getSqrModulus();
       }
     };
     
     FindMaximum(const DestinationImage* destination) noexcept
-      : UnaryTransformation<DestinationImage>(destination) {
+      : UnaryTransformation<DestinationImage>(destination)
+    {
     }
 
-    double operator()() noexcept { // DestinationImage::Pixel
+    double operator()() noexcept // DestinationImage::Pixel
+    {
       ComplexToSqrModulus innerOperation;
       NestOperations<ComplexToSqrModulus, Maximum<double> > operation(
         innerOperation,

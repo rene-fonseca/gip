@@ -29,17 +29,19 @@
 
 using namespace com::azure::dev::gip;
 
-class FourierToGray : public UnaryOperation<Complex, GrayPixel> {
+class FourierToGray : public UnaryOperation<Complex<float>, GrayPixel> {
 private:
 
    double scale = 0;
 public:
 
   inline FourierToGray(const Dimension& dimension) noexcept
-    : scale(1.0/dimension.getSize()) {
+    : scale(1.0/dimension.getSize())
+  {
   }
 
-  inline GrayPixel operator()(const Complex& value) const noexcept {
+  inline GrayPixel operator()(const Complex<float>& value) const noexcept
+  {
     return clamp(
       0,
       static_cast<GrayPixel>(255 * Math::ln(1 + value.getModulus() * scale)),
@@ -48,7 +50,7 @@ public:
   }
 };
 
-class FourierToLogModulus : public UnaryOperation<Complex, double> {
+class FourierToLogModulus : public UnaryOperation<Complex<float>, double> {
 private:
 
    double scale = 0;
@@ -61,7 +63,7 @@ public:
   {
   }
 
-  inline double operator()(const Complex& value) noexcept
+  inline double operator()(const Complex<float>& value) noexcept
   {
     double result = Math::ln(1 + value.getModulus() * scale);
     if (result > max) {
@@ -70,7 +72,8 @@ public:
     return result;
   }
 
-  inline double getMaximum() const noexcept {
+  inline double getMaximum() const noexcept
+  {
     return max;
   }
 };
@@ -82,7 +85,9 @@ private:
   HeatColorMap map;
 public:
 
-  MapToHue(double _scale) noexcept : scale(_scale) {
+  MapToHue(double _scale) noexcept
+    : scale(_scale)
+  {
   }
 
   inline ColorPixel operator()(const double& value) const noexcept
@@ -107,7 +112,8 @@ public:
     : Application(MESSAGE("FourierTransformation")) {
   }
 
-  unsigned int getPowerOf2(unsigned int value) throw(OutOfDomain) {
+  unsigned int getPowerOf2(unsigned int value) throw(OutOfDomain)
+  {
     bassert(value <= (1 << 31), OutOfDomain(this));
     unsigned int powerOf2 = 1 << 31;
     while (powerOf2 > value) {

@@ -45,20 +45,22 @@ public:
   }
 };
 
-class RealToGray : public UnaryOperation<Complex, GrayPixel> {
+class RealToGray : public UnaryOperation<Complex<float>, GrayPixel> {
 private:
 
    const double scale = 0;
 public:
 
   inline RealToGray(const Dimension& dimension) noexcept
-    : scale(1.0/dimension.getSize()) {
+    : scale(1.0/dimension.getSize())
+  {
   }
   
   //inline RealToGray(const Dimension& dimension) noexcept : scale(255) {
   //}
 
-  inline GrayPixel operator()(const Complex& value) const noexcept {
+  inline GrayPixel operator()(const Complex<float>& value) const noexcept
+  {
     return clamp(0, static_cast<GrayPixel>(value.getReal() * scale), 255);
   }
 };
@@ -71,10 +73,12 @@ private:
 public:
   
   GaussianBlur() noexcept
-    : Application(MESSAGE("GaussianBlur")) {
+    : Application(MESSAGE("GaussianBlur"))
+  {
   }
   
-  void blur(const String& inputFile, const String& outputFile) noexcept {
+  void blur(const String& inputFile, const String& outputFile) noexcept
+  {
     BMPEncoder encoder;
     
     ColorImage* image = encoder.read(inputFile);
@@ -152,7 +156,7 @@ public:
     }
     
     // multiply images
-    Multiply<Complex> multiply;
+    Multiply<Complex<float> > multiply;
     transform(fourierImage, filterImage, multiply);
     
     {

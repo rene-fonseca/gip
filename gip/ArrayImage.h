@@ -221,6 +221,8 @@ typedef ArrayImage<GrayPixel> GrayImage;
 typedef ArrayImage<ColorPixel> ColorImage;
 typedef ArrayImage<ColorAlphaPixel> ColorAlphaImage;
 typedef ArrayImage<float> FloatImage;
-typedef ArrayImage<Complex> ComplexImage;
+typedef ArrayImage<Complex<float> > ComplexImage;
+typedef ArrayImage<Complex<double> > ComplexDImage;
+typedef ArrayImage<Complex<long double> > ComplexLDImage;
 
 }; // end of gip namespace

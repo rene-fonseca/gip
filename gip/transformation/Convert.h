@@ -88,7 +88,7 @@ namespace gip {
     }
   };
 
-  class RGBToComplex : public UnaryOperation<ColorPixel, Complex> {
+  class RGBToComplex : public UnaryOperation<ColorPixel, Complex<float> > {
   private:
 
     double scale = 0;
@@ -97,13 +97,13 @@ namespace gip {
     inline RGBToComplex(double _scale) noexcept : scale(_scale) {
     }
 
-    inline Complex operator()(const ColorPixel& value) const noexcept {
+    inline Complex<float> operator()(const ColorPixel& value) const noexcept {
       RGBToGray opr;
-      return Complex(scale * opr(value), 0);
+      return Complex<float>(scale * opr(value), 0);
     }
   };
 
-  class ComplexToRGB : public UnaryOperation<Complex, ColorPixel> {
+  class ComplexToRGB : public UnaryOperation<Complex<float>, ColorPixel> {
   private:
 
     const double scale = 0;
@@ -112,7 +112,8 @@ namespace gip {
     inline ComplexToRGB(double _scale) noexcept : scale(_scale) {
     }
 
-    inline Result operator()(const Argument& value) const noexcept {
+    inline Result operator()(const Argument& value) const noexcept
+    {
       double temp = scale * value.getReal();
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
@@ -125,16 +126,19 @@ namespace gip {
     }
   };
 
-  class ComplexToRGBImaginary : public UnaryOperation<Complex, ColorPixel> {
+  class ComplexToRGBImaginary : public UnaryOperation<Complex<float>, ColorPixel> {
   private:
 
     double scale = 0;
   public:
 
-    inline ComplexToRGBImaginary(double _scale) noexcept : scale(_scale) {
+    inline ComplexToRGBImaginary(double _scale) noexcept
+      : scale(_scale)
+    {
     }
 
-    inline Result operator()(const Argument& value) const noexcept {
+    inline Result operator()(const Argument& value) const noexcept
+    {
       double temp = scale * value.getImaginary();
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
@@ -147,16 +151,19 @@ namespace gip {
     }
   };
 
-  class ComplexToRGBSqrModulus : public UnaryOperation<Complex, ColorPixel> {
+  class ComplexToRGBSqrModulus : public UnaryOperation<Complex<float>, ColorPixel> {
   private:
 
     double scale = 0;
   public:
 
-    inline ComplexToRGBSqrModulus(double _scale) noexcept : scale(_scale) {
+    inline ComplexToRGBSqrModulus(double _scale) noexcept
+      : scale(_scale)
+    {
     }
 
-    inline Result operator()(const Argument& value) const noexcept {
+    inline Result operator()(const Argument& value) const noexcept
+    {
       double temp = scale * value.getSqrModulus();
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
@@ -169,16 +176,19 @@ namespace gip {
     }
   };
 
-  class ComplexToRGBModulus : public UnaryOperation<Complex, ColorPixel> {
+  class ComplexToRGBModulus : public UnaryOperation<Complex<float>, ColorPixel> {
   private:
 
     double scale = 0;
   public:
 
-    inline ComplexToRGBModulus(double _scale) noexcept : scale(_scale) {
+    inline ComplexToRGBModulus(double _scale) noexcept
+      : scale(_scale)
+    {
     }
 
-    inline Result operator()(const Argument& value) const noexcept {
+    inline Result operator()(const Argument& value) const noexcept
+    {
       double temp = scale * value.getModulus();
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
@@ -191,16 +201,19 @@ namespace gip {
     }
   };
 
-  class ComplexToRGBLogModulus : public UnaryOperation<Complex, ColorPixel> {
+  class ComplexToRGBLogModulus : public UnaryOperation<Complex<float>, ColorPixel> {
   private:
 
     double scale = 0;
   public:
 
-    inline ComplexToRGBLogModulus(double _scale) noexcept : scale(_scale) {
+    inline ComplexToRGBLogModulus(double _scale) noexcept
+      : scale(_scale)
+    {
     }
 
-    inline Result operator()(const Argument& value) const noexcept {
+    inline Result operator()(const Argument& value) const noexcept
+    {
       double temp = scale * Math::ln(1 + value.getModulus());
       if (temp < 0x00) {
         return makeColorPixel(0x00, 0x00, 0x00);
@@ -249,11 +262,13 @@ namespace gip {
     /**
       Duplicates the contents of the source image to the destination image.
     */
-    void operator()() noexcept {
+    void operator()() noexcept
+    {
       fillWithUnary(*Transformation<DEST, SRC>::destination, *Transformation<DEST, SRC>::source, convert);
     }
 
-    UNARY getResult() const noexcept {
+    UNARY getResult() const noexcept
+    {
       return convert;
     }
   };

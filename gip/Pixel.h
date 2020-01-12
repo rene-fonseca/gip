@@ -68,56 +68,65 @@ namespace gip {
     @param opacity The opacity level of the new pixel. This must be in the range [0; opaque].
   */
   template<class PIXEL>
-  inline PIXEL blend(PIXEL back, PIXEL front, unsigned int opaque, unsigned int opacity) noexcept {
+  inline PIXEL blend(PIXEL back, PIXEL front, unsigned int opaque, unsigned int opacity) noexcept
+  {
     return ((opaque - opacity) * static_cast<typename PixelTraits<PIXEL>::Arithmetic>(back) + opacity * static_cast<typename PixelTraits<PIXEL>::Arithmetic>(front))/opaque;
   }
 
 
 
   template<>
-  inline Complex::Type mapToOneDimension<Complex, Complex::Type>(const Complex& value) noexcept {
+  inline Complex<float>::Type mapToOneDimension<Complex<float>, Complex<float>::Type>(const Complex<float>& value) noexcept {
     return value.getSqrModulus();
   }
 
 
 
   template<class DEST, class SRC>
-  inline DEST convertPixel(const SRC& value) noexcept {
+  inline DEST convertPixel(const SRC& value) noexcept
+  {
     return value;
   }
 
   template<>
-  inline Complex convertPixel<Complex, float>(const float& value) noexcept {
+  inline Complex<float> convertPixel<Complex<float>, float>(const float& value) noexcept
+  {
     return value;
   }
 
   template<>
-  inline Complex convertPixel<Complex, double>(const double& value) noexcept {
-    return Complex(value);
+  inline Complex<float> convertPixel<Complex<float>, double>(const double& value) noexcept
+  {
+    return Complex<float>(value);
   }
 
   template<>
-  inline float convertPixel<float, GrayPixel>(const GrayPixel& value) noexcept {
+  inline float convertPixel<float, GrayPixel>(const GrayPixel& value) noexcept
+  {
     return float(value);
   }
 
   template<>
-  inline GrayPixel convertPixel<GrayPixel, ColorPixel>(const ColorPixel& value) noexcept {
+  inline GrayPixel convertPixel<GrayPixel, ColorPixel>(const ColorPixel& value) noexcept
+  {
     return (GrayPixel)((static_cast<unsigned int>(value.red) + value.green + value.blue + 1)/3); // looses information
   }
 
 //   template<>
-//   inline GrayPixel convertPixel<GrayPixel, ColorAlphaPixel>(const ColorAlphaPixel& value) noexcept {
+//   inline GrayPixel convertPixel<GrayPixel, ColorAlphaPixel>(const ColorAlphaPixel& value) noexcept
+//   {
 //     return (GrayPixel){(static_cast<unsigned int>(value.red) + value.green + value.blue + 1)/3}; // looses information
 //   }
 
 //   template<>
-//   inline float convertPixel<float, Complex>(const Complex& value) noexcept {
+//   inline float convertPixel<float, Complex>(const Complex& value) noexcept
+//   {
 //     return float(value.getReal()); // looses information
 //   }
 
 //   template<>
-//   inline RGBPixel<float> convertPixel<RGBPixel<float>, ColorPixel>(const ColorPixel& value) noexcept {
+//   inline RGBPixel<float> convertPixel<RGBPixel<float>, ColorPixel>(const ColorPixel& value) noexcept
+//   {
 //     RGBPixel<float> result;
 //     result.red = value.red;
 //     result.green = value.green;
